@@ -1,0 +1,14 @@
+{
+	"itemGroup.flyingfamiliars": "Flying Familiars",
+	"item.flyingfamiliars.tab_icon": "Flying Familiars",
+	
+	"item.flyingfamiliars.summoning_bell": "Summoning Bell",
+	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
+	
+	"tooltip.flyingfamiliars.summoning_bell.tooltip": "Press \u00A7eSHIFT\u00A7r for stored entities",
+	"tooltip.flyingfamiliars.summoning_bell.tooltip.empty": "Empty",
+	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_0": "No stored entities",
+	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_1": "1 stored entity",
+	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
+	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities"
+}
