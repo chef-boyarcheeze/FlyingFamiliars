@@ -1,12 +1,12 @@
 package com.beesechurger.flyingfamiliars.init;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.ModEntityTypes;
 import com.beesechurger.flyingfamiliars.items.SummoningBell;
 import com.google.common.base.Supplier;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.Rarity;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -22,6 +22,9 @@ public class FFItems {
 	
 	// General items:
 	public static final RegistryObject<Item> PHOENIX_FEATHER = register("phoenix_feather", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB)));
+	
+	// Spawn eggs:
+	public static final RegistryObject<ForgeSpawnEggItem> PHOENIX_SPAWN_EGG = register("phoenix_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.PHOENIX, 0xF52B00, 0xEFAD28, new Item.Properties().tab(FlyingFamiliars.FF_TAB)));
 	
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> item) 
 	{
