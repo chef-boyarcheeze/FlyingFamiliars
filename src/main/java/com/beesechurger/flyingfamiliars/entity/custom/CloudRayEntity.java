@@ -26,10 +26,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class PhoenixEntity extends Animal implements IAnimatable{
+public class CloudRayEntity extends Animal implements IAnimatable{
 	private AnimationFactory factory = new AnimationFactory(this);
 
-	public PhoenixEntity(EntityType<? extends Animal> p_27557_, Level p_27558_) {
+	public CloudRayEntity(EntityType<? extends Animal> p_27557_, Level p_27558_) {
 		super(p_27557_, p_27558_);
 	}
 	
@@ -38,16 +38,17 @@ public class PhoenixEntity extends Animal implements IAnimatable{
 				.add(Attributes.MAX_HEALTH, 10.00)
 				.add(Attributes.ATTACK_DAMAGE, 3.0f)
 				.add(Attributes.ATTACK_SPEED, 2.0f)
-				.add(Attributes.MOVEMENT_SPEED, 0.15f).build();
+				.add(Attributes.FLYING_SPEED, 2.0f)
+				.add(Attributes.MOVEMENT_SPEED, 0.5f).build();
 	}
 	
 	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.phoenix.walking", true));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying", true));
 			return PlayState.CONTINUE;
 		}
 		
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.phoenix.idle", true));
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.idle", true));
 		return PlayState.CONTINUE;
 	}
 	
@@ -79,15 +80,15 @@ public class PhoenixEntity extends Animal implements IAnimatable{
 	}
 	
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.PARROT_AMBIENT;
+		return SoundEvents.CONDUIT_AMBIENT;
 	}
 	
 	protected SoundEvent getHurtSound() {
-		return SoundEvents.PARROT_HURT;
+		return SoundEvents.CONDUIT_ATTACK_TARGET;
 	}
 	
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.PARROT_DEATH;
+		return SoundEvents.CONDUIT_DEACTIVATE;
 	}
 	
 	protected float getSoundVolume() {

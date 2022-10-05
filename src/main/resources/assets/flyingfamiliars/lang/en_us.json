@@ -12,5 +12,6 @@
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
 	
-	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg"
+	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
+	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg"
 }

@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.PhoenixEntity;
 
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,10 @@ public class ModEntityTypes {
 					.sized(0.8f, 0.6f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "phoenix").toString()));
 	
+	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPES.register("cloud_ray", 
+			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
+					.sized(0.8f, 0.6f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
 	
 	
 	public static void register(IEventBus eventbus)

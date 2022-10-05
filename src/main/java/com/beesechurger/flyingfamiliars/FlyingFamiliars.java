@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.entity.ModEntityTypes;
+import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.init.FFItems;
 
@@ -45,5 +46,6 @@ public class FlyingFamiliars {
 	
 	private void clientSetup(final FMLClientSetupEvent event) {
 		EntityRenderers.register(ModEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
+		EntityRenderers.register(ModEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
 	}
 }
