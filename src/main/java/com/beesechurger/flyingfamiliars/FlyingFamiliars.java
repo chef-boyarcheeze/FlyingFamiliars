@@ -4,6 +4,7 @@ import com.beesechurger.flyingfamiliars.entity.ModEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.init.FFItems;
+import com.beesechurger.flyingfamiliars.init.FFKeys;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTab;
@@ -44,8 +45,11 @@ public class FlyingFamiliars {
 		GeckoLib.initialize();
 	}
 	
-	private void clientSetup(final FMLClientSetupEvent event) {
+	private void clientSetup(final FMLClientSetupEvent event)
+	{
 		EntityRenderers.register(ModEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
 		EntityRenderers.register(ModEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
+		
+		FFKeys.init();
 	}
 }

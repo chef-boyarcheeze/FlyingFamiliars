@@ -22,7 +22,7 @@ public class ModEntityTypes {
 	
 	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPES.register("cloud_ray", 
 			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
-					.sized(0.8f, 0.6f)
+					.sized(2.0f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
 	
 	

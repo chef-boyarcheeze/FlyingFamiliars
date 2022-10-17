@@ -5,6 +5,11 @@
 	"item.flyingfamiliars.summoning_bell": "Summoning Bell",
 	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
 	
+	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
+	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
+	
+	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
+	
 	"tooltip.flyingfamiliars.summoning_bell.tooltip": "Press \u00A7eSHIFT\u00A7r for stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.empty": "Empty",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_0": "No stored entities",
@@ -12,6 +17,6 @@
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
 	
-	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
-	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg"
+	"key.flyingfamiliars.ascend": "Ascend",
+	"key.flyingfamiliars.descend": "Descend"
 }
