@@ -10,6 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
@@ -47,8 +48,6 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	@Override
     protected void onHitBlock(BlockHitResult result)
     {
-		super.onHitBlock(result);
-		
 		// If summoning bell is set to capture/client calling:
 		if(!action || level.isClientSide()) return;
 		
@@ -86,15 +85,13 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	
 	@Override
     protected void onHitEntity(EntityHitResult result) 
-	{
-		//super.onHitEntity(result);
-		
+	{		
 		// If summoning bell is set to release/client calling:
 		if (action || level.isClientSide()) return;
 		
 		Entity target = result.getEntity();
 			
-		if (!(target instanceof Player || !target.canChangeDimensions() || !target.isAlive()))
+		if (!(target instanceof Player || !target.canChangeDimensions() || !target.isAlive()) && target instanceof Mob)
 		{
 			CompoundTag compound = summoning_bell.getTag();
 			if (compound == null)
