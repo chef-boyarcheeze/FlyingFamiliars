@@ -16,6 +16,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -26,34 +27,30 @@ import net.minecraft.world.level.Level;
 
 public class SummoningBell extends Item
 {
-	private final float[] scale = {0.5f, 0.56f, 0.64f, 0.68f, 0.76f, 0.85f, 0.95f, 1.0f};
-	private boolean action;
+	private static float[] SCALE = {0.5f, 0.56f, 0.64f, 0.68f, 0.76f, 0.85f, 0.95f, 1.0f};
 	
 	public SummoningBell(Properties properties)
 	{
 		super(properties);
-		action = false;
 	}
 
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) 
 	{
 		ItemStack stack = player.getItemInHand(hand);
 		
-		if(player.isShiftKeyDown())
-		{
-			if(level.isClientSide()) toggleInteractType(player);
-			return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-		}
-		
-	    level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_BELL, SoundSource.NEUTRAL, 0.5F, scale[(int) Math.floor(Math.random()*scale.length)]);
+	    level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_BELL, SoundSource.NEUTRAL, 0.5F, SCALE[(int) Math.floor(Math.random()*SCALE.length)]);
 	    
 	    if (!level.isClientSide)
 	    {
-	       SummoningBellProjectile ding = new SummoningBellProjectile(level, player, stack, action);
+	    	SummoningBellProjectile ding;
+	    	
+	    	if(!player.isShiftKeyDown()) ding = new SummoningBellProjectile(level, player, stack, false);
+	    	else ding = new SummoningBellProjectile(level, player, stack, true);
+	    	
 	       
-	       int note_type = (int) Math.floor(Math.random()*3);
-	       switch(note_type)
-	       {
+	        int note_type = (int) Math.floor(Math.random()*3);
+	        switch(note_type)
+	        {
 	       		case 0:
 	       			ding.setItem(new ItemStack(FFItems.MUSIC_NOTE_1.get()));
 	       			break;
@@ -63,13 +60,13 @@ public class SummoningBell extends Item
 	       		case 2:
 	       			ding.setItem(new ItemStack(FFItems.MUSIC_NOTE_3.get()));
 	       			break;
-	       }
+	        }
 	       
-	       ding.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
-	       level.addFreshEntity(ding);
+	        ding.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
+	        level.addFreshEntity(ding);
 	    }
 
-	    //player.awardStat(Stats.ITEM_USED.get(this));
+	    player.awardStat(Stats.ITEM_USED.get(this));
 
 	    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
 	}
@@ -85,9 +82,6 @@ public class SummoningBell extends Item
     	int entityCount = 0;
     	
 		CompoundTag compound = stack.getTag();
-		
-		if(!action) tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.summoning_tool.tooltip.capture"));
-		else tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.summoning_tool.tooltip.release"));
 		
 		if (compound != null)
 		{
@@ -142,13 +136,5 @@ public class SummoningBell extends Item
 				tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.summoning_bell.tooltip.empty").withStyle(ChatFormatting.GRAY));
 			}
 		}
-    }
-    
-    public void toggleInteractType(Player player)
-    {
-    	action = !action;
-    	
-    	if(!action) player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.summoning_tool.toggle_capture"), true);
-    	else player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.summoning_tool.toggle_release"), true);
     }
 }

@@ -22,7 +22,7 @@ import net.minecraft.world.phys.EntityHitResult;
 public class SummoningBellProjectile extends ThrowableItemProjectile
 {
 	private ItemStack summoning_bell;
-	private boolean action;
+	private boolean action = false;
 	
 	public SummoningBellProjectile(EntityType<? extends SummoningBellProjectile> proj, Level level)
 	{
@@ -33,7 +33,7 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	{
 	    super(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), entity, level);
 	    summoning_bell = stack;
-	    action = action_type;
+	    this.action = action_type;
 	}
 	
 	public SummoningBellProjectile(Level level, double x, double y, double z)
@@ -41,7 +41,8 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	   super(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), x, y, z, level);
 	}
 	
-	protected Item getDefaultItem() {
+	protected Item getDefaultItem()
+	{
 	   return FFItems.MUSIC_NOTE_1.get();
 	}
 	
@@ -49,7 +50,7 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
     protected void onHitBlock(BlockHitResult result)
     {
 		// If summoning bell is set to capture/client calling:
-		if(!action || level.isClientSide()) return;
+		if(!this.action || level.isClientSide()) return;
 		
 		// Else, summoning bell is set to release:
         BlockPos pos = result.getBlockPos();
@@ -87,7 +88,7 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
     protected void onHitEntity(EntityHitResult result) 
 	{		
 		// If summoning bell is set to release/client calling:
-		if (action || level.isClientSide()) return;
+		if (this.action || level.isClientSide()) return;
 		
 		Entity target = result.getEntity();
 			
@@ -110,6 +111,9 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 				
 				target.remove(RemovalReason.KILLED);
 			}
+			
+			compound.put("entity", tagList);
+			summoning_bell.setTag(compound);
 		}
 		
 		this.remove(RemovalReason.KILLED);
