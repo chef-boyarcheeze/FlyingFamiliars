@@ -3,24 +3,36 @@ package com.beesechurger.flyingfamiliars.entity.custom.projectile;
 import com.beesechurger.flyingfamiliars.entity.ModEntityTypes;
 import com.beesechurger.flyingfamiliars.init.FFItems;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 
 public class SummoningBellProjectile extends ThrowableItemProjectile
 {
+	private ItemStack summoning_bell;
+	private boolean action;
+	
 	public SummoningBellProjectile(EntityType<? extends SummoningBellProjectile> proj, Level level)
 	{
 		super(proj, level);
 	}
 	
-	public SummoningBellProjectile(Level level, LivingEntity entity)
+	public SummoningBellProjectile(Level level, LivingEntity entity, ItemStack stack, boolean action_type)
 	{
 	    super(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), entity, level);
+	    summoning_bell = stack;
+	    action = action_type;
 	}
 	
 	public SummoningBellProjectile(Level level, double x, double y, double z)
@@ -32,24 +44,77 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	   return FFItems.MUSIC_NOTE_1.get();
 	}
 	
-	/*@Override
-    protected void onHitBlock(BlockHitResult result) {
+	@Override
+    protected void onHitBlock(BlockHitResult result)
+    {
 		super.onHitBlock(result);
-        Entity player = this.getOwner();
-        ItemInfinityLauncher.PlungerAction action = ItemInfinityLauncher.PlungerAction.getFromId(this.entityData.get(PLUNGER_ACTION));
-        if (player instanceof Player && action == ItemInfinityLauncher.PlungerAction.RELEASE) {
-            for (ItemStack itemStack : ((Player) player).inventory.items) {
-                if (itemStack.getItem() instanceof MobImprisonmentToolItem && itemStack.hasTag()) {
-                    ItemStack copy = itemStack.copy();
-                    if (((MobImprisonmentToolItem) itemStack.getItem()).release((Player) player, result.getBlockPos(), result.getDirection(), this.level, copy)) {
-                        ((Player) player).inventory.removeItem(itemStack);
-                        ((Player) player).inventory.add(copy);
-                        break;
-                    }
+		
+		// If summoning bell is set to capture/client calling:
+		if(!action || level.isClientSide()) return;
+		
+		// Else, summoning bell is set to release:
+        BlockPos pos = result.getBlockPos();
+        Direction facing = result.getDirection();
+        Level worldIn = this.level;
 
-                }
-            }
-            this.onClientRemoval();
-        }
-    }*/
+		CompoundTag compound = summoning_bell.getTag();
+		if (compound != null)
+		{
+			ListTag tagList = compound.getList("entity", 10);
+			if (tagList.size() > 0)
+			{
+				CompoundTag entityNBT = tagList.getCompound(tagList.size()-1);
+				tagList.remove(tagList.size()-1);
+				
+		        EntityType<?> type = EntityType.byString(entityNBT.getString("entity")).orElse(null);
+	            if (type != null)
+	            {
+	            	Entity entity;
+			        BlockPos blockPos = pos.relative(facing);
+	            	
+	                entity = type.create(worldIn);
+	                entity.load(entityNBT);
+	                
+	                entity.absMoveTo(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, 0, 0);
+					worldIn.addFreshEntity(entity);
+	            }
+			}
+		}
+		
+		this.remove(RemovalReason.KILLED);
+    }
+	
+	@Override
+    protected void onHitEntity(EntityHitResult result) 
+	{
+		//super.onHitEntity(result);
+		
+		// If summoning bell is set to release/client calling:
+		if (action || level.isClientSide()) return;
+		
+		Entity target = result.getEntity();
+			
+		if (!(target instanceof Player || !target.canChangeDimensions() || !target.isAlive()))
+		{
+			CompoundTag compound = summoning_bell.getTag();
+			if (compound == null)
+			{
+				compound = new CompoundTag();
+			}
+
+			ListTag tagList = compound.getList("entity", 10);
+			if (tagList.size() < 3)
+			{
+				CompoundTag entityNBT = new CompoundTag();
+				
+				entityNBT.putString("entity", EntityType.getKey(target.getType()).toString());
+				target.saveWithoutId(entityNBT);
+				tagList.addTag(tagList.size(),entityNBT);
+				
+				target.remove(RemovalReason.KILLED);
+			}
+		}
+		
+		this.remove(RemovalReason.KILLED);
+    }
 }

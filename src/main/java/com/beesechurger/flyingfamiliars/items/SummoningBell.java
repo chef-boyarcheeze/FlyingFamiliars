@@ -26,12 +26,12 @@ import net.minecraft.world.level.Level;
 public class SummoningBell extends Item
 {
 	private final float[] scale = {0.5f, 0.56f, 0.64f, 0.68f, 0.76f, 0.85f, 0.95f, 1.0f};
-	private boolean action = false;
+	private boolean action;
 	
 	public SummoningBell(Properties properties)
 	{
 		super(properties);
-		//action = false;
+		action = false;
 	}
 	
 	/*@SuppressWarnings("resource")
@@ -155,7 +155,7 @@ public class SummoningBell extends Item
 	    
 	    if (!level.isClientSide)
 	    {
-	       SummoningBellProjectile ding = new SummoningBellProjectile(level, player);
+	       SummoningBellProjectile ding = new SummoningBellProjectile(level, player, stack, action);
 	       //ding.setItem(new ItemStack(Items.MUSIC_DISC_PIGSTEP));
 	       ding.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
 	       level.addFreshEntity(ding);
