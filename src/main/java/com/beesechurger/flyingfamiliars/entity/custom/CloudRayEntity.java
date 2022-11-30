@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,9 +27,12 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -440,10 +444,13 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	protected void registerGoals()
 	{	
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 1, 16, 8, true));
+		//this.goalSelector.addGoal(1, new MeleeAttackGoal((PathfinderMob) this.getTarget(), ATTACK_DAMAGE, false));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
+		this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1, 16, 8, true));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.00));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
 	}
 	
 // GeckoLib animation controls:
@@ -712,7 +719,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
             double verticalMove = vec3.y;
             double forwardMove = Math.min(Math.abs(driver.zza) + Math.abs(driver.xxa), 1);
 
-            // rotate head to match driver.
+            // rotate head to match driver
             float yaw = driver.yHeadRot;
             if (forwardMove > 0) // rotate in the direction of the drivers controls
                 yaw += (float) Mth.atan2(driver.zza, driver.xxa) * (180f / (float) Math.PI) - 90;
@@ -746,12 +753,12 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 
         if (isFlying())
         {
-        	// allows motion at all
+        	// allows motion
             moveRelative(speed, vec3);
             move(MoverType.SELF, getDeltaMovement());
             
             // bobbing up and down while flying
-            if (getDeltaMovement().lengthSqr() < 0.1) setDeltaMovement(getDeltaMovement().add(0, Math.sin((tickCount / 8f)) * 0.01, 0));
+            if (getDeltaMovement().lengthSqr() < 0.1) setDeltaMovement(getDeltaMovement().add(0, Math.sin((tickCount / 6f)) * 0.01, 0));
             
             // impose speed limit, and acceleration/deceleration
             setDeltaMovement(getDeltaMovement().scale(0.9f));

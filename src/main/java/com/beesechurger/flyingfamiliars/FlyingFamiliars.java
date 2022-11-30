@@ -7,6 +7,7 @@ import com.beesechurger.flyingfamiliars.init.FFItems;
 import com.beesechurger.flyingfamiliars.init.FFKeys;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,6 +50,7 @@ public class FlyingFamiliars {
 	{
 		EntityRenderers.register(ModEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
 		EntityRenderers.register(ModEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
+		EntityRenderers.register(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), ThrownItemRenderer::new);
 		
 		FFKeys.init();
 	}

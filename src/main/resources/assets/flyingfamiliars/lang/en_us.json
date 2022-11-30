@@ -16,6 +16,8 @@
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_1": "1 stored entity",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
+	"message.flyingfamiliars.summoning_bell.toggle_capture": "Summoning tool set to Capture",
+	"message.flyingfamiliars.summoning_bell.toggle_release": "Summoning tool set to Release",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
 	"key.flyingfamiliars.descend": "Descend"

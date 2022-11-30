@@ -17,6 +17,11 @@ public class FFItems {
 	// Creative mode tab item (same as the summoning bell):
 	public static final RegistryObject<Item> CREATIVE_TAB_ICON = register("tab_icon", () -> new Item(new Item.Properties()));
 	
+	// Music note items (for summoning bell projectile, based on vanilla minecraft notes):
+	public static final RegistryObject<Item> MUSIC_NOTE_1 = register("music_note_1", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> MUSIC_NOTE_2 = register("music_note_2", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> MUSIC_NOTE_3 = register("music_note_3", () -> new Item(new Item.Properties()));
+	
 	// Tools/Utility items:
 	public static final RegistryObject<Item> SUMMONING_BELL = register("summoning_bell", () -> new SummoningBell(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).durability(3)));
 	

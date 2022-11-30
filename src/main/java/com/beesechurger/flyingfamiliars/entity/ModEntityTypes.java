@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.PhoenixEntity;
+import com.beesechurger.flyingfamiliars.entity.custom.projectile.SummoningBellProjectile;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -25,7 +26,12 @@ public class ModEntityTypes {
 					.sized(2.0f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
 	
-	
+	public static final RegistryObject<EntityType<SummoningBellProjectile>> SUMMONING_BELL_PROJECTILE = ENTITY_TYPES.register("summoning_bell_projectile",
+			() -> EntityType.Builder.<SummoningBellProjectile>of(SummoningBellProjectile::new, MobCategory.MISC)
+					.sized(0.5f, 0.5f)
+					.setShouldReceiveVelocityUpdates(true)
+					.build("summoning_bell_projectile"));
+
 	public static void register(IEventBus eventbus)
 	{
 		ENTITY_TYPES.register(eventbus);

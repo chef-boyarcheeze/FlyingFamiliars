@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "flyingfamiliars:item/summoning_bell"
+		"layer0": "flyingfamiliars:item/music_note_1"
 	}
 }

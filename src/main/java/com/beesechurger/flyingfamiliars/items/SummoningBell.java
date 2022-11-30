@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.beesechurger.flyingfamiliars.entity.custom.projectile.SummoningBellProjectile;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -13,27 +15,35 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 public class SummoningBell extends Item
-{	
-	public SummoningBell(Properties properties) 
+{
+	private final float[] scale = {0.5f, 0.56f, 0.64f, 0.68f, 0.76f, 0.85f, 0.95f, 1.0f};
+	
+	public SummoningBell(Properties properties)
 	{
 		super(properties);
 	}
-
-	@SuppressWarnings("resource")
+	
+	/*@SuppressWarnings("resource")
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand)
 	{
@@ -72,9 +82,9 @@ public class SummoningBell extends Item
 			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.SUCCESS;
-	}
+	}*/
 	
-	@SuppressWarnings("resource")
+	/*@SuppressWarnings("resource")
 	@Override
 	public InteractionResult useOn(UseOnContext context)
 	{
@@ -138,8 +148,33 @@ public class SummoningBell extends Item
             }
         }
         return null;
-    }
+    }*/
 
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) 
+	{
+		ItemStack stack = player.getItemInHand(hand);
+		
+		if(player.isShiftKeyDown())
+		{
+			toggleInteractType(player);
+			return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+		}
+		
+	    level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.NOTE_BLOCK_BELL, SoundSource.NEUTRAL, 0.5F, scale[(int) Math.floor(Math.random()*scale.length)]);
+	    
+	    if (!level.isClientSide)
+	    {
+	       SummoningBellProjectile ding = new SummoningBellProjectile(level, player);
+	       //ding.setItem(new ItemStack(Items.MUSIC_DISC_PIGSTEP));
+	       ding.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
+	       level.addFreshEntity(ding);
+	    }
+
+	    //player.awardStat(Stats.ITEM_USED.get(this));
+
+	    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+	}
+	
     public String getID(int listValue, ItemStack stack)
     {
         return stack.getTag().getList("entity", 10).getCompound(listValue).getString("entity");
@@ -205,5 +240,10 @@ public class SummoningBell extends Item
 				tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.summoning_bell.tooltip.empty").withStyle(ChatFormatting.GRAY));
 			}
 		}
+    }
+    
+    public void toggleInteractType(Player player)
+    {
+    	player.displayClientMessage(, );
     }
 }
