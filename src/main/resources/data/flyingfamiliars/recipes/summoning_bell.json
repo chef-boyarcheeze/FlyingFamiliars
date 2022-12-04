@@ -2,20 +2,26 @@
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
 		" IS",
-		"IFI",
-		"GI "
+		"REI",
+		"AL "
 	],
 	"key": {
-		"I": {
-			"item": "minecraft:iron_ingot"
-		},
 		"S": {
 			"item": "minecraft:stick"
 		},
-		"G": {
-			"item": "minecraft:gold_ingot"
+		"I": {
+			"item": "minecraft:iron_ingot"
 		},
-		"F": {
+		"E": {
+			"item": "minecraft:emerald"
+		},
+		"R": {
+			"item": "minecraft:redstone"
+		},
+		"L": {
+			"item": "minecraft:lapis_lazuli"
+		},
+		"A": {
 			"item": "minecraft:amethyst_shard"
 		}
 	},

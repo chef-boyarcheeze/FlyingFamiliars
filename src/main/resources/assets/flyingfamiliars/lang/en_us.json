@@ -3,6 +3,8 @@
 	"item.flyingfamiliars.tab_icon": "Flying Familiars",
 	
 	"item.flyingfamiliars.summoning_bell": "Summoning Bell",
+	"item.flyingfamiliars.familiar_tablet": "Familiar Tablet",
+	"item.flyingfamiliars.cloud_ray_tablet": "Cloud Ray Tablet",
 	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
 	
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
@@ -10,12 +12,14 @@
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	
-	"tooltip.flyingfamiliars.summoning_bell.tooltip": "Press \u00A7eSHIFT\u00A7r for stored entities",
+	"tooltip.flyingfamiliars.summoning_bell.left_shift": "Press \u00A7eSHIFT\u00A7r for stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.empty": "Empty",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_0": "No stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_1": "1 stored entity",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
+	
+	"tooltip.flyingfamiliars.familiar_tablet.tooltip.left_shift": "Press \u00A7eSHIFT\u00A7r for collected entity",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
 	"key.flyingfamiliars.descend": "Descend"

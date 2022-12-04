@@ -85,7 +85,7 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
     }
 	
 	@Override
-    protected void onHitEntity(EntityHitResult result) 
+    protected void onHitEntity(EntityHitResult result)
 	{		
 		// If summoning bell is set to release/client calling:
 		if (this.action || level.isClientSide()) return;

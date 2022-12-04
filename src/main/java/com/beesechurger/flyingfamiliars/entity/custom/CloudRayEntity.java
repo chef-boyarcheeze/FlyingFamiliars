@@ -628,10 +628,6 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
     {
         return isTame() && isOwnedBy(player);
     }
-
-// Entity controls:
- 	
-// Entity controls:
  	
  	@Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)

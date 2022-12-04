@@ -121,7 +121,7 @@ public class SummoningBell extends Item
 				
 				if(entityCount != 0)
 				{
-					tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.summoning_bell.tooltip").withStyle(ChatFormatting.GRAY));
+					tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.summoning_bell.left_shift").withStyle(ChatFormatting.GRAY));
 				}
 			}
 		}
