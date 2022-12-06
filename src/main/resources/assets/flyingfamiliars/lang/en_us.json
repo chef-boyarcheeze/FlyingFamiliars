@@ -3,9 +3,8 @@
 	"item.flyingfamiliars.tab_icon": "Flying Familiars",
 	
 	"item.flyingfamiliars.summoning_bell": "Summoning Bell",
-	"item.flyingfamiliars.familiar_tablet": "Familiar Tablet",
-	"item.flyingfamiliars.cloud_ray_tablet": "Cloud Ray Tablet",
 	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
+	"item.flyingfamiliars.soul_wand": "Soul Wand",
 	
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
@@ -19,7 +18,7 @@
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
 	
-	"tooltip.flyingfamiliars.familiar_tablet.tooltip.left_shift": "Press \u00A7eSHIFT\u00A7r for collected entity",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.left_shift": "Press \u00A7eSHIFT\u00A7r for collected soul",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
 	"key.flyingfamiliars.descend": "Descend"

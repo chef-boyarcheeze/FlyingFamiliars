@@ -1,10 +1,11 @@
 package com.beesechurger.flyingfamiliars.entity.custom.projectile;
 
-import com.beesechurger.flyingfamiliars.entity.ModEntityTypes;
+import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.init.FFItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class SummoningBellProjectile extends ThrowableItemProjectile
 {
@@ -31,14 +33,14 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	
 	public SummoningBellProjectile(Level level, LivingEntity entity, ItemStack stack, boolean action_type)
 	{
-	    super(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), entity, level);
+	    super(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), entity, level);
 	    summoning_bell = stack;
 	    this.action = action_type;
 	}
 	
 	public SummoningBellProjectile(Level level, double x, double y, double z)
 	{
-	   super(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), x, y, z, level);
+	   super(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), x, y, z, level);
 	}
 	
 	protected Item getDefaultItem()
@@ -118,4 +120,18 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 		
 		this.remove(RemovalReason.KILLED);
     }
+	
+	@Override
+	public void tick()
+	{
+		super.tick();
+		if(this.level.isClientSide())
+		{
+			Vec3 vec3d = this.getDeltaMovement();
+	        double d0 = this.getX() + vec3d.x;
+	        double d1 = this.getY() + vec3d.y;
+	        double d2 = this.getZ() + vec3d.z;
+	        this.level.addParticle(ParticleTypes.NOTE, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, vec3d.x, vec3d.y, vec3d.z);
+		}
+	}
 }

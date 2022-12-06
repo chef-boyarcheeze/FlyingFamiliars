@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" MH",
+		"MSM",
+		"DM "
+	],
+	"key": {
+		"H": {
+			"item": "minecraft:heart_of_the_sea"
+		},
+		"M": {
+			"item": "minecraft:phantom_membrane"
+		},
+		"S": {
+			"item": "minecraft:stick"
+		},
+		"D": {
+			"item": "minecraft:diamond"
+		}
+	},
+	"result": {
+		"item": "flyingfamiliars:soul_wand"
+	}
+}

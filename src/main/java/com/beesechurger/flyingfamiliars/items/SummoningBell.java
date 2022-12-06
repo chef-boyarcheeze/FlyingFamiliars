@@ -137,4 +137,20 @@ public class SummoningBell extends Item
 			}
 		}
     }
+    
+    public ListTag getListTag(ItemStack stack)
+    {
+    	CompoundTag compound = stack.getTag();
+    	ListTag list = new ListTag();
+    	
+    	if(compound != null) list = compound.getList("entity", 10);
+    	
+    	return list;
+    }
+    
+    @Override
+    public boolean isFoil(ItemStack stack)
+    {
+    	return getListTag(stack).size() == 3;
+    }
 }

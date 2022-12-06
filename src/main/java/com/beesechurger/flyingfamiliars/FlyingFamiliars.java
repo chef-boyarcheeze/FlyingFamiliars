@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars;
 
-import com.beesechurger.flyingfamiliars.entity.ModEntityTypes;
+import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.init.FFItems;
@@ -37,7 +37,7 @@ public class FlyingFamiliars {
 	{
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FFItems.ITEM_REG.register(bus);
-		ModEntityTypes.register(bus);
+		FFEntityTypes.register(bus);
 		
 		bus.addListener(this::clientSetup);
 		
@@ -48,9 +48,9 @@ public class FlyingFamiliars {
 	
 	private void clientSetup(final FMLClientSetupEvent event)
 	{
-		EntityRenderers.register(ModEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
-		EntityRenderers.register(ModEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
-		EntityRenderers.register(ModEntityTypes.SUMMONING_BELL_PROJECTILE.get(), ThrownItemRenderer::new);
+		EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
+		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
+		EntityRenderers.register(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), ThrownItemRenderer::new);
 		
 		FFKeys.init();
 	}
