@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -40,12 +41,13 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	
 	public SummoningBellProjectile(Level level, double x, double y, double z)
 	{
-	   super(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), x, y, z, level);
+	    super(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), x, y, z, level);
 	}
 	
 	protected Item getDefaultItem()
 	{
-	   return FFItems.MUSIC_NOTE_1.get();
+	    //return FFItems.MUSIC_NOTE_1.get();
+	    return Items.AIR;
 	}
 	
 	@Override

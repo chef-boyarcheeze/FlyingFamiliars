@@ -18,7 +18,7 @@
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
 	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
 	
-	"tooltip.flyingfamiliars.soul_wand.tooltip.left_shift": "Press \u00A7eSHIFT\u00A7r for collected soul",
+	"tooltip.flyingfamiliars.soul_wand.tooltip": "Use this wand to transmute weakened creatures",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
 	"key.flyingfamiliars.descend": "Descend"

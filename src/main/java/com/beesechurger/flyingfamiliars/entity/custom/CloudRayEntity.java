@@ -402,15 +402,15 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final float FLIGHT_THRESHOLD = 0.1f;
-	public static final float MAX_HEALTH = 10.00f;
-	public static final float FOLLOW_RANGE = 32;
+	public static final float MAX_HEALTH = 50.00f;
+	public static final float FOLLOW_RANGE = 16;
     public static final float FOLLOW_RANGE_FLYING = FOLLOW_RANGE * 2;
-    public static final float FLYING_SPEED = 0.7f;
+    public static final float FLYING_SPEED = 0.6f;
     public static final float MOVEMENT_SPEED = 0.3f;
     public static final float ATTACK_DAMAGE = 3.0f;
     public static final float ATTACK_SPEED = 2.0f;
     
-    private static final float MAX_POS_SPEED = 1.0f;
+    private static final float MAX_POS_SPEED = 0.5f;
 	private static final float MAX_POS_OFFSET = 5.0f;
 	private static final float DIVIDE_OFFSET = 10;
     private float offsetUp = 0;
@@ -446,7 +446,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		//this.goalSelector.addGoal(1, new MeleeAttackGoal((PathfinderMob) this.getTarget(), ATTACK_DAMAGE, false));
 		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1, 16, 8, true));
+		this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1, FOLLOW_RANGE, 8, true));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.00));
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));

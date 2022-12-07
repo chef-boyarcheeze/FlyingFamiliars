@@ -17,9 +17,9 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity> {
 
-	private static final float MAX_PITCH_SPEED = 1;
+	private static final float MAX_PITCH_SPEED = 0.5f;
 	private static final float MAX_PITCH_ROT = 30;
-	private static final float MAX_YAW_SPEED = 1;
+	private static final float MAX_YAW_SPEED = 0.5f;
 	private static final float MAX_YAW_ROT = 30;
 	
 	private float pitchUp = 0;

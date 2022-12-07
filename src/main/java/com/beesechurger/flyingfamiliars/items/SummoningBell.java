@@ -22,6 +22,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
@@ -48,7 +49,7 @@ public class SummoningBell extends Item
 	    	else ding = new SummoningBellProjectile(level, player, stack, true);
 	    	
 	       
-	        int note_type = (int) Math.floor(Math.random()*3);
+	        /*int note_type = (int) Math.floor(Math.random()*3);
 	        switch(note_type)
 	        {
 	       		case 0:
@@ -60,7 +61,9 @@ public class SummoningBell extends Item
 	       		case 2:
 	       			ding.setItem(new ItemStack(FFItems.MUSIC_NOTE_3.get()));
 	       			break;
-	        }
+	        }*/
+	        
+	        ding.setItem(new ItemStack(Items.AIR));
 	       
 	        ding.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
 	        level.addFreshEntity(ding);
