@@ -10,6 +10,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -56,356 +58,15 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class CloudRayEntity extends TamableAnimal implements IAnimatable
 {
-// Member variables and constructor/attributes:
-	
-	/*private AnimationFactory factory = new AnimationFactory(this);
-	private static final EntityDataAccessor<Boolean> SITTING = 
-			SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
-
-	public CloudRayEntity(EntityType<? extends TamableAnimal> p_27557_, Level p_27558_)
-	{
-		super(p_27557_, p_27558_);
-		this.setTame(false);
-		this.moveControl = new FlyingMoveControl(this, 2, true);
-		this.lookControl = new LookControl(this);
-	}
-	
-	public static AttributeSupplier setAttributes()
-	{
-		return TamableAnimal.createMobAttributes()
-				.add(Attributes.MAX_HEALTH, 10.00)
-				.add(Attributes.ATTACK_DAMAGE, 3.0f)
-				.add(Attributes.ATTACK_SPEED, 2.0f)
-				.add(Attributes.FLYING_SPEED, 2.0f)
-				.add(Attributes.MOVEMENT_SPEED, 0.3f).build();
-	}
-
-// AI-controlling methods:
-	
-	protected void registerGoals()
-	{
-		this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1, 16, 8, true));
-		this.goalSelector.addGoal(2, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.00));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(7, (new HurtByTargetGoal(this)).setAlertOthers());
-	}
-
-	@Override
-	public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_)
-	{
-		return null;
-	}
-	
-// Sound-controlling methods:
-	
-	protected void playStepSound(BlockPos pos, BlockState blockIn)
-	{
-	}
-	
-	protected SoundEvent getAmbientSound()
-	{
-		return SoundEvents.CONDUIT_AMBIENT;
-	}
-	
-	protected SoundEvent getHurtSound()
-	{
-		return SoundEvents.CONDUIT_ACTIVATE;
-	}
-	
-	protected SoundEvent getDeathSound()
-	{
-		return SoundEvents.CONDUIT_DEACTIVATE;
-	}
-	
-	protected float getSoundVolume()
-	{
-		return 0.3f;
-	}
-	
-// General boolean values:
-	
-    @Override
-    public boolean rideableUnderWater() {
-        return true;
-    }
-
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
-
-	public boolean isSitting()
-	{
-		return this.entityData.get(SITTING);
-	}
-	
-	public boolean canBeLeashed(Player player)
-	{
-		return false;
-	}
-	
-    @Override
-    public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
-    {
-        return false;
-    }
-
-    @Override
-    protected void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_)
-    {}
-	
-// Entity controls: 
-	
-	@Override
-	public InteractionResult mobInteract(Player player, InteractionHand hand)
-	{
-		// Item held by player:
-		ItemStack itemstack = player.getItemInHand(hand);
-		Item item = itemstack.getItem();
-		
-		// Item used to tame:
-		Item TAME_ITEM = Items.AMETHYST_SHARD;
-		
-		if(item == TAME_ITEM && !isTame())
-		{
-			if(this.level.isClientSide)
-			{
-				return InteractionResult.CONSUME;
-			}
-			else
-			{
-				if(!player.getAbilities().instabuild)
-				{
-					itemstack.shrink(1);
-				}
-				
-				if(!ForgeEventFactory.onAnimalTame(this, player))
-				{
-					if(!this.level.isClientSide)
-					{
-						super.tame(player);
-						this.navigation.recomputePath();
-						this.setTarget(null);
-						this.level.broadcastEntityEvent(this, (byte)7);
-						setSitting(true);
-					}
-				}
-				
-				return InteractionResult.SUCCESS;
-			}
-		}
-		
-		if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND)
-		{
-			if(player.isSecondaryUseActive())
-			{
-				setSitting(!isSitting());
-				return InteractionResult.SUCCESS;
-			}
-			else
-			{
-				this.mountCloudRay(player);
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
-			}
-		}
-			
-		return super.mobInteract(player, hand);
-	}
-	
-	private void mountCloudRay(Player player)
-	{
-		if(!this.level.isClientSide)
-		{
-			player.setYRot(this.getYRot());
-			player.setXRot(this.getXRot());
-			player.startRiding(player);
-		}
-	}
-	
-	@Override
-	public void positionRider(Entity rider)
-	{
-		if(this.hasPassenger(rider))
-		{
-			double verticalOffset = this.getPassengersRidingOffset() + rider.getMyRidingOffset();
-			rider.setPos(this.getX(), this.getY() + verticalOffset, this.getZ());
-		}
-	}
-	
-    @Override
-    public void travel(Vec3 travelVector)
-    {
-        if (this.isAlive())
-        {
-            if (this.isVehicle() && this.canBeControlledByRider())
-            {
-                LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
-                this.setYRot(Mth.rotLerp(0.05F, this.getYRot(), livingentity.getYRot()));
-                this.yRotO = this.getYRot();
-                this.setXRot(livingentity.getXRot() * 0.5F);
-                this.setRot(this.getYRot(), this.getXRot());
-                this.yBodyRot = this.getYRot();
-                this.yHeadRot = this.yBodyRot;
-                float forwardMovement = livingentity.zza;
-                
-                if (forwardMovement <= 0.0F)
-                {
-                    forwardMovement *= 0.25F;
-                }
-
-                float verticalMovement = 0;
-
-                if (Mth.abs(livingentity.getXRot()) > 7.0F)
-                {
-                    verticalMovement = Mth.rotLerp(0.01F, this.getXRot(), livingentity.getXRot()) * -forwardMovement/50;
-                }
-
-                this.flyingSpeed = this.getSpeed() * 0.1F;
-                
-                if (this.isControlledByLocalInstance())
-                {
-                    this.setSpeed((float)this.getAttributeValue(Attributes.FLYING_SPEED));
-
-                    Vec3 proposedMovement = new Vec3(0, verticalMovement, forwardMovement);
-
-                    if (this.isInLava())
-                    {
-                        this.moveRelative(0.02F, proposedMovement);
-                        this.move(MoverType.SELF, this.getDeltaMovement());
-                        this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
-                    }
-                    else
-                    {
-                        BlockPos ground = new BlockPos(this.getX(), this.getY() - 1.0D, this.getZ());
-                        float f = 0.91F;
-                        
-                        if (this.onGround)
-                        {
-                            f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
-                        }
-
-                        float f1 = 0.16277137F / (f * f * f);
-
-                        this.moveRelative(this.onGround ? 0.1F * f1 : 0.1F, proposedMovement);
-                        this.move(MoverType.SELF, this.getDeltaMovement());
-                        this.setDeltaMovement(this.getDeltaMovement().scale(f));
-                    }
-                }
-                else if (livingentity instanceof Player)
-                {
-                    this.setDeltaMovement(Vec3.ZERO);
-                }
-
-                this.calculateEntityAnimation(this, false);
-                this.tryCheckInsideBlocks();
-            }
-            else
-            {
-                this.flyingSpeed = 0.02F;
-
-                if (this.isInLava())
-                {
-                    this.moveRelative(0.02F, travelVector);
-                    this.move(MoverType.SELF, this.getDeltaMovement());
-                    this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
-                }
-                else
-                {
-                    BlockPos ground = new BlockPos(this.getX(), this.getY() - 1.0D, this.getZ());
-                    float f = 0.91F;
-                    
-                    if(this.onGround)
-                    {
-                        f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
-                    }
-
-                    float f1 = 0.16277137F / (f * f * f);
-
-                    this.moveRelative(this.onGround ? 0.1F * f1 : 0.02F, travelVector);
-                    this.move(MoverType.SELF, this.getDeltaMovement());
-                    this.setDeltaMovement(this.getDeltaMovement().scale(f));
-                }
-
-                this.calculateEntityAnimation(this, false);
-            }
-        }
-    }
-	
-// Controls utilities methods:
-	
-	public void setSitting(boolean sitting)
-	{
-		this.entityData.set(SITTING, sitting);
-		this.setOrderedToSit(sitting);
-	}
-	
-	@Override
-	public Team getTeam()
-	{
-		return super.getTeam();
-	}
-	
-    @Override
-    public boolean canBeControlledByRider() {
-        return this.getControllingPassenger() instanceof LivingEntity;
-    }
-    
-    @Nullable
-    @Override
-    public Entity getControllingPassenger() {
-        return this.getFirstPassenger();
-    }
-	
-	@Override
-	public void setTame(boolean tamed)
-	{
-		super.setTame(tamed);
-		if (tamed) 
-		{
-			getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.00);
-			getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(5.00);
-		}
-		else
-		{
-			getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.00);
-			getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(5.00);
-		}
-	}
-	
-// Save data preserving methods:
-	
-	@Override
-	public void readAdditionalSaveData(CompoundTag tag)
-	{
-		super.readAdditionalSaveData(tag);
-		setSitting(tag.getBoolean("isSitting"));
-	}
-	
-	@Override
-	public void addAdditionalSaveData(CompoundTag tag)
-	{
-		super.addAdditionalSaveData(tag);
-		tag.putBoolean("isSitting", this.isSitting());
-	}
-	
-	@Override
-	protected void defineSynchedData() 
-	{
-		super.defineSynchedData();
-		this.entityData.define(SITTING, false);
-	}*/
-	
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> GROUNDED = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 	
 	public static final float FLIGHT_THRESHOLD = 0.1f;
 	public static final float MAX_HEALTH = 50.00f;
 	public static final float FOLLOW_RANGE = 16;
     public static final float FOLLOW_RANGE_FLYING = FOLLOW_RANGE * 2;
-    public static final float FLYING_SPEED = 0.6f;
+    public static final float FLYING_SPEED = 0.5f;
     public static final float MOVEMENT_SPEED = 0.3f;
     public static final float ATTACK_DAMAGE = 3.0f;
     public static final float ATTACK_SPEED = 2.0f;
@@ -457,34 +118,75 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	
 	private <E extends IAnimatable> PlayState predicateGeneral(AnimationEvent<E> event)
 	{
-        if(this.isFlying())
+        if(this.isFlying() || !this.isOnGround())
         {
-        	event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying"));
+        	event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.ungrounded").addAnimation("animation.cloud_ray.flying"));
+        	setGrounded(false);
 			return PlayState.CONTINUE;
         }
         else
         {
-        	if(!event.isMoving())
+        	if(this.isSitting())
         	{
-        		if(this.isSitting() && !this.hasExactlyOnePlayerPassenger())
+        		if(!this.hasExactlyOnePlayerPassenger())
         		{
-        			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.seated_long"));
+        			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.seated").addAnimation("animation.cloud_ray.seated_long"));
     				return PlayState.CONTINUE;
         		}
-
-        		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
-				return PlayState.CONTINUE;
+        		else
+        		{
+        			if(!event.isMoving())
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
+        				return PlayState.CONTINUE;
+        			}
+        			else
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.walking"));
+        				return PlayState.CONTINUE;
+        			}
+        		}
         	}
         	else
         	{
-        		if(this.isSitting() && !this.hasExactlyOnePlayerPassenger())
+        		if(!this.hasExactlyOnePlayerPassenger())
         		{
-        			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.seated_long"));
-    				return PlayState.CONTINUE;
+        			if(event.isMoving() && this.isOnGround())
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.walking"));
+        				setGrounded(true);
+        				return PlayState.CONTINUE;
+        			}
+        			else if(this.isGrounded())
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
+        				return PlayState.CONTINUE;
+        			}
+        			else
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded").addAnimation("animation.cloud_ray.grounded_long"));
+        				return PlayState.CONTINUE;
+        			}
         		}
-        		
-        		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.walking"));
-				return PlayState.CONTINUE;
+        		else
+        		{
+        			if(event.isMoving() && this.isOnGround())
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.walking"));
+        				setGrounded(true);
+        				return PlayState.CONTINUE;
+        			}
+        			else if(this.isGrounded())
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
+        				return PlayState.CONTINUE;
+        			}
+        			else
+        			{
+        				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded").addAnimation("animation.cloud_ray.grounded_long"));
+        				return PlayState.CONTINUE;
+        			}
+        		}
         	}
         }
     }
@@ -530,6 +232,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		super.defineSynchedData();
 		this.entityData.define(SITTING, false);
 		this.entityData.define(FLYING, false);
+		this.entityData.define(GROUNDED, true);
 	}
 	
 // Entity booleans:
@@ -552,6 +255,11 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
  	public boolean isFlying()
  	{
  		return entityData.get(FLYING);
+ 	}
+ 	
+ 	public boolean isGrounded()
+ 	{
+ 		return entityData.get(GROUNDED);
  	}
  	
 	public boolean canBeLeashed(Player player)
@@ -586,6 +294,33 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
         return i >= height;
     }
     
+ // Sound-controlling methods:
+	
+ 	protected void playStepSound(BlockPos pos, BlockState blockIn)
+ 	{
+ 		
+ 	}
+ 	
+ 	protected SoundEvent getAmbientSound()
+ 	{
+ 		return SoundEvents.AXOLOTL_IDLE_AIR;
+ 	}
+ 	
+ 	protected SoundEvent getHurtSound()
+ 	{
+ 		return SoundEvents.AXOLOTL_HURT;
+ 	}
+ 	
+ 	protected SoundEvent getDeathSound()
+ 	{
+ 		return SoundEvents.AXOLOTL_DEATH;
+ 	}
+ 	
+ 	protected float getSoundVolume()
+ 	{
+ 		return 0.3f;
+ 	}
+    
 // Control utilities:
 	
  	public void setSitting(boolean sitting)
@@ -598,6 +333,11 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
     {
         this.entityData.set(FLYING, flying);
     }
+ 	
+ 	public void setGrounded(boolean grounded)
+ 	{
+ 		this.entityData.set(GROUNDED, grounded);
+ 	}
  	
  	@Override
  	public Team getTeam()
@@ -718,7 +458,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
             // rotate head to match driver
             float yaw = driver.yHeadRot;
             if (forwardMove > 0) // rotate in the direction of the drivers controls
-                yaw += (float) Mth.atan2(driver.zza, driver.xxa) * (180f / (float) Math.PI) - 90;
+                yaw += (float) (Mth.atan2(driver.zza, driver.xxa) * (180f / (float) Math.PI) - 90);
             yHeadRot = yaw;
             
             // rotate body towards the head

@@ -30,6 +30,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class SoulWand extends Item
 {
@@ -107,6 +108,10 @@ public class SoulWand extends Item
         	{
         		entity = FFEntityTypes.CLOUD_RAY.get().create(level);
         	}
+        	else if(spawnBlock == Blocks.PODZOL)
+        	{
+        		entity = PASSIVE_JUNGLE[(int) Math.floor(Math.random()*4)].create(level);
+        	}
         	else
         	{
         		entity = PASSIVE_STANDARD[(int) Math.floor(Math.random()*4)].create(level);
@@ -118,6 +123,7 @@ public class SoulWand extends Item
 			stack.setTag(null);
 			player.swing(hand);
 			player.setItemInHand(hand, stack);
+			if(!player.getAbilities().instabuild) player.giveExperienceLevels(-15);
 			
 			return InteractionResult.SUCCESS;
 		}
