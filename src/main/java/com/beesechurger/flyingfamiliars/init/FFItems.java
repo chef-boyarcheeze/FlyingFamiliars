@@ -2,8 +2,8 @@ package com.beesechurger.flyingfamiliars.init;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
+import com.beesechurger.flyingfamiliars.items.SpiritCrystal;
 import com.beesechurger.flyingfamiliars.items.SoulWand;
-import com.beesechurger.flyingfamiliars.items.SummoningBell;
 import com.google.common.base.Supplier;
 
 import net.minecraft.world.item.Item;
@@ -15,17 +15,13 @@ import net.minecraftforge.registries.RegistryObject;
 public class FFItems {
 	public static final DeferredRegister<Item> ITEM_REG = DeferredRegister.create(ForgeRegistries.ITEMS, FlyingFamiliars.MOD_ID);
 	
-	// Creative mode tab item (same as the phoenix feather):
+	// Creative tab icon and other items solely for effects:
 	public static final RegistryObject<Item> CREATIVE_TAB_ICON = register("tab_icon", () -> new Item(new Item.Properties()));
+	public static final RegistryObject<Item> SOUL_WAND_PROJECTILE = register("soul_wand_projectile", () -> new Item(new Item.Properties()));
 	
-	// Music note items (for summoning bell projectile, based on vanilla minecraft notes):
-	public static final RegistryObject<Item> MUSIC_NOTE_1 = register("music_note_1", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> MUSIC_NOTE_2 = register("music_note_2", () -> new Item(new Item.Properties()));
-	public static final RegistryObject<Item> MUSIC_NOTE_3 = register("music_note_3", () -> new Item(new Item.Properties()));
-	
-	// Tools/Utility items:
-	public static final RegistryObject<Item> SUMMONING_BELL = register("summoning_bell", () -> new SummoningBell(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
+	// Utility tools:
 	public static final RegistryObject<Item> SOUL_WAND = register("soul_wand", () -> new SoulWand(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
+	public static final RegistryObject<Item> SPIRIT_CRYSTAL = register("spirit_crystal", () -> new SpiritCrystal(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(16)));
 	
 	// General items:
 	public static final RegistryObject<Item> PHOENIX_FEATHER = register("phoenix_feather", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB)));

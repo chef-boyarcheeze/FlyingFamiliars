@@ -5,6 +5,7 @@ import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.init.FFItems;
 import com.beesechurger.flyingfamiliars.init.FFKeys;
+import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -38,6 +39,7 @@ public class FlyingFamiliars {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FFItems.ITEM_REG.register(bus);
 		FFEntityTypes.register(bus);
+		FFSounds.register(bus);
 		
 		bus.addListener(this::clientSetup);
 		
@@ -50,7 +52,7 @@ public class FlyingFamiliars {
 	{
 		EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
-		EntityRenderers.register(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), ThrownItemRenderer::new);
+		EntityRenderers.register(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), ThrownItemRenderer::new);
 		
 		FFKeys.init();
 	}

@@ -9,17 +9,25 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class CloudRayModel extends AnimatedGeoModel<CloudRayEntity> {
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(CloudRayEntity animatable) {
+	public ResourceLocation getAnimationFileLocation(CloudRayEntity animatable)
+	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cloud_ray.animation.json");
 	}
 
 	@Override
-	public ResourceLocation getModelLocation(CloudRayEntity object) {
+	public ResourceLocation getModelLocation(CloudRayEntity animatable)
+	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cloud_ray.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CloudRayEntity object) {
+	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
+	{
+		if(animatable.isInverted())
+		{
+			return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_inverted.png");
+		}
+		
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray.png");
 	}
 }

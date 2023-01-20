@@ -1,0 +1,64 @@
+{
+	"cloud_ray_idle1": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle1",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_idle1"
+		]
+	},
+	"cloud_ray_idle2": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle2",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_idle2"
+		]
+	},
+	"cloud_ray_idle3": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle3",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_idle3"
+		]
+	},
+	"cloud_ray_step1": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_step1",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_step1"
+		]
+	},
+	"cloud_ray_step2": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_step2",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_step2"
+		]
+	},
+	"cloud_ray_step3": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_step3",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_step3"
+		]
+	},
+	"cloud_ray_hurt": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_hurt",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_hurt"
+		]
+	},
+	"cloud_ray_death": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_death",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_death"
+		]
+	},
+	"soul_wand_throw": {
+		"subtitle": "sounds.flyingfamiliars.soul_wand_throw",
+		"sounds": [
+			"flyingfamiliars:soul_wand_throw"
+		]
+	},
+	"spirit_crystal_throw": {
+		"subtitle": "sounds.flyingfamiliars.spirit_crystal_throw",
+		"sounds": [
+			"flyingfamiliars:spirit_crystal_throw"
+		]
+	}
+}
+		
+	

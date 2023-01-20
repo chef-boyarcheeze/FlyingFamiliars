@@ -16,52 +16,58 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class SummoningBellProjectile extends ThrowableItemProjectile
+public class SoulWandProjectile extends ThrowableItemProjectile
 {
-	private ItemStack summoning_bell;
+	private ItemStack soul_wand;
 	private boolean action = false;
 	
-	public SummoningBellProjectile(EntityType<? extends SummoningBellProjectile> proj, Level level)
+	public SoulWandProjectile(EntityType<? extends SoulWandProjectile> proj, Level level)
 	{
 		super(proj, level);
 	}
 	
-	public SummoningBellProjectile(Level level, LivingEntity entity, ItemStack stack, boolean action_type)
+	public SoulWandProjectile(Level level, LivingEntity entity, ItemStack stack, boolean action_type)
 	{
-	    super(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), entity, level);
-	    summoning_bell = stack;
+		super(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), entity, level);
+	    soul_wand = stack;
 	    this.action = action_type;
 	}
 	
-	public SummoningBellProjectile(Level level, double x, double y, double z)
+	public SoulWandProjectile(Level level, double x, double y, double z)
 	{
-	    super(FFEntityTypes.SUMMONING_BELL_PROJECTILE.get(), x, y, z, level);
+	    super(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), x, y, z, level);
 	}
 	
 	protected Item getDefaultItem()
 	{
-	    //return FFItems.MUSIC_NOTE_1.get();
-	    return Items.AIR;
+	    return FFItems.SOUL_WAND_PROJECTILE.get();
 	}
 	
 	@Override
     protected void onHitBlock(BlockHitResult result)
     {
-		// If summoning bell is set to capture/client calling:
-		if(!this.action || level.isClientSide()) return;
+		if(this.action && !level.isClientSide())
+		{
+			if(release(result)) level.broadcastEntityEvent(this, (byte) 4);
+		}
 		
-		// Else, summoning bell is set to release:
-        BlockPos pos = result.getBlockPos();
-        Direction facing = result.getDirection();
+		this.remove(RemovalReason.KILLED);
+    }
+	
+	private boolean release(BlockHitResult result)
+	{
+		BlockPos pos = new BlockPos(result.getLocation());
+        Direction facing = this.getDirection();
         Level worldIn = this.level;
 
-		CompoundTag compound = summoning_bell.getTag();
+		CompoundTag compound = soul_wand.getTag();
 		if (compound != null)
 		{
 			ListTag tagList = compound.getList("entity", 10);
@@ -81,24 +87,31 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 	                
 	                entity.absMoveTo(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, 0, 0);
 					worldIn.addFreshEntity(entity);
+					
+					return true;
 	            }
 			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+    protected void onHitEntity(EntityHitResult result)
+	{
+		if(!this.action && !level.isClientSide())
+		{
+			if(capture(result.getEntity())) level.broadcastEntityEvent(this, (byte) 3);
 		}
 		
 		this.remove(RemovalReason.KILLED);
     }
 	
-	@Override
-    protected void onHitEntity(EntityHitResult result)
+	private boolean capture(Entity target)
 	{		
-		// If summoning bell is set to release/client calling:
-		if (this.action || level.isClientSide()) return;
-		
-		Entity target = result.getEntity();
-			
-		if (!(target instanceof Player || !target.canChangeDimensions() || !target.isAlive()) && target instanceof Mob)
+		if (!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level.isClientSide())
 		{
-			CompoundTag compound = summoning_bell.getTag();
+			CompoundTag compound = soul_wand.getTag();
 			if (compound == null)
 			{
 				compound = new CompoundTag();
@@ -115,25 +128,51 @@ public class SummoningBellProjectile extends ThrowableItemProjectile
 				
 				target.remove(RemovalReason.KILLED);
 			}
+			else
+			{
+				return false;
+			}
 			
 			compound.put("entity", tagList);
-			summoning_bell.setTag(compound);
+			soul_wand.setTag(compound);
+			
+			return true;
 		}
 		
-		this.remove(RemovalReason.KILLED);
-    }
+		return false;
+	}
 	
 	@Override
 	public void tick()
 	{
 		super.tick();
-		if(this.level.isClientSide())
+		if(level.isClientSide())
 		{
 			Vec3 vec3d = this.getDeltaMovement();
 	        double d0 = this.getX() + vec3d.x;
 	        double d1 = this.getY() + vec3d.y;
 	        double d2 = this.getZ() + vec3d.z;
-	        this.level.addParticle(ParticleTypes.NOTE, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, vec3d.x, vec3d.y, vec3d.z);
+	        this.level.addParticle(ParticleTypes.BUBBLE_POP, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
 		}
 	}
+	
+	@OnlyIn(Dist.CLIENT)
+	@Override
+    public void handleEntityEvent(byte id)
+	{
+        if (id == 3) 
+        {
+            for (int i = 0; i < 360; i++)
+            {
+                if(i % 5 == 0) level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 3) * Math.sin(i * 3)), 0.1 * Math.sin(i));
+            }
+        }
+        else if (id == 4) 
+        {
+            for (int i = 0; i < 360; i++)
+            {
+                if(i % 5 == 0) level.addParticle(ParticleTypes.SOUL, getX(), getY(), getZ(), 0.2 * Math.cos(i), 0.1, 0.2 * Math.sin(i));
+            }
+        }
+    }
 }

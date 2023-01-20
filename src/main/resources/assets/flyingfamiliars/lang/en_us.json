@@ -2,24 +2,43 @@
 	"itemGroup.flyingfamiliars": "Flying Familiars",
 	"item.flyingfamiliars.tab_icon": "Flying Familiars",
 	
-	"item.flyingfamiliars.summoning_bell": "Summoning Bell",
 	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
+	
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
+	"item.flyingfamiliars.spirit_crystal": "Spirit Crystal",
 	
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	
-	"tooltip.flyingfamiliars.summoning_bell.left_shift": "Press \u00A7eSHIFT\u00A7r for stored entities",
-	"tooltip.flyingfamiliars.summoning_bell.tooltip.empty": "Empty",
-	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_0": "No stored entities",
-	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_1": "1 stored entity",
-	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_2": "2 stored entities",
-	"tooltip.flyingfamiliars.summoning_bell.tooltip.stored_3": "3 stored entities",
-	
-	"tooltip.flyingfamiliars.soul_wand.tooltip": "Use this wand to transmute weakened creatures",
+	"tooltip.flyingfamiliars.soul_wand.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.empty": "Empty",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_1": "1 stored mob",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_2": "2 stored mobs",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_3": "3 stored mobs",
+	"tooltip.flyingfamiliars.spirit_crystal.tooltip": "Spawns a farm mob",
+	"tooltip.flyingfamiliars.warm_spirit_crystal.tooltip": "Spawns a jungle animal",
+	"tooltip.flyingfamiliars.watery_spirit_crystal.tooltip": "Spawns a water animal",
+	"tooltip.flyingfamiliars.cold_spirit_crystal.tooltip": "Spawns a snowy animal",
+	"tooltip.flyingfamiliars.windy_spirit_crystal.tooltip": "Spawns a plains animal",
+	"tooltip.flyingfamiliars.dim_spirit_crystal.tooltip": "Spawns a cave animal",
+	"tooltip.flyingfamiliars.civilized_spirit_crystal.tooltip": "Spawns a village creature",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
-	"key.flyingfamiliars.descend": "Descend"
+	"key.flyingfamiliars.descend": "Descend",
+	
+	"message.flyingfamiliars.sitting": "Familiar set to stay",
+	"message.flyingfamiliars.standing": "Familiar set to follow",
+	
+	"sounds.flyingfamiliars.cloud_ray_idle1": "Cloud Ray drizzles",
+	"sounds.flyingfamiliars.cloud_ray_idle2": "Cloud Ray whistles",
+	"sounds.flyingfamiliars.cloud_ray_idle3": "Cloud Ray blows",
+	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
+	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
+	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
+	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
+	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
+	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used",
+	"sounds.flyingfamiliars.spirit_crystal_throw": "Spirit Crystal used"
 }

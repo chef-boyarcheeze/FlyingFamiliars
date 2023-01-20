@@ -15,7 +15,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '0.1'
+version = '0.3'
 group = 'com.beesechurger.flyingfamiliars'
 archivesBaseName = 'flyingfamiliars'
 
@@ -102,17 +102,16 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.80'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.40')
 }
 
-// Example for how to get properties into the manifest for reading at runtime.
 jar {
     manifest {
         attributes([
                 "Specification-Title"     : "flyingfamiliars",
                 "Specification-Vendor"    : "beesechurger",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "beesechurger",
