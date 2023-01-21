@@ -6,6 +6,12 @@
 	
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
 	"item.flyingfamiliars.spirit_crystal": "Spirit Crystal",
+	"item.flyingfamiliars.warm_spirit_crystal": "Warm Spirit Crystal",
+	"item.flyingfamiliars.watery_spirit_crystal": "Watery Spirit Crystal",
+	"item.flyingfamiliars.cold_spirit_crystal": "Cold Spirit Crystal",
+	"item.flyingfamiliars.grassy_spirit_crystal": "Grassy Spirit Crystal",
+	"item.flyingfamiliars.dim_spirit_crystal": "Dim Spirit Crystal",
+	"item.flyingfamiliars.civilized_spirit_crystal": "Civilized Spirit Crystal",
 	
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
@@ -18,10 +24,11 @@
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_2": "2 stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_3": "3 stored mobs",
 	"tooltip.flyingfamiliars.spirit_crystal.tooltip": "Spawns a farm mob",
+	"tooltip.flyingfamiliars.pasture_spirit_crystal.tooltip": "Spawns a farm mob",
 	"tooltip.flyingfamiliars.warm_spirit_crystal.tooltip": "Spawns a jungle animal",
 	"tooltip.flyingfamiliars.watery_spirit_crystal.tooltip": "Spawns a water animal",
 	"tooltip.flyingfamiliars.cold_spirit_crystal.tooltip": "Spawns a snowy animal",
-	"tooltip.flyingfamiliars.windy_spirit_crystal.tooltip": "Spawns a plains animal",
+	"tooltip.flyingfamiliars.grassy_spirit_crystal.tooltip": "Spawns a plains animal",
 	"tooltip.flyingfamiliars.dim_spirit_crystal.tooltip": "Spawns a cave animal",
 	"tooltip.flyingfamiliars.civilized_spirit_crystal.tooltip": "Spawns a village creature",
 	

@@ -1,10 +1,9 @@
-package com.beesechurger.flyingfamiliars.items;
+package com.beesechurger.flyingfamiliars.items.SpiritCrystal;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.ChatFormatting;
@@ -25,9 +24,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-public class SpiritCrystal extends Item 
-{	
-	public SpiritCrystal(Properties properties)
+public class AbstractSpiritCrystal extends Item 
+{
+	public static EntityType<?>[] FARM = {EntityType.PIG, EntityType.COW, EntityType.SHEEP, EntityType.CHICKEN};
+	
+	public AbstractSpiritCrystal(Properties properties)
 	{
 		super(properties);
 	}
@@ -73,6 +74,6 @@ public class SpiritCrystal extends Item
     
     public EntityType<?> getEntityType()
     {
-    	return FFEntityTypes.getRandomEntityType();
+    	return null;
     }
 }

@@ -15,14 +15,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class FFEntityTypes 
 {
-	public static EntityType<?>[] FARM = {EntityType.PIG, EntityType.COW, EntityType.SHEEP, EntityType.CHICKEN};
-	public static EntityType<?>[] WARM = {EntityType.PANDA, EntityType.PARROT, EntityType.OCELOT};
-	public static EntityType<?>[] WATERY = {EntityType.TURTLE, EntityType.DOLPHIN, EntityType.COD, EntityType.SALMON, EntityType.TROPICAL_FISH, EntityType.PUFFERFISH, EntityType.SQUID};
-	public static EntityType<?>[] COLD = {EntityType.WOLF, EntityType.FOX, EntityType.GOAT, EntityType.POLAR_BEAR};
-	public static EntityType<?>[] WINDY = {EntityType.HORSE, EntityType.DONKEY, EntityType.RABBIT, EntityType.LLAMA};
-	public static EntityType<?>[] DIM = {EntityType.BAT, EntityType.GLOW_SQUID, EntityType.AXOLOTL};
-	public static EntityType<?>[] CIVILIZED = {EntityType.VILLAGER, EntityType.CAT, EntityType.IRON_GOLEM};
-	
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, FlyingFamiliars.MOD_ID);
 
 	public static final RegistryObject<EntityType<PhoenixEntity>> PHOENIX = ENTITY_TYPES.register("phoenix", 
@@ -44,10 +36,5 @@ public class FFEntityTypes
 	public static void register(IEventBus eventbus)
 	{
 		ENTITY_TYPES.register(eventbus);
-	}
-	
-	public static EntityType<?> getRandomEntityType()
-	{
-		return EntityType.PIG;
 	}
 }
