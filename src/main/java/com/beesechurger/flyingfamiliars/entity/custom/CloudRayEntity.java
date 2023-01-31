@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.beesechurger.flyingfamiliars.init.FFKeys;
+import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.client.Minecraft;

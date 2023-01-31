@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.items;
+package com.beesechurger.flyingfamiliars.items.custom;
 
 import java.util.List;
 

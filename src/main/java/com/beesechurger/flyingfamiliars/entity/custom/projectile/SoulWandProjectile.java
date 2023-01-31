@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.custom.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.init.FFItems;
+import com.beesechurger.flyingfamiliars.items.FFItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

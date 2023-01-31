@@ -16,6 +16,8 @@
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	
+	"block.flyingfamiliars.crystal_ball": "Crystal Ball",
+	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	
 	"tooltip.flyingfamiliars.soul_wand.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",

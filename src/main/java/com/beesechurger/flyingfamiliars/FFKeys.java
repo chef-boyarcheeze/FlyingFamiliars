@@ -1,6 +1,5 @@
-package com.beesechurger.flyingfamiliars.init;
+package com.beesechurger.flyingfamiliars;
 
-import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.KeyMapping;

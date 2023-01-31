@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.items.SpiritCrystal;
+package com.beesechurger.flyingfamiliars.items.custom.spiritcrystal;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;

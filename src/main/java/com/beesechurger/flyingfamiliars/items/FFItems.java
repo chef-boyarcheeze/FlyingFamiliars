@@ -1,17 +1,17 @@
-package com.beesechurger.flyingfamiliars.init;
+package com.beesechurger.flyingfamiliars.items;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.items.SoulWand;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.CivilizedSpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.CloudRaySpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.ColdSpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.DimSpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.GrassySpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.PastureSpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.SpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.WarmSpiritCrystal;
-import com.beesechurger.flyingfamiliars.items.SpiritCrystal.WaterySpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.CivilizedSpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.CloudRaySpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.ColdSpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.DimSpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.GrassySpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.PastureSpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.SpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.WarmSpiritCrystal;
+import com.beesechurger.flyingfamiliars.items.custom.spiritcrystal.WaterySpiritCrystal;
 import com.google.common.base.Supplier;
 
 import net.minecraft.world.item.Item;
@@ -20,7 +20,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class FFItems {
+public class FFItems 
+{
 	public static final DeferredRegister<Item> ITEM_REG = DeferredRegister.create(ForgeRegistries.ITEMS, FlyingFamiliars.MOD_ID);
 	
 	// Creative tab icon and other items solely for effects:

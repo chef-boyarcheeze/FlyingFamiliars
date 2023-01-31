@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.items.SpiritCrystal;
+package com.beesechurger.flyingfamiliars.items.custom.spiritcrystal;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 

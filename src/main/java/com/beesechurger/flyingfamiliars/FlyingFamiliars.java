@@ -1,12 +1,14 @@
 package com.beesechurger.flyingfamiliars;
 
+import com.beesechurger.flyingfamiliars.blocks.FFBlocks;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
-import com.beesechurger.flyingfamiliars.init.FFItems;
-import com.beesechurger.flyingfamiliars.init.FFKeys;
+import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.CreativeModeTab;
@@ -38,6 +40,7 @@ public class FlyingFamiliars {
 	{
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FFItems.ITEM_REG.register(bus);
+		FFBlocks.BLOCK_REG.register(bus);
 		FFEntityTypes.register(bus);
 		FFSounds.register(bus);
 		
@@ -53,6 +56,8 @@ public class FlyingFamiliars {
 		EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
 		EntityRenderers.register(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), ThrownItemRenderer::new);
+		
+		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
 		
 		FFKeys.init();
 	}

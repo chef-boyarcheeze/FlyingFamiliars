@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.entity.client;
 
+import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
-import com.beesechurger.flyingfamiliars.init.FFKeys;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
