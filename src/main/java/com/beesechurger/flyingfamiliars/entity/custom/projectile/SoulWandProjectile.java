@@ -64,7 +64,6 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	private boolean release(BlockHitResult result)
 	{
 		BlockPos pos = new BlockPos(result.getLocation());
-        Direction facing = this.getDirection();
         Level worldIn = this.level;
 
 		CompoundTag compound = soul_wand.getTag();
@@ -80,12 +79,11 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	            if (type != null)
 	            {
 	            	Entity entity;
-			        BlockPos blockPos = pos.relative(facing);
 	            	
 	                entity = type.create(worldIn);
 	                entity.load(entityNBT);
 	                
-	                entity.absMoveTo(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, 0, 0);
+	                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
 					worldIn.addFreshEntity(entity);
 					
 					return true;

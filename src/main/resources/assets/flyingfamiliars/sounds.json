@@ -53,10 +53,10 @@
 			"flyingfamiliars:soul_wand_throw"
 		]
 	},
-	"spirit_crystal_throw": {
-		"subtitle": "sounds.flyingfamiliars.spirit_crystal_throw",
+	"attuned_spark": {
+		"subtitle": "sounds.flyingfamiliars.attuned_spark",
 		"sounds": [
-			"flyingfamiliars:spirit_crystal_throw"
+			"flyingfamiliars:attuned_spark"
 		]
 	}
 }

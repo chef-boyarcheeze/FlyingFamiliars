@@ -4,35 +4,23 @@
 	
 	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
 	
+	"item.flyingfamiliars.attuned_spark": "Attuned Spark",
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
-	"item.flyingfamiliars.spirit_crystal": "Spirit Crystal",
-	"item.flyingfamiliars.warm_spirit_crystal": "Warm Spirit Crystal",
-	"item.flyingfamiliars.watery_spirit_crystal": "Watery Spirit Crystal",
-	"item.flyingfamiliars.cold_spirit_crystal": "Cold Spirit Crystal",
-	"item.flyingfamiliars.grassy_spirit_crystal": "Grassy Spirit Crystal",
-	"item.flyingfamiliars.dim_spirit_crystal": "Dim Spirit Crystal",
-	"item.flyingfamiliars.civilized_spirit_crystal": "Civilized Spirit Crystal",
+	"item.flyingfamiliars.spark": "Spark",
 	
-	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
+	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	
 	"block.flyingfamiliars.crystal_ball": "Crystal Ball",
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	
+	"tooltip.flyingfamiliars.attuned_spark.tooltip": "Spawns the attuned mob",
 	"tooltip.flyingfamiliars.soul_wand.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.empty": "Empty",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_1": "1 stored mob",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_2": "2 stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_3": "3 stored mobs",
-	"tooltip.flyingfamiliars.spirit_crystal.tooltip": "Spawns a farm mob",
-	"tooltip.flyingfamiliars.pasture_spirit_crystal.tooltip": "Spawns a farm mob",
-	"tooltip.flyingfamiliars.warm_spirit_crystal.tooltip": "Spawns a jungle animal",
-	"tooltip.flyingfamiliars.watery_spirit_crystal.tooltip": "Spawns a water animal",
-	"tooltip.flyingfamiliars.cold_spirit_crystal.tooltip": "Spawns a snowy animal",
-	"tooltip.flyingfamiliars.grassy_spirit_crystal.tooltip": "Spawns a plains animal",
-	"tooltip.flyingfamiliars.dim_spirit_crystal.tooltip": "Spawns a cave animal",
-	"tooltip.flyingfamiliars.civilized_spirit_crystal.tooltip": "Spawns a village creature",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
 	"key.flyingfamiliars.descend": "Descend",
@@ -40,14 +28,14 @@
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",
 	
+	"sounds.flyingfamiliars.attuned_spark": "Attuned Spark used",
+	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
+	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
 	"sounds.flyingfamiliars.cloud_ray_idle1": "Cloud Ray drizzles",
 	"sounds.flyingfamiliars.cloud_ray_idle2": "Cloud Ray whistles",
 	"sounds.flyingfamiliars.cloud_ray_idle3": "Cloud Ray blows",
 	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
-	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
-	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
-	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used",
-	"sounds.flyingfamiliars.spirit_crystal_throw": "Spirit Crystal used"
+	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used"
 }

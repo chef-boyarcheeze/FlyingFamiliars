@@ -25,7 +25,7 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
 	
 	public static final RegistryObject<SoundEvent> SOUL_WAND_THROW = registerSoundEvent("soul_wand_throw");
-	public static final RegistryObject<SoundEvent> SPIRIT_CRYSTAL_THROW = registerSoundEvent("spirit_crystal_throw");
+	public static final RegistryObject<SoundEvent> ATTUNED_SPARK = registerSoundEvent("attuned_spark");
 	
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name)
 	{
