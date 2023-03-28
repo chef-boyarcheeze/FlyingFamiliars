@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.blocks;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.blocks.custom.BrazierBlock;
 import com.beesechurger.flyingfamiliars.blocks.custom.CrystalBallBlock;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.google.common.base.Supplier;
@@ -21,6 +22,7 @@ public class FFBlocks
 	public static final DeferredRegister<Block> BLOCK_REG = DeferredRegister.create(ForgeRegistries.BLOCKS, FlyingFamiliars.MOD_ID);
 	
 	public static final RegistryObject<Block> CRYSTAL_BALL = registerBlock("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.of(Material.STONE).strength(9f).requiresCorrectToolForDrops()), FlyingFamiliars.FF_TAB);
+	public static final RegistryObject<Block> BRAZIER = registerBlock("brazier", () -> new BrazierBlock(BlockBehaviour.Properties.of(Material.METAL).strength(9f).requiresCorrectToolForDrops()), FlyingFamiliars.FF_TAB);
 	
 	private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab)
 	{
@@ -33,7 +35,6 @@ public class FFBlocks
 	{
 		return FFItems.ITEM_REG.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
 	}
-	
 	
 	public static void register(IEventBus bus)
 	{

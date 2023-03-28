@@ -53,10 +53,10 @@
 			"flyingfamiliars:soul_wand_throw"
 		]
 	},
-	"attuned_spark": {
-		"subtitle": "sounds.flyingfamiliars.attuned_spark",
+	"specter_mote": {
+		"subtitle": "sounds.flyingfamiliars.specter_mote",
 		"sounds": [
-			"flyingfamiliars:attuned_spark"
+			"flyingfamiliars:specter_mote"
 		]
 	}
 }

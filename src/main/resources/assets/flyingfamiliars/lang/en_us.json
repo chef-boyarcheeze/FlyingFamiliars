@@ -4,7 +4,7 @@
 	
 	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
 	
-	"item.flyingfamiliars.attuned_spark": "Attuned Spark",
+	"item.flyingfamiliars.specter_mote": "Specter Mote",
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
 	"item.flyingfamiliars.spark": "Spark",
 	
@@ -28,7 +28,6 @@
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",
 	
-	"sounds.flyingfamiliars.attuned_spark": "Attuned Spark used",
 	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
 	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
 	"sounds.flyingfamiliars.cloud_ray_idle1": "Cloud Ray drizzles",
@@ -37,5 +36,6 @@
 	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
-	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used"
+	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used",
+	"sounds.flyingfamiliars.specter_mote": "Spector Mote used"
 }

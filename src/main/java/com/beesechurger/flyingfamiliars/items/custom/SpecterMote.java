@@ -24,7 +24,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-public class AttunedSpark extends Item
+public class SpecterMote extends Item
 {
 	public static EntityType<?>[] FARM = {EntityType.PIG, EntityType.COW, EntityType.SHEEP, EntityType.CHICKEN};
 	public static EntityType<?>[] CIVILIZED = {EntityType.VILLAGER, EntityType.CAT, EntityType.IRON_GOLEM};
@@ -33,7 +33,7 @@ public class AttunedSpark extends Item
 	public static EntityType<?>[] WARM = {EntityType.PANDA, EntityType.PARROT, EntityType.OCELOT};
 	public static EntityType<?>[] WATERY = {EntityType.TURTLE, EntityType.DOLPHIN, EntityType.COD, EntityType.SALMON, EntityType.TROPICAL_FISH, EntityType.PUFFERFISH, EntityType.SQUID};
 	
-	public AttunedSpark(Properties properties)
+	public SpecterMote(Properties properties)
 	{
 		super(properties);
 	}
@@ -70,7 +70,7 @@ public class AttunedSpark extends Item
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-    	tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.spirit_crystal.tooltip").withStyle(ChatFormatting.GRAY));
+    	//tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.spirit_crystal.tooltip").withStyle(ChatFormatting.GRAY));
     }
     
     @Override

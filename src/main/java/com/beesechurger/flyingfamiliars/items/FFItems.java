@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.items;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.items.custom.AttunedSpark;
+import com.beesechurger.flyingfamiliars.items.custom.SpecterMote;
 import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 import com.google.common.base.Supplier;
 
@@ -23,7 +23,7 @@ public class FFItems
 	// Utility tools:
 	public static final RegistryObject<Item> SOUL_WAND = register("soul_wand", () -> new SoulWand(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
 	public static final RegistryObject<Item> SPARK = register("spark", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(16)));
-	public static final RegistryObject<Item> ATTUNED_SPARK = register("attuned_spark", () -> new AttunedSpark(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
+	public static final RegistryObject<Item> SPECTER_MOTE = register("specter_mote", () -> new SpecterMote(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
 	
 	// General items:
 	public static final RegistryObject<Item> PHOENIX_FEATHER = register("phoenix_feather", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB)));
