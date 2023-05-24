@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"GSG",
+		"WWW",
+		"DDD"
+	],
+	"key": {
+		"G": {
+			"item": "minecraft:gold_ingot"
+		},
+		"S": {
+			"item": "minecraft:soul_soil"
+		},
+		"W": {
+			"item": "minecraft:stick"
+		},
+		"D": {
+			"item": "minecraft:deepslate_bricks"
+		}
+	},
+	"result": {
+		"item": "flyingfamiliars:brazier"
+	}
+}

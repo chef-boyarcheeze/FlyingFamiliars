@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.blocks.FFBlocks;
+import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
@@ -41,6 +42,7 @@ public class FlyingFamiliars {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FFItems.ITEM_REG.register(bus);
 		FFBlocks.BLOCK_REG.register(bus);
+		FFBLockEntities.register(bus);
 		FFEntityTypes.register(bus);
 		FFSounds.register(bus);
 		
@@ -57,6 +59,7 @@ public class FlyingFamiliars {
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
 		EntityRenderers.register(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), ThrownItemRenderer::new);
 		
+		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
 		
 		FFKeys.init();

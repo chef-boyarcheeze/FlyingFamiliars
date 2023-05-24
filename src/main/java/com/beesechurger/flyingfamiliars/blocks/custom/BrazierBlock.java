@@ -1,50 +1,38 @@
 package com.beesechurger.flyingfamiliars.blocks.custom;
 
+import javax.annotation.Nullable;
+
+import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
+import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BrazierBlock extends Block
+public class BrazierBlock extends BaseEntityBlock
 {
-	public static IntegerProperty FILL_LEVEL = IntegerProperty.create("fill_level", 0, 2);
-	public static BooleanProperty LIT = BooleanProperty.create("lit");
-	//public static final FireProperty
-	private static final VoxelShape SHAPE = Shapes.join(Block.box(6, 1.5, 6, 10, 7.5, 10), Block.box(1, 11.25, 1, 15, 14, 15), BooleanOp.OR);
+	public static IntegerProperty ITEM = IntegerProperty.create("item", 0, 1);
+	private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 14, 15);
 	
 	public BrazierBlock(Properties properties)
 	{
 		super(properties);
-	}
-	
-	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
-	{
-		if(!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
-		{
-			// if FILL_LEVEL = 3 and player main hand item is flint and steel or fire
-		}
-		
-		return InteractionResult.SUCCESS;
-	}
-	
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
-	{
-		pBuilder.add(FILL_LEVEL);
-		pBuilder.add(LIT);
 	}
 	
 	@Override
@@ -53,19 +41,65 @@ public class BrazierBlock extends Block
 		return SHAPE;
 	}
 	
-	public boolean addFluidLevel()
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
 	{
-		return true;
+		//null;
 	}
 	
-	public boolean removeFluidLevel()
+	@Override
+	public RenderShape getRenderShape(BlockState state)
 	{
+		return RenderShape.MODEL;
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+	{
+		if(state.getBlock() != newState.getBlock())
+		{
+			BlockEntity entity = level.getBlockEntity(pos);
+			if(entity instanceof BrazierBlockEntity)
+			{
+				((BrazierBlockEntity) entity).drops();
+			}
+		}
+	}
+	
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+	{
+		if(!level.isClientSide())
+		{
+			BlockEntity entity = level.getBlockEntity(pos);
+			if(entity instanceof BrazierBlockEntity)
+			{
+				BrazierBlockEntity brazier = (BrazierBlockEntity) entity;
+				ItemStack stack = player.getItemInHand(hand);
+				// Do item add
+				//entity.
+				//NetworkHooks.openGui(((ServerPlayer) player), (BrazierBlockEntity) entity, pos);
+			}
+			else
+			{
+				throw new IllegalStateException("Flying Familiars Brazier container provider missing");
+			}
+		}
 		
-		return true;
+		return InteractionResult.sidedSuccess(level.isClientSide());
+	}
+
+	@Nullable
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+	{
+		return new BrazierBlockEntity(pos, state);
 	}
 	
-	public static boolean canLight(BlockState state)
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity)
 	{
-		return !state.getValue(LIT);
+		return createTickerHelper(blockEntity, FFBLockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierBlockEntity::tick);
 	}
 }

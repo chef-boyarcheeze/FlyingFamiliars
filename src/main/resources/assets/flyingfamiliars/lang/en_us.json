@@ -11,7 +11,9 @@
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	
+	"block.flyingfamiliars.brazier": "Brazier",
 	"block.flyingfamiliars.crystal_ball": "Crystal Ball",
+	"block.flyingfamiliars.effigy_core": "Effigy Core", 
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	
