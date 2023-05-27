@@ -23,9 +23,9 @@ public class FFBlocks
 {
 	public static final DeferredRegister<Block> BLOCK_REG = DeferredRegister.create(ForgeRegistries.BLOCKS, FlyingFamiliars.MOD_ID);
 	
-	public static final RegistryObject<Block> CRYSTAL_BALL = registerBlock("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.of(Material.STONE).strength(9f).requiresCorrectToolForDrops()), FlyingFamiliars.FF_TAB);
-	public static final RegistryObject<Block> BRAZIER = registerBlock("brazier", () -> new BrazierBlock(BlockBehaviour.Properties.of(Material.METAL).strength(9f).requiresCorrectToolForDrops().lightLevel((state) -> 15).sound(SoundType.METAL)), FlyingFamiliars.FF_TAB);
-	public static final RegistryObject<Block> EFFIGY_CORE = registerBlock("effigy_core", () -> new EffigyCoreBlock(BlockBehaviour.Properties.of(Material.VEGETABLE).strength(5f).sound(SoundType.CROP)), FlyingFamiliars.FF_TAB);
+	public static final RegistryObject<Block> CRYSTAL_BALL = registerBlock("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.of(Material.STONE).strength(3f).requiresCorrectToolForDrops()), FlyingFamiliars.FF_TAB);
+	public static final RegistryObject<Block> BRAZIER = registerBlock("brazier", () -> new BrazierBlock(BlockBehaviour.Properties.of(Material.METAL).strength(3f).requiresCorrectToolForDrops().lightLevel((state) -> 15).sound(SoundType.METAL)), FlyingFamiliars.FF_TAB);
+	public static final RegistryObject<Block> EFFIGY_CORE = registerBlock("effigy_core", () -> new EffigyCoreBlock(BlockBehaviour.Properties.of(Material.VEGETABLE).strength(1f).sound(SoundType.CROP)), FlyingFamiliars.FF_TAB);
 	
 	private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab)
 	{

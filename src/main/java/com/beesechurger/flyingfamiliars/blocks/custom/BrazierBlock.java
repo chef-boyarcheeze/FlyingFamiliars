@@ -76,9 +76,11 @@ public class BrazierBlock extends BaseEntityBlock
 			{
 				BrazierBlockEntity brazier = (BrazierBlockEntity) entity;
 				ItemStack stack = player.getItemInHand(hand);
-				// Do item add
-				//entity.
-				//NetworkHooks.openGui(((ServerPlayer) player), (BrazierBlockEntity) entity, pos);
+				ItemStack placeItem = player.getAbilities().instabuild ? stack.copy() : stack;
+				
+				if(!brazier.placeItem(placeItem)) brazier.removeItem(level, pos, brazier);
+				
+				return InteractionResult.SUCCESS;
 			}
 			else
 			{
