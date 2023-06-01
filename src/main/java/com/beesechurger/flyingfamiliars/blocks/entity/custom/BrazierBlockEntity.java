@@ -82,32 +82,15 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		return false;
 	}
 	
+	public NonNullList<ItemStack> getItems()
+	{
+		return this.items;
+	}
+	
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
 	{
-		/*if(hasRecipe(entity) && hasNotReachedStackLimit(entity))
-		{
-			craftItem(entity);
-		}*/
+		if(level.isClientSide()) return;
 	}
-	
-	/*private static void craftItem(BrazierBlockEntity entity)
-	{
-		entity.itemHandler.extractItem(0, 1, false);
-		entity.itemHandler.extractItem(1, 1, false);
-		entity.itemHandler.getStackInSlot(2).hurt(1, new Random(), null);
-		
-		entity.itemHandler.setStackInSlot(3, new ItemStack(FFItems.SPECTER_MOTE.get(), entity.itemHandler.getStackInSlot(3).getCount() + 1));
-	}
-	
-	private static boolean hasRecipe(BrazierBlockEntity entity)
-	{
-		return entity.itemHandler.getStackInSlot(0).getItem() == FFItems.PHOENIX_FEATHER.get();
-	}
-	
-	private static boolean hasNotReachedStackLimit(BrazierBlockEntity entity)
-	{
-		return entity.itemHandler.getStackInSlot(3).getCount() < entity.itemHandler.getStackInSlot(3).getMaxStackSize();
-	}*/
 
 	@Override
 	public void clearContent()

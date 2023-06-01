@@ -27,24 +27,18 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BrazierBlock extends BaseEntityBlock
 {
-	public static IntegerProperty ITEM = IntegerProperty.create("item", 0, 1);
 	private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 14, 15);
 	
 	public BrazierBlock(Properties properties)
 	{
 		super(properties);
+		registerDefaultState(this.stateDefinition.any());
 	}
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
 	{
 		return SHAPE;
-	}
-	
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder)
-	{
-		//null;
 	}
 	
 	@Override
@@ -76,9 +70,8 @@ public class BrazierBlock extends BaseEntityBlock
 			{
 				BrazierBlockEntity brazier = (BrazierBlockEntity) entity;
 				ItemStack stack = player.getItemInHand(hand);
-				ItemStack placeItem = player.getAbilities().instabuild ? stack.copy() : stack;
 				
-				if(!brazier.placeItem(placeItem)) brazier.removeItem(level, pos, brazier);
+				if(!brazier.placeItem(stack)) brazier.removeItem(level, pos, brazier);
 				
 				return InteractionResult.SUCCESS;
 			}
