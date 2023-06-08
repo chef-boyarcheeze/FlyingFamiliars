@@ -1,21 +1,23 @@
 package com.beesechurger.flyingfamiliars.blocks.entity.custom;
 
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
+import com.beesechurger.flyingfamiliars.networking.FFMessages;
+import com.beesechurger.flyingfamiliars.networking.packet.ItemStackSyncS2CPacket;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Clearable;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class BrazierBlockEntity extends BlockEntity implements Clearable 
 {
@@ -42,6 +44,14 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	    ContainerHelper.loadAllItems(tag, this.items);
 	}
 	
+	public void setHandler(ItemStackHandler itemStackHandler)
+	{
+		for(int i = 0; i < itemStackHandler.getSlots(); i++)
+		{
+			items.set(i, itemStackHandler.getStackInSlot(i));
+		}
+	}
+	
 	public void drops()
 	{
 		SimpleContainer inventory = new SimpleContainer(items.size());
@@ -58,6 +68,8 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		if(items.get(0).isEmpty())
 		{
 		   this.items.set(0, stack.split(1));
+		   
+		   contentsChanged();
 		   return true;
 		}
 		
@@ -76,10 +88,21 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
             
             brazier.items.set(0, ItemStack.EMPTY);
             
+            contentsChanged();
             return true;
 		}
 		
 		return false;
+	}
+	
+	private void contentsChanged()
+	{
+		setChanged();
+		
+		if(!level.isClientSide())
+		{
+			FFMessages.sendToClients(new ItemStackSyncS2CPacket(new ItemStackHandler(items), worldPosition));
+		}
 	}
 	
 	public NonNullList<ItemStack> getItems()
@@ -90,6 +113,16 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
 	{
 		if(level.isClientSide()) return;
+	}
+	
+	public ClientboundBlockEntityDataPacket getUpdatePacket()
+	{
+	    return ClientboundBlockEntityDataPacket.create(this);
+	}
+	
+	public CompoundTag getUpdateTag()
+	{
+	    return this.saveWithoutMetadata();
 	}
 
 	@Override

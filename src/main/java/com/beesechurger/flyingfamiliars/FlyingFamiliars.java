@@ -6,6 +6,7 @@ import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.items.FFItems;
+import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
 
@@ -46,11 +48,17 @@ public class FlyingFamiliars {
 		FFEntityTypes.register(bus);
 		FFSounds.register(bus);
 		
+		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
 		
 		MinecraftForge.EVENT_BUS.register(this);
 		
 		GeckoLib.initialize();
+	}
+	
+	private void commonSetup(final FMLCommonSetupEvent event)
+	{
+		FFMessages.register();
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event)
@@ -59,7 +67,7 @@ public class FlyingFamiliars {
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
 		EntityRenderers.register(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), ThrownItemRenderer::new);
 		
-		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
 		
 		FFKeys.init();
