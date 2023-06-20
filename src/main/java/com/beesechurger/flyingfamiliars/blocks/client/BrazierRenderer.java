@@ -24,14 +24,22 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 	@SuppressWarnings("resource")
 	@Override
 	public void render(BrazierBlockEntity brazierEntity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight)
-	{
-		ItemStack inventory = brazierEntity.getItems().get(0);
-		BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(inventory, brazierEntity.getLevel(), (LivingEntity)null, 0);
-		
-		stack.pushPose();
-		stack.translate(0.5D, 1.4D, 0.5D);
-		stack.mulPose(Vector3f.YP.rotationDegrees((float) (Minecraft.getInstance().level.getGameTime())));
-		Minecraft.getInstance().getItemRenderer().render(inventory, ItemTransforms.TransformType.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
-		stack.popPose();
+	{		
+		for(int i = 0; i < brazierEntity.itemCount(); i++)
+		{
+			float angle = ((i+1) * 360F / brazierEntity.itemCount());
+			
+			ItemStack inventory = brazierEntity.getItems().get(i);
+			BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(inventory, brazierEntity.getLevel(), (LivingEntity)null, 0);
+			float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
+			
+			stack.pushPose();
+			stack.translate(0.5D, 1.2D, 0.5D);
+			stack.mulPose(Vector3f.YP.rotationDegrees(angle + time));
+			stack.translate(0.6D, 0, 0);
+			stack.mulPose(Vector3f.YP.rotationDegrees(time * 2));
+			Minecraft.getInstance().getItemRenderer().render(inventory, ItemTransforms.TransformType.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
+			stack.popPose();
+		}
 	}
 }

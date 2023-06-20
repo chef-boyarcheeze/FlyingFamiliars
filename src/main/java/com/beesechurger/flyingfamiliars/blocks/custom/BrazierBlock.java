@@ -19,8 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -71,7 +69,8 @@ public class BrazierBlock extends BaseEntityBlock
 				BrazierBlockEntity brazier = (BrazierBlockEntity) entity;
 				ItemStack stack = player.getItemInHand(hand);
 				
-				if(!brazier.placeItem(stack)) brazier.removeItem(level, pos, brazier);
+				if(!player.isShiftKeyDown()) brazier.placeItem(stack);
+				else brazier.removeItem(level, pos, brazier);
 				
 				return InteractionResult.SUCCESS;
 			}

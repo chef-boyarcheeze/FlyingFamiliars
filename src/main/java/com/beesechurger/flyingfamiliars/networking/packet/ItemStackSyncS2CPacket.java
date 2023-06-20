@@ -51,6 +51,7 @@ public class ItemStackSyncS2CPacket
 		buf.writeBlockPos(pos);
 	}
 	
+	@SuppressWarnings("resource")
 	public boolean handle(Supplier<NetworkEvent.Context> supplier)
 	{
 		supplier.get().enqueueWork(() -> 

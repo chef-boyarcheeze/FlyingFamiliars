@@ -21,7 +21,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class BrazierBlockEntity extends BlockEntity implements Clearable 
 {
-	private final static int NUM_SLOTS = 1;
+	private final static int NUM_SLOTS = 4;
 	private final NonNullList<ItemStack> items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
 	
 	public BrazierBlockEntity(BlockPos position, BlockState state)
@@ -64,12 +64,13 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	}
 	
 	public boolean placeItem(ItemStack stack)
-	{         
-		if(items.get(0).isEmpty())
+	{		
+		if(itemCount() < NUM_SLOTS)
 		{
-		   this.items.set(0, stack.split(1));
+		   this.items.set(itemCount(), stack.split(1));
 		   
 		   contentsChanged();
+		   
 		   return true;
 		}
 		
@@ -78,20 +79,21 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	
 	public boolean removeItem(Level level, BlockPos pos, BrazierBlockEntity brazier)
 	{
-		if(!items.get(0).isEmpty())
+		if(itemCount() > 0)
 		{
-			ItemStack stack = items.get(0);
+			ItemStack stack = items.get(itemCount()-1);
 			
             ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack);
             drop.setDefaultPickUpDelay();
             level.addFreshEntity(drop);
             
-            brazier.items.set(0, ItemStack.EMPTY);
+            brazier.items.set(itemCount()-1, ItemStack.EMPTY);
             
             contentsChanged();
+            
             return true;
 		}
-		
+	
 		return false;
 	}
 	
@@ -108,6 +110,16 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	public NonNullList<ItemStack> getItems()
 	{
 		return this.items;
+	}
+	
+	public int itemCount()
+	{
+		for(int i = 0; i < NUM_SLOTS; i++)
+		{
+			if(items.get(i).isEmpty()) return i;
+		}
+		
+		return NUM_SLOTS;
 	}
 	
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
