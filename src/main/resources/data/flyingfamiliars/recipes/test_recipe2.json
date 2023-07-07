@@ -1,0 +1,14 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"ingredients": [
+		{
+			"item": "minecraft:string"
+		},
+		{
+			"item": "minecraft:white_carpet"
+		}
+	],
+	"output": {
+		"item": "minecraft:feather"
+	}
+}

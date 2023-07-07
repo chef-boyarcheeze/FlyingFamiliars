@@ -30,6 +30,7 @@
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",
 	
+	"sounds.flyingfamiliars.brazier": "Brazier burns",
 	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
 	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
 	"sounds.flyingfamiliars.cloud_ray_idle1": "Cloud Ray drizzles",

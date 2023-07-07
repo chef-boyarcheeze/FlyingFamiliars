@@ -7,6 +7,7 @@ import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
+import com.beesechurger.flyingfamiliars.recipe.FFRecipes;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -47,6 +48,7 @@ public class FlyingFamiliars {
 		FFBLockEntities.register(bus);
 		FFEntityTypes.register(bus);
 		FFSounds.register(bus);
+		FFRecipes.register(bus);
 		
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);

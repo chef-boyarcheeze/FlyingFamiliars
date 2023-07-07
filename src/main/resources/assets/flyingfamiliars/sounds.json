@@ -1,4 +1,10 @@
 {
+	"brazier": {
+		"subtitle": "sounds.flyingfamiliars.brazier",
+		"sounds": [
+			"flyingfamiliars:brazier"
+		]
+	},
 	"cloud_ray_idle1": {
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle1",
 		"sounds": [

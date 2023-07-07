@@ -1,8 +1,12 @@
 package com.beesechurger.flyingfamiliars.blocks.entity.custom;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.ItemStackSyncS2CPacket;
+import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -13,6 +17,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,10 +28,41 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 {
 	private final static int NUM_SLOTS = 4;
 	private final NonNullList<ItemStack> items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
+	private BrazierRecipe currentRecipe;
+	
+	protected final ContainerData data;
+	private int progress = 0;
+	private int maxProgress = 60;
 	
 	public BrazierBlockEntity(BlockPos position, BlockState state)
 	{
 		super(FFBLockEntities.BRAZIER_BLOCK_ENTITY.get(), position, state);
+		
+		this.data = new ContainerData() {
+			public int get(int index)
+			{
+				switch(index)
+				{
+					case 0: return BrazierBlockEntity.this.progress;
+					case 1: return BrazierBlockEntity.this.maxProgress;
+					default: return 0;
+				}
+			}
+			
+			public void set(int index, int value)
+			{
+				switch(index)
+				{
+					case 0: BrazierBlockEntity.this.progress = value; break;
+					case 1: BrazierBlockEntity.this.maxProgress = value; break;
+				}
+			}
+			
+			public int getCount()
+			{
+				return 2;
+			}
+		};
 	}
 	
 	@Override
@@ -34,6 +70,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	{
 		super.saveAdditional(tag);
 		ContainerHelper.saveAllItems(tag, this.items, true);
+		tag.putInt("brazier.progress", progress);
 	}
 	
 	@Override
@@ -42,6 +79,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		super.load(tag);
 	    this.items.clear();
 	    ContainerHelper.loadAllItems(tag, this.items);
+	    progress = tag.getInt("brazier.progress");
 	}
 	
 	public void setHandler(ItemStackHandler itemStackHandler)
@@ -100,6 +138,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	private void contentsChanged()
 	{
 		setChanged();
+		findMatch();
 		
 		if(!level.isClientSide())
 		{
@@ -125,6 +164,55 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
 	{
 		if(level.isClientSide()) return;
+		if(entity.currentRecipe != null)
+		{
+			if(entity.currentRecipe.matches(entity.items))
+			{
+				entity.progress++;
+				setChanged(level, pos, state);
+				
+				if(entity.progress > entity.maxProgress)
+				{
+					craftItem(pos, entity);
+					entity.contentsChanged();
+				}
+			}
+			else
+			{
+				entity.resetProgress();
+				setChanged(level, pos, state);
+			}
+		}
+	}
+	
+	private void findMatch()
+	{
+		boolean found = false;
+		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
+		{
+			if(entry.matches(items))
+			{
+				currentRecipe = entry;
+				found = true;
+				break;
+			}
+		}
+		if(!found) currentRecipe = null;
+	}
+	
+	private static void craftItem(BlockPos pos, BrazierBlockEntity entity)
+	{	
+		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getResultItem());
+        drop.setDefaultPickUpDelay();
+        entity.level.addFreshEntity(drop);
+        
+        entity.clearContent();
+		entity.resetProgress();
+	}
+	
+	private void resetProgress()
+	{
+		this.progress = 0;
 	}
 	
 	public ClientboundBlockEntityDataPacket getUpdatePacket()

@@ -1,0 +1,14 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"ingredients": [
+		{
+			"item": "minecraft:gunpowder"
+		},
+		{
+			"item": "minecraft:blaze_powder"
+		}
+	],
+	"output": {
+		"item": "minecraft:coal"
+	}
+}

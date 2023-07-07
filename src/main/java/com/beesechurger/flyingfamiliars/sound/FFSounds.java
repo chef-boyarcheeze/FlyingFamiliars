@@ -15,6 +15,8 @@ public class FFSounds
 	
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, FlyingFamiliars.MOD_ID);
 	
+	public static final RegistryObject<SoundEvent> BRAZIER_BURNS = registerSoundEvent("brazier");
+	
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE1 = registerSoundEvent("cloud_ray_idle1");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE2 = registerSoundEvent("cloud_ray_idle2");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE3 = registerSoundEvent("cloud_ray_idle3");
@@ -25,7 +27,6 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
 	
 	public static final RegistryObject<SoundEvent> SOUL_WAND_THROW = registerSoundEvent("soul_wand_throw");
-	public static final RegistryObject<SoundEvent> ATTUNED_SPARK = registerSoundEvent("attuned_spark");
 	
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name)
 	{
