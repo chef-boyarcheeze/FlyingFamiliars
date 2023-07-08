@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.networking;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.networking.packet.ItemStackSyncS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.ProgressSyncS2CPacket;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,6 +37,12 @@ public class FFMessages
 				.decoder(ItemStackSyncS2CPacket::new)
 				.encoder(ItemStackSyncS2CPacket::toBytes)
 				.consumer(ItemStackSyncS2CPacket::handle)
+				.add();
+		
+		net.messageBuilder(ProgressSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+				.decoder(ProgressSyncS2CPacket::new)
+				.encoder(ProgressSyncS2CPacket::toBytes)
+				.consumer(ProgressSyncS2CPacket::handle)
 				.add();
 	}
 	

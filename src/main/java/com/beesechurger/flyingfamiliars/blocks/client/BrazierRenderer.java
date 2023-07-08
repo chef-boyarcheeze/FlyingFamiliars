@@ -32,11 +32,13 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 			ItemStack inventory = brazierEntity.getItems().get(i);
 			BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(inventory, brazierEntity.getLevel(), (LivingEntity)null, 0);
 			float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
+			double centerOffset = 0.6D * ((double) (brazierEntity.getMaxProgress() - brazierEntity.getProgress()) / (double) brazierEntity.getMaxProgress());
+			System.out.println(centerOffset);
 			
 			stack.pushPose();
 			stack.translate(0.5D, 1.2D, 0.5D);
 			stack.mulPose(Vector3f.YP.rotationDegrees(angle + time));
-			stack.translate(0.6D, 0, 0);
+			stack.translate(centerOffset, 0, 0);
 			stack.mulPose(Vector3f.YP.rotationDegrees(time * 2));
 			Minecraft.getInstance().getItemRenderer().render(inventory, ItemTransforms.TransformType.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
 			stack.popPose();

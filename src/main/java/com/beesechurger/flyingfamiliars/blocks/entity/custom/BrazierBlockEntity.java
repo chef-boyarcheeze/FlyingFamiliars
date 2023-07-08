@@ -1,11 +1,9 @@
 package com.beesechurger.flyingfamiliars.blocks.entity.custom;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.ItemStackSyncS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.ProgressSyncS2CPacket;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 
 import net.minecraft.core.BlockPos;
@@ -161,8 +159,23 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		return NUM_SLOTS;
 	}
 	
-	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
+	public int getProgress()
 	{
+		return progress;
+	}
+	
+	public void setProgress(int pr)
+	{
+		progress = pr;
+	}
+	
+	public int getMaxProgress()
+	{
+		return maxProgress;
+	}
+	
+	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
+	{		
 		if(level.isClientSide()) return;
 		if(entity.currentRecipe != null)
 		{
@@ -177,12 +190,14 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 					entity.contentsChanged();
 				}
 			}
-			else
-			{
-				entity.resetProgress();
-				setChanged(level, pos, state);
-			}
 		}
+		else
+		{
+			entity.resetProgress();
+			setChanged(level, pos, state);
+		}
+		
+		FFMessages.sendToClients(new ProgressSyncS2CPacket(entity.progress, entity.worldPosition));
 	}
 	
 	private void findMatch()
