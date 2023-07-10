@@ -9,11 +9,14 @@ import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -99,6 +102,36 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		Containers.dropContents(this.level, this.worldPosition, inventory);
 	}
 	
+	public boolean addSouls(ItemStack stack)
+	{
+		CompoundTag compound = stack.getTag();
+
+		/*if (compound != null)
+		{
+			ListTag tagList = compound.getList("entity", 10);
+			if (tagList.size() > 0)
+			{
+				CompoundTag entityNBT = tagList.getCompound(tagList.size()-1);
+				tagList.remove(tagList.size()-1);
+				
+		        EntityType<?> type = EntityType.byString(entityNBT.getString("entity")).orElse(null);
+	            if (type != null)
+	            {
+	            	Entity entity;
+	            	
+	                entity = type.create(worldIn);
+	                entity.load(entityNBT);
+	                
+	                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
+					worldIn.addFreshEntity(entity);
+					
+					return true;
+	            }
+			}
+		}*/
+		return false;
+	}
+	
 	public boolean placeItem(ItemStack stack)
 	{		
 		if(itemCount() < NUM_SLOTS)
@@ -179,10 +212,12 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		if(level.isClientSide()) return;
 		if(entity.currentRecipe != null)
 		{
-			if(entity.currentRecipe.matches(entity.items))
+			if(entity.currentRecipe.itemsMatch(entity.items))
 			{
 				entity.progress++;
 				setChanged(level, pos, state);
+				
+				System.out.println(entity.currentRecipe.getEntities().get(0));
 				
 				if(entity.progress > entity.maxProgress)
 				{
@@ -205,7 +240,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		boolean found = false;
 		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
 		{
-			if(entry.matches(items))
+			if(entry.itemsMatch(items))
 			{
 				currentRecipe = entry;
 				found = true;

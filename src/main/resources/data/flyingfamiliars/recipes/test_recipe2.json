@@ -6,6 +6,17 @@
 		},
 		{
 			"item": "minecraft:white_carpet"
+		},
+		{
+			"item": "minecraft:blaze_rod"
+		},
+		{
+			"item": "minecraft:coal"
+		}
+	],
+	"entities": [
+		{
+			"string": "minecraft:cow"
 		}
 	],
 	"output": {

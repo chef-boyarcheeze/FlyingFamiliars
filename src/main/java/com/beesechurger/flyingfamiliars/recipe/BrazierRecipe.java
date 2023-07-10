@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -27,12 +28,14 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	private final ResourceLocation id;
 	private final ItemStack output;
 	private final NonNullList<Ingredient> recipeItems;
+	private final NonNullList<String> entityTags;
 	
-	public BrazierRecipe(ResourceLocation i, ItemStack o, NonNullList<Ingredient> r)
+	public BrazierRecipe(ResourceLocation i, ItemStack o, NonNullList<Ingredient> r, NonNullList<String> e)
 	{
 		id = i;
 		output = o;
 		recipeItems = r;
+		entityTags = e;
 	}
 	
 	@Override
@@ -45,7 +48,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	 * 	For every ingredient in a recipe, compare to brazier's stored items.
 	 * 	Allows for any order of ingredients to craft a recipe.
 	 */	
-	public boolean matches(NonNullList<ItemStack> items)
+	public boolean itemsMatch(NonNullList<ItemStack> items)
 	{
         if(items == null) return false;
         
@@ -77,6 +80,15 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
         }
         return handlerItems.size() == 0;
     }
+	
+	/*
+	 * 	For every required entity, compare to Soul Wand stored entities.
+	 * 	Allows for specific removal of entities to be used in crafting.
+	 */
+	public boolean entitiesMatch(CompoundTag wandEntities)
+	{
+		return false;
+	}
 
 	@Override
 	public ItemStack assemble(SimpleContainer container)
@@ -88,6 +100,11 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	public boolean canCraftInDimensions(int p_43999_, int p_44000_)
 	{
 		return true;
+	}
+	
+	public NonNullList<String> getEntities()
+	{
+		return entityTags;
 	}
 
 	@Override
@@ -126,33 +143,56 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		public static final Serializer INSTANCE = new Serializer();
 		public static final ResourceLocation ID = new ResourceLocation(FlyingFamiliars.MOD_ID, "brazier");
 		
-		@Override
-		public BrazierRecipe fromJson(ResourceLocation id, JsonObject json)
+		public String entityParse(String start)
 		{
-			ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
+			int count = 0;
+			while(start.charAt(count) != '"') count++;
 			
-			JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
-
-            for (int i = 0; i < inputs.size(); i++)
-            {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            return new BrazierRecipe(id, output, inputs);
+			return start.substring(0, count);
 		}
 		
 		@Override
-        public BrazierRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+		public BrazierRecipe fromJson(ResourceLocation id, JsonObject json)
+		{			
+			JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
+            NonNullList<Ingredient> inputItems = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
 
-            for (int i = 0; i < inputs.size(); i++)
+            for (int i = 0; i < inputItems.size(); i++)
             {
-                inputs.set(i, Ingredient.fromNetwork(buf));
+                inputItems.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
+            
+            JsonArray entities = GsonHelper.getAsJsonArray(json, "entities");
+            NonNullList<String> inputEntities = NonNullList.withSize(entities.size(), "");
+            
+            for(int i = 0; i < inputEntities.size(); i++)
+            {
+            	inputEntities.set(i, entityParse(entities.get(i).toString().substring(11)));
+            }
+            
+            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
+            return new BrazierRecipe(id, output, inputItems, inputEntities);
+		}
+		
+		@Override
+        public BrazierRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf)
+		{
+            NonNullList<Ingredient> inputItems = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
 
+            for (int i = 0; i < inputItems.size(); i++)
+            {
+                inputItems.set(i, Ingredient.fromNetwork(buf));
+            }
+            
+            NonNullList<String> inputEntities = NonNullList.withSize(buf.readInt(), "");
+            
+            for(int i = 0; i < inputEntities.size(); i++)
+            {
+            	inputEntities.set(i, buf.readUtf());
+            }
+            
             ItemStack output = buf.readItem();
-            return new BrazierRecipe(id, output, inputs);
+            return new BrazierRecipe(id, output, inputItems, inputEntities);
         }
 		
 		@Override
@@ -163,6 +203,13 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             for (Ingredient ing : recipe.getIngredients())
             {
                 ing.toNetwork(buf);
+            }
+            
+            buf.writeInt(recipe.getEntities().size());
+            
+            for (String entity : recipe.getEntities())
+            {
+                buf.writeUtf(entity);
             }
             
             buf.writeItemStack(recipe.getResultItem(), false);

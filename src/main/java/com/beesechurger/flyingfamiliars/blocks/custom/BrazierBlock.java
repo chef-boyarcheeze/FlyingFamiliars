@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.core.BlockPos;
@@ -71,11 +72,15 @@ public class BrazierBlock extends BaseEntityBlock
 			BlockEntity entity = level.getBlockEntity(pos);
 			if(entity instanceof BrazierBlockEntity)
 			{
-				BrazierBlockEntity brazier = (BrazierBlockEntity) entity;
+				BrazierBlockEntity brazierEntity = (BrazierBlockEntity) entity;
 				ItemStack stack = player.getItemInHand(hand);
 				
-				if(!player.isShiftKeyDown()) brazier.placeItem(stack);
-				else brazier.removeItem(level, pos, brazier);
+				if(!player.isShiftKeyDown())
+				{
+					if(stack.getItem() == FFItems.SOUL_WAND.get()) brazierEntity.addSouls(stack);
+					else brazierEntity.placeItem(stack);
+				}
+				else brazierEntity.removeItem(level, pos, brazierEntity);
 				
 				return InteractionResult.SUCCESS;
 			}

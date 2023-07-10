@@ -8,6 +8,11 @@
 			"item": "minecraft:blaze_powder"
 		}
 	],
+	"entities": [
+		{
+			"string": "minecraft:pig"
+		}
+	],
 	"output": {
 		"item": "minecraft:coal"
 	}
