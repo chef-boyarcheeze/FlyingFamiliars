@@ -14,18 +14,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ItemStackSyncS2CPacket
+public class BEItemStackS2CPacket
 {
 	private final ItemStackHandler itemStackHandler;
 	private final BlockPos pos;
 	
-	public ItemStackSyncS2CPacket(ItemStackHandler stack, BlockPos p)
+	public BEItemStackS2CPacket(ItemStackHandler stack, BlockPos p)
 	{
 		itemStackHandler = stack;
 		pos = p;
 	}
 	
-	public ItemStackSyncS2CPacket(FriendlyByteBuf buf)
+	public BEItemStackS2CPacket(FriendlyByteBuf buf)
 	{
 		List<ItemStack> collection = buf.readCollection(ArrayList::new, FriendlyByteBuf::readItem);
 		itemStackHandler = new ItemStackHandler(collection.size());

@@ -85,7 +85,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	 * 	For every required entity, compare to Soul Wand stored entities.
 	 * 	Allows for specific removal of entities to be used in crafting.
 	 */
-	public boolean entitiesMatch(CompoundTag wandEntities)
+	public boolean entitiesMatch(NonNullList<String> entities)
 	{
 		return false;
 	}

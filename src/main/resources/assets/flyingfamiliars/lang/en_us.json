@@ -16,8 +16,7 @@
 	"block.flyingfamiliars.effigy_core": "Effigy Core", 
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
-	
-	"tooltip.flyingfamiliars.attuned_spark.tooltip": "Spawns the attuned mob",
+
 	"tooltip.flyingfamiliars.soul_wand.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.empty": "Empty",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_1": "1 stored mob",

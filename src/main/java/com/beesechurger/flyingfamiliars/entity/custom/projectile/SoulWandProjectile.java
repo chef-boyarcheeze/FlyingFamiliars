@@ -2,9 +2,9 @@ package com.beesechurger.flyingfamiliars.entity.custom.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.items.FFItems;
+import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -64,30 +64,38 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	private boolean release(BlockHitResult result)
 	{
 		BlockPos pos = new BlockPos(result.getLocation());
-        Level worldIn = this.level;
 
 		CompoundTag compound = soul_wand.getTag();
 		if (compound != null)
 		{
 			ListTag tagList = compound.getList("entity", 10);
-			if (tagList.size() > 0)
+			
+			for(int i = SoulWand.MAX_ENTITIES; i > 0; i--)
 			{
-				CompoundTag entityNBT = tagList.getCompound(tagList.size()-1);
-				tagList.remove(tagList.size()-1);
-				
-		        EntityType<?> type = EntityType.byString(entityNBT.getString("entity")).orElse(null);
-	            if (type != null)
-	            {
-	            	Entity entity;
-	            	
-	                entity = type.create(worldIn);
-	                entity.load(entityNBT);
-	                
-	                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
-					worldIn.addFreshEntity(entity);
+				if(tagList.getCompound(i-1).getString("entity") != "Empty")
+				{
+					CompoundTag entityNBT = tagList.getCompound(i-1);
 					
-					return true;
-	            }
+			        EntityType<?> type = EntityType.byString(entityNBT.getString("entity")).orElse(null);
+		            if (type != null)
+		            {
+		            	Entity entity;
+		            	
+		                entity = type.create(level);
+		                entity.load(entityNBT);
+		                
+		                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
+						level.addFreshEntity(entity);
+						
+						entityNBT.putString("entity", "Empty");
+						tagList.set(i-1, entityNBT);
+						
+						compound.put("entity", tagList);
+						soul_wand.setTag(compound);
+						
+						return true;
+		            }
+				}
 			}
 		}
 		
@@ -107,34 +115,30 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	
 	private boolean capture(Entity target)
 	{		
-		if (!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level.isClientSide())
+		if(!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level.isClientSide())
 		{
 			CompoundTag compound = soul_wand.getTag();
-			if (compound == null)
-			{
-				compound = new CompoundTag();
-			}
-
+			
 			ListTag tagList = compound.getList("entity", 10);
-			if (tagList.size() < 3)
-			{
-				CompoundTag entityNBT = new CompoundTag();
-				
-				entityNBT.putString("entity", EntityType.getKey(target.getType()).toString());
-				target.saveWithoutId(entityNBT);
-				tagList.addTag(tagList.size(),entityNBT);
-				
-				target.remove(RemovalReason.KILLED);
-			}
-			else
-			{
-				return false;
-			}
 			
-			compound.put("entity", tagList);
-			soul_wand.setTag(compound);
-			
-			return true;
+			for(int i = 0; i < SoulWand.MAX_ENTITIES; i++)
+			{
+				if(tagList.getCompound(i).getString("entity") == "Empty")
+				{
+					CompoundTag entityNBT = new CompoundTag();
+					
+					entityNBT.putString("entity", EntityType.getKey(target.getType()).toString());
+					target.saveWithoutId(entityNBT);
+					tagList.set(i, entityNBT);
+					
+					target.remove(RemovalReason.KILLED);
+					
+					compound.put("entity", tagList);
+					soul_wand.setTag(compound);
+					
+					return true;
+				}
+			}
 		}
 		
 		return false;

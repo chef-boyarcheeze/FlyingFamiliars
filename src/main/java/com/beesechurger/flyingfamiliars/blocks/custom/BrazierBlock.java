@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
+import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
@@ -77,10 +77,14 @@ public class BrazierBlock extends BaseEntityBlock
 				
 				if(!player.isShiftKeyDown())
 				{
-					if(stack.getItem() == FFItems.SOUL_WAND.get()) brazierEntity.addSouls(stack);
+					if(stack.getItem() == FFItems.SOUL_WAND.get()) brazierEntity.placeSoul(stack);
 					else brazierEntity.placeItem(stack);
 				}
-				else brazierEntity.removeItem(level, pos, brazierEntity);
+				else
+				{
+					if(stack.getItem() == FFItems.SOUL_WAND.get()) brazierEntity.removeSoul(stack);
+					else brazierEntity.removeItem(level, pos);
+				}
 				
 				return InteractionResult.SUCCESS;
 			}
@@ -104,7 +108,7 @@ public class BrazierBlock extends BaseEntityBlock
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity)
 	{
-		return createTickerHelper(blockEntity, FFBLockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierBlockEntity::tick);
+		return createTickerHelper(blockEntity, FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierBlockEntity::tick);
 	}
 	
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random)

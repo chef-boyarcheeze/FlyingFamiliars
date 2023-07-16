@@ -1,10 +1,11 @@
 package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.blocks.FFBlocks;
-import com.beesechurger.flyingfamiliars.blocks.entity.FFBLockEntities;
+import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
+import com.beesechurger.flyingfamiliars.items.FFItemHandler;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.recipe.FFRecipes;
@@ -45,15 +46,16 @@ public class FlyingFamiliars {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FFItems.ITEM_REG.register(bus);
 		FFBlocks.BLOCK_REG.register(bus);
-		FFBLockEntities.register(bus);
-		FFEntityTypes.register(bus);
-		FFSounds.register(bus);
-		FFRecipes.register(bus);
+		FFBlockEntities.BLOCK_ENTITIES.register(bus);
+		FFEntityTypes.ENTITY_TYPES.register(bus);
+		FFSounds.SOUND_EVENTS.register(bus);
+		FFRecipes.SERIALIZERS.register(bus);
 		
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
 		
 		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(FFItemHandler.INSTANCE);
 		
 		GeckoLib.initialize();
 	}

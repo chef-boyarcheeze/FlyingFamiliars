@@ -1,8 +1,9 @@
 package com.beesechurger.flyingfamiliars.networking;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.networking.packet.ItemStackSyncS2CPacket;
-import com.beesechurger.flyingfamiliars.networking.packet.ProgressSyncS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.BEItemStackS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.BEProgressS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.SoulWandSelectC2SPacket;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,16 +34,22 @@ public class FFMessages
 		
 		INSTANCE = net;
 		
-		net.messageBuilder(ItemStackSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-				.decoder(ItemStackSyncS2CPacket::new)
-				.encoder(ItemStackSyncS2CPacket::toBytes)
-				.consumer(ItemStackSyncS2CPacket::handle)
+		net.messageBuilder(BEItemStackS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+				.decoder(BEItemStackS2CPacket::new)
+				.encoder(BEItemStackS2CPacket::toBytes)
+				.consumer(BEItemStackS2CPacket::handle)
 				.add();
 		
-		net.messageBuilder(ProgressSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-				.decoder(ProgressSyncS2CPacket::new)
-				.encoder(ProgressSyncS2CPacket::toBytes)
-				.consumer(ProgressSyncS2CPacket::handle)
+		net.messageBuilder(BEProgressS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+				.decoder(BEProgressS2CPacket::new)
+				.encoder(BEProgressS2CPacket::toBytes)
+				.consumer(BEProgressS2CPacket::handle)
+				.add();
+		
+		net.messageBuilder(SoulWandSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+				.decoder(SoulWandSelectC2SPacket::new)
+				.encoder(SoulWandSelectC2SPacket::toBytes)
+				.consumer(SoulWandSelectC2SPacket::handle)
 				.add();
 	}
 	

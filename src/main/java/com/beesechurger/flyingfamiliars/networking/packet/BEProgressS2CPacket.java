@@ -9,21 +9,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
-public class ProgressSyncS2CPacket
+public class BEProgressS2CPacket
 {
 	private final int progress;
 	private final BlockPos pos;
 	
-	public ProgressSyncS2CPacket(int pr, BlockPos bp)
+	public BEProgressS2CPacket(int pr, BlockPos bp)
 	{
 		progress = pr;
 		pos = bp;
 	}
 	
-	public ProgressSyncS2CPacket(FriendlyByteBuf buf)
+	public BEProgressS2CPacket(FriendlyByteBuf buf)
 	{
 		progress = buf.readInt();
-		//System.out.println(progress);
 		pos = buf.readBlockPos();
 	}
 	
