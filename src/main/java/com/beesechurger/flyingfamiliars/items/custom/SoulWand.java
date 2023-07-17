@@ -12,7 +12,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -43,15 +42,15 @@ public class SoulWand extends Item
 			compound = new CompoundTag();
 			
 			CompoundTag entityNBT = new CompoundTag();
-			ListTag tagList = entityNBT.getList("entity", 10);
-			entityNBT.putString("entity", "Empty");
+			ListTag tagList = entityNBT.getList("flyingfamiliars.entity", 10);
+			entityNBT.putString("flyingfamiliars.entity", "Empty");
 			
 			for(int i = 0; i < MAX_ENTITIES; i++)
 			{
 				tagList.addTag(i, entityNBT);
 			}
 			
-			compound.put("entity", tagList);
+			compound.put("flyingfamiliars.entity", tagList);
 			stack.setTag(compound);
 		}
 		
@@ -75,7 +74,7 @@ public class SoulWand extends Item
 	
     public String getID(int listValue, ItemStack stack)
     {
-        return stack.getTag().getList("entity", 10).getCompound(listValue).getString("entity");
+        return stack.getTag().getList("flyingfamiliars.entity", 10).getCompound(listValue).getString("flyingfamiliars.entity");
     }
     
     @Override
@@ -92,7 +91,7 @@ public class SoulWand extends Item
 				{				
 					for (int i = 0; i < MAX_ENTITIES; i++)
 					{
-						tooltip.add(new TextComponent("Slot " + (i+1) + ": " + getID(i, stack)).withStyle(ChatFormatting.YELLOW));
+						tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.slot").withStyle(ChatFormatting.YELLOW).append((i+1) + ": " + getID(i, stack)));
 					}
 				}
 				else
@@ -108,7 +107,7 @@ public class SoulWand extends Item
 						case 3: tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.tooltip.stored_3").withStyle(ChatFormatting.GRAY));
 							break;
 					}
-
+					
 					tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.left_shift").withStyle(ChatFormatting.GRAY));
 				}
 			}
@@ -123,23 +122,20 @@ public class SoulWand extends Item
 		}
     }
     
-    public ListTag getListTag(ItemStack stack)
-    {
-    	CompoundTag compound = stack.getTag();
-    	ListTag list = new ListTag();
-    	
-    	if(compound != null) list = compound.getList("entity", 10);
-    	
-    	return list;
-    }
-    
     public int getEntityCount(ItemStack stack)
     {
     	int entityCount = 0;
+    	CompoundTag compound = stack.getTag();
     	
-    	for(int i = 0; i < MAX_ENTITIES; i++)
+    	if(compound != null)
     	{
-    		if(getListTag(stack).getCompound(i).getString("entity") != "Empty") entityCount++;
+    		ListTag tagList = compound.getList("flyingfamiliars.entity", 10);
+    		
+    		for(int i = 0; i < MAX_ENTITIES; i++)
+        	{
+    			// Need to use regular Tag object here, not CompoundTag
+        		if(!tagList.get(i).toString().contains("Empty")) entityCount++;
+        	}
     	}
     	
     	return entityCount;
@@ -147,14 +143,14 @@ public class SoulWand extends Item
     
     @Override
     public boolean isFoil(ItemStack stack)
-    {   	
+    {
     	return getEntityCount(stack) == MAX_ENTITIES && stack.getTag() != null;
     }
     
     @Override
     public boolean isBarVisible(ItemStack stack)
     {
-    	return getEntityCount(stack) < MAX_ENTITIES && getEntityCount(stack) > 0 && stack.getTag() != null;
+    	return getEntityCount(stack) > 0 && stack.getTag() != null;
     }
     
     @Override
@@ -166,6 +162,7 @@ public class SoulWand extends Item
     @Override
     public int getBarColor(ItemStack stack)
     {
+    	// 0,128,255
     	return 32767;
     }
 }

@@ -82,8 +82,6 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 
 	private final Item FOOD_ITEM = Items.APPLE;
 	private final Item TAME_ITEM = Items.GLOW_BERRIES;
-	
-	private final boolean isInvertedVariant = false;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 	

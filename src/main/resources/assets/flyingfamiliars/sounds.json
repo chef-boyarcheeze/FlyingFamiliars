@@ -53,6 +53,12 @@
 			"flyingfamiliars:cloud_ray_death"
 		]
 	},
+	"soul_wand_swap": {
+		"subtitle": "sounds.flyingfamiliars.soul_wand_swap",
+		"sounds": [
+			"flyingfamiliars:soul_wand_swap"
+		]
+	},
 	"soul_wand_throw": {
 		"subtitle": "sounds.flyingfamiliars.soul_wand_throw",
 		"sounds": [

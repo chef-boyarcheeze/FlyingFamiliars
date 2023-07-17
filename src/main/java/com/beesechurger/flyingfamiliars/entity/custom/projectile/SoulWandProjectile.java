@@ -68,15 +68,16 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		CompoundTag compound = soul_wand.getTag();
 		if (compound != null)
 		{
-			ListTag tagList = compound.getList("entity", 10);
+			ListTag tagList = compound.getList("flyingfamiliars.entity", 10);
 			
 			for(int i = SoulWand.MAX_ENTITIES; i > 0; i--)
 			{
-				if(tagList.getCompound(i-1).getString("entity") != "Empty")
+				// Need to use regular Tag object here, not CompoundTag
+				if(!tagList.get(i-1).toString().contains("Empty"))
 				{
 					CompoundTag entityNBT = tagList.getCompound(i-1);
 					
-			        EntityType<?> type = EntityType.byString(entityNBT.getString("entity")).orElse(null);
+			        EntityType<?> type = EntityType.byString(entityNBT.getString("flyingfamiliars.entity")).orElse(null);
 		            if (type != null)
 		            {
 		            	Entity entity;
@@ -87,10 +88,10 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
 						level.addFreshEntity(entity);
 						
-						entityNBT.putString("entity", "Empty");
+						entityNBT.putString("flyingfamiliars.entity", "Empty");
 						tagList.set(i-1, entityNBT);
 						
-						compound.put("entity", tagList);
+						compound.put("flyingfamiliars.entity", tagList);
 						soul_wand.setTag(compound);
 						
 						return true;
@@ -119,21 +120,22 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		{
 			CompoundTag compound = soul_wand.getTag();
 			
-			ListTag tagList = compound.getList("entity", 10);
+			ListTag tagList = compound.getList("flyingfamiliars.entity", 10);
 			
 			for(int i = 0; i < SoulWand.MAX_ENTITIES; i++)
 			{
-				if(tagList.getCompound(i).getString("entity") == "Empty")
+				// Need to use regular Tag object here, not CompoundTag
+				if(tagList.get(i).toString().contains("Empty"))
 				{
 					CompoundTag entityNBT = new CompoundTag();
 					
-					entityNBT.putString("entity", EntityType.getKey(target.getType()).toString());
+					entityNBT.putString("flyingfamiliars.entity", EntityType.getKey(target.getType()).toString());
 					target.saveWithoutId(entityNBT);
 					tagList.set(i, entityNBT);
 					
 					target.remove(RemovalReason.KILLED);
 					
-					compound.put("entity", tagList);
+					compound.put("flyingfamiliars.entity", tagList);
 					soul_wand.setTag(compound);
 					
 					return true;

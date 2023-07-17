@@ -4,12 +4,17 @@ import java.util.function.Supplier;
 
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
+import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SoulWandSelectC2SPacket
@@ -23,13 +28,17 @@ public class SoulWandSelectC2SPacket
 	public boolean handle(Supplier<NetworkEvent.Context> supplier)
 	{
 		Player player = supplier.get().getSender();
+		Level level = player.level;
 
 		supplier.get().enqueueWork(() -> {
 			ItemStack stack = player.getMainHandItem();
 			if (!stack.isEmpty() && stack.getItem() == FFItems.SOUL_WAND.get())
 			{
-				if(!player.isShiftKeyDown()) cycleUp(stack);
-				else cycleDown(stack);
+				if(!player.isShiftKeyDown()) cycleUp(player, stack);
+				else cycleDown(player, stack);
+				
+				level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5F, FFSounds.getPitch());
+				
 			}
 		});
 		
@@ -37,13 +46,13 @@ public class SoulWandSelectC2SPacket
 		return true;
 	}
 	
-	private void cycleUp(ItemStack stack)
+	private void cycleUp(Player player, ItemStack stack)
 	{
 		CompoundTag compound = stack.getTag();
 		
 		if (compound != null)
 		{
-			ListTag temp = compound.getList("entity", 10);
+			ListTag temp = compound.getList("flyingfamiliars.entity", 10);
 			ListTag tagList = new ListTag();
 			
 			tagList.add(temp.get(SoulWand.MAX_ENTITIES-1));
@@ -53,18 +62,20 @@ public class SoulWandSelectC2SPacket
 				tagList.add(temp.get(i));
 			}
 			
-			compound.put("entity", tagList);
+			compound.put("flyingfamiliars.entity", tagList);
 			stack.setTag(compound);
+			
+			player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand_select").withStyle(ChatFormatting.AQUA).append(getID(SoulWand.MAX_ENTITIES-1, stack)), true);
 		}		
 	}
 	
-	private void cycleDown(ItemStack stack)
+	private void cycleDown(Player player, ItemStack stack)
 	{
 		CompoundTag compound = stack.getTag();
 		
 		if (compound != null)
 		{
-			ListTag temp = compound.getList("entity", 10);
+			ListTag temp = compound.getList("flyingfamiliars.entity", 10);
 			ListTag tagList = new ListTag();
 			
 			for(int i = 1; i < SoulWand.MAX_ENTITIES; i++)
@@ -74,8 +85,15 @@ public class SoulWandSelectC2SPacket
 			
 			tagList.add(temp.get(0));
 			
-			compound.put("entity", tagList);
+			compound.put("flyingfamiliars.entity", tagList);
 			stack.setTag(compound);
+			
+			player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand_select").withStyle(ChatFormatting.AQUA).append(getID(SoulWand.MAX_ENTITIES-1, stack)), true);
 		}		
 	}
+	
+	public String getID(int listValue, ItemStack stack)
+    {
+        return stack.getTag().getList("flyingfamiliars.entity", 10).getCompound(listValue).getString("flyingfamiliars.entity");
+    }
 }
