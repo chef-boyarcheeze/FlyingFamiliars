@@ -10,7 +10,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -53,9 +52,12 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
         if(items == null) return false;
         
         List<ItemStack> handlerItems = new ArrayList<>();
-        for (int i = 0; i < items.size(); i++) {
-            if (!items.get(i).isEmpty()) handlerItems.add(items.get(i).copy());
+        
+        for (int i = 0; i < items.size(); i++)
+        {
+            if(!items.get(i).isEmpty()) handlerItems.add(items.get(i).copy());
         }
+        
         for(Ingredient ingredient : recipeItems)
         {
             boolean found = false;
@@ -87,7 +89,25 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	 */
 	public boolean entitiesMatch(NonNullList<String> entities)
 	{
-		return false;
+		if(entities == null) return false;
+		
+		List<String> handlerEntities = new ArrayList<>();
+		
+		for(int i = 0; i < entities.size(); i++)
+		{
+			if(entities.get(i) != "Empty") handlerEntities.add(entities.get(i));
+		}
+		
+		for(String entity : entityTags)
+		{
+			boolean found = false;
+			
+			int i = 0;
+			for(; i < handlerEntities.size(); i++)
+			{
+				if(handlerEntities.get(i))
+			}
+		}
 	}
 
 	@Override

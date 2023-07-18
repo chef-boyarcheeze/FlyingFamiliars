@@ -7,10 +7,13 @@ import javax.annotation.Nullable;
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
 import com.beesechurger.flyingfamiliars.items.FFItems;
+import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -66,7 +69,7 @@ public class BrazierBlock extends BaseEntityBlock
 	
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
-	{
+	{		
 		if(!level.isClientSide())
 		{
 			BlockEntity entity = level.getBlockEntity(pos);
@@ -75,16 +78,35 @@ public class BrazierBlock extends BaseEntityBlock
 				BrazierBlockEntity brazierEntity = (BrazierBlockEntity) entity;
 				ItemStack stack = player.getItemInHand(hand);
 				
-				if(!player.isShiftKeyDown())
+				if(stack.getItem() == FFItems.SOUL_WAND.get())
 				{
-					if(stack.getItem() == FFItems.SOUL_WAND.get()) brazierEntity.placeSoul(stack);
-					else brazierEntity.placeItem(stack);
+					if(stack.getTag() == null) SoulWand.populateTag(stack);
+
+					if(!SoulWand.isSelectionEmpty(stack))
+					{
+						String selectedEntity = SoulWand.getSelectedEntity(stack);
+						
+						if(brazierEntity.placeSoul(stack))
+						{
+							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.place_entity")
+																.withStyle(ChatFormatting.YELLOW)
+																.append(": " + selectedEntity), true);
+						}
+					}
+					else
+					{
+						if(brazierEntity.removeSoul(stack))
+						{
+							String selectedEntity = SoulWand.getSelectedEntity(stack);
+							
+							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.remove_entity")
+																.withStyle(ChatFormatting.YELLOW)
+																.append(": " + selectedEntity), true);
+						}
+					}
 				}
-				else
-				{
-					if(stack.getItem() == FFItems.SOUL_WAND.get()) brazierEntity.removeSoul(stack);
-					else brazierEntity.removeItem(level, pos);
-				}
+				else if(!player.isShiftKeyDown()) brazierEntity.placeItem(stack);
+				else brazierEntity.removeItem(level, pos);
 				
 				return InteractionResult.SUCCESS;
 			}

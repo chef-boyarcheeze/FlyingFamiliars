@@ -51,59 +51,6 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	}
 	
 	@Override
-    protected void onHitBlock(BlockHitResult result)
-    {
-		if(this.action && !level.isClientSide())
-		{
-			if(release(result)) level.broadcastEntityEvent(this, (byte) 4);
-		}
-		
-		this.remove(RemovalReason.KILLED);
-    }
-	
-	private boolean release(BlockHitResult result)
-	{
-		BlockPos pos = new BlockPos(result.getLocation());
-
-		CompoundTag compound = soul_wand.getTag();
-		if (compound != null)
-		{
-			ListTag tagList = compound.getList("flyingfamiliars.entity", 10);
-			
-			for(int i = SoulWand.MAX_ENTITIES; i > 0; i--)
-			{
-				// Need to use regular Tag object here, not CompoundTag
-				if(!tagList.get(i-1).toString().contains("Empty"))
-				{
-					CompoundTag entityNBT = tagList.getCompound(i-1);
-					
-			        EntityType<?> type = EntityType.byString(entityNBT.getString("flyingfamiliars.entity")).orElse(null);
-		            if (type != null)
-		            {
-		            	Entity entity;
-		            	
-		                entity = type.create(level);
-		                entity.load(entityNBT);
-		                
-		                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
-						level.addFreshEntity(entity);
-						
-						entityNBT.putString("flyingfamiliars.entity", "Empty");
-						tagList.set(i-1, entityNBT);
-						
-						compound.put("flyingfamiliars.entity", tagList);
-						soul_wand.setTag(compound);
-						
-						return true;
-		            }
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	@Override
     protected void onHitEntity(EntityHitResult result)
 	{
 		if(!this.action && !level.isClientSide())
@@ -119,27 +66,76 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		if(!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level.isClientSide())
 		{
 			CompoundTag compound = soul_wand.getTag();
-			
-			ListTag tagList = compound.getList("flyingfamiliars.entity", 10);
+			ListTag wandList = compound.getList("flyingfamiliars.entity", 10);
 			
 			for(int i = 0; i < SoulWand.MAX_ENTITIES; i++)
 			{
-				// Need to use regular Tag object here, not CompoundTag
-				if(tagList.get(i).toString().contains("Empty"))
+				// Need to use regular Tag object for "Empty" compare here, not CompoundTag
+				if(wandList.get(i).toString().contains("Empty"))
 				{
 					CompoundTag entityNBT = new CompoundTag();
 					
 					entityNBT.putString("flyingfamiliars.entity", EntityType.getKey(target.getType()).toString());
 					target.saveWithoutId(entityNBT);
-					tagList.set(i, entityNBT);
+					wandList.set(i, entityNBT);
 					
 					target.remove(RemovalReason.KILLED);
 					
-					compound.put("flyingfamiliars.entity", tagList);
+					compound.put("flyingfamiliars.entity", wandList);
 					soul_wand.setTag(compound);
 					
 					return true;
 				}
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+    protected void onHitBlock(BlockHitResult result)
+    {
+		if(this.action && !level.isClientSide())
+		{
+			if(release(result)) level.broadcastEntityEvent(this, (byte) 4);
+		}
+		
+		this.remove(RemovalReason.KILLED);
+    }
+	
+	private boolean release(BlockHitResult result)
+	{
+		BlockPos pos = new BlockPos(result.getLocation());
+
+		CompoundTag compound = soul_wand.getTag();
+		ListTag wandList = compound.getList("flyingfamiliars.entity", 10);
+		
+		for(int i = SoulWand.MAX_ENTITIES; i > 0; i--)
+		{
+			// Need to use regular Tag object for "Empty" compare here, not CompoundTag
+			if(!wandList.get(i-1).toString().contains("Empty"))
+			{
+				CompoundTag entityNBT = wandList.getCompound(i-1);
+				
+		        EntityType<?> type = EntityType.byString(entityNBT.getString("flyingfamiliars.entity")).orElse(null);
+	            if (type != null)
+	            {
+	            	Entity entity;
+	            	
+	                entity = type.create(level);
+	                entity.load(entityNBT);
+	                
+	                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
+					level.addFreshEntity(entity);
+					
+					entityNBT.putString("flyingfamiliars.entity", "Empty");
+					wandList.set(i-1, entityNBT);
+					
+					compound.put("flyingfamiliars.entity", wandList);
+					soul_wand.setTag(compound);
+					
+					return true;
+	            }
 			}
 		}
 		

@@ -1,8 +1,5 @@
 package com.beesechurger.flyingfamiliars.networking.packet;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.function.Supplier;
 
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
@@ -11,28 +8,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
-public class BEItemStackS2CPacket
+public class EntityListS2CPacket
 {
-	private final NonNullList<ItemStack> items;
+	private final NonNullList<String> entities;
 	private final BlockPos pos;
 	
-	public BEItemStackS2CPacket(NonNullList<ItemStack> i, BlockPos p)
+	public EntityListS2CPacket(NonNullList<String> e, BlockPos p)
 	{
-		items = i;
+		entities = e;
 		pos = p;
 	}
 	
-	public BEItemStackS2CPacket(FriendlyByteBuf buf)
+	public EntityListS2CPacket(FriendlyByteBuf buf)
 	{
-		List<ItemStack> collection = buf.readCollection(ArrayList::new, FriendlyByteBuf::readItem);
-		items = NonNullList.withSize(collection.size(), ItemStack.EMPTY);
+		entities = NonNullList.withSize(buf.readInt(), "");
 		
-		for(int i = 0; i < collection.size(); i++)
+		for(int i = 0; i < entities.size(); i++)
 		{
-			items.set(i, collection.get(i));
+			entities.set(i, buf.readUtf());
 		}
 		
 		pos = buf.readBlockPos();
@@ -40,14 +35,13 @@ public class BEItemStackS2CPacket
 	
 	public void toBytes(FriendlyByteBuf buf)
 	{
-		Collection<ItemStack> list = new ArrayList<>();
+		buf.writeInt(entities.size());
 		
-		for(int i = 0; i < items.size(); i++)
+		for(int i = 0; i < entities.size(); i++)
 		{
-			list.add(items.get(i));
+			buf.writeUtf(entities.get(i));
 		}
-		
-		buf.writeCollection(list, FriendlyByteBuf::writeItem);
+
 		buf.writeBlockPos(pos);
 	}
 	
@@ -58,11 +52,19 @@ public class BEItemStackS2CPacket
 		{
 			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BrazierBlockEntity blockEntity)
 			{
-				blockEntity.setClientItems(items);
+				blockEntity.setClientEntities(entities);
 			}
 		});
 		
 		supplier.get().setPacketHandled(true);
 		return true;
+	}
+	
+	public void printEntities()
+	{
+		for(String e : entities)
+		{
+			System.out.println(e);
+		}
 	}
 }

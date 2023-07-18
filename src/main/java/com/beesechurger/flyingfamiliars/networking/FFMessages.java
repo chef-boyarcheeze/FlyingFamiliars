@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.networking;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.networking.packet.BEItemStackS2CPacket;
 import com.beesechurger.flyingfamiliars.networking.packet.BEProgressS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.EntityListS2CPacket;
 import com.beesechurger.flyingfamiliars.networking.packet.SoulWandSelectC2SPacket;
 
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +45,12 @@ public class FFMessages
 				.decoder(BEProgressS2CPacket::new)
 				.encoder(BEProgressS2CPacket::toBytes)
 				.consumer(BEProgressS2CPacket::handle)
+				.add();
+		
+		net.messageBuilder(EntityListS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+				.decoder(EntityListS2CPacket::new)
+				.encoder(EntityListS2CPacket::toBytes)
+				.consumer(EntityListS2CPacket::handle)
 				.add();
 		
 		net.messageBuilder(SoulWandSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)

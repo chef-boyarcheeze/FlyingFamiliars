@@ -1,39 +1,34 @@
 package com.beesechurger.flyingfamiliars.blocks.entity.custom;
 
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.BEItemStackS2CPacket;
 import com.beesechurger.flyingfamiliars.networking.packet.BEProgressS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.EntityListS2CPacket;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
-import com.google.gson.JsonArray;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class BrazierBlockEntity extends BlockEntity implements Clearable 
 {
-	private final static int NUM_ITEM_SLOTS = 4;
-	private final static int NUM_ENTITY_SLOTS = 3;
-	private final NonNullList<ItemStack> items = NonNullList.withSize(NUM_ITEM_SLOTS, ItemStack.EMPTY);
+	private final static int MAX_ITEMS = 4;
+	private final static int MAX_ENTITIES = 3;
+	private final NonNullList<ItemStack> items = NonNullList.withSize(MAX_ITEMS, ItemStack.EMPTY);
 	private CompoundTag entities = new CompoundTag();
 	private BrazierRecipe currentRecipe;
 	
@@ -91,14 +86,6 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	    entities = tag.getCompound("brazier.entities");
 	}
 	
-	public void setHandler(ItemStackHandler itemStackHandler)
-	{
-		for(int i = 0; i < itemStackHandler.getSlots(); i++)
-		{
-			items.set(i, itemStackHandler.getStackInSlot(i));
-		}
-	}
-	
 	public void drops()
 	{
 		SimpleContainer inventory = new SimpleContainer(items.size());
@@ -111,11 +98,35 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		entities = new CompoundTag();
 	}
 	
+	public void setClientItems(NonNullList<ItemStack> list)
+	{
+		for(int i = 0; i < list.size(); i++)
+		{
+			items.set(i, list.get(i));
+		}
+	}
+	
+	public void setClientEntities(NonNullList<String> list)
+	{
+		populateTag(this);
+		
+		ListTag clientList = entities.getList("flyingfamiliars.entity", 10);
+		
+		for(int i = 0; i < list.size(); i++)
+		{
+			CompoundTag entityNBT = new CompoundTag();
+			entityNBT.putString("flyingfamiliars.entity", list.get(i));
+			clientList.set(i, entityNBT);
+		}
+		
+		entities.put("flyingfamiliars.entity", clientList);
+	}
+	
 	public boolean placeItem(ItemStack stack)
 	{		
-		if(itemCount() < NUM_ITEM_SLOTS)
+		if(getItemCount() < MAX_ITEMS)
 		{
-			items.set(itemCount(), stack.split(1));
+			items.set(getItemCount(), stack.split(1));
 		    contentsChanged();
 		    
 		    return true;
@@ -126,15 +137,15 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	
 	public boolean removeItem(Level level, BlockPos pos)
 	{
-		if(itemCount() > 0)
+		if(getItemCount() > 0)
 		{
-			ItemStack stack = items.get(itemCount()-1);
+			ItemStack stack = items.get(getItemCount()-1);
 			
             ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack);
             drop.setDefaultPickUpDelay();
             level.addFreshEntity(drop);
             
-            items.set(itemCount()-1, ItemStack.EMPTY);
+            items.set(getItemCount()-1, ItemStack.EMPTY);
             contentsChanged();
             
             return true;
@@ -147,22 +158,30 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	{
 		CompoundTag wandTag = stack.getTag();
 
-		if(wandTag != null)
-		{
-			ListTag wandList = wandTag.getList("entity", 10);
-			if(wandList.size() > 0)
-			{
-				CompoundTag entityNBT = wandList.getCompound(wandList.size()-1);
+		if(entities.getList("flyingfamiliars.entity", 10).size() != MAX_ENTITIES) populateTag(this);
+		
+		ListTag wandList = wandTag.getList("flyingfamiliars.entity", 10);
+		ListTag blockList = entities.getList("flyingfamiliars.entity", 10);
 
-				ListTag entityList = entities.getList("entity", 10);
+		for(int i = 0; i < MAX_ENTITIES; i++)
+		{
+			// Need to use regular Tag object for "Empty" compare here, not CompoundTag
+			if(blockList.get(i).toString().contains("Empty"))
+			{
+				CompoundTag entityNBT = wandList.getCompound(SoulWand.MAX_ENTITIES-1);
+
+				blockList.set(i, entityNBT);
+				entities.put("flyingfamiliars.entity", blockList);
 				
-				if(entityList.size() < NUM_ENTITY_SLOTS) entityList.addTag(entityList.size(), entityNBT);
-				else return false;
+				CompoundTag empty = new CompoundTag();
+				empty.putString("flyingfamiliars.entity", "Empty");
+				wandList.set(SoulWand.MAX_ENTITIES-1, empty);
 				
-				System.out.println(entityList.getCompound(entityList.size()-1).getString("entity"));
+				wandTag.put("flyingfamiliars.entity", wandList);
+				stack.setTag(wandTag);
+				contentsChanged();
 				
-				entities.put("entity", entityList);
-				wandList.remove(wandList.size()-1);
+				return true;
 			}
 		}
 		
@@ -173,24 +192,33 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	{
 		CompoundTag wandTag = stack.getTag();
 		
-		if(entities != null)
+		if(entities.getList("flyingfamiliars.entity", 10).size() != MAX_ENTITIES)
 		{
-			ListTag entityList = entities.getList("entity", 10);
-			if(entityList.size() > 0)
+			populateTag(this);
+			return false;
+		}
+		
+		ListTag wandList = wandTag.getList("flyingfamiliars.entity", 10);
+		ListTag blockList = entities.getList("flyingfamiliars.entity", 10);
+		
+		for(int i = MAX_ENTITIES; i > 0; i--)
+		{
+			if(!blockList.get(i-1).toString().contains("Empty"))
 			{
-				if(wandTag == null) wandTag = new CompoundTag();
+				CompoundTag entityNBT = blockList.getCompound(i-1);
 				
-				ListTag wandList = wandTag.getList("entity", 10);
-				if(wandList.size() < 3)
-				{
-					CompoundTag entityNBT = entityList.getCompound(entityList.size()-1);
-					wandList.addTag(wandList.size(), entityNBT);
-					
-					wandTag.put("entity", wandList);
-					stack.setTag(wandTag);
-					
-					return true;
-				}
+				CompoundTag empty = new CompoundTag();
+				empty.putString("flyingfamiliars.entity", "Empty");
+				blockList.set(i-1, empty);
+				entities.put("flyingfamiliars.entity", blockList);
+				
+				wandList.set(SoulWand.MAX_ENTITIES-1, entityNBT);
+				
+				wandTag.put("flyingfamiliars.entity", wandList);
+				stack.setTag(wandTag);
+				contentsChanged();
+				
+				return true;
 			}
 		}
 
@@ -204,28 +232,54 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		
 		if(!level.isClientSide())
 		{
-			FFMessages.sendToClients(new BEItemStackS2CPacket(new ItemStackHandler(items), worldPosition));
+			FFMessages.sendToClients(new BEItemStackS2CPacket(getItems(), worldPosition));
+			FFMessages.sendToClients(new EntityListS2CPacket(getEntities(), worldPosition));
 		}
 	}
 	
 	public NonNullList<ItemStack> getItems()
 	{
-		return this.items;
+		return items;
 	}
 	
-	public int itemCount()
+	public int getItemCount()
 	{
-		for(int i = 0; i < NUM_ITEM_SLOTS; i++)
+		for(int i = 0; i < MAX_ITEMS; i++)
 		{
 			if(items.get(i).isEmpty()) return i;
 		}
 		
-		return NUM_ITEM_SLOTS;
+		return MAX_ITEMS;
 	}
 	
-	public int entityCount()
+	public NonNullList<String> getEntities()
+	{
+		ListTag blockList = entities.getList("flyingfamiliars.entity", 10);
+		NonNullList<String> entityStrings = NonNullList.withSize(MAX_ENTITIES, "");
+		
+		for(int i = 0; i < MAX_ENTITIES; i++)
+		{
+			entityStrings.set(i, blockList.getCompound(i).getString("flyingfamiliars.entity"));
+		}
+		
+		return entityStrings;
+	}
+	
+	public int getEntityCount()
 	{	
-		return entities.size();
+		int entityCount = 0;
+		
+		if(entities.getList("flyingfamiliars.entity", 10).size() != MAX_ENTITIES) populateTag(this);
+    	
+		ListTag tagList = entities.getList("flyingfamiliars.entity", 10);
+		
+		for(int i = 0; i < MAX_ENTITIES; i++)
+    	{
+			// Need to use regular Tag object here, not CompoundTag
+    		if(!tagList.get(i).toString().contains("Empty")) entityCount++;
+    	}
+
+    	return entityCount;
 	}
 	
 	public int getProgress()
@@ -296,6 +350,22 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		entity.resetProgress();
 	}
 	
+	public static void populateTag(BrazierBlockEntity entity)
+	{
+		entity.entities = new CompoundTag();
+		
+		CompoundTag entityNBT = new CompoundTag();
+		ListTag tagList = entityNBT.getList("flyingfamiliars.entity", 10);
+		entityNBT.putString("flyingfamiliars.entity", "Empty");
+		
+		for(int i = 0; i < MAX_ENTITIES; i++)
+		{
+			tagList.addTag(i, entityNBT);
+		}
+		
+		entity.entities.put("flyingfamiliars.entity", tagList);
+	}
+	
 	private void resetProgress()
 	{
 		this.progress = 0;
@@ -315,5 +385,6 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	public void clearContent()
 	{
 		this.items.clear();
+		populateTag(this);
 	}
 }

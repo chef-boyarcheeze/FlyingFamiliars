@@ -35,24 +35,8 @@ public class SoulWand extends Item
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) 
 	{
 		ItemStack stack = player.getItemInHand(hand);
-		CompoundTag compound = stack.getTag();
 		
-		if(compound == null)
-		{
-			compound = new CompoundTag();
-			
-			CompoundTag entityNBT = new CompoundTag();
-			ListTag tagList = entityNBT.getList("flyingfamiliars.entity", 10);
-			entityNBT.putString("flyingfamiliars.entity", "Empty");
-			
-			for(int i = 0; i < MAX_ENTITIES; i++)
-			{
-				tagList.addTag(i, entityNBT);
-			}
-			
-			compound.put("flyingfamiliars.entity", tagList);
-			stack.setTag(compound);
-		}
+		if(stack.getTag() == null) populateTag(stack);
 		
 	    level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_THROW.get(), SoundSource.NEUTRAL, 0.5F, FFSounds.getPitch());
 	    
@@ -91,7 +75,7 @@ public class SoulWand extends Item
 				{				
 					for (int i = 0; i < MAX_ENTITIES; i++)
 					{
-						tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.slot").withStyle(ChatFormatting.YELLOW).append((i+1) + ": " + getID(i, stack)));
+						tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.tooltip.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
 					}
 				}
 				else
@@ -108,7 +92,7 @@ public class SoulWand extends Item
 							break;
 					}
 					
-					tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.left_shift").withStyle(ChatFormatting.GRAY));
+					tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.soul_wand.tooltip.left_shift").withStyle(ChatFormatting.GRAY));
 				}
 			}
 			else
@@ -129,17 +113,62 @@ public class SoulWand extends Item
     	
     	if(compound != null)
     	{
-    		ListTag tagList = compound.getList("flyingfamiliars.entity", 10);
+    		ListTag wandList = compound.getList("flyingfamiliars.entity", 10);
     		
     		for(int i = 0; i < MAX_ENTITIES; i++)
         	{
     			// Need to use regular Tag object here, not CompoundTag
-        		if(!tagList.get(i).toString().contains("Empty")) entityCount++;
+        		if(!wandList.get(i).toString().contains("Empty")) entityCount++;
         	}
     	}
     	
     	return entityCount;
     }
+    
+    public static String getSelectedEntity(ItemStack stack)
+    {
+    	CompoundTag compound = stack.getTag();
+    	
+    	if(compound != null)
+    	{
+    		ListTag wandList = compound.getList("flyingfamiliars.entity", 10);
+    		
+    		return wandList.getCompound(MAX_ENTITIES-1).getString("flyingfamiliars.entity");
+    	}
+    	
+    	return "Empty";
+    }
+    
+    public static boolean isSelectionEmpty(ItemStack stack)
+    {
+    	CompoundTag compound = stack.getTag();
+    	
+    	if(compound != null)
+    	{
+    		ListTag wandList = compound.getList("flyingfamiliars.entity", 10);
+    		
+    		return wandList.get(MAX_ENTITIES-1).toString().contains("Empty");
+    	}
+    	
+    	return true;
+    }
+    
+    public static void populateTag(ItemStack stack)
+	{
+		CompoundTag compound = new CompoundTag();
+		
+		CompoundTag entityNBT = new CompoundTag();
+		ListTag wandList = entityNBT.getList("flyingfamiliars.entity", 10);
+		entityNBT.putString("flyingfamiliars.entity", "Empty");
+		
+		for(int i = 0; i < MAX_ENTITIES; i++)
+		{
+			wandList.addTag(i, entityNBT);
+		}
+		
+		compound.put("flyingfamiliars.entity", wandList);
+		stack.setTag(compound);
+	}
     
     @Override
     public boolean isFoil(ItemStack stack)

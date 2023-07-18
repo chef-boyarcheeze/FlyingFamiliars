@@ -38,7 +38,7 @@ public class SoulWandSelectC2SPacket
 				else cycleDown(player, stack);
 				
 				level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5F, FFSounds.getPitch());
-				
+				player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.select").withStyle(ChatFormatting.AQUA).append(": " + getID(SoulWand.MAX_ENTITIES-1, stack)), true);
 			}
 		});
 		
@@ -47,49 +47,43 @@ public class SoulWandSelectC2SPacket
 	}
 	
 	private void cycleUp(Player player, ItemStack stack)
-	{
+	{		
+		if(stack.getTag() == null) SoulWand.populateTag(stack);
+		
 		CompoundTag compound = stack.getTag();
 		
-		if (compound != null)
+		ListTag temp = compound.getList("flyingfamiliars.entity", 10);
+		ListTag tagList = new ListTag();
+		
+		tagList.add(temp.get(SoulWand.MAX_ENTITIES-1));
+		
+		for(int i = 0; i < SoulWand.MAX_ENTITIES-1; i++)
 		{
-			ListTag temp = compound.getList("flyingfamiliars.entity", 10);
-			ListTag tagList = new ListTag();
-			
-			tagList.add(temp.get(SoulWand.MAX_ENTITIES-1));
-			
-			for(int i = 0; i < SoulWand.MAX_ENTITIES-1; i++)
-			{
-				tagList.add(temp.get(i));
-			}
-			
-			compound.put("flyingfamiliars.entity", tagList);
-			stack.setTag(compound);
-			
-			player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand_select").withStyle(ChatFormatting.AQUA).append(getID(SoulWand.MAX_ENTITIES-1, stack)), true);
-		}		
+			tagList.add(temp.get(i));
+		}
+		
+		compound.put("flyingfamiliars.entity", tagList);
+		stack.setTag(compound);		
 	}
 	
 	private void cycleDown(Player player, ItemStack stack)
 	{
+		if(stack.getTag() == null) SoulWand.populateTag(stack);
+		
 		CompoundTag compound = stack.getTag();
 		
-		if (compound != null)
+		ListTag temp = compound.getList("flyingfamiliars.entity", 10);
+		ListTag tagList = new ListTag();
+		
+		for(int i = 1; i < SoulWand.MAX_ENTITIES; i++)
 		{
-			ListTag temp = compound.getList("flyingfamiliars.entity", 10);
-			ListTag tagList = new ListTag();
-			
-			for(int i = 1; i < SoulWand.MAX_ENTITIES; i++)
-			{
-				tagList.add(temp.get(i));
-			}
-			
-			tagList.add(temp.get(0));
-			
-			compound.put("flyingfamiliars.entity", tagList);
-			stack.setTag(compound);
-			
-			player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand_select").withStyle(ChatFormatting.AQUA).append(getID(SoulWand.MAX_ENTITIES-1, stack)), true);
-		}		
+			tagList.add(temp.get(i));
+		}
+		
+		tagList.add(temp.get(0));
+		
+		compound.put("flyingfamiliars.entity", tagList);
+		stack.setTag(compound);
 	}
 	
 	public String getID(int listValue, ItemStack stack)

@@ -17,20 +17,21 @@
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 
-	"tooltip.flyingfamiliars.soul_wand.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
-	"tooltip.flyingfamiliars.soul_wand.slot": "Slot ",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
+	"tooltip.flyingfamiliars.soul_wand.tooltip.slot": "Slot",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.empty": "Empty",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_1": "1 stored mob",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_2": "2 stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_3": "3 stored mobs",
-	"tooltip.flyingfamiliars.soul_wand.selection": "Current Selection: ",
 	
 	"key.flyingfamiliars.ascend": "Ascend",
 	"key.flyingfamiliars.descend": "Descend",
 	
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",
-	"message.flyingfamiliars.soul_wand_select": "Current Selection: ",
+	"message.flyingfamiliars.soul_wand.select": "Current Selection",
+	"message.flyingfamiliars.soul_wand.place_entity": "Placed Entity",
+	"message.flyingfamiliars.soul_wand.remove_entity": "Removed Entity",
 	
 	"sounds.flyingfamiliars.brazier": "Brazier burns",
 	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
