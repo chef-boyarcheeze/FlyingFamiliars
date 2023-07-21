@@ -17,6 +17,9 @@
 	"entities": [
 		{
 			"string": "minecraft:cow"
+		},
+		{
+			"string": "minecraft:pig"
 		}
 	],
 	"output": {
