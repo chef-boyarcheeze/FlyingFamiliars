@@ -27,14 +27,14 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	private final ResourceLocation id;
 	private final ItemStack output;
 	private final NonNullList<Ingredient> recipeItems;
-	private final NonNullList<String> entityTags;
+	private final NonNullList<String> recipeEntities;
 	
-	public BrazierRecipe(ResourceLocation i, ItemStack o, NonNullList<Ingredient> r, NonNullList<String> e)
+	public BrazierRecipe(ResourceLocation i, ItemStack o, NonNullList<Ingredient> ri, NonNullList<String> re)
 	{
 		id = i;
 		output = o;
-		recipeItems = r;
-		entityTags = e;
+		recipeItems = ri;
+		recipeEntities = re;
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	
 	/*	
 	 * 	For every ingredient in a recipe, compare to brazier's stored items.
-	 * 	Allows for any order of ingredients to craft a recipe.
+	 * 	Allows for any order of stored ingredients to be used in crafting.
 	 */	
 	public boolean itemsMatch(NonNullList<ItemStack> items)
 	{
@@ -58,15 +58,15 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             if(!items.get(i).isEmpty()) handlerItems.add(items.get(i).copy());
         }
         
-        for(Ingredient ingredient : recipeItems)
+        for(int i = 0; i < recipeItems.size(); i++)
         {
-            boolean found = false;
-            for (ItemStack stack : ingredient.getItems())
+        	boolean found = false;
+            for (ItemStack stack : recipeItems.get(i).getItems())
             {
-                int i = 0;
-                for (; i < handlerItems.size(); i++)
+                int j = 0;
+                for (; j < handlerItems.size(); j++)
                 {
-                    if (handlerItems.get(i).sameItem(stack))
+                    if (handlerItems.get(j).sameItem(stack))
                     {
                         found = true;
                         break;
@@ -74,7 +74,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
                 }
                 if (found)
                 {
-                	handlerItems.remove(i);
+                	handlerItems.remove(j);
                     break;
                 }
             }
@@ -84,8 +84,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
     }
 	
 	/*
-	 * 	For every required entity, compare to Soul Wand stored entities.
-	 * 	Allows for specific removal of entities to be used in crafting.
+	 * 	For every required entity, compare to Brazier stored entities.
+	 * 	Allows for any order of stored entities to be used in crafting.
 	 */
 	public boolean entitiesMatch(NonNullList<String> entities)
 	{
@@ -98,16 +98,24 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 			if(entities.get(i) != "Empty") handlerEntities.add(entities.get(i));
 		}
 		
-		for(String entity : entityTags)
+		for(int i = 0; i < recipeEntities.size(); i++)
 		{
 			boolean found = false;
 			
-			int i = 0;
-			for(; i < handlerEntities.size(); i++)
-			{
-				if(handlerEntities.get(i))
-			}
+			int j = 0;
+            for (; j < handlerEntities.size(); j++)
+            {            	
+                if (handlerEntities.get(j).equals(recipeEntities.get(i)))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (found) handlerEntities.remove(j);
+            else return false;
 		}
+        return handlerEntities.size() == 0;
 	}
 
 	@Override
@@ -124,7 +132,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	
 	public NonNullList<String> getEntities()
 	{
-		return entityTags;
+		return recipeEntities;
 	}
 
 	@Override

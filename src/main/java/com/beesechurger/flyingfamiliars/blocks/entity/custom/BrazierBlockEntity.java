@@ -254,6 +254,8 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	
 	public NonNullList<String> getEntities()
 	{
+		if(entities.getList("flyingfamiliars.entity", 10).size() != MAX_ENTITIES) populateTag(this);
+		
 		ListTag blockList = entities.getList("flyingfamiliars.entity", 10);
 		NonNullList<String> entityStrings = NonNullList.withSize(MAX_ENTITIES, "");
 		
@@ -307,7 +309,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 				entity.progress++;
 				setChanged(level, pos, state);
 				
-				System.out.println(entity.currentRecipe.getEntities().get(0));
+				//System.out.println(entity.currentRecipe.getEntities().get(0));
 				
 				if(entity.progress > entity.maxProgress)
 				{
@@ -330,7 +332,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		boolean found = false;
 		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
 		{
-			if(entry.itemsMatch(items))
+			if(entry.itemsMatch(getItems()) && entry.entitiesMatch(getEntities()))
 			{
 				currentRecipe = entry;
 				found = true;
