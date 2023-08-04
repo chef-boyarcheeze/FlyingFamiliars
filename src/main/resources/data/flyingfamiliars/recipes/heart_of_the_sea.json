@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:wet_sponge"
+		},
+		{
+			"item": "minecraft:lapis_lazuli"
+		},
+		{
+			"item": "minecraft:nautilus_shell"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:dolphin"
+		},
+		{
+			"string": "minecraft:drowned"
+		},
+		{
+			"string": "minecraft:pufferfish"
+		}
+	],
+	"outputItem": {
+		"item": "minecraft:heart_of_the_sea"
+	},
+	"outputEntity": {
+	}
+}

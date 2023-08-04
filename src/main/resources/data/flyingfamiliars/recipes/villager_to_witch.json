@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:eye_of_the_storm"
+			"item": "minecraft:redstone"
 		},
 		{
 			"item": "minecraft:fermented_spider_eye"

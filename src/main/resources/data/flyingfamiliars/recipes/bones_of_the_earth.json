@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:deepslate"
+		},
+		{
+			"item": "minecraft:gold_ingot"
+		},
+		{
+			"item": "minecraft:moss_block"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:axolotl"
+		},
+		{
+			"string": "minecraft:cave_spider"
+		},
+		{
+			"string": "minecraft:iron_golem"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:bones_of_the_earth"
+	},
+	"outputEntity": {
+	}
+}

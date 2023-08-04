@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:lilac"
+		},
+		{
+			"item": "minecraft:emerald"
+		},
+		{
+			"item": "minecraft:rabbit_foot"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:bee"
+		},
+		{
+			"string": "minecraft:vex"
+		},
+		{
+			"string": "minecraft:rabbit"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:pelt_of_the_forest"
+	},
+	"outputEntity": {
+	}
+}

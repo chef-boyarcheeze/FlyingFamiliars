@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:feather"
+		},
+		{
+			"item": "minecraft:copper_ingot"
+		},
+		{
+			"item": "minecraft:bowl"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:skeleton_horse"
+		},
+		{
+			"string": "minecraft:witch"
+		},
+		{
+			"string": "minecraft:zombified_piglin"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:eye_of_the_storm"
+	},
+	"outputEntity": {
+	}
+}

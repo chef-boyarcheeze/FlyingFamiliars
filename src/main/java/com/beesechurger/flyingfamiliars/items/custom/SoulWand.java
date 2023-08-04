@@ -9,6 +9,7 @@ import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class SoulWand extends Item
 {
@@ -54,6 +56,12 @@ public class SoulWand extends Item
 	    player.awardStat(Stats.ITEM_USED.get(this));
 
 	    return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+	}
+	
+	@Override
+	public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player)
+	{
+		return !player.isCreative();
 	}
 	
     public String getID(int listValue, ItemStack stack)

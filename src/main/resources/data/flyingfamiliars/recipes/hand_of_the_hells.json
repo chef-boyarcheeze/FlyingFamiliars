@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:obsidian"
+		},
+		{
+			"item": "minecraft:coal"
+		},
+		{
+			"item": "minecraft:nether_wart"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:strider"
+		},
+		{
+			"string": "minecraft:blaze"
+		},
+		{
+			"string": "minecraft:hoglin"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:hand_of_the_hells"
+	},
+	"outputEntity": {
+	}
+}

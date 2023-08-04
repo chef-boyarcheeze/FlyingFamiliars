@@ -29,6 +29,7 @@ public class FFItems
 	public static final RegistryObject<Item> BONES_OF_THE_EARTH = register("bones_of_the_earth", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> HAND_OF_THE_HELLS = register("hand_of_the_hells", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> EYE_OF_THE_STORM = register("eye_of_the_storm", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> PELT_OF_THE_FOREST = register("pelt_of_the_forest", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> PHOENIX_FEATHER = register("phoenix_feather", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB)));
 	
 	// Spawn eggs:
