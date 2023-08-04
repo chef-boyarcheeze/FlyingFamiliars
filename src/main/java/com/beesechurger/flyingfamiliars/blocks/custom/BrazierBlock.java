@@ -86,7 +86,7 @@ public class BrazierBlock extends BaseEntityBlock
 					{
 						String selectedEntity = SoulWand.getSelectedEntity(stack);
 						
-						if(brazierEntity.placeSoul(stack))
+						if(brazierEntity.placeEntity(stack))
 						{
 							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.place_entity")
 																.withStyle(ChatFormatting.YELLOW)
@@ -95,7 +95,7 @@ public class BrazierBlock extends BaseEntityBlock
 					}
 					else
 					{
-						if(brazierEntity.removeSoul(stack))
+						if(brazierEntity.removeEntity(stack))
 						{
 							String selectedEntity = SoulWand.getSelectedEntity(stack);
 							

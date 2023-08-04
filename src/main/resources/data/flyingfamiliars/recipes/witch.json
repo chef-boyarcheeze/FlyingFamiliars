@@ -17,7 +17,6 @@
 		}
 	],
 	"outputItem": {
-		"item": "minecraft:coal"
 	},
 	"outputEntity": {
 		"string": "minecraft:witch"

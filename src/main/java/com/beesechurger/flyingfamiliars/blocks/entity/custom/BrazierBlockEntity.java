@@ -17,6 +17,8 @@ import net.minecraft.world.Clearable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -154,7 +156,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		return false;
 	}
 	
-	public boolean placeSoul(ItemStack stack)
+	public boolean placeEntity(ItemStack stack)
 	{
 		CompoundTag wandTag = stack.getTag();
 
@@ -188,7 +190,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		return false;
 	}
 	
-	public boolean removeSoul(ItemStack stack)
+	public boolean removeEntity(ItemStack stack)
 	{
 		CompoundTag wandTag = stack.getTag();
 		
@@ -311,7 +313,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 				
 				if(entity.progress > entity.maxProgress)
 				{
-					craftItem(pos, entity);
+					craft(pos, entity);
 					entity.contentsChanged();
 				}
 			}
@@ -332,6 +334,8 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		{
 			if(entry.itemsMatch(getItems()) && entry.entitiesMatch(getEntities()))
 			{
+				System.out.println(entry.getResultEntity());
+				System.out.println(entry.getResultItem().getItem().toString());
 				currentRecipe = entry;
 				found = true;
 				break;
@@ -340,14 +344,19 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		if(!found) currentRecipe = null;
 	}
 	
-	private static void craftItem(BlockPos pos, BrazierBlockEntity entity)
-	{	
+	private static void craft(BlockPos pos, BrazierBlockEntity entity)
+	{
+		// Clear all fields
+		entity.clearContent();
+		entity.resetProgress();
+		
+		// Spawn result item drop
 		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getResultItem());
         drop.setDefaultPickUpDelay();
         entity.level.addFreshEntity(drop);
         
-        entity.clearContent();
-		entity.resetProgress();
+        // Add result entity to entity list
+        entity.addResultEntity(entity.currentRecipe.getResultEntity());
 	}
 	
 	public static void populateTag(BrazierBlockEntity entity)
@@ -364,6 +373,25 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		}
 		
 		entity.entities.put("flyingfamiliars.entity", tagList);
+	}
+	
+	public void addResultEntity(String resultEntity)
+	{
+		if(resultEntity == "") return;
+		
+    	EntityType<?> type = EntityType.byString(resultEntity).orElse(null);
+    	if(type != null)
+    	{
+    		CompoundTag entityNBT = new CompoundTag();
+    		ListTag tagList = entities.getList("flyingfamiliars.entity", 10);
+    		Entity entity = type.create(level);
+    		
+    		entityNBT.putString("flyingfamiliars.entity", EntityType.getKey(entity.getType()).toString());
+    		entity.saveWithoutId(entityNBT);
+    		
+    		tagList.set(0, entityNBT);
+    		entities.put("flyingfamiliars.entity", tagList);
+    	}
 	}
 	
 	private void resetProgress()

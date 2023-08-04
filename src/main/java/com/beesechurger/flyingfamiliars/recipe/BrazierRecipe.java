@@ -210,7 +210,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             	inputEntities.set(i, entityParse(entities.get(i).toString()));
             }
             
-            ItemStack outputItem = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "outputItem"));
+            
+            ItemStack outputItem = GsonHelper.getAsJsonObject(json, "outputItem").size() != 0 ? ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "outputItem")) : ItemStack.EMPTY;
             String outputEntity = entityParse(GsonHelper.getAsJsonObject(json, "outputEntity").toString());
             
             return new BrazierRecipe(id, outputItem, outputEntity, inputItems, inputEntities);

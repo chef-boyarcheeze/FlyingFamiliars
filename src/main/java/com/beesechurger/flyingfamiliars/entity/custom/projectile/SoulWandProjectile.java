@@ -120,11 +120,9 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		        EntityType<?> type = EntityType.byString(entityNBT.getString("flyingfamiliars.entity")).orElse(null);
 	            if (type != null)
 	            {
-	            	Entity entity;
-	            	
-	                entity = type.create(level);
+	            	Entity entity = type.create(level);
 	                entity.load(entityNBT);
-	                
+
 	                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
 					level.addFreshEntity(entity);
 					
