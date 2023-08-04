@@ -1,6 +1,6 @@
 {
 	"type": "flyingfamiliars:brazier",
-	"ingredients": [
+	"inputItems": [
 		{
 			"item": "minecraft:string"
 		},
@@ -14,7 +14,7 @@
 			"item": "minecraft:coal"
 		}
 	],
-	"entities": [
+	"inputEntities": [
 		{
 			"string": "minecraft:cow"
 		},
@@ -22,7 +22,9 @@
 			"string": "minecraft:pig"
 		}
 	],
-	"output": {
+	"outputItem": {
 		"item": "minecraft:feather"
+	},
+	"outputEntity": {
 	}
 }

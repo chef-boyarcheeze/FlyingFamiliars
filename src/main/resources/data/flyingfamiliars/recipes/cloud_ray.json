@@ -1,0 +1,31 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:eye_of_the_storm"
+		},
+		{
+			"item": "minecraft:heart_of_the_sea"
+		},
+		{
+			"item": "minecraft:phantom_membrane"
+		},
+		{
+			"item": "minecraft:heart_of_the_sea"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:phantom"
+		},
+		{
+			"string": "minecraft:dolphin"
+		}
+	],
+	"outputItem": {
+		"item": "minecraft:coal"
+	},
+	"outputEntity": {
+		"string": "flyingfamiliars:cloud_ray"
+	}
+}

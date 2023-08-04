@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BrazierBlockEntity extends BlockEntity implements Clearable 
 {
-	private final static int MAX_ITEMS = 4;
+	private final static int MAX_ITEMS = 5;
 	private final static int MAX_ENTITIES = 3;
 	private final NonNullList<ItemStack> items = NonNullList.withSize(MAX_ITEMS, ItemStack.EMPTY);
 	private CompoundTag entities = new CompoundTag();
@@ -308,8 +308,6 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 			{
 				entity.progress++;
 				setChanged(level, pos, state);
-				
-				//System.out.println(entity.currentRecipe.getEntities().get(0));
 				
 				if(entity.progress > entity.maxProgress)
 				{

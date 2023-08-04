@@ -1,0 +1,25 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:eye_of_the_storm"
+		},
+		{
+			"item": "minecraft:fermented_spider_eye"
+		},
+		{
+			"item": "minecraft:glass_bottle"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:villager"
+		}
+	],
+	"outputItem": {
+		"item": "minecraft:coal"
+	},
+	"outputEntity": {
+		"string": "minecraft:witch"
+	}
+}
