@@ -1,8 +1,44 @@
 {
-	"brazier": {
-		"subtitle": "sounds.flyingfamiliars.brazier",
+	"brazier_add_entity": {
+		"subtitle": "sounds.flyingfamiliars.brazier_add_entity",
 		"sounds": [
-			"flyingfamiliars:brazier"
+			"flyingfamiliars:brazier_add_entity"
+		]
+	},
+	"brazier_add_item": {
+		"subtitle": "sounds.flyingfamiliars.brazier_add_item",
+		"sounds": [
+			"flyingfamiliars:brazier_add_item"
+		]
+	},
+	"brazier_ambient": {
+		"subtitle": "sounds.flyingfamiliars.brazier_ambient",
+		"sounds": [
+			"flyingfamiliars:brazier_ambient"
+		]
+	},
+	"brazier_craft": {
+		"subtitle": "sounds.flyingfamiliars.brazier_craft",
+		"sounds": [
+			"flyingfamiliars:brazier_craft"
+		]
+	},
+	"brazier_remove_entity": {
+		"subtitle": "sounds.flyingfamiliars.brazier_remove_entity",
+		"sounds": [
+			"flyingfamiliars:brazier_remove_entity"
+		]
+	},
+	"brazier_remove_item": {
+		"subtitle": "sounds.flyingfamiliars.brazier_remove_item",
+		"sounds": [
+			"flyingfamiliars:brazier_remove_item"
+		]
+	},
+	"brazier_result": {
+		"subtitle": "sounds.flyingfamiliars.brazier_result",
+		"sounds": [
+			"flyingfamiliars:brazier_result"
 		]
 	},
 	"cloud_ray_idle1": {

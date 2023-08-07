@@ -15,7 +15,13 @@ public class FFSounds
 	
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, FlyingFamiliars.MOD_ID);
 	
-	public static final RegistryObject<SoundEvent> BRAZIER_BURNS = registerSoundEvent("brazier");
+	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ENTITY = registerSoundEvent("brazier_add_entity");
+	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ITEM = registerSoundEvent("brazier_add_item");
+	public static final RegistryObject<SoundEvent> BRAZIER_AMBIENT = registerSoundEvent("brazier_ambient");
+	public static final RegistryObject<SoundEvent> BRAZIER_CRAFT = registerSoundEvent("brazier_craft");
+	public static final RegistryObject<SoundEvent> BRAZIER_REMOVE_ENTITY = registerSoundEvent("brazier_remove_entity");
+	public static final RegistryObject<SoundEvent> BRAZIER_REMOVE_ITEM = registerSoundEvent("brazier_remove_item");
+	public static final RegistryObject<SoundEvent> BRAZIER_RESULT = registerSoundEvent("brazier_result");
 	
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE1 = registerSoundEvent("cloud_ray_idle1");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE2 = registerSoundEvent("cloud_ray_idle2");

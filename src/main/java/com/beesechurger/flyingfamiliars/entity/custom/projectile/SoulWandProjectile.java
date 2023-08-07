@@ -5,6 +5,7 @@ import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -104,9 +105,7 @@ public class SoulWandProjectile extends ThrowableItemProjectile
     }
 	
 	private boolean release(BlockHitResult result)
-	{
-		BlockPos pos = new BlockPos(result.getLocation());
-
+	{		
 		CompoundTag compound = soul_wand.getTag();
 		ListTag wandList = compound.getList("flyingfamiliars.entity", 10);
 		
@@ -120,10 +119,18 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		        EntityType<?> type = EntityType.byString(entityNBT.getString("flyingfamiliars.entity")).orElse(null);
 	            if (type != null)
 	            {
+	            	BlockPos pos = result.getBlockPos();
+	            	Direction dir = result.getDirection();
+	            	System.out.println(type.getHeight());
+	            	
+	            	double x = pos.getX() + 0.5 + (dir == Direction.EAST ? 1 : dir == Direction.WEST ? -1 : 0);
+	            	double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
+	            	double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? 1 : dir == Direction.NORTH ? -1 : 0);
+	            	
 	            	Entity entity = type.create(level);
 	                entity.load(entityNBT);
 
-	                entity.absMoveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
+	                entity.absMoveTo(x, y, z, 0, 0);
 					level.addFreshEntity(entity);
 					
 					entityNBT.putString("flyingfamiliars.entity", "Empty");

@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -54,7 +53,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.client.event.ScreenEvent.KeyboardKeyPressedEvent;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -84,7 +82,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	private final Item TAME_ITEM = Items.GLOW_BERRIES;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
-	
+
 	private int animTickCounter = 0;
 	private int animSpeedCounter = 0;
 
@@ -98,12 +96,13 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 
 	public static AttributeSupplier setAttributes()
 	{
-		return TamableAnimal.createMobAttributes().add(Attributes.MAX_HEALTH, MAX_HEALTH)
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, MAX_HEALTH)
 				.add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE).add(Attributes.FLYING_SPEED, FLYING_SPEED)
 				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE)
 				.add(Attributes.ATTACK_SPEED, ATTACK_SPEED).build();
 	}
 
+	@Override
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
@@ -127,15 +126,15 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 // GeckoLib animation controls:
 
 	private <E extends IAnimatable> PlayState predicateGeneral(AnimationEvent<E> event)
-	{	
+	{
 		if(event.getController().getAnimationState() != AnimationState.Running)
 		{
 			animTickCounter = 0;
 		}
-		
+
 		animTickCounter += 1;
 		animSpeedCounter = (int) event.getController().getAnimationSpeed();
-		
+
 		if(this.isFlying())
 		{
 			if(FFKeys.ascend.isDown() && !FFKeys.descend.isDown())
@@ -166,13 +165,13 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
 			}
 		}
-		
+
 		if(event.getController().getCurrentAnimation() != null)
 		{
 			//System.out.print(event.getController().getCurrentAnimation().animationLength + "\n");
 			//event.getController().getCurrentAnimation().customInstructionKeyframes;
 		}
-		
+
 		return PlayState.CONTINUE;
 	}
 
@@ -181,14 +180,14 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.move_fins", EDefaultLoopTypes.LOOP));
 		return PlayState.CONTINUE;
 	}
-	
+
 	private <E extends IAnimatable> PlayState predicateHead(AnimationEvent<E> event)
 	{
 		if(getRandom().nextDouble() < 0.005)
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.move_fins", EDefaultLoopTypes.PLAY_ONCE));
 		}
-		
+
 		return PlayState.CONTINUE;
 	}
 
@@ -205,9 +204,9 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	{
 		return this.factory;
 	}
-	
 
-// Save data preservation:	
+
+// Save data preservation:
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag)
@@ -233,7 +232,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		this.entityData.define(FLYING, false);
 		this.entityData.define(INVERTED, false);
 	}
-	
+
 // Entity booleans:
 
 	@Override
@@ -257,19 +256,20 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	{
 		return entityData.get(FLYING);
 	}
-	
+
 	public boolean isInverted()
 	{
 		return this.entityData.get(INVERTED);
 	}
-	
+
 	public boolean isMoving()
 	{
 		double d0 = this.getX() - this.xo;
 		double d1 = this.getZ() - this.zo;
-		return d0 * d0 + d1 * d1 > (double) 2.5000003E-7F;
+		return d0 * d0 + d1 * d1 > 2.5000003E-7F;
 	}
 
+	@Override
 	public boolean canBeLeashed(Player player)
 	{
 		return false;
@@ -319,6 +319,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 				: select == 1 ? FFSounds.CLOUD_RAY_STEP2.get() : FFSounds.CLOUD_RAY_STEP3.get();
 	}
 
+	@Override
 	protected void playStepSound(BlockPos position, BlockState blockState)
 	{
 		this.playSound(this.getStepSound(), 0.3F, 1.0F);
@@ -331,7 +332,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		{
 			return FFSounds.CLOUD_RAY_IDLE1.get();
 		}
-		
+
 		return this.random.nextInt(4) == 0 ? FFSounds.CLOUD_RAY_IDLE2.get() : FFSounds.CLOUD_RAY_IDLE3.get();
 	}
 
@@ -347,6 +348,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		return FFSounds.CLOUD_RAY_DEATH.get();
 	}
 
+	@Override
 	protected float getSoundVolume()
 	{
 		return 0.3f;
@@ -364,7 +366,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	{
 		this.entityData.set(FLYING, flying);
 	}
-	
+
 	public void setInverted(boolean inverted)
 	{
 		this.entityData.set(INVERTED, inverted);
@@ -479,7 +481,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 				navigation.stop();
 				setTarget(null);
 			}
-			
+
 			return SUCCESS;
 		}
 
@@ -574,7 +576,7 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 		}
 	}
 
-	public void setRidingPlayer(Player player) 
+	public void setRidingPlayer(Player player)
 	{
 		player.setYRot(getYRot());
 		player.setXRot(getXRot());
@@ -585,12 +587,12 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	public void positionRider(Entity rider)
 	{
 		LivingEntity driver = (LivingEntity) rider;
-		
+
 		if (this.hasPassenger(rider))
 		{
 			float posOffset = 0;
 			double zOffset = 0.5;
-			
+
 			//System.out.print(animTickCounter + "\n");
 
 			Vec3 pos = new Vec3(0, (getPassengersRidingOffset() + rider.getMyRidingOffset()), getScale() - zOffset)
@@ -610,8 +612,8 @@ public class CloudRayEntity extends TamableAnimal implements IAnimatable
 	@Override
 	public double getPassengersRidingOffset()
 	{
-		if(isFlying()) return ((double) this.getDimensions(this.getPose()).height * 0.6) - 0.1 * Math.sin(animTickCounter * Math.PI / 100);
-		return ((double) this.getDimensions(this.getPose()).height * 0.6);
+		if(isFlying()) return (this.getDimensions(this.getPose()).height * 0.6) - 0.1 * Math.sin(animTickCounter * Math.PI / 100);
+		return (this.getDimensions(this.getPose()).height * 0.6);
 	}
 
 	@Override

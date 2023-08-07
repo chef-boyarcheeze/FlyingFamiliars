@@ -1,5 +1,7 @@
 package com.beesechurger.flyingfamiliars.blocks.entity.custom;
 
+import java.util.Random;
+
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
@@ -7,12 +9,15 @@ import com.beesechurger.flyingfamiliars.networking.packet.BEItemStackS2CPacket;
 import com.beesechurger.flyingfamiliars.networking.packet.BEProgressS2CPacket;
 import com.beesechurger.flyingfamiliars.networking.packet.EntityListS2CPacket;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
+import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
@@ -22,6 +27,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -125,11 +131,13 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	}
 	
 	public boolean placeItem(ItemStack stack)
-	{		
-		if(getItemCount() < MAX_ITEMS)
+	{
+		if(getItemCount() < MAX_ITEMS && stack.getItem() != Items.AIR)
 		{
 			items.set(getItemCount(), stack.split(1));
 		    contentsChanged();
+		    
+		    playSound(1);
 		    
 		    return true;
 		}
@@ -149,6 +157,8 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
             
             items.set(getItemCount()-1, ItemStack.EMPTY);
             contentsChanged();
+            
+            playSound(2);
             
             return true;
 		}
@@ -182,6 +192,8 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 				wandTag.put("flyingfamiliars.entity", wandList);
 				stack.setTag(wandTag);
 				contentsChanged();
+				
+				playSound(3);
 				
 				return true;
 			}
@@ -219,6 +231,8 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 				wandTag.put("flyingfamiliars.entity", wandList);
 				stack.setTag(wandTag);
 				contentsChanged();
+				
+				playSound(4);
 				
 				return true;
 			}
@@ -303,16 +317,32 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
 	{		
-		if(level.isClientSide()) return;
+		if(level.isClientSide())
+		{
+			if(entity.progress >= entity.maxProgress)
+			{
+				for(int i = 0; i < 360; i++)
+				{
+					if(i % 4 == 0) entity.level.addParticle(ParticleTypes.CLOUD, entity.getBlockPos().getX() + 0.5F, entity.getBlockPos().getY() + 1.2F, entity.getBlockPos().getZ() + 0.5F, 0.1 * Math.cos(i), 0, 0.1 * Math.sin(i));
+					entity.level.addParticle(ParticleTypes.SMOKE, entity.getBlockPos().getX() + 0.5F, entity.getBlockPos().getY() + 1.2F, entity.getBlockPos().getZ() + 0.5F, 0.12 * Math.cos(i), -0.05F, 0.12 * Math.sin(i));
+				}
+			}
+			
+			return;
+		}
 		if(entity.currentRecipe != null)
 		{
 			if(entity.currentRecipe.itemsMatch(entity.items))
 			{
+				if(entity.progress == 0) entity.playSound(5);
+				
 				entity.progress++;
 				setChanged(level, pos, state);
 				
 				if(entity.progress > entity.maxProgress)
 				{
+					entity.level.playSound(null, pos, FFSounds.BRAZIER_RESULT.get(), SoundSource.BLOCKS, 0.8F, 0.5F);
+					
 					craft(pos, entity);
 					entity.contentsChanged();
 				}
@@ -327,6 +357,31 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		FFMessages.sendToClients(new BEProgressS2CPacket(entity.progress, entity.worldPosition));
 	}
 	
+	private void playSound(int source)
+	{
+		Random random = new Random();
+		switch (source)
+		{
+			case 1:
+				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_ADD_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+				break;
+			case 2:
+				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+				break;
+			case 3:
+				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+				break;
+			case 4:
+				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+				break;
+			case 5:
+				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_CRAFT.get(), SoundSource.BLOCKS, 0.7F, 1.0F);
+				break;
+			default:
+				break;
+		}
+	}
+	
 	private void findMatch()
 	{
 		boolean found = false;
@@ -334,8 +389,6 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		{
 			if(entry.itemsMatch(getItems()) && entry.entitiesMatch(getEntities()))
 			{
-				System.out.println(entry.getResultEntity());
-				System.out.println(entry.getResultItem().getItem().toString());
 				currentRecipe = entry;
 				found = true;
 				break;
@@ -345,7 +398,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	}
 	
 	private static void craft(BlockPos pos, BrazierBlockEntity entity)
-	{
+	{		
 		// Clear all fields
 		entity.clearContent();
 		entity.resetProgress();

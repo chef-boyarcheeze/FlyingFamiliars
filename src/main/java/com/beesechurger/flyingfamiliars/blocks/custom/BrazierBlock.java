@@ -77,6 +77,7 @@ public class BrazierBlock extends BaseEntityBlock
 			{
 				BrazierBlockEntity brazierEntity = (BrazierBlockEntity) entity;
 				ItemStack stack = player.getItemInHand(hand);
+				Random random = new Random();
 				
 				if(stack.getItem() == FFItems.SOUL_WAND.get())
 				{
@@ -91,6 +92,11 @@ public class BrazierBlock extends BaseEntityBlock
 							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.place_entity")
 																.withStyle(ChatFormatting.YELLOW)
 																.append(": " + selectedEntity), true);
+							
+							player.playSound(null, friction, explosionResistance);
+							level.playSound(player, pos, null, null, friction, explosionResistance);
+							level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, 
+									FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
 						}
 					}
 					else
@@ -102,6 +108,9 @@ public class BrazierBlock extends BaseEntityBlock
 							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.remove_entity")
 																.withStyle(ChatFormatting.YELLOW)
 																.append(": " + selectedEntity), true);
+							
+							level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, 
+									FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
 						}
 					}
 				}
@@ -137,18 +146,29 @@ public class BrazierBlock extends BaseEntityBlock
 	{
 		if (random.nextInt(20) == 0)
 		{
-			level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, FFSounds.BRAZIER_BURNS.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
+			level.playLocalSound((double) pos.getX() + 0.5D,(double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
+					FFSounds.BRAZIER_AMBIENT.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
 		}
 		
 		if (random.nextInt(3) == 0)
 		{
 		   for(int i = 0; i < random.nextInt(1) + 1; ++i)
 		   {
-			   level.addParticle(ParticleTypes.SOUL, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, (double)(random.nextFloat() / 20.0F), 0.1D, (double)(random.nextFloat() / 20.0F));
+			   level.addParticle(ParticleTypes.SOUL, (double) pos.getX() + 0.5D,
+					   								 (double) pos.getY() + 0.5D,
+					   								 (double) pos.getZ() + 0.5D,
+					   								 (double)(random.nextFloat() / 20.0F), 0.1D, (double)(random.nextFloat() / 20.0F));
 		   }
 		}
 		
-      	level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, (double) pos.getX() + 0.5D + random.nextDouble() / 3.0D * (double) (random.nextBoolean() ? 1 : -1), (double) pos.getY() + 1.2D, (double) pos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double) (random.nextBoolean() ? 1 : -1), 0.0D, 0.07D, 0.0D);
-      	level.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1), (double) pos.getY() + 0.4D, (double) pos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
+      	level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, (double) pos.getX() + 0.5D + random.nextDouble() / 3.0D * (double) (random.nextBoolean() ? 1 : -1),
+      																			(double) pos.getY() + 1.2D,
+      																			(double) pos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double) (random.nextBoolean() ? 1 : -1),
+      																			0.0D, 0.07D, 0.0D);
+      	
+      	level.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
+      										   (double) pos.getY() + 0.4D,
+      										   (double) pos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
+      										   0.0D, 0.005D, 0.0D);
     }
 }

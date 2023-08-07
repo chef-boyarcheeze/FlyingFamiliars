@@ -59,12 +59,13 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 				
 				double craftingOffset = 0.25 * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
 				double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
+				double centerShift = brazierEntity.getEntityCount() == 1 ? 0 : 2.5D;
 				
 				stack.pushPose();
 				stack.translate(0.5D, 1.6D, 0.5D);
 				stack.mulPose(Vector3f.YN.rotationDegrees(angle + time / 2));
 				stack.scale(0.2f, 0.2f, 0.2f);
-				stack.translate(2.5D, craftingShift, 0);
+				stack.translate(centerShift, craftingShift, 0);
 				stack.mulPose(Vector3f.YP.rotationDegrees((float) (30 * Math.sin(time / 30) + 90)));
 				Minecraft.getInstance().getEntityRenderDispatcher().render(storedEntity, 0, 0, 0, 0, 0, stack, buffer, 255);
 				stack.popPose();
