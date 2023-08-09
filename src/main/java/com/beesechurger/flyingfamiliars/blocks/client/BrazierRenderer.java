@@ -52,10 +52,11 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 		{
 			float angle = ((i+1) * 360F / brazierEntity.getEntityCount());
 			
-			EntityType<?> type = EntityType.byString(brazierEntity.getEntities().get(i)).orElse(null);
+			EntityType<?> type = EntityType.byString(brazierEntity.getEntitiesStrings().get(i)).orElse(null);
 			if(type != null)
 			{
 				Entity storedEntity = type.create(brazierEntity.getLevel());
+				storedEntity.load(brazierEntity.getEntitiesTag().getList("flyingfamiliars.entity", 10).getCompound(i));
 				
 				double craftingOffset = 0.25 * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
 				double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;

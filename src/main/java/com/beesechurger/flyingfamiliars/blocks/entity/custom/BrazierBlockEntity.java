@@ -114,9 +114,9 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		}
 	}
 	
-	public void setClientEntities(NonNullList<String> list)
+	public void setClientEntities(CompoundTag list)
 	{
-		populateTag(this);
+		/*populateTag(this);
 		
 		ListTag clientList = entities.getList("flyingfamiliars.entity", 10);
 		
@@ -127,7 +127,9 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 			clientList.set(i, entityNBT);
 		}
 		
-		entities.put("flyingfamiliars.entity", clientList);
+		entities.put("flyingfamiliars.entity", clientList);*/
+		
+		entities = list;
 	}
 	
 	public boolean placeItem(ItemStack stack)
@@ -249,7 +251,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		if(!level.isClientSide())
 		{
 			FFMessages.sendToClients(new BEItemStackS2CPacket(getItems(), worldPosition));
-			FFMessages.sendToClients(new EntityListS2CPacket(getEntities(), worldPosition));
+			FFMessages.sendToClients(new EntityListS2CPacket(getEntitiesTag(), worldPosition));
 		}
 	}
 	
@@ -268,7 +270,14 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		return MAX_ITEMS;
 	}
 	
-	public NonNullList<String> getEntities()
+	public CompoundTag getEntitiesTag()
+	{
+		if(entities.getList("flyingfamiliars.entity", 10).size() != MAX_ENTITIES) populateTag(this);
+		
+		return entities;
+	}
+	
+	public NonNullList<String> getEntitiesStrings()
 	{
 		if(entities.getList("flyingfamiliars.entity", 10).size() != MAX_ENTITIES) populateTag(this);
 		
@@ -387,7 +396,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 		boolean found = false;
 		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
 		{
-			if(entry.itemsMatch(getItems()) && entry.entitiesMatch(getEntities()))
+			if(entry.itemsMatch(getItems()) && entry.entitiesMatch(getEntitiesStrings()))
 			{
 				currentRecipe = entry;
 				found = true;
