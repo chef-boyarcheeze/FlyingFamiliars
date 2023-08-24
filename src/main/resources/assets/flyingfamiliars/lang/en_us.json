@@ -11,6 +11,7 @@
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
 	
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
+	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	
 	"block.flyingfamiliars.brazier": "Brazier",
@@ -18,6 +19,7 @@
 	"block.flyingfamiliars.effigy_core": "Effigy Core",
 	
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
+	"entity.flyingfamiliars.griffonfly": "Griffonfly",
 
 	"tooltip.flyingfamiliars.soul_wand.tooltip.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.slot": "Slot",
@@ -50,6 +52,13 @@
 	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
+	"sounds.flyingfamiliars.griffonfly_chitter1": "Griffonfly chitters",
+	"sounds.flyingfamiliars.griffonfly_chitter2": "Griffonfly chitters",
+	"sounds.flyingfamiliars.griffonfly_death": "Griffonfly dies",
+	"sounds.flyingfamiliars.griffonfly_flap1": "Griffonfly flaps",
+	"sounds.flyingfamiliars.griffonfly_flap2": "Griffonfly flaps",
+	"sounds.flyingfamiliars.griffonfly_flap3": "Griffonfly flaps",
+	"sounds.flyingfamiliars.griffonfly_hurt": "Griffonfly hurts",
 	"sounds.flyingfamiliars.soul_wand_swap": "Soul Wand mob selected",
 	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used",
 	"sounds.flyingfamiliars.specter_mote": "Spector Mote used"

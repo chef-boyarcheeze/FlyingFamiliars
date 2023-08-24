@@ -32,6 +32,14 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_HURT = registerSoundEvent("cloud_ray_hurt");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
 	
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER1 = registerSoundEvent("griffonfly_chitter1");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER2 = registerSoundEvent("griffonfly_chitter2");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_DEATH = registerSoundEvent("griffonfly_death");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP1 = registerSoundEvent("griffonfly_flap1");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP2 = registerSoundEvent("griffonfly_flap2");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP3 = registerSoundEvent("griffonfly_flap3");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_HURT = registerSoundEvent("griffonfly_hurt");
+	
 	public static final RegistryObject<SoundEvent> SOUL_WAND_SWAP = registerSoundEvent("soul_wand_swap");
 	public static final RegistryObject<SoundEvent> SOUL_WAND_THROW = registerSoundEvent("soul_wand_throw");
 	

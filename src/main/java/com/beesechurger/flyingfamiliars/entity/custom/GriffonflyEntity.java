@@ -51,8 +51,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.scores.Team;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -62,17 +60,15 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatable
+public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
 {
-	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> INVERTED = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(GriffonflyEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(GriffonflyEntity.class, EntityDataSerializers.BOOLEAN);
 
 	public static final float MAX_HEALTH = 50.00f;
 	public static final float FOLLOW_RANGE = 16;
 	public static final float FOLLOW_RANGE_FLYING = FOLLOW_RANGE * 2;
 	public static final float FLYING_SPEED = 0.4f;
-	public static final float MOVEMENT_SPEED = 0.3f;
 	public static final float ATTACK_DAMAGE = 3.0f;
 	public static final float ATTACK_SPEED = 2.0f;
 
@@ -81,20 +77,19 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
-	private int animTickCounter = 0;
-
-	public CloudRayEntity(EntityType<CloudRayEntity> entityType, Level level)
+	public GriffonflyEntity(EntityType<GriffonflyEntity> entityType, Level level)
 	{
 		super(entityType, level);
 		this.moveControl = new FlyingMoveControl(this, 5, false);
-		this.lookControl = new CloudRayLookControl(this);
+		this.lookControl = new GriffonflyLookControl(this);
 	}
 
 	public static AttributeSupplier setAttributes()
 	{
 		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE).add(Attributes.FLYING_SPEED, FLYING_SPEED)
-				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE)
+				.add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
+				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
+				.add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE)
 				.add(Attributes.ATTACK_SPEED, ATTACK_SPEED).build();
 	}
 
@@ -116,71 +111,57 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new CloudRayBodyRotationControl(this);
+		return new BodyRotationControl(this);
 	}
 
 // GeckoLib animation controls:
-
-	private <E extends IAnimatable> PlayState predicateGeneral(AnimationEvent<E> event)
+	
+	private <E extends IAnimatable> PlayState antennaeController(AnimationEvent<E> event)
 	{
-		if(event.getController().getAnimationState() != AnimationState.Running)
-		{
-			animTickCounter = 0;
-		}
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.antennae_idle", EDefaultLoopTypes.LOOP));
 
-		animTickCounter += 1;
-
-		if(this.isFlying())
+		return PlayState.CONTINUE;
+	}
+	
+	private <E extends IAnimatable> PlayState legsController(AnimationEvent<E> event)
+	{
+		if(this.isMoving() || this.isFlying())
 		{
-			if(FFKeys.ascend.isDown() && !FFKeys.descend.isDown())
-			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_ascend"));
-			}
-			else if(!FFKeys.ascend.isDown() && FFKeys.descend.isDown())
-			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_descend"));
-			}
-			else if(this.isMoving())
-			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying"));
-			}
-			else
-			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_stationary"));
-			}
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
 		}
 		else
 		{
-			if (this.isMoving())
-			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.walking"));
-			}
-			else
-			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
-			}
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
 		}
 
-		if(event.getController().getCurrentAnimation() != null)
-		{
-			//System.out.print(event.getController().getCurrentAnimation().animationLength + "\n");
-			//event.getController().getCurrentAnimation().customInstructionKeyframes;
-		}
+		event.getController().setAnimationSpeed(0.8f);
+		return PlayState.CONTINUE;
+	}
+	
+	private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
+	{
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.tail_idle", EDefaultLoopTypes.LOOP));
+		event.getController().setAnimationSpeed(0.6f);
 
 		return PlayState.CONTINUE;
 	}
-
-	private <E extends IAnimatable> PlayState predicateFins(AnimationEvent<E> event)
+	
+	private <E extends IAnimatable> PlayState wingsController(AnimationEvent<E> event)
 	{
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.move_fins", EDefaultLoopTypes.LOOP));
-		return PlayState.CONTINUE;
-	}
-
-	private <E extends IAnimatable> PlayState predicateHead(AnimationEvent<E> event)
-	{
-		if(getRandom().nextDouble(1) == 0)
+		if(this.isMoving() || this.isFlying())
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.head_move", EDefaultLoopTypes.PLAY_ONCE));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
+			
+			double speed = 1;
+			if(FFKeys.ascend.isDown()) speed += 0.2;
+			if(FFKeys.descend.isDown()) speed -= 0.2;
+			
+			event.getController().setAnimationSpeed(speed);
+		}
+		else
+		{
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_idle", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimationSpeed(0.8f);
 		}
 
 		return PlayState.CONTINUE;
@@ -189,9 +170,10 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	@Override
 	public void registerControllers(AnimationData data)
 	{
-		data.addAnimationController(new AnimationController<>(this, "controllerGeneral", 8, this::predicateGeneral));
-		data.addAnimationController(new AnimationController<>(this, "controllerFins", 1, this::predicateFins));
-		data.addAnimationController(new AnimationController<>(this, "controllerHead", 0, this::predicateHead));
+		data.addAnimationController(new AnimationController<>(this, "antennaeController", 0, this::antennaeController));
+		data.addAnimationController(new AnimationController<>(this, "legsController", 2, this::legsController));
+		data.addAnimationController(new AnimationController<>(this, "tailController", 0, this::tailController));
+		data.addAnimationController(new AnimationController<>(this, "wingsController", 3, this::wingsController));
 	}
 
 	@Override
@@ -200,7 +182,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		return this.factory;
 	}
 
-
 // Save data preservation:
 
 	@Override
@@ -208,7 +189,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 		super.readAdditionalSaveData(tag);
 		setSitting(tag.getBoolean("isSitting"));
-		setInverted(tag.getBoolean("isInverted"));
 	}
 
 	@Override
@@ -216,7 +196,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("isSitting", this.isSitting());
-		tag.putBoolean("isInverted", this.isInverted());
 	}
 
 	@Override
@@ -225,22 +204,9 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		super.defineSynchedData();
 		this.entityData.define(SITTING, false);
 		this.entityData.define(FLYING, false);
-		this.entityData.define(INVERTED, false);
 	}
 
 // Entity booleans:
-
-	@Override
-	public boolean rideableUnderWater()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canBreatheUnderwater()
-	{
-		return true;
-	}
 
 	public boolean isSitting()
 	{
@@ -252,95 +218,45 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		return entityData.get(FLYING);
 	}
 
-	public boolean isInverted()
-	{
-		return this.entityData.get(INVERTED);
-	}
-
-	public boolean isMoving()
-	{
-		double d0 = this.getX() - this.xo;
-		double d1 = this.getZ() - this.zo;
-		return d0 * d0 + d1 * d1 > 2.5000003E-7F;
-	}
-
-	@Override
-	public boolean canBeLeashed(Player player)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
-	{
-		return false;
-	}
-
-	@Override
-	protected void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_)
-	{
-	}
-
-	public boolean shouldFly()
-	{
-		return isHighEnough(FLIGHT_THRESHOLD);
-	}
-
-	public boolean isHighEnough(float height)
-	{
-		var pointer = blockPosition().mutable().move(0, -1, 0);
-		var min = level.dimensionType().minY();
-		var i = 0;
-
-		while (i <= height && pointer.getY() > min && !level.getBlockState(pointer).getMaterial().isSolid())
-			pointer.setY(getBlockY() - ++i);
-
-		return i >= height;
-	}
-
 // Sound-controlling methods:
 
 	@Override
 	public int getAmbientSoundInterval()
 	{
-		return 300;
-	}
-
-	protected SoundEvent getStepSound()
-	{
-		int select = (int) Math.floor(Math.random() * 3);
-
-		return select == 0 ? FFSounds.CLOUD_RAY_STEP1.get()
-				: select == 1 ? FFSounds.CLOUD_RAY_STEP2.get() : FFSounds.CLOUD_RAY_STEP3.get();
+		return 200;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos position, BlockState blockState)
 	{
-		this.playSound(this.getStepSound(), 0.3F, 1.0F);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		if (this.isOnGround())
+		if (this.isFlying())
 		{
-			return FFSounds.CLOUD_RAY_IDLE1.get();
-		}
+			int select = (int) Math.floor(Math.random() * 3);
 
-		return this.random.nextInt(4) == 0 ? FFSounds.CLOUD_RAY_IDLE2.get() : FFSounds.CLOUD_RAY_IDLE3.get();
+			return select == 0 ? FFSounds.GRIFFONFLY_FLAP1.get()
+					: select == 1 ? FFSounds.GRIFFONFLY_FLAP2.get() : FFSounds.GRIFFONFLY_FLAP3.get();
+		}
+		
+		int select = (int) Math.floor(Math.random() * 2);
+
+		return select == 0 ? FFSounds.GRIFFONFLY_CHITTER1.get() : FFSounds.GRIFFONFLY_CHITTER2.get();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource attack)
 	{
-		return FFSounds.CLOUD_RAY_HURT.get();
+		return FFSounds.GRIFFONFLY_HURT.get();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound()
 	{
-		return FFSounds.CLOUD_RAY_DEATH.get();
+		return FFSounds.GRIFFONFLY_DEATH.get();
 	}
 
 	@Override
@@ -362,39 +278,10 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		this.entityData.set(FLYING, flying);
 	}
 
-	public void setInverted(boolean inverted)
-	{
-		this.entityData.set(INVERTED, inverted);
-	}
-
-	@Override
-	public Team getTeam()
-	{
-		return super.getTeam();
-	}
-
-	@Override
-	public boolean canBeControlledByRider()
-	{
-		return this.getControllingPassenger() instanceof LivingEntity;
-	}
-
-	@Nullable
-	@Override
-	public Entity getControllingPassenger()
-	{
-		return this.getFirstPassenger();
-	}
-
 	@Override
 	public boolean isFood(ItemStack stack)
 	{
 		return stack.is(FOOD_ITEM);
-	}
-
-	public boolean isTamedFor(Player player)
-	{
-		return isTame() && isOwnedBy(player);
 	}
 
 	@Override
@@ -486,40 +373,23 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	@Override
 	public void travel(Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(isFlying() ? Attributes.FLYING_SPEED : Attributes.MOVEMENT_SPEED) * 0.25f;
+		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 0.25f;
 
-		if (canBeControlledByRider())
+		if(canBeControlledByRider())
 		{
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
-			double moveSideways = vec3.x;
-			double verticalMove = vec3.y;
-			double forwardMove = Math.min(Math.abs(driver.zza) + Math.abs(driver.xxa), 1);
+			this.setYRot(driver.getYRot());
+			this.yRotO = this.getYRot();
+			this.setXRot(driver.getXRot() * 0.5F);
+            this.setRot(this.getYRot(), this.getXRot());
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
 
-			// rotate head to match driver
-			float yaw = driver.yHeadRot;
-			if (forwardMove > 0) // rotate in the direction of the drivers controls
-				yaw += (float) (Mth.atan2(driver.zza, driver.xxa) * (180f / (float) Math.PI) - 90);
-			yHeadRot = yaw;
-
-			// rotate body towards the head
-			setYRot(Mth.rotateIfNecessary(yHeadRot, getYRot(), 8));
-			setXRot(driver.getXRot());
-
-			if (isControlledByLocalInstance()) // Client applies motion
+			if(isControlledByLocalInstance())
 			{
-				if (isFlying())
-				{
-					forwardMove = forwardMove > 0 ? forwardMove : 0;
-					if (FFKeys.ascend.isDown())
-						verticalMove += 0.6;
-					if (FFKeys.descend.isDown())
-						verticalMove += -0.6;
-					if (forwardMove > 0)
-						verticalMove += -driver.getXRot() * (Math.PI / 180);
-				}
-				else if (FFKeys.ascend.isDown()) jumpFromGround();
+				if(!isFlying() && FFKeys.ascend.isDown()) jumpFromGround();
 
-				vec3 = new Vec3(moveSideways, verticalMove, forwardMove);
+				vec3 = getHoverVector(vec3, driver);
 				setSpeed(speed);
 			}
 			else if (driver instanceof Player)
@@ -530,13 +400,13 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 			}
 		}
 
-		if (isFlying())
+		if(isFlying())
 		{
 			// allows motion
 			moveRelative(speed, vec3);
 			move(MoverType.SELF, getDeltaMovement());
 
-			// impose speed limit, and acceleration/deceleration
+			// Decelerate after not moving
 			setDeltaMovement(getDeltaMovement().scale(0.9f));
 
 			calculateEntityAnimation(this, true);
@@ -549,11 +419,11 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 		super.tick();
 
-		if (!this.level.isClientSide)
+		if(!this.level.isClientSide)
 		{
 			// update flying state based on the distance to the ground
 			boolean flying = shouldFly();
-			if (flying != isFlying())
+			if(flying != isFlying())
 			{
 				// notify client
 				setFlying(flying);
@@ -563,21 +433,14 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 				getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(flying ? FOLLOW_RANGE_FLYING : FOLLOW_RANGE);
 
 				// update pathfinding method
-				if (flying)
+				if(flying)
 					navigation = new FlyingPathNavigation(this, level);
 				else
 					navigation = new GroundPathNavigation(this, level);
 			}
 		}
 	}
-
-	public void setRidingPlayer(Player player)
-	{
-		player.setYRot(getYRot());
-		player.setXRot(getXRot());
-		player.startRiding(this);
-	}
-
+	
 	@Override
 	public void positionRider(Entity rider)
 	{
@@ -586,9 +449,7 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		if (this.hasPassenger(rider))
 		{
 			float posOffset = 0;
-			double zOffset = 0.5;
-
-			//System.out.print(animTickCounter + "\n");
+			double zOffset = 1;
 
 			Vec3 pos = new Vec3(0, (getPassengersRidingOffset() + rider.getMyRidingOffset()), getScale() - zOffset)
 					.yRot((float) Math.toRadians(-yBodyRot)).add(position());
@@ -607,19 +468,12 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	@Override
 	public double getPassengersRidingOffset()
 	{
-		if(isFlying()) return (this.getDimensions(this.getPose()).height * 0.6) - 0.1 * Math.sin(animTickCounter * Math.PI / 100);
 		return (this.getDimensions(this.getPose()).height * 0.6);
-	}
-
-	@Override
-	public void onPassengerTurned(Entity rider)
-	{
-		rider.setYBodyRot(this.getYRot());
 	}
 
 	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob cloudRay)
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob griffonfly)
 	{
 		return null;
 	}
@@ -645,112 +499,52 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		flyingpathnavigation.setCanPassDoors(false);
 		return flyingpathnavigation;
 	}
-
+	
 ////////////////////////////////
 // Entity AI control classes: //
 ////////////////////////////////
 
-	static class CloudRayLookControl extends LookControl
+	static class GriffonflyLookControl extends LookControl
 	{
-		private final CloudRayEntity cloudRay;
+		private final GriffonflyEntity griffonfly;
 
-		public CloudRayLookControl(CloudRayEntity entity)
+		public GriffonflyLookControl(GriffonflyEntity entity)
 		{
 			super(entity);
-			cloudRay = entity;
+			griffonfly = entity;
 		}
 
 		@Override
 		public void tick()
 		{
-			if (cloudRay.yBodyRot != cloudRay.getYHeadRot())
+			if (griffonfly.yBodyRot != griffonfly.getYHeadRot())
 			{
-				cloudRay.yHeadRot = Mth.rotLerp(0.05F, cloudRay.getYHeadRot(), cloudRay.yBodyRot);
+				griffonfly.yHeadRot = Mth.rotLerp(0.05F, griffonfly.getYHeadRot(), griffonfly.yBodyRot);
 			}
 		}
 	}
 
-	static class CloudRayBodyRotationControl extends BodyRotationControl
+	static class GriffonflyWanderGoal extends Goal
 	{
-		private final CloudRayEntity cloudRay;
-		private int headStableTime;
-		private float lastStableYHeadRot;
+		private final GriffonflyEntity griffonfly;
 
-		public CloudRayBodyRotationControl(CloudRayEntity entity)
-		{
-			super(entity);
-			cloudRay = entity;
-		}
-
-		@Override
-		public void clientTick()
-		{
-			if (cloudRay.isMoving())
-			{
-				cloudRay.yBodyRot = Mth.rotLerp(0.05F, cloudRay.yBodyRot, cloudRay.getYRot());
-				rotateHeadIfNecessary();
-				lastStableYHeadRot = cloudRay.yHeadRot;
-				headStableTime = 0;
-			}
-			else
-			{
-				if (notCarryingMobPassengers() && cloudRay.isFlying())
-				{
-					if (Math.abs(cloudRay.yHeadRot - lastStableYHeadRot) > 15.0F)
-					{
-						headStableTime = 0;
-						lastStableYHeadRot = cloudRay.yHeadRot;
-						rotateHeadIfNecessary();
-					}
-					else
-					{
-						++headStableTime;
-						if (headStableTime > 10)
-						{
-							rotateHeadTowardsFront();
-						}
-					}
-				}
-			}
-		}
-
-		private void rotateHeadIfNecessary()
-		{
-			cloudRay.yHeadRot = Mth.rotLerp(0.05F, cloudRay.yHeadRot, cloudRay.yBodyRot);
-		}
-
-		private void rotateHeadTowardsFront()
-		{
-			cloudRay.yHeadRot = Mth.rotLerp(0.05F, cloudRay.yHeadRot, cloudRay.yBodyRot);
-		}
-
-		private boolean notCarryingMobPassengers()
-		{
-			return !(cloudRay.getFirstPassenger() instanceof Mob);
-		}
-	}
-
-	static class CloudRayWanderGoal extends Goal
-	{
-		private final CloudRayEntity cloudRay;
-
-		CloudRayWanderGoal(CloudRayEntity entity)
+		GriffonflyWanderGoal(GriffonflyEntity entity)
 		{
 			setFlags(EnumSet.of(Goal.Flag.MOVE));
-			cloudRay = entity;
+			griffonfly = entity;
 		}
 
 		@Override
 		public boolean canUse()
 		{
-			return cloudRay.navigation.isDone() && cloudRay.random.nextInt(3) == 0
-					&& !cloudRay.isVehicle();
+			return griffonfly.navigation.isDone() && griffonfly.random.nextInt(3) == 0
+					&& !griffonfly.isVehicle();
 		}
 
 		@Override
 		public boolean canContinueToUse()
 		{
-			return cloudRay.navigation.isInProgress() && !cloudRay.isVehicle();
+			return griffonfly.navigation.isInProgress() && !griffonfly.isVehicle();
 		}
 
 		@Override
@@ -759,24 +553,24 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 			Vec3 vec3 = this.findPos();
 			if (vec3 != null)
 			{
-				cloudRay.navigation.moveTo(cloudRay.navigation.createPath(new BlockPos(vec3), 3), 1.0D);
+				griffonfly.navigation.moveTo(griffonfly.navigation.createPath(new BlockPos(vec3), 3), 1.0D);
 			}
 		}
 
 		@Override
 		public void stop()
 		{
-			cloudRay.navigation.stop();
+			griffonfly.navigation.stop();
 		}
 
 		@Nullable
 		private Vec3 findPos()
 		{
-			Vec3 vec3 = cloudRay.getViewVector(0.5F);
+			Vec3 vec3 = griffonfly.getViewVector(0.5F);
 
-			Vec3 vec32 = HoverRandomPos.getPos(cloudRay, 20, 20, vec3.x, vec3.z, (float) Math.PI, 50, 15);
+			Vec3 vec32 = HoverRandomPos.getPos(griffonfly, 20, 20, vec3.x, vec3.z, (float) Math.PI, 50, 15);
 			vec32 = vec32 != null ? vec32
-					: AirAndWaterRandomPos.getPos(cloudRay, 20, 20, -2, vec3.x, vec3.z, ((float) Math.PI));
+					: AirAndWaterRandomPos.getPos(griffonfly, 20, 20, -2, vec3.x, vec3.z, ((float) Math.PI));
 
 			return vec32;
 		}

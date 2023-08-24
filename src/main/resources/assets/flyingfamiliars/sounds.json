@@ -89,6 +89,48 @@
 			"flyingfamiliars:cloud_ray_death"
 		]
 	},
+	"griffonfly_chitter1": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter1",
+		"sounds": [
+			"flyingfamiliars:griffonfly_chitter1"
+		]
+	},
+	"griffonfly_chitter2": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter2",
+		"sounds": [
+			"flyingfamiliars:griffonfly_chitter2"
+		]
+	},
+	"griffonfly_death": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_death",
+		"sounds": [
+			"flyingfamiliars:griffonfly_death"
+		]
+	},
+	"griffonfly_flap1": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_flap1",
+		"sounds": [
+			"flyingfamiliars:griffonfly_flap1"
+		]
+	},
+	"griffonfly_flap2": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_flap2",
+		"sounds": [
+			"flyingfamiliars:griffonfly_flap2"
+		]
+	},
+	"griffonfly_flap3": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_flap3",
+		"sounds": [
+			"flyingfamiliars:griffonfly_flap3"
+		]
+	},
+	"griffonfly_hurt": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_hurt",
+		"sounds": [
+			"flyingfamiliars:griffonfly_hurt"
+		]
+	},
 	"soul_wand_swap": {
 		"subtitle": "sounds.flyingfamiliars.soul_wand_swap",
 		"sounds": [

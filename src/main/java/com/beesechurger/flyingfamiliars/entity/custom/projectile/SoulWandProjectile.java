@@ -121,7 +121,6 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	            {
 	            	BlockPos pos = result.getBlockPos();
 	            	Direction dir = result.getDirection();
-	            	System.out.println(type.getHeight());
 	            	
 	            	double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
 	            	double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);

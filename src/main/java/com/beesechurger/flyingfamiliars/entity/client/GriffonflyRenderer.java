@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
+import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -11,28 +11,23 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
+public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 {
 
-	public CloudRayRenderer(Context renderManager)
+	public GriffonflyRenderer(Context renderManager)
 	{
-		super(renderManager, new CloudRayModel());
+		super(renderManager, new GriffonflyModel());
 		this.shadowRadius = 1.5f;
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
-	{
-		if(animatable.isInverted())
-		{
-			return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_inverted.png");
-		}
-		
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray.png");
+	public ResourceLocation getTextureLocation(GriffonflyEntity animatable)
+	{		
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
 	}
 
 	@Override
-	public RenderType getRenderType(CloudRayEntity animatable, float partialTicks, PoseStack stack,
+	public RenderType getRenderType(GriffonflyEntity animatable, float partialTicks, PoseStack stack,
 									MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
 									ResourceLocation textureLocation)
 	{
