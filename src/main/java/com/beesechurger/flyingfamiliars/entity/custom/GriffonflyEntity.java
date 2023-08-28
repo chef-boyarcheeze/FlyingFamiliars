@@ -8,18 +8,12 @@ import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,18 +56,15 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
 {
-	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(GriffonflyEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(GriffonflyEntity.class, EntityDataSerializers.BOOLEAN);
-
 	public static final float MAX_HEALTH = 50.00f;
 	public static final float FOLLOW_RANGE = 16;
 	public static final float FOLLOW_RANGE_FLYING = FOLLOW_RANGE * 2;
-	public static final float FLYING_SPEED = 0.4f;
+	public static final float FLYING_SPEED = 0.3f;
 	public static final float ATTACK_DAMAGE = 3.0f;
 	public static final float ATTACK_SPEED = 2.0f;
 
-	private final Item FOOD_ITEM = Items.APPLE;
-	private final Item TAME_ITEM = Items.GLOW_BERRIES;
+	private final Item FOOD_ITEM = Items.CHORUS_FRUIT;
+	private final Item TAME_ITEM = Items.CHORUS_FLOWER;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -125,7 +116,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	
 	private <E extends IAnimatable> PlayState legsController(AnimationEvent<E> event)
 	{
-		if(this.isMoving() || this.isFlying())
+		if(this.isFlying())
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
 		}
@@ -148,7 +139,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	
 	private <E extends IAnimatable> PlayState wingsController(AnimationEvent<E> event)
 	{
-		if(this.isMoving() || this.isFlying())
+		if(this.isFlying())
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
 			
@@ -171,7 +162,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	public void registerControllers(AnimationData data)
 	{
 		data.addAnimationController(new AnimationController<>(this, "antennaeController", 0, this::antennaeController));
-		data.addAnimationController(new AnimationController<>(this, "legsController", 2, this::legsController));
+		data.addAnimationController(new AnimationController<>(this, "legsController", 4, this::legsController));
 		data.addAnimationController(new AnimationController<>(this, "tailController", 0, this::tailController));
 		data.addAnimationController(new AnimationController<>(this, "wingsController", 3, this::wingsController));
 	}
@@ -180,42 +171,6 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	public AnimationFactory getFactory()
 	{
 		return this.factory;
-	}
-
-// Save data preservation:
-
-	@Override
-	public void readAdditionalSaveData(CompoundTag tag)
-	{
-		super.readAdditionalSaveData(tag);
-		setSitting(tag.getBoolean("isSitting"));
-	}
-
-	@Override
-	public void addAdditionalSaveData(CompoundTag tag)
-	{
-		super.addAdditionalSaveData(tag);
-		tag.putBoolean("isSitting", this.isSitting());
-	}
-
-	@Override
-	protected void defineSynchedData()
-	{
-		super.defineSynchedData();
-		this.entityData.define(SITTING, false);
-		this.entityData.define(FLYING, false);
-	}
-
-// Entity booleans:
-
-	public boolean isSitting()
-	{
-		return this.entityData.get(SITTING);
-	}
-
-	public boolean isFlying()
-	{
-		return entityData.get(FLYING);
 	}
 
 // Sound-controlling methods:
@@ -264,25 +219,8 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		return 0.3f;
 	}
-
-// Control utilities:
-
-	public void setSitting(boolean sitting)
-	{
-		this.entityData.set(SITTING, sitting);
-		this.setOrderedToSit(sitting);
-	}
-
-	public void setFlying(boolean flying)
-	{
-		this.entityData.set(FLYING, flying);
-	}
-
-	@Override
-	public boolean isFood(ItemStack stack)
-	{
-		return stack.is(FOOD_ITEM);
-	}
+	
+// Mob AI methods:
 
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -355,7 +293,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		}
 
 		// ride on
-		if (isTamedFor(player) && (!isFood(stack) || getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue()))
+		if (isTamedFor(player) && (!stack.is(FOOD_ITEM) || getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue()))
 		{
 			if (!this.level.isClientSide)
 			{
@@ -373,7 +311,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	@Override
 	public void travel(Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 0.25f;
+		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
 
 		if(canBeControlledByRider())
 		{
@@ -390,12 +328,12 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 				if(!isFlying() && FFKeys.ascend.isDown()) jumpFromGround();
 
 				vec3 = getHoverVector(vec3, driver);
-				setSpeed(speed);
+				//setSpeed(0);
 			}
 			else if (driver instanceof Player)
 			{
-				calculateEntityAnimation(this, true);
 				setDeltaMovement(Vec3.ZERO);
+				calculateEntityAnimation(this, true);
 				return;
 			}
 		}
@@ -407,8 +345,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 			move(MoverType.SELF, getDeltaMovement());
 
 			// Decelerate after not moving
-			setDeltaMovement(getDeltaMovement().scale(0.9f));
-
+			setDeltaMovement(getDeltaMovement().scale(0.8f));
 			calculateEntityAnimation(this, true);
 		}
 		else super.travel(vec3);
@@ -446,36 +383,23 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		LivingEntity driver = (LivingEntity) rider;
 
-		if (this.hasPassenger(rider))
-		{
-			float posOffset = 0;
-			double zOffset = 1;
+		if(this.hasPassenger(rider))
+		{			
+			double x = 0;
+			double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
+			double z = getScale() - 1;
 
-			Vec3 pos = new Vec3(0, (getPassengersRidingOffset() + rider.getMyRidingOffset()), getScale() - zOffset)
-					.yRot((float) Math.toRadians(-yBodyRot)).add(position());
-			rider.setPos(pos.x, pos.y + posOffset, pos.z);
+			Vec3 pos = new Vec3(x, y, z).yRot((float) Math.toRadians(-yBodyRot)).add(position());
+			rider.setPos(pos);
 
 			// fix rider rotation
 			if (rider instanceof LivingEntity)
 			{
 				driver.xRotO = driver.getXRot();
 				driver.yRotO = driver.getYRot();
-				driver.yBodyRot = yBodyRot;
+				driver.setYBodyRot(yBodyRot);
 			}
 		}
-	}
-
-	@Override
-	public double getPassengersRidingOffset()
-	{
-		return (this.getDimensions(this.getPose()).height * 0.6);
-	}
-
-	@Nullable
-	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob griffonfly)
-	{
-		return null;
 	}
 
 	@Override

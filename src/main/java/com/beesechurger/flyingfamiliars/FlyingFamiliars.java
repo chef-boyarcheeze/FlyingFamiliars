@@ -6,25 +6,21 @@ import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.PhoenixRenderer;
-import com.beesechurger.flyingfamiliars.entity.custom.AbstractFamiliarEntity;
+import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.items.FFItemHandler;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.recipe.FFRecipes;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
-import net.minecraft.client.CameraType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -62,7 +58,7 @@ public class FlyingFamiliars {
 		
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(FFItemHandler.INSTANCE);
-		MinecraftForge.EVENT_BUS.addListener(this::cameraPerspective);
+		MinecraftForge.EVENT_BUS.addListener(ClientEvents::onCameraSetup);
 		
 		GeckoLib.initialize();
 	}
@@ -84,19 +80,4 @@ public class FlyingFamiliars {
 		
 		FFKeys.init();
 	}
-	
-	private void cameraPerspective(EntityViewRenderEvent.CameraSetup event)
-    {
-        Minecraft mc = Minecraft.getInstance();
-        Entity entity = mc.player.getVehicle();
-        
-        if(entity instanceof AbstractFamiliarEntity)
-        {
-        	AbstractFamiliarEntity cast = (AbstractFamiliarEntity) entity;
-        	
-        	CameraType view = mc.options.getCameraType();
-
-            if(view != CameraType.FIRST_PERSON) cast.setCamera(event);
-        }
-    }
 }

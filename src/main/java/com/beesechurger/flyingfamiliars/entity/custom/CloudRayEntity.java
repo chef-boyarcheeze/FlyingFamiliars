@@ -583,7 +583,7 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 		LivingEntity driver = (LivingEntity) rider;
 
-		if (this.hasPassenger(rider))
+		if(this.hasPassenger(rider))
 		{
 			float posOffset = 0;
 			double zOffset = 0.5;
@@ -595,7 +595,7 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 			rider.setPos(pos.x, pos.y + posOffset, pos.z);
 
 			// fix rider rotation
-			if (rider instanceof LivingEntity)
+			if(rider instanceof LivingEntity)
 			{
 				driver.xRotO = driver.getXRot();
 				driver.yRotO = driver.getYRot();

@@ -23,6 +23,6 @@ public class GriffonflyModel extends AnimatedGeoModel<GriffonflyEntity> {
 	@Override
 	public ResourceLocation getTextureLocation(GriffonflyEntity animatable)
 	{		
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
 	}
 }

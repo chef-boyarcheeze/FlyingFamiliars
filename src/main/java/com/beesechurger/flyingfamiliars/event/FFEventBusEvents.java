@@ -39,26 +39,4 @@ public class FFEventBusEvents
     {
     	Registry.register(Registry.RECIPE_TYPE, BrazierRecipe.Type.ID, BrazierRecipe.Type.INSTANCE);
     }
-    
-    /*@OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
-        Player player = Minecraft.getInstance().player;
-        if (player.getVehicle() != null) {
-            if (player.getVehicle() instanceof AbstractFamiliarEntity) {
-                int currentView = 2;
-                float scale = 1;
-                if (Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_BACK ||
-                    Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
-                    if (currentView == 1) {
-                        event.getCamera().move(-event.getCamera().getMaxZoom(scale * 1.2F), 0F, 0);
-                    } else if (currentView == 2) {
-                        event.getCamera().move(-event.getCamera().getMaxZoom(scale * 3F), 0F, 0);
-                    } else if (currentView == 3) {
-                        event.getCamera().move(-event.getCamera().getMaxZoom(scale * 5F), 0F, 0);
-                    }
-                }
-            }
-        }
-    }*/
 }

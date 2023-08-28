@@ -5,7 +5,13 @@ import org.jetbrains.annotations.Nullable;
 import com.beesechurger.flyingfamiliars.FFKeys;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,10 +21,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 
 public abstract class AbstractFamiliarEntity extends TamableAnimal
 {
+	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
+	
 	public static final float FLIGHT_THRESHOLD = 0.5f;
 
 	protected AbstractFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
@@ -27,30 +35,47 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		this.setTame(false);
 	}
 	
-	public void setCamera(EntityViewRenderEvent.CameraSetup event)
-    {
-		//event.getCamera();
-        /*    event.getInfo().move(ClientEvents.getViewCollision(-5d, this), 0.75d, 0);
-        else
-            event.getInfo().move(ClientEvents.getViewCollision(-3, this), 0.3, 0);*/
-    }
+// Additional Save Data:
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag)
+	{
+		super.readAdditionalSaveData(tag);
+		setSitting(tag.getBoolean("isSitting"));
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag)
+	{
+		super.addAdditionalSaveData(tag);
+		tag.putBoolean("isSitting", this.isSitting());
+	}
+
+	@Override
+	protected void defineSynchedData()
+	{
+		super.defineSynchedData();
+		this.entityData.define(SITTING, false);
+		this.entityData.define(FLYING, false);
+	}
+	
+// Entity booleans:
+
+	public boolean isSitting()
+	{
+		return this.entityData.get(SITTING);
+	}
+
+	public boolean isFlying()
+	{
+		return entityData.get(FLYING);
+	}
 	
 	public boolean isMoving()
 	{
 		double d0 = this.getX() - this.xo;
 		double d1 = this.getZ() - this.zo;
 		return d0 * d0 + d1 * d1 > 2.5000003E-7F;
-	}
-	
-	@Override
-	public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
-	{
-		return false;
-	}
-	
-	@Override
-	protected void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_)
-	{
 	}
 	
 	public boolean shouldFly()
@@ -65,11 +90,31 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		return i >= FLIGHT_THRESHOLD;
 	}
 	
+	public boolean isTamedFor(Player player)
+	{
+		return isTame() && isOwnedBy(player);
+	}
+	
 	@Override
 	public boolean canBeControlledByRider()
 	{
 		return this.getControllingPassenger() instanceof LivingEntity;
 	}
+	
+// Control methods:
+
+	public void setSitting(boolean sitting)
+	{
+		this.entityData.set(SITTING, sitting);
+		this.setOrderedToSit(sitting);
+	}
+
+	public void setFlying(boolean flying)
+	{
+		this.entityData.set(FLYING, flying);
+	}
+	
+// Player and entity interaction:
 	
 	@Override
 	public Team getTeam()
@@ -84,9 +129,49 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		return this.getFirstPassenger();
 	}
 	
-	public boolean isTamedFor(Player player)
+	public void setRidingPlayer(Player player)
 	{
-		return isTame() && isOwnedBy(player);
+		player.setYRot(getYRot());
+		player.setXRot(getXRot());
+		player.startRiding(this);
+	}
+	
+	@Override
+	public void onPassengerTurned(Entity rider)
+	{
+		rider.setYBodyRot(this.getYRot());
+	}
+	
+	@Nullable
+	@Override
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob griffonfly)
+	{
+		return null;
+	}
+	
+// Misc:
+	
+	@Override
+	public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
+	{
+		return false;
+	}
+	
+	@Override
+	protected void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_)
+	{
+	}
+	
+	@Override
+	public double getPassengersRidingOffset()
+	{
+		return (this.getDimensions(this.getPose()).height * getOffsetScale());
+	}
+	
+	private double getOffsetScale()
+	{
+		if(this instanceof GriffonflyEntity) return 0.6;
+		else return 0.6;
 	}
 	
 	public Vec3 getHoverVector(Vec3 vec3, LivingEntity driver)
@@ -99,18 +184,5 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		if(FFKeys.descend.isDown()) yMove -= 0.6;
 		
 		return new Vec3(xMove, yMove, zMove);
-	}
-	
-	public void setRidingPlayer(Player player)
-	{
-		player.setYRot(getYRot());
-		player.setXRot(getXRot());
-		player.startRiding(this);
-	}
-	
-	@Override
-	public void onPassengerTurned(Entity rider)
-	{
-		rider.setYBodyRot(this.getYRot());
 	}
 }
