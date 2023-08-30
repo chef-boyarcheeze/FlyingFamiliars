@@ -1,16 +1,11 @@
 package com.beesechurger.flyingfamiliars.entity.custom;
 
-import java.util.EnumSet;
-
-import org.jetbrains.annotations.Nullable;
-
 import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,11 +16,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
@@ -35,8 +28,6 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
-import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,9 +48,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 50.00f;
-	public static final float FOLLOW_RANGE = 16;
-	public static final float FOLLOW_RANGE_FLYING = FOLLOW_RANGE * 2;
-	public static final float FLYING_SPEED = 0.3f;
+	public static final float FOLLOW_RANGE = 32;
+	public static final float FLYING_SPEED = 0.2f;
 	public static final float ATTACK_DAMAGE = 3.0f;
 	public static final float ATTACK_SPEED = 2.0f;
 
@@ -72,7 +62,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		super(entityType, level);
 		this.moveControl = new FlyingMoveControl(this, 5, false);
-		this.lookControl = new GriffonflyLookControl(this);
+		this.lookControl = new LookControl(this);
 	}
 
 	public static AttributeSupplier setAttributes()
@@ -97,12 +87,6 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-	}
-
-	@Override
-	protected BodyRotationControl createBodyControl()
-	{
-		return new BodyRotationControl(this);
 	}
 
 // GeckoLib animation controls:
@@ -143,10 +127,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
 			
-			double speed = 1;
-			if(FFKeys.ascend.isDown()) speed += 0.2;
-			if(FFKeys.descend.isDown()) speed -= 0.2;
-			
+			double speed = 2;			
 			event.getController().setAnimationSpeed(speed);
 		}
 		else
@@ -162,9 +143,9 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	public void registerControllers(AnimationData data)
 	{
 		data.addAnimationController(new AnimationController<>(this, "antennaeController", 0, this::antennaeController));
-		data.addAnimationController(new AnimationController<>(this, "legsController", 4, this::legsController));
+		data.addAnimationController(new AnimationController<>(this, "legsController", 2, this::legsController));
 		data.addAnimationController(new AnimationController<>(this, "tailController", 0, this::tailController));
-		data.addAnimationController(new AnimationController<>(this, "wingsController", 3, this::wingsController));
+		data.addAnimationController(new AnimationController<>(this, "wingsController", 1, this::wingsController));
 	}
 
 	@Override
@@ -358,18 +339,11 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 		if(!this.level.isClientSide)
 		{
-			// update flying state based on the distance to the ground
 			boolean flying = shouldFly();
 			if(flying != isFlying())
 			{
-				// notify client
 				setFlying(flying);
 
-				// update AI follow range (needs to be updated before creating
-				// new PathNavigate!)
-				getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(flying ? FOLLOW_RANGE_FLYING : FOLLOW_RANGE);
-
-				// update pathfinding method
 				if(flying)
 					navigation = new FlyingPathNavigation(this, level);
 				else
@@ -422,81 +396,5 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		flyingpathnavigation.setCanFloat(false);
 		flyingpathnavigation.setCanPassDoors(false);
 		return flyingpathnavigation;
-	}
-	
-////////////////////////////////
-// Entity AI control classes: //
-////////////////////////////////
-
-	static class GriffonflyLookControl extends LookControl
-	{
-		private final GriffonflyEntity griffonfly;
-
-		public GriffonflyLookControl(GriffonflyEntity entity)
-		{
-			super(entity);
-			griffonfly = entity;
-		}
-
-		@Override
-		public void tick()
-		{
-			if (griffonfly.yBodyRot != griffonfly.getYHeadRot())
-			{
-				griffonfly.yHeadRot = Mth.rotLerp(0.05F, griffonfly.getYHeadRot(), griffonfly.yBodyRot);
-			}
-		}
-	}
-
-	static class GriffonflyWanderGoal extends Goal
-	{
-		private final GriffonflyEntity griffonfly;
-
-		GriffonflyWanderGoal(GriffonflyEntity entity)
-		{
-			setFlags(EnumSet.of(Goal.Flag.MOVE));
-			griffonfly = entity;
-		}
-
-		@Override
-		public boolean canUse()
-		{
-			return griffonfly.navigation.isDone() && griffonfly.random.nextInt(3) == 0
-					&& !griffonfly.isVehicle();
-		}
-
-		@Override
-		public boolean canContinueToUse()
-		{
-			return griffonfly.navigation.isInProgress() && !griffonfly.isVehicle();
-		}
-
-		@Override
-		public void start()
-		{
-			Vec3 vec3 = this.findPos();
-			if (vec3 != null)
-			{
-				griffonfly.navigation.moveTo(griffonfly.navigation.createPath(new BlockPos(vec3), 3), 1.0D);
-			}
-		}
-
-		@Override
-		public void stop()
-		{
-			griffonfly.navigation.stop();
-		}
-
-		@Nullable
-		private Vec3 findPos()
-		{
-			Vec3 vec3 = griffonfly.getViewVector(0.5F);
-
-			Vec3 vec32 = HoverRandomPos.getPos(griffonfly, 20, 20, vec3.x, vec3.z, (float) Math.PI, 50, 15);
-			vec32 = vec32 != null ? vec32
-					: AirAndWaterRandomPos.getPos(griffonfly, 20, 20, -2, vec3.x, vec3.z, ((float) Math.PI));
-
-			return vec32;
-		}
 	}
 }

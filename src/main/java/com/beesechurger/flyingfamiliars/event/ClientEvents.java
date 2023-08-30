@@ -24,12 +24,19 @@ public class ClientEvents
         
     	if(player.getVehicle() != null)
     	{
-    		if(player.getVehicle() instanceof AbstractFamiliarEntity)
+    		if(player.getVehicle() instanceof AbstractFamiliarEntity familiar)
             {
-    			if(mc.options.getCameraType() == CameraType.FIRST_PERSON)
-    				event.getCamera().move(-event.getCamera().getMaxZoom(0.25), 0, 0);
-    			else
-    				event.getCamera().move(-event.getCamera().getMaxZoom(0.5), 0, 0);
+    			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.25 : 0.5;
+    			
+    			float renderPitch = (float) (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ? 
+   					 -familiar.getPitch(event.getPartialTicks()) : familiar.getPitch(event.getPartialTicks()));
+    			float renderRoll = (float) (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ? 
+    					 familiar.getRoll(event.getPartialTicks()) : -familiar.getRoll(event.getPartialTicks()));
+    			
+    			event.setPitch(player.getViewXRot(renderRoll) + renderPitch);
+    			event.setRoll(renderRoll);
+    			
+    			event.getCamera().move(-event.getCamera().getMaxZoom(cameraZoom), 0, 0);
             }
     	}
     }
