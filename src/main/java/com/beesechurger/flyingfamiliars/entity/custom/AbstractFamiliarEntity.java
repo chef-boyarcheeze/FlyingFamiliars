@@ -26,6 +26,7 @@ import net.minecraft.world.scores.Team;
 
 public abstract class AbstractFamiliarEntity extends TamableAnimal
 {
+	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 	
@@ -40,6 +41,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		super(entity, level);
 		this.setTame(false);
+		
 	}
 	
 	@Override
@@ -68,15 +70,21 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-		this.entityData.define(SITTING, false);
-		this.entityData.define(FLYING, false);
+		entityData.define(VARIANT, "Yellow");
+		entityData.define(SITTING, false);
+		entityData.define(FLYING, false);
 	}
 	
-// Entity booleans:
+// Entity accessors:
+	
+	public String getVariant()
+	{
+		return entityData.get(VARIANT);
+	}
 
 	public boolean isSitting()
 	{
-		return this.entityData.get(SITTING);
+		return entityData.get(SITTING);
 	}
 
 	public boolean isFlying()
@@ -108,17 +116,22 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		return this.getControllingPassenger() instanceof LivingEntity;
 	}
 	
-// Control methods:
-
-	public void setSitting(boolean sitting)
+// Entity mutators:
+	
+	protected void setVariant(String variant)
 	{
-		this.entityData.set(SITTING, sitting);
-		this.setOrderedToSit(sitting);
+		entityData.set(VARIANT, variant);
 	}
 
-	public void setFlying(boolean flying)
+	protected void setSitting(boolean sitting)
 	{
-		this.entityData.set(FLYING, flying);
+		entityData.set(SITTING, sitting);
+		setOrderedToSit(sitting);
+	}
+
+	protected void setFlying(boolean flying)
+	{
+		entityData.set(FLYING, flying);
 	}
 	
 // Player and entity interaction:

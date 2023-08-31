@@ -23,7 +23,21 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	@Override
 	public ResourceLocation getTextureLocation(GriffonflyEntity animatable)
 	{		
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
+		switch(animatable.getVariant())
+		{
+			case "Yellow":
+				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+			case "Green":
+				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_green.png");
+			case "Blue":
+				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_blue.png");
+			case "Purple":
+				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
+			case "Red":
+				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_red.png");
+			default:
+				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+		}
 	}
 
 	@Override

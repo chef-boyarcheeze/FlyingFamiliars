@@ -46,8 +46,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
-{
-	public static final float MAX_HEALTH = 50.00f;
+{	
+	public static final float MAX_HEALTH = 20.00f;
 	public static final float FOLLOW_RANGE = 32;
 	public static final float FLYING_SPEED = 0.2f;
 	public static final float ATTACK_DAMAGE = 3.0f;
@@ -61,8 +61,9 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	public GriffonflyEntity(EntityType<GriffonflyEntity> entityType, Level level)
 	{
 		super(entityType, level);
-		this.moveControl = new FlyingMoveControl(this, 5, false);
-		this.lookControl = new LookControl(this);
+		selectVariant(this.random.nextInt(5));
+		moveControl = new FlyingMoveControl(this, 5, false);
+		lookControl = new LookControl(this);
 	}
 
 	public static AttributeSupplier setAttributes()
@@ -89,6 +90,29 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
 	}
 
+	
+	private void selectVariant(int variant)
+	{
+		switch(variant)
+		{
+			case 0:
+				setVariant("Yellow");
+				break;
+			case 1:
+				setVariant("Green");
+				break;
+			case 2:
+				setVariant("Blue");
+				break;
+			case 3:
+				setVariant("Purple");
+				break;
+			case 4:
+				setVariant("Red");
+				break;
+		}
+	}
+	
 // GeckoLib animation controls:
 	
 	private <E extends IAnimatable> PlayState antennaeController(AnimationEvent<E> event)
@@ -309,13 +333,19 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 				if(!isFlying() && FFKeys.ascend.isDown()) jumpFromGround();
 
 				vec3 = getHoverVector(vec3, driver);
-				//setSpeed(0);
 			}
 			else if (driver instanceof Player)
 			{
 				setDeltaMovement(Vec3.ZERO);
 				calculateEntityAnimation(this, true);
 				return;
+			}
+		}
+		else
+		{
+			if(!isFlying())
+			{
+				setDeltaMovement(Vec3.ZERO);
 			}
 		}
 
