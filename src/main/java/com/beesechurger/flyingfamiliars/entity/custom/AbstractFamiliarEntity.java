@@ -57,6 +57,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		super.readAdditionalSaveData(tag);
 		setSitting(tag.getBoolean("isSitting"));
+		setVariant(tag.getString("variant"));
 	}
 
 	@Override
@@ -64,6 +65,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("isSitting", this.isSitting());
+		tag.putString("variant", getVariant());
 	}
 
 	@Override
@@ -80,6 +82,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public String getVariant()
 	{
 		return entityData.get(VARIANT);
+	}
+	
+	public boolean hasVariant()
+	{
+		return false;
 	}
 
 	public boolean isSitting()
@@ -102,7 +109,8 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public boolean shouldFly()
 	{
 		var standingOn = blockPosition().mutable().move(0, -1, 0);
-		return !this.isOnGround() && !level.getBlockState(standingOn).getMaterial().isSolid();
+		//return !this.isOnGround() && !level.getBlockState(standingOn).getMaterial().isSolid();
+		return level.getBlockState(standingOn).isAir();
 	}
 	
 	public boolean isTamedFor(Player player)

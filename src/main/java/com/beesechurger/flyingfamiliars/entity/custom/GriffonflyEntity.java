@@ -1,5 +1,9 @@
 package com.beesechurger.flyingfamiliars.entity.custom;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
@@ -19,15 +23,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -79,37 +81,33 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		//this.goalSelector.addGoal(1, new CloudRayWanderGoal(this));
-		// this.goalSelector.addGoal(1, new MeleeAttackGoal((PathfinderMob)
-		// this.getTarget(), ATTACK_DAMAGE, false));
-		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1, FOLLOW_RANGE, 8, true));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.00));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 1, FOLLOW_RANGE, 8, true));
+		//this.goalSelector.addGoal(1, new GriffonflyWanderGoal(this));
 	}
 
 	
 	private void selectVariant(int variant)
 	{
-		switch(variant)
+		if(!hasVariant())
 		{
-			case 0:
-				setVariant("Yellow");
-				break;
-			case 1:
-				setVariant("Green");
-				break;
-			case 2:
-				setVariant("Blue");
-				break;
-			case 3:
-				setVariant("Purple");
-				break;
-			case 4:
-				setVariant("Red");
-				break;
+			switch(variant)
+			{
+				case 0:
+					setVariant("Yellow");
+					break;
+				case 1:
+					setVariant("Green");
+					break;
+				case 2:
+					setVariant("Blue");
+					break;
+				case 3:
+					setVariant("Purple");
+					break;
+				case 4:
+					setVariant("Red");
+					break;
+			}
 		}
 	}
 	
@@ -426,5 +424,64 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		flyingpathnavigation.setCanFloat(false);
 		flyingpathnavigation.setCanPassDoors(false);
 		return flyingpathnavigation;
+	}
+	
+////////////////////////////////
+// Entity AI control classes: //
+////////////////////////////////
+	
+	static class GriffonflyWanderGoal extends Goal
+	{
+		private final GriffonflyEntity griffonfly;
+		
+		GriffonflyWanderGoal(GriffonflyEntity griffonfly)
+		{
+			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+			this.griffonfly = griffonfly;
+		}
+		
+		@Override
+        public boolean canUse()
+		{
+            return this.griffonfly.navigation.isDone() && this.griffonfly.random.nextInt(3) == 0 && !this.griffonfly.isVehicle();
+        }
+
+        @Override
+        public boolean canContinueToUse()
+        {
+            return this.griffonfly.navigation.isInProgress() && !this.griffonfly.isVehicle();
+        }
+
+        @Override
+        public void start()
+        {
+            Vec3 vec3 = this.findPos();
+            if (vec3 != null)
+            {
+            	this.griffonfly.navigation.moveTo(this.griffonfly.navigation.createPath(new BlockPos(vec3), 3), 1.0D);
+            }
+        }
+
+        @Override
+        public void stop()
+        {
+        	this.griffonfly.navigation.stop();
+        }
+
+        @Nullable
+        private Vec3 findPos()
+        {
+            Vec3 vec3 = this.griffonfly.getViewVector(0.5F);
+
+            Vec3 vec32 = HoverRandomPos.getPos(this.griffonfly, 20, 20, vec3.x, vec3.z, (float)Math.PI, 50, 15);
+            vec32 = vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(this.griffonfly, 20, 20, -2, vec3.x, vec3.z, ((float)Math.PI));
+
+            if(vec32 != null && this.griffonfly.getOwner() != null && vec32.distanceTo(this.griffonfly.getOwner().position()) > 100.0D)
+            {
+                vec32 = null;
+            }
+
+            return vec32;
+        }
 	}
 }

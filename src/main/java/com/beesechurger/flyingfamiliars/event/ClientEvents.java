@@ -27,13 +27,18 @@ public class ClientEvents
     		if(player.getVehicle() instanceof AbstractFamiliarEntity familiar)
             {
     			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.25 : 0.5;
+    			double cameraRotMod = 0.5f;
     			
-    			float renderPitch = (float) (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ? 
-   					 -familiar.getPitch(event.getPartialTicks()) : familiar.getPitch(event.getPartialTicks()));
-    			float renderRoll = (float) (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ? 
-    					 familiar.getRoll(event.getPartialTicks()) : -familiar.getRoll(event.getPartialTicks()));
+    			float renderPitch = (float) (cameraRotMod * familiar.getPitch(event.getPartialTicks()) + 
+    					(mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ?
+    							-player.getViewXRot((float) event.getPartialTicks()) :
+    								player.getViewXRot((float) event.getPartialTicks())));
     			
-    			event.setPitch(player.getViewXRot(renderRoll) + renderPitch);
+    			float renderRoll = (float) (cameraRotMod * (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ?
+    					familiar.getRoll(event.getPartialTicks()) :
+    						-familiar.getRoll(event.getPartialTicks())));
+    			
+    			event.setPitch(renderPitch);
     			event.setRoll(renderRoll);
     			
     			event.getCamera().move(-event.getCamera().getMaxZoom(cameraZoom), 0, 0);
