@@ -25,6 +25,6 @@
 	"outputItem": {
 	},
 	"outputEntity": {
-		"string": "minecraft:griffonfly"
+		"string": "flyingfamiliars:griffonfly"
 	}
 }

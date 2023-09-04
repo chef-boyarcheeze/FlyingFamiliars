@@ -10,6 +10,7 @@ import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,16 +18,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.goal.FollowMobGoal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
@@ -37,6 +40,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -51,7 +55,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 {	
 	public static final float MAX_HEALTH = 20.00f;
 	public static final float FOLLOW_RANGE = 32;
-	public static final float FLYING_SPEED = 0.2f;
+	public static final float FLYING_SPEED = 1.0f;
 	public static final float ATTACK_DAMAGE = 3.0f;
 	public static final float ATTACK_SPEED = 2.0f;
 
@@ -81,11 +85,13 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 1, FOLLOW_RANGE, 8, true));
-		//this.goalSelector.addGoal(1, new GriffonflyWanderGoal(this));
+		//this.goalSelector.addGoal(1, new FollowOwnerGoal(this, 1, FOLLOW_RANGE, 8, true));
+		this.goalSelector.addGoal(1, new GriffonflyFollowOwnerGoal(this, 0.75f, FOLLOW_RANGE / 2.0f, 2.0f));
+		//this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 5.0f));
+		//this.goalSelector.addGoal(2, new );
+		//this.goalSelector.addGoal(2, new GriffonflyWanderGoal(this));
 	}
 
-	
 	private void selectVariant(int variant)
 	{
 		if(!hasVariant())
@@ -109,6 +115,12 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 					break;
 			}
 		}
+	}
+	
+	@Override
+	public MobType getMobType()
+	{
+		return MobType.ARTHROPOD;
 	}
 	
 // GeckoLib animation controls:
@@ -314,10 +326,12 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	@Override
 	public void travel(Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
+		float speed;
 
 		if(canBeControlledByRider())
 		{
+			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 0.25f;
+			
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
 			this.setYRot(driver.getYRot());
 			this.yRotO = this.getYRot();
@@ -341,9 +355,11 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		}
 		else
 		{
+			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 0.1f;
+			
 			if(!isFlying())
 			{
-				setDeltaMovement(Vec3.ZERO);
+				//setDeltaMovement(Vec3.ZERO);
 			}
 		}
 
@@ -366,16 +382,13 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		super.tick();
 
 		if(!this.level.isClientSide)
-		{
+		{		
 			boolean flying = shouldFly();
+			
 			if(flying != isFlying())
 			{
 				setFlying(flying);
-
-				if(flying)
-					navigation = new FlyingPathNavigation(this, level);
-				else
-					navigation = new GroundPathNavigation(this, level);
+				if(flying) navigation = new FlyingPathNavigation(this, level);
 			}
 		}
 	}
@@ -421,8 +434,8 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
 		flyingpathnavigation.setCanOpenDoors(false);
-		flyingpathnavigation.setCanFloat(false);
-		flyingpathnavigation.setCanPassDoors(false);
+		flyingpathnavigation.setCanFloat(true);
+		flyingpathnavigation.setCanPassDoors(true);
 		return flyingpathnavigation;
 	}
 	
@@ -458,6 +471,10 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
             Vec3 vec3 = this.findPos();
             if (vec3 != null)
             {
+            	if(!this.griffonfly.shouldFly())
+            	{
+            		this.griffonfly.jumpFromGround();
+            	}
             	this.griffonfly.navigation.moveTo(this.griffonfly.navigation.createPath(new BlockPos(vec3), 3), 1.0D);
             }
         }
@@ -473,15 +490,166 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
         {
             Vec3 vec3 = this.griffonfly.getViewVector(0.5F);
 
-            Vec3 vec32 = HoverRandomPos.getPos(this.griffonfly, 20, 20, vec3.x, vec3.z, (float)Math.PI, 50, 15);
-            vec32 = vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(this.griffonfly, 20, 20, -2, vec3.x, vec3.z, ((float)Math.PI));
+            Vec3 vec32 = HoverRandomPos.getPos(this.griffonfly, 4, 4, vec3.x, vec3.z, (float)Math.PI, 10, 3);
+            vec32 = vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(this.griffonfly, 4, 4, -2, vec3.x, vec3.z, ((float)Math.PI));
 
-            if(vec32 != null && this.griffonfly.getOwner() != null && vec32.distanceTo(this.griffonfly.getOwner().position()) > 100.0D)
+            if(vec32 != null && this.griffonfly.getOwner() != null && vec32.distanceTo(this.griffonfly.getOwner().position()) > 32.0D)
             {
                 vec32 = null;
             }
+        	
+        	//Vec3 vec3 = this.griffonfly.getDeltaMovement();
 
             return vec32;
         }
+	}
+	
+	static class GriffonflyFollowOwnerGoal extends Goal
+	{
+	    private final GriffonflyEntity griffonfly;
+	    private final double followSpeed;
+	    Level world;
+	    float maxDist;
+	    float minDist;
+	    private LivingEntity owner;
+	    private int timeToRecalcPath;
+	    private float oldWaterCost;
+
+	    public GriffonflyFollowOwnerGoal(GriffonflyEntity griffonfly, double followSpeed, float minDist, float maxDist)
+	    {
+	    	System.out.println("Goal Construct");
+	    	
+	        this.griffonfly = griffonfly;
+	        this.world = griffonfly.level;
+	        this.followSpeed = followSpeed;
+	        this.minDist = minDist;
+	        this.maxDist = maxDist;
+	        this.setFlags(EnumSet.of(Flag.MOVE));
+	    }
+
+	    @Override
+	    public boolean canUse()
+	    {
+	        LivingEntity owner = this.griffonfly.getOwner();
+	        if(owner != null)
+	        {	        	
+	        	if(!((owner instanceof Player && owner.isSpectator())
+	        		|| this.griffonfly.isOrderedToSit()
+	        		|| this.griffonfly.distanceToSqr(owner) < this.minDist * this.minDist))
+	        	{
+	        		this.owner = owner;
+		            return true;
+	        	}
+	        }
+	        
+	        return false;
+	    }
+
+	    @Override
+	    public boolean canContinueToUse()
+	    {
+	        return !noPath() && this.griffonfly.distanceToSqr(this.owner) > this.maxDist * this.maxDist
+	            && !this.griffonfly.isOrderedToSit();
+	    }
+
+	    private boolean noPath()
+	    {
+	    	return false;
+	    }
+
+	    @Override
+	    public void start()
+	    {	    	
+	        this.timeToRecalcPath = 0;
+	        this.oldWaterCost = this.griffonfly.getPathfindingMalus(BlockPathTypes.WATER);
+	        this.griffonfly.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+	    }
+
+	    @Override
+	    public void stop()
+	    {
+	        this.owner = null;
+	        this.griffonfly.getNavigation().stop();
+	        this.griffonfly.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+	    }
+
+	    @Override
+	    public void tick()
+	    {
+	    	if(!this.griffonfly.isFlying())
+	    	{
+	    		this.griffonfly.jumpFromGround();
+	    		return;
+	    	}
+	    	
+	    	if(this.owner != null)
+	    	{
+	    		this.griffonfly.getLookControl().setLookAt(this.owner, 10.0f, this.griffonfly.getMaxHeadXRot());
+	    		
+	    		if (--this.timeToRecalcPath <= 0)
+	            {
+	            	// This delays the mob's path vector from changing, so its not jerky movement
+	               this.timeToRecalcPath = this.adjustedTickDelay(10);
+	               
+	               /*if (!(d3 <= (double)(this.stopDistance * this.stopDistance)))
+	               {
+	                  this.navigation.moveTo(this.followingMob, this.speedModifier);
+	               }
+	               else
+	               {
+	                  this.navigation.stop();
+	                  LookControl lookcontrol = this.followingMob.getLookControl();
+	                  if (d3 <= (double)this.stopDistance || lookcontrol.getWantedX() == this.mob.getX() && lookcontrol.getWantedY() == this.mob.getY() && lookcontrol.getWantedZ() == this.mob.getZ()) {
+	                     double d4 = this.followingMob.getX() - this.mob.getX();
+	                     double d5 = this.followingMob.getZ() - this.mob.getZ();
+	                     this.navigation.moveTo(this.mob.getX() - d4, this.mob.getY(), this.mob.getZ() - d5, this.speedModifier);
+	                  }
+
+	               }*/
+	               
+	               if (this.griffonfly.distanceToSqr(this.owner) <= this.minDist * this.minDist)
+	               {
+	                   this.griffonfly.getNavigation().stop();
+	                   
+	                   /*if(this.owner instanceof Mob)
+	                   {
+	                	   LookControl lookcontrol = ((Mob) this.owner).getLookControl();
+						   if (this.griffonfly.distanceToSqr(this.owner) <= (double)this.minDist
+							    || lookcontrol.getWantedX() == this.griffonfly.getX()
+							    && lookcontrol.getWantedY() == this.griffonfly.getY()
+							    && lookcontrol.getWantedZ() == this.griffonfly.getZ())
+						   {
+							   double xDiff = this.owner.getX() - this.griffonfly.getX();
+						       double zDiff = this.owner.getZ() - this.griffonfly.getZ();
+						       this.griffonfly.getNavigation().moveTo(this.griffonfly.getX() - xDiff, this.griffonfly.getY(), this.griffonfly.getZ() - zDiff, this.followSpeed);
+						   }
+	                   }*/
+	               }
+	               else
+	               {
+	                   this.griffonfly.getNavigation().moveTo(this.owner, this.followSpeed);
+	               }
+	            }
+	    	}
+	    }
+
+	    protected boolean canTeleportToBlock(BlockPos pos)
+	    {
+	        BlockState blockstate = this.world.getBlockState(pos);
+	        return blockstate.isValidSpawn(this.world, pos, this.griffonfly.getType()) && this.world.isEmptyBlock(pos.above()) && this.world.isEmptyBlock(pos.above(2));
+	    }
+
+	    private boolean tryMoveTo()
+	    {
+	        if (!griffonfly.isFlying())
+	        {
+	            return griffonfly.getNavigation().moveTo(this.owner, this.followSpeed);
+	        }
+	        else
+	        {
+	            this.griffonfly.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY(), this.owner.getZ(), 0.25D);
+	            return true;
+	        }
+	    }
 	}
 }

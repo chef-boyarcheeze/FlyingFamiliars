@@ -41,7 +41,6 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		super(entity, level);
 		this.setTame(false);
-		
 	}
 	
 	@Override
@@ -109,8 +108,21 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public boolean shouldFly()
 	{
 		var standingOn = blockPosition().mutable().move(0, -1, 0);
-		//return !this.isOnGround() && !level.getBlockState(standingOn).getMaterial().isSolid();
-		return level.getBlockState(standingOn).isAir();
+		
+		if(isFlying())
+		{
+			if(isOnGround()) 
+				return false;
+			else 
+				return true;
+		}
+		else
+		{
+			if(!isOnGround() && (getControllingPassenger() instanceof Player && FFKeys.ascend.isDown() || level.getBlockState(standingOn).isAir()))
+				return true;
+			else
+				return false;
+		}
 	}
 	
 	public boolean isTamedFor(Player player)
