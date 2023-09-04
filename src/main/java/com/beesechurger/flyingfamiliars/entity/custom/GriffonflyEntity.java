@@ -42,6 +42,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -96,24 +97,13 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		if(!hasVariant())
 		{
-			switch(variant)
-			{
-				case 0:
-					setVariant("Yellow");
-					break;
-				case 1:
-					setVariant("Green");
-					break;
-				case 2:
-					setVariant("Blue");
-					break;
-				case 3:
-					setVariant("Purple");
-					break;
-				case 4:
-					setVariant("Red");
-					break;
-			}
+            switch (variant) {
+                case 0 -> setVariant("Yellow");
+                case 1 -> setVariant("Green");
+                case 2 -> setVariant("Blue");
+                case 3 -> setVariant("Purple");
+                case 4 -> setVariant("Red");
+            }
 		}
 	}
 	
