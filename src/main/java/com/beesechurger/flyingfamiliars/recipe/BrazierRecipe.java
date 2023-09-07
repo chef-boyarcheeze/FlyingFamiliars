@@ -134,8 +134,13 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	{
 		return true;
 	}
-	
-	public NonNullList<String> getEntities()
+
+	public NonNullList<Ingredient> getInputItems()
+	{
+		return inputItems;
+	}
+
+	public NonNullList<String> getInputEntities()
 	{
 		return inputEntities;
 	}
@@ -243,16 +248,16 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		@Override
         public void toNetwork(FriendlyByteBuf buf, BrazierRecipe recipe)
 		{
-            buf.writeInt(recipe.getIngredients().size());
+            buf.writeInt(recipe.getInputItems().size());
             
-            for (Ingredient ing : recipe.getIngredients())
+            for (Ingredient ing : recipe.getInputItems())
             {
                 ing.toNetwork(buf);
             }
             
-            buf.writeInt(recipe.getEntities().size());
+            buf.writeInt(recipe.getInputEntities().size());
             
-            for (String entity : recipe.getEntities())
+            for (String entity : recipe.getInputEntities())
             {
                 buf.writeUtf(entity);
             }

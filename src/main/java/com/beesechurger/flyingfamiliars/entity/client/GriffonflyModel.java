@@ -23,20 +23,19 @@ public class GriffonflyModel extends AnimatedGeoModel<GriffonflyEntity> {
 	@Override
 	public ResourceLocation getTextureLocation(GriffonflyEntity animatable)
 	{
-		switch(animatable.getVariant())
-		{
-			case "Yellow":
-				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
-			case "Green":
-				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_green.png");
-			case "Blue":
-				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_blue.png");
-			case "Purple":
-				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
-			case "Red":
-				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_red.png");
-			default:
-				return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
-		}
+        return switch (animatable.getVariant()) {
+            case "Yellow" ->
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+            case "Green" ->
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_green.png");
+            case "Blue" ->
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_blue.png");
+            case "Purple" ->
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
+            case "Red" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_red.png");
+            default ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+        };
 	}
 }
