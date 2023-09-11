@@ -120,7 +120,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             else return false;
 		}
 		
-        return handlerEntities.size() == 0;
+        return handlerEntities.isEmpty();
 	}
 
 	@Override
@@ -187,8 +187,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		public static final ResourceLocation ID = new ResourceLocation(FlyingFamiliars.MOD_ID, "brazier");
 		
 		public String entityParse(String entity)
-		{			
-			if(entity.length() < 11) return "";
+		{
+			if(entity.length() < 11) return null;
 			
 			int count = 11;
 			while(entity.charAt(count) != '"') count++;
@@ -214,7 +214,6 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             {
             	inputEntities.set(i, entityParse(entities.get(i).toString()));
             }
-            
             
             ItemStack outputItem = GsonHelper.getAsJsonObject(json, "outputItem").size() != 0 ? ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "outputItem")) : ItemStack.EMPTY;
             String outputEntity = entityParse(GsonHelper.getAsJsonObject(json, "outputEntity").toString());

@@ -56,7 +56,6 @@ public class EntityTypeHelper implements IIngredientHelper<EntityTypeIngredient>
     @Override
     public String getErrorInfo(@Nullable EntityTypeIngredient ingredient)
     {
-        if (ingredient == null || ingredient.getEntityType() == null) return "Null";
         return "Entity: " + ingredient.getEntityType().getRegistryName().toString();
     }
 }

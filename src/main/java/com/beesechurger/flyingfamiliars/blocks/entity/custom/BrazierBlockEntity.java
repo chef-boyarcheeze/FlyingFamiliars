@@ -116,19 +116,6 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	
 	public void setClientEntities(CompoundTag list)
 	{
-		/*populateTag(this);
-		
-		ListTag clientList = entities.getList("flyingfamiliars.entity", 10);
-		
-		for(int i = 0; i < list.size(); i++)
-		{
-			CompoundTag entityNBT = new CompoundTag();
-			entityNBT.putString("flyingfamiliars.entity", list.get(i));
-			clientList.set(i, entityNBT);
-		}
-		
-		entities.put("flyingfamiliars.entity", clientList);*/
-		
 		entities = list;
 	}
 	
@@ -439,7 +426,7 @@ public class BrazierBlockEntity extends BlockEntity implements Clearable
 	
 	public void addResultEntity(String resultEntity)
 	{
-		if(resultEntity == "") return;
+		if(resultEntity == null) return;
 		
     	EntityType<?> type = EntityType.byString(resultEntity).orElse(null);
     	if(type != null)
