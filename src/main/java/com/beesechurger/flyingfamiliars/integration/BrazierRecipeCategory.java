@@ -25,11 +25,17 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
     public final static ResourceLocation UID = new ResourceLocation(FlyingFamiliars.MOD_ID, "brazier");
     public final static ResourceLocation INPUTS =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_inputs_jei.png");
+    public final static ResourceLocation SINGLE_ARROW =
+            new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_single_arrow_jei.png");
+    public final static ResourceLocation DOUBLE_ARROW =
+            new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_double_arrow_jei.png");
     public final static ResourceLocation OUTPUTS =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_outputs_jei.png");
 
     private final IDrawable background;
     private final IDrawable inputs;
+    private final IDrawable singleArrow;
+    private final IDrawable doubleArrow;
     private final IDrawable outputs;
     private final IDrawable icon;
 
@@ -37,6 +43,8 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
     {
         this.background = helper.createBlankDrawable(176, 85);
         this.inputs = helper.createDrawable(INPUTS, 0, 0, 64, 64);
+        this.singleArrow = helper.createDrawable(SINGLE_ARROW, 0, 0, 64, 64);
+        this.doubleArrow = helper.createDrawable(DOUBLE_ARROW, 0, 0, 64, 64);
         this.outputs = helper.createDrawable(OUTPUTS, 0, 0, 64, 64);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(FFBlocks.BRAZIER.get()));
     }
@@ -79,15 +87,16 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
         RenderSystem.enableBlend();
 
         inputs.draw(ms, 21, 10);
-        // arrow(s).draw();
 
         if(recipe.getResultItem() != ItemStack.EMPTY && recipe.getResultEntity() != null)
         {
+            doubleArrow.draw(ms, 89, 25);
             outputs.draw(ms, 122, 11);
             outputs.draw(ms, 122, 41);
         }
         else
         {
+            singleArrow.draw(ms, 89, 38);
             outputs.draw(ms, 122, 26);
         }
 
@@ -107,20 +116,19 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
 
         for(int i = 0; i < recipe.getInputItems().size(); i++)
         {
-            float angleSpacing = 30f;
+            float angleSpacing = 35f;
             float angle = 270f - ((angleSpacing / 2) * (recipe.getInputItems().size() - 1)) + (angleSpacing * i);
 
             int x = (int) (xCenterInput + xModInput * Math.cos(Math.toRadians(angle)));
             int y = (int) (yCenterInput - yModInput * Math.sin(Math.toRadians(angle)));
 
-            Ingredient inputItem = recipe.getInputItems().get(i);
             builder.addSlot(RecipeIngredientRole.INPUT, x, y)
-                    .addIngredients(inputItem);
+                    .addIngredients(recipe.getInputItems().get(i));
         }
 
         for(int i = 0; i < recipe.getInputEntities().size(); i++)
         {
-            float angleSpacing = 30f;
+            float angleSpacing = 35f;
             float angle = 90f + ((angleSpacing / 2) * (recipe.getInputEntities().size() - 1)) - (angleSpacing * i);
 
             int x = (int) (xCenterInput + xModInput * Math.cos(Math.toRadians(angle)));
