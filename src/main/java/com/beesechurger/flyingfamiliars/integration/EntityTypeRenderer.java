@@ -18,44 +18,35 @@ import java.util.List;
 
 public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredient>
 {
-    private static final float CREEPER_HEIGHT = 1.7f;
-    private static final float CREEPER_SCALE = 0.5f;
-
-    private final Minecraft mc;
-    private final EntityRenderDispatcher entityRenderer;
     private final int size;
 
     public EntityTypeRenderer(int size)
     {
-        mc = Minecraft.getInstance();
-        entityRenderer = mc.getEntityRenderDispatcher();
         this.size = size;
     }
 
     @Override
     public void render(PoseStack stack, @Nullable EntityTypeIngredient ingredient)
     {
-        if (mc.level == null || mc.player == null || ingredient == null) return;
+        if (Minecraft.getInstance().level == null || Minecraft.getInstance().player == null || ingredient == null) return;
         if (ingredient.getEntity() != null && ingredient.getEntity() instanceof LivingEntity entity)
         {
             stack.pushPose();
-            entity.tickCount = mc.player.tickCount;
+            entity.tickCount = Minecraft.getInstance().player.tickCount;
             stack.translate(0.5f * size, 0.9f * size, 0);
-            var entityHeight = entity.getBbHeight();
-            var entityScale = Math.min(CREEPER_HEIGHT / entityHeight, 1f);
-            var scaleFactor = CREEPER_SCALE * size * entityScale;
-            // renderOld(stack, entity, scaleFactor);
-            renderEntity(stack, entity, scaleFactor);
+
+            float scale = 0.5f * size * Math.min(1.7f / entity.getBbHeight(), 1f);
+            renderEntity(stack, entity, scale);
             stack.popPose();
         }
     }
 
-    private void renderEntity(PoseStack stack, LivingEntity entity, float scaleFactor)
+    private void renderEntity(PoseStack stack, LivingEntity entity, float scale)
     {
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
         modelView.mulPoseMatrix(stack.last().pose());
-        InventoryScreen.renderEntityInInventory(0, 0, (int) scaleFactor, 75, -20, entity);
+        InventoryScreen.renderEntityInInventory(0, 0, (int) scale, 75, -20, entity);
         modelView.popPose();
         RenderSystem.applyModelViewMatrix();
     }
