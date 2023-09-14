@@ -70,9 +70,6 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		//this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 5.0f));
-		//this.goalSelector.addGoal(2, new );
-		//this.goalSelector.addGoal(2, new GriffonflyWanderGoal(this));
 	}
 
 	private void selectVariant(int variant)

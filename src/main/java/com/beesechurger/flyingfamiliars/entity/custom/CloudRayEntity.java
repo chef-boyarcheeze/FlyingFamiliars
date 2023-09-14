@@ -265,12 +265,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	}
 
 	@Override
-	public boolean canBeLeashed(Player player)
-	{
-		return false;
-	}
-
-	@Override
 	public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
 	{
 		return false;

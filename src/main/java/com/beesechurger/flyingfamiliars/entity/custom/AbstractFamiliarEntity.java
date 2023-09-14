@@ -147,6 +147,12 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public boolean notCarryingMobPassengers() {
 		return !(getFirstPassenger() instanceof Mob);
 	}
+
+	@Override
+	public boolean canBeLeashed(Player player)
+	{
+		return false;
+	}
 	
 // Entity mutators:
 	
@@ -438,38 +444,41 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 				return;
 			}
 
-			double flyingSpeed = familiar.getAttributeValue(Attributes.FLYING_SPEED);
-
-			float distX = (float) (wantedX - familiar.getX());
-			float distY = (float) (wantedY - familiar.getY());
-			float distZ = (float) (wantedZ - familiar.getZ());
-
-			double planeDist = Math.sqrt(distX * distX + distZ * distZ);
-			double yDistMod = 1.0D - (double) Mth.abs(distY * 0.7F) / planeDist;
-
-			distX = (float) ((double) distX * yDistMod);
-			distZ = (float) ((double) distZ * yDistMod);
-
-			planeDist = Mth.sqrt(distX * distX + distZ * distZ);
-
-			double dist = Math.sqrt(distX * distX + distZ * distZ + distY * distY);
-			if (dist > BEGIN_FOLLOW_DISTANCE)
+			if(this.operation == Operation.MOVE_TO)
 			{
-				float yaw = (float) Math.toDegrees(Mth.atan2(distZ, distX)) - 90.0F;
-				familiar.setYRot(rotlerp(familiar.getYRot(), yaw, 6));
+				double flyingSpeed = familiar.getAttributeValue(Attributes.FLYING_SPEED);
 
-				float pitch = (float) -Math.toDegrees(Mth.atan2(-distY, planeDist));
-				familiar.setXRot(pitch);
+				float distX = (float) (wantedX - familiar.getX());
+				float distY = (float) (wantedY - familiar.getY());
+				float distZ = (float) (wantedZ - familiar.getZ());
 
-				double xAddVector = Math.cos(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distX / dist);
-				double yAddVector = Math.sin(Math.toRadians(pitch)) * Math.abs((double) distY / dist);
-				double zAddVector = Math.sin(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distZ / dist);
+				double planeDist = Math.sqrt(distX * distX + distZ * distZ);
+				double yDistMod = 1.0D - (double) Mth.abs(distY * 0.7F) / planeDist;
 
-				xAddVector = Math.abs(xAddVector) > flyingSpeed * 0.1f ? xAddVector < 0 ? -flyingSpeed * 0.1f : flyingSpeed * 0.1f : xAddVector;
-				yAddVector = Math.abs(yAddVector) > flyingSpeed * 0.1f ? yAddVector < 0 ? -flyingSpeed * 0.1f : flyingSpeed * 0.1f : yAddVector;
-				zAddVector = Math.abs(zAddVector) > flyingSpeed * 0.1f ? zAddVector < 0 ? -flyingSpeed * 0.1f : flyingSpeed * 0.1f : zAddVector;
+				distX = (float) ((double) distX * yDistMod);
+				distZ = (float) ((double) distZ * yDistMod);
 
-				familiar.setDeltaMovement(familiar.getDeltaMovement().add(xAddVector, yAddVector, zAddVector));
+				planeDist = Mth.sqrt(distX * distX + distZ * distZ);
+
+				double dist = Math.sqrt(distX * distX + distZ * distZ + distY * distY);
+				if (dist > BEGIN_FOLLOW_DISTANCE)
+				{
+					float yaw = (float) Math.toDegrees(Mth.atan2(distZ, distX)) - 90.0F;
+					familiar.setYRot(rotlerp(familiar.getYRot(), yaw, 6));
+
+					float pitch = (float) -Math.toDegrees(Mth.atan2(-distY, planeDist));
+					familiar.setXRot(pitch);
+
+					double xAddVector = Math.cos(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distX / dist);
+					double yAddVector = Math.sin(Math.toRadians(pitch)) * Math.abs((double) distY / dist);
+					double zAddVector = Math.sin(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distZ / dist);
+
+					xAddVector = Math.abs(xAddVector) > flyingSpeed * speedModifier ? xAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : xAddVector;
+					yAddVector = Math.abs(yAddVector) > flyingSpeed * speedModifier ? yAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : yAddVector;
+					zAddVector = Math.abs(zAddVector) > flyingSpeed * speedModifier ? zAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : zAddVector;
+
+					familiar.setDeltaMovement(familiar.getDeltaMovement().add(xAddVector, yAddVector, zAddVector));
+				}
 			}
 		}
 	}
@@ -491,7 +500,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 				BlockPos target = getTargetPos();
 				if (target != null)
 				{
-					mob.getMoveControl().setWantedPosition(target.getX(), target.getY() + familiar.getOwner().getEyeHeight(), target.getZ(), speedModifier);
+					mob.getMoveControl().setWantedPosition(target.getX(), target.getY() + familiar.getOwner().getEyeHeight(), target.getZ(), 0.1f);
 
 					maxDistanceToWaypoint = mob.getBbWidth() * mob.getBbWidth();
 					Vec3i position = new Vec3i(getTempMobPos().x, getTempMobPos().y, getTempMobPos().z);
@@ -594,7 +603,12 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 					if(this.familiar.distanceToSqr(this.owner) <= this.beginFollow * this.beginFollow)
 					{
+						if(this.familiar.isFlying())
 						this.familiar.getNavigation().stop();
+					}
+					else if(this.familiar.distanceToSqr(this.owner) > this.beginFollow * this.beginFollow * 16)
+					{
+						teleportToOwner();
 					}
 					else
 					{
@@ -602,14 +616,6 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 					}
 				}
 			}
-		}
-
-		protected boolean canTeleportToBlock(BlockPos pos)
-		{
-			BlockState blockstate = this.world.getBlockState(pos);
-			return //blockstate.isValidSpawn(this.world, pos, this.familiar.getType()) &&
-					this.world.isEmptyBlock(pos.above()) &&
-					this.world.isEmptyBlock(pos.above(2));
 		}
 
 		private boolean tryMoveTo()
@@ -620,9 +626,54 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 			}
 			else
 			{
-				this.familiar.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.owner.getEyeHeight(), this.owner.getZ(), 0.25D);
+				this.familiar.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.owner.getEyeHeight(), this.owner.getZ(), 0.1f);
 				return true;
 			}
+		}
+
+		private void teleportToOwner()
+		{
+			BlockPos blockpos = this.owner.blockPosition();
+
+			for(int i = 0; i < 10; ++i)
+			{
+				int j = this.randomIntInclusive(-3, 3);
+				int k = this.randomIntInclusive(-1, 1);
+				int l = this.randomIntInclusive(-3, 3);
+				boolean flag = this.maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+
+				if (flag)
+					return;
+			}
+		}
+
+		private boolean maybeTeleportTo(int currentX, int currentY, int currentZ)
+		{
+			if(Math.abs((double) currentX - this.owner.getX()) < 2.0D && Math.abs((double) currentZ - this.owner.getZ()) < 2.0D)
+			{
+				return false;
+			}
+			else if(!this.canTeleportTo(new BlockPos(currentX, currentY, currentZ)))
+			{
+				return false;
+			}
+			else
+			{
+				this.familiar.moveTo((double) currentX + 0.5D, (double) currentY, (double) currentZ + 0.5D, this.familiar.getYRot(), this.familiar.getXRot());
+				this.familiar.getNavigation().stop();
+				return true;
+			}
+		}
+
+		protected boolean canTeleportTo(BlockPos pos)
+		{
+			BlockState blockstate = this.world.getBlockState(pos);
+			return	this.world.isEmptyBlock(pos.above()) && this.world.isEmptyBlock(pos.above((int) (familiar.getBbHeight() + 1)));
+		}
+
+		private int randomIntInclusive(int p_25301_, int p_25302_)
+		{
+			return this.familiar.getRandom().nextInt(p_25302_ - p_25301_ + 1) + p_25301_;
 		}
 	}
 }
