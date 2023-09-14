@@ -281,11 +281,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 	}
 
-	public boolean shouldFly()
-	{
-		return isHighEnough(FLIGHT_THRESHOLD);
-	}
-
 	public boolean isHighEnough(float height)
 	{
 		var pointer = blockPosition().mutable().move(0, -1, 0);
