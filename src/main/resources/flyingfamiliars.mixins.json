@@ -7,6 +7,9 @@
   "injectors": {
     "defaultRequire": 1
   },
+  "mixins": [
+    "PlayerRiderDismountMixin",
+  ],
   "client": [
     "PlayerRiderRendererMixin"
   ]
