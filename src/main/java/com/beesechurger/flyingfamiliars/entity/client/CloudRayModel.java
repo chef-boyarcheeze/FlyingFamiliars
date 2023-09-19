@@ -23,11 +23,6 @@ public class CloudRayModel extends AnimatedGeoModel<CloudRayEntity> {
 	@Override
 	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
 	{
-		if(animatable.isInverted())
-		{
-			return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_inverted.png");
-		}
-		
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray.png");
 	}
 }

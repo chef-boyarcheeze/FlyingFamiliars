@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.custom;
 
 import com.beesechurger.flyingfamiliars.FFKeys;
-import com.beesechurger.flyingfamiliars.items.FFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -10,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +19,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -81,7 +78,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	protected void defineSynchedData()
 	{
 		super.defineSynchedData();
-		entityData.define(VARIANT, "Yellow");
+		entityData.define(VARIANT, "");
 		entityData.define(SITTING, false);
 		entityData.define(FLYING, false);
 	}
@@ -129,7 +126,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		}
 		else
 		{
-			if(!isOnGround() && (getControllingPassenger() instanceof Player && FFKeys.ascend.isDown() || level.getBlockState(standingOn).isAir()))
+			if(!isOnGround() && (getControllingPassenger() instanceof Player && FFKeys.familiar_ascend.isDown() || level.getBlockState(standingOn).isAir()))
 				return true;
 			else
 				return false;
@@ -139,6 +136,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public boolean isTamedFor(Player player)
 	{
 		return isTame() && isOwnedBy(player);
+	}
+
+	public boolean isOwnerDoingFamiliarAction()
+	{
+		return getControllingPassenger() == this.getOwner() && FFKeys.familiar_action.isDown();
 	}
 	
 	@Override
@@ -187,7 +189,24 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	@Override
 	public Entity getControllingPassenger()
 	{
-		return this.getFirstPassenger();
+		for (Entity passenger : this.getPassengers())
+		{
+			if (passenger instanceof Player player && this.getTarget() != passenger)
+			{
+				if (this.isTame() && this.getOwnerUUID() != null && this.getOwnerUUID().equals(player.getUUID()))
+				{
+					return player;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean shouldRiderSit()
+	{
+		return this.getControllingPassenger() != null;
 	}
 	
 	public void setRidingPlayer(Player player)
@@ -205,7 +224,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	
 	@Nullable
 	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob griffonfly)
+	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob familiar)
 	{
 		return null;
 	}
@@ -268,8 +287,8 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		double yMove = vec3.y;
 		double zMove = vec3.z + driver.zza;
 		
-		if(FFKeys.ascend.isDown()) yMove += 0.6;
-		if(FFKeys.descend.isDown()) yMove -= 0.6;
+		if(FFKeys.familiar_ascend.isDown()) yMove += 0.6;
+		if(FFKeys.familiar_descend.isDown()) yMove -= 0.6;
 		
 		return new Vec3(xMove, yMove, zMove);
 	}
@@ -503,7 +522,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 				BlockPos target = getTargetPos();
 				if (target != null)
 				{
-					mob.getMoveControl().setWantedPosition(target.getX(), target.getY() + familiar.getOwner().getEyeHeight(), target.getZ(), 0.1f);
+					mob.getMoveControl().setWantedPosition(target.getX(), target.getY() + 1, target.getZ(), 1.0f);
 
 					maxDistanceToWaypoint = mob.getBbWidth() * mob.getBbWidth();
 					Vec3i position = new Vec3i(getTempMobPos().x, getTempMobPos().y, getTempMobPos().z);
@@ -629,7 +648,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 			}
 			else
 			{
-				this.familiar.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.owner.getEyeHeight(), this.owner.getZ(), 0.1f);
+				this.familiar.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.owner.getEyeHeight(), this.owner.getZ(), 1.0f);
 				return true;
 			}
 		}

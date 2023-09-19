@@ -28,8 +28,9 @@
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_2": "2 stored mobs",
 	"tooltip.flyingfamiliars.soul_wand.tooltip.stored_3": "3 stored mobs",
 	
-	"key.flyingfamiliars.ascend": "Ascend",
-	"key.flyingfamiliars.descend": "Descend",
+	"key.flyingfamiliars.familiar_ascend": "Familiar Ascend",
+	"key.flyingfamiliars.familiar_descend": "Familiar Descend",
+	"key.flyingfamiliars.familiar_action": "Familiar Action",
 	
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",

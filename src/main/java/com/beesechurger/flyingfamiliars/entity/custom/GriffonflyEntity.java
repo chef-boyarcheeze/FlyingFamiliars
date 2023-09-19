@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.entity.custom;
 
 import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.google.common.base.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
@@ -11,21 +12,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
-import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -37,17 +34,18 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
+import java.util.List;
 
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
-{	
+{
 	public static final float MAX_HEALTH = 20.00f;
-	public static final float FLYING_SPEED = 1.0f;
-	public static final float ATTACK_DAMAGE = 3.0f;
-	public static final float ATTACK_SPEED = 2.0f;
+	public static final float FLYING_SPEED = 0.1f;
+	public static final float ARMOR = 4.0f;
 
 	private final Item FOOD_ITEM = Items.SPIDER_EYE;
 	private final Item TAME_ITEM = Items.FERMENTED_SPIDER_EYE;
+
+	private int pickUpCooldown = 0;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -59,10 +57,10 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 	public static AttributeSupplier setAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, MAX_HEALTH)
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
 				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
-				.add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE)
-				.add(Attributes.ATTACK_SPEED, ATTACK_SPEED).build();
+				.add(Attributes.ARMOR, ARMOR).build();
 	}
 
 	@Override
@@ -299,7 +297,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 		if(canBeControlledByRider())
 		{
-			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 0.25f;
+			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 2.5f;
 			
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
 			this.setYRot(driver.getYRot());
@@ -311,7 +309,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 			if(isControlledByLocalInstance())
 			{
-				if(!isFlying() && FFKeys.ascend.isDown())
+				if(!isFlying() && FFKeys.familiar_ascend.isDown())
 					jumpFromGround();
 				if(isFlying())
 					vec3 = getHoverVector(vec3, driver);
@@ -325,7 +323,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		}
 		else
 		{
-			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 0.1f;
+			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 1.0f;
 		}
 
 		if(isFlying())
@@ -350,15 +348,67 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		super.tick();
 
-		if(!this.level.isClientSide)
-		{		
-			boolean flying = shouldFly();
-			
-			if(flying != isFlying())
+		if(!level.isClientSide())
+		{
+			if(pickUpCooldown > 0) --pickUpCooldown;
+			if(pickUpCooldown == 0 && isOwnerDoingFamiliarAction() && isFlying())
 			{
-				setFlying(flying);
-				if(flying) navigation = createNavigation(level);
+				if(pickUpMob())
+					pickUpCooldown = 20;
 			}
 		}
+		if(shouldFly() != isFlying())
+		{
+			setFlying(shouldFly());
+			if(shouldFly()) navigation = createNavigation(level);
+		}
+	}
+
+	private boolean pickUpMob()
+	{
+		/*Vec3 Vector3d = rider.getEyePosition(1.0F);
+		Vec3 Vector3d1 = rider.getViewVector(1.0F);
+		Vec3 Vector3d2 = Vector3d.add(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist);
+		double d1 = dist;
+		Entity pointedEntity = null;
+		List<Entity> list = rider.level.getEntities(rider, rider.getBoundingBox().expandTowards(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist).inflate(1.0D, 1.0D, 1.0D), new Predicate<Entity>() {
+			@Override
+			public boolean apply(@Nullable Entity entity) {
+				if (onSameTeam(dragon, entity)) {
+					return false;
+				}
+				return entity != null && entity.isPickable() && entity instanceof LivingEntity && !entity.is(dragon) && !entity.isAlliedTo(dragon) && (!(entity instanceof IDeadMob) || !((IDeadMob) entity).isMobDead());
+			}
+		});
+		double d2 = d1;
+		for (int j = 0; j < list.size(); ++j) {
+			Entity entity1 = list.get(j);
+			AABB axisalignedbb = entity1.getBoundingBox().inflate((double) entity1.getPickRadius() + 2F);
+			Vec3 raytraceresult = axisalignedbb.clip(Vector3d, Vector3d2).orElse(net.minecraft.world.phys.Vec3.ZERO);
+
+			if (axisalignedbb.contains(Vector3d)) {
+				if (d2 >= 0.0D) {
+					pointedEntity = entity1;
+					d2 = 0.0D;
+				}
+			} else if (raytraceresult != null) {
+				double d3 = Vector3d.distanceTo(raytraceresult);
+
+				if (d3 < d2 || d2 == 0.0D) {
+					if (entity1.getRootVehicle() == rider.getRootVehicle() && !rider.canRiderInteract()) {
+						if (d2 == 0.0D) {
+							pointedEntity = entity1;
+						}
+					} else {
+						pointedEntity = entity1;
+						d2 = d3;
+					}
+				}
+			}
+		}
+		return (LivingEntity) pointedEntity;*/
+
+		this.level.getEntities()
+		return false;
 	}
 }

@@ -66,15 +66,10 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 {
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> INVERTED = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 
 	public static final float MAX_HEALTH = 50.00f;
-	public static final float FOLLOW_RANGE = 16;
-	public static final float FOLLOW_RANGE_FLYING = FOLLOW_RANGE * 2;
 	public static final float FLYING_SPEED = 0.4f;
 	public static final float MOVEMENT_SPEED = 0.3f;
-	public static final float ATTACK_DAMAGE = 3.0f;
-	public static final float ATTACK_SPEED = 2.0f;
 
 	private final Item FOOD_ITEM = Items.APPLE;
 	private final Item TAME_ITEM = Items.GLOW_BERRIES;
@@ -92,25 +87,20 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 
 	public static AttributeSupplier setAttributes()
 	{
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE).add(Attributes.FLYING_SPEED, FLYING_SPEED)
-				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).add(Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE)
-				.add(Attributes.ATTACK_SPEED, ATTACK_SPEED).build();
+		return Mob.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
+				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).build();
 	}
 
 	@Override
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		//this.goalSelector.addGoal(1, new CloudRayWanderGoal(this));
-		// this.goalSelector.addGoal(1, new MeleeAttackGoal((PathfinderMob)
-		// this.getTarget(), ATTACK_DAMAGE, false));
-		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1, FOLLOW_RANGE, 8, true));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.00));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
+		this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.00));
+		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 	}
 
 	@Override
@@ -132,11 +122,11 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 
 		if(this.isFlying())
 		{
-			if(FFKeys.ascend.isDown() && !FFKeys.descend.isDown())
+			if(FFKeys.familiar_ascend.isDown() && !FFKeys.familiar_descend.isDown())
 			{
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_ascend"));
 			}
-			else if(!FFKeys.ascend.isDown() && FFKeys.descend.isDown())
+			else if(!FFKeys.familiar_ascend.isDown() && FFKeys.familiar_descend.isDown())
 			{
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_descend"));
 			}
@@ -200,34 +190,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		return this.factory;
 	}
 
-
-// Save data preservation:
-
-	@Override
-	public void readAdditionalSaveData(CompoundTag tag)
-	{
-		super.readAdditionalSaveData(tag);
-		setSitting(tag.getBoolean("isSitting"));
-		setInverted(tag.getBoolean("isInverted"));
-	}
-
-	@Override
-	public void addAdditionalSaveData(CompoundTag tag)
-	{
-		super.addAdditionalSaveData(tag);
-		tag.putBoolean("isSitting", this.isSitting());
-		tag.putBoolean("isInverted", this.isInverted());
-	}
-
-	@Override
-	protected void defineSynchedData()
-	{
-		super.defineSynchedData();
-		this.entityData.define(SITTING, false);
-		this.entityData.define(FLYING, false);
-		this.entityData.define(INVERTED, false);
-	}
-
 // Entity booleans:
 
 	@Override
@@ -240,51 +202,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	public boolean canBreatheUnderwater()
 	{
 		return true;
-	}
-
-	public boolean isSitting()
-	{
-		return this.entityData.get(SITTING);
-	}
-
-	public boolean isFlying()
-	{
-		return entityData.get(FLYING);
-	}
-
-	public boolean isInverted()
-	{
-		return this.entityData.get(INVERTED);
-	}
-
-	public boolean isMoving()
-	{
-		double d0 = this.getX() - this.xo;
-		double d1 = this.getZ() - this.zo;
-		return d0 * d0 + d1 * d1 > 2.5000003E-7F;
-	}
-
-	@Override
-	public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
-	{
-		return false;
-	}
-
-	@Override
-	protected void checkFallDamage(double p_27754_, boolean p_27755_, BlockState p_27756_, BlockPos p_27757_)
-	{
-	}
-
-	public boolean isHighEnough(float height)
-	{
-		var pointer = blockPosition().mutable().move(0, -1, 0);
-		var min = level.dimensionType().minY();
-		var i = 0;
-
-		while (i <= height && pointer.getY() > min && !level.getBlockState(pointer).getMaterial().isSolid())
-			pointer.setY(getBlockY() - ++i);
-
-		return i >= height;
 	}
 
 // Sound-controlling methods:
@@ -339,52 +256,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	}
 
 // Control utilities:
-
-	public void setSitting(boolean sitting)
-	{
-		this.entityData.set(SITTING, sitting);
-		this.setOrderedToSit(sitting);
-	}
-
-	public void setFlying(boolean flying)
-	{
-		this.entityData.set(FLYING, flying);
-	}
-
-	public void setInverted(boolean inverted)
-	{
-		this.entityData.set(INVERTED, inverted);
-	}
-
-	@Override
-	public Team getTeam()
-	{
-		return super.getTeam();
-	}
-
-	@Override
-	public boolean canBeControlledByRider()
-	{
-		return this.getControllingPassenger() instanceof LivingEntity;
-	}
-
-	@Nullable
-	@Override
-	public Entity getControllingPassenger()
-	{
-		return this.getFirstPassenger();
-	}
-
-	@Override
-	public boolean isFood(ItemStack stack)
-	{
-		return stack.is(FOOD_ITEM);
-	}
-
-	public boolean isTamedFor(Player player)
-	{
-		return isTame() && isOwnedBy(player);
-	}
 
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -457,7 +328,7 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		}
 
 		// ride on
-		if (isTamedFor(player) && (!isFood(stack) || getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue()))
+		if (isTamedFor(player) && (!stack.is(FOOD_ITEM) || getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue()))
 		{
 			if (!this.level.isClientSide)
 			{
@@ -499,14 +370,14 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 				if (isFlying())
 				{
 					forwardMove = forwardMove > 0 ? forwardMove : 0;
-					if (FFKeys.ascend.isDown())
+					if (FFKeys.familiar_ascend.isDown())
 						verticalMove += 0.6;
-					if (FFKeys.descend.isDown())
+					if (FFKeys.familiar_descend.isDown())
 						verticalMove += -0.6;
 					if (forwardMove > 0)
 						verticalMove += -driver.getXRot() * (Math.PI / 180);
 				}
-				else if (FFKeys.ascend.isDown()) jumpFromGround();
+				else if (FFKeys.familiar_ascend.isDown()) jumpFromGround();
 
 				vec3 = new Vec3(moveSideways, verticalMove, forwardMove);
 				setSpeed(speed);
@@ -547,10 +418,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 				// notify client
 				setFlying(flying);
 
-				// update AI follow range (needs to be updated before creating
-				// new PathNavigate!)
-				getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(flying ? FOLLOW_RANGE_FLYING : FOLLOW_RANGE);
-
 				// update pathfinding method
 				if (flying)
 					navigation = new FlyingPathNavigation(this, level);
@@ -558,81 +425,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 					navigation = new GroundPathNavigation(this, level);
 			}
 		}
-	}
-
-	public void setRidingPlayer(Player player)
-	{
-		player.setYRot(getYRot());
-		player.setXRot(getXRot());
-		player.startRiding(this);
-	}
-
-	@Override
-	public void positionRider(Entity rider)
-	{
-		LivingEntity driver = (LivingEntity) rider;
-
-		if(this.hasPassenger(rider))
-		{
-			float posOffset = 0;
-			double zOffset = 0.5;
-
-			//System.out.print(animTickCounter + "\n");
-
-			Vec3 pos = new Vec3(0, (getPassengersRidingOffset() + rider.getMyRidingOffset()), getScale() - zOffset)
-					.yRot((float) Math.toRadians(-yBodyRot)).add(position());
-			rider.setPos(pos.x, pos.y + posOffset, pos.z);
-
-			// fix rider rotation
-			if(rider instanceof LivingEntity)
-			{
-				driver.xRotO = driver.getXRot();
-				driver.yRotO = driver.getYRot();
-				driver.yBodyRot = yBodyRot;
-			}
-		}
-	}
-
-	@Override
-	public double getPassengersRidingOffset()
-	{
-		if(isFlying()) return (this.getDimensions(this.getPose()).height * 0.6) - 0.1 * Math.sin(animTickCounter * Math.PI / 100);
-		return (this.getDimensions(this.getPose()).height * 0.6);
-	}
-
-	@Override
-	public void onPassengerTurned(Entity rider)
-	{
-		rider.setYBodyRot(this.getYRot());
-	}
-
-	@Nullable
-	@Override
-	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob cloudRay)
-	{
-		return null;
-	}
-
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 12 + this.level.random.nextInt(5);
-	}
-
-	@Override
-	public float getWalkTargetValue(BlockPos pos, LevelReader level)
-	{
-		return 10.0F;
-	}
-
-	@Override
-	protected PathNavigation createNavigation(Level level)
-	{
-		FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
-		flyingpathnavigation.setCanOpenDoors(false);
-		flyingpathnavigation.setCanFloat(false);
-		flyingpathnavigation.setCanPassDoors(false);
-		return flyingpathnavigation;
 	}
 
 ////////////////////////////////
