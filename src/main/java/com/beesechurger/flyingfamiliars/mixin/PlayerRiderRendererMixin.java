@@ -1,18 +1,17 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
+import com.beesechurger.flyingfamiliars.entity.custom.AbstractFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.beesechurger.flyingfamiliars.entity.custom.AbstractFamiliarEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 
 @Mixin(LivingEntityRenderer.class)
 public class PlayerRiderRendererMixin<T extends LivingEntity>
@@ -24,11 +23,15 @@ public class PlayerRiderRendererMixin<T extends LivingEntity>
         {
         	float renderPitch = (float) familiar.getPitch(partialTicks);
         	float renderRoll = (float) familiar.getRoll(partialTicks);
+            double renderOffset = familiar.getPassengersRidingOffset() + entity.getMyRidingOffset();
+
+            if(entity.getVehicle() instanceof GriffonflyEntity griffonfly)
+                renderOffset = griffonfly.getRiderPosition(entity).y();
         	
-        	stack.translate(0, -familiar.getPassengersRidingOffset(), 0);
+        	stack.translate(0, -renderOffset, 0);
         	stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));
             stack.mulPose(Vector3f.ZP.rotationDegrees(renderRoll));
-            stack.translate(0, familiar.getPassengersRidingOffset(), 0);
+            stack.translate(0, renderOffset, 0);
         }
     }
 

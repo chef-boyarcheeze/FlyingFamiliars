@@ -26,7 +26,7 @@ public class ClientEvents
     	{
     		if(player.getVehicle() instanceof AbstractFamiliarEntity familiar)
             {
-    			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.25 : 0.5;
+    			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.5 : 1.25;
     			double cameraRotMod = 0.5f;
     			
     			float renderPitch = (float) (cameraRotMod * familiar.getPitch(event.getPartialTicks()) + 

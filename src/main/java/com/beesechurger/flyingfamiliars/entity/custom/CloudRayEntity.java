@@ -432,6 +432,12 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		}
 	}
 
+	@Override
+	public double getPassengersRidingOffset()
+	{
+		return (this.getDimensions(this.getPose()).height * 0.6);
+	}
+
 ////////////////////////////////
 // Entity AI control classes: //
 ////////////////////////////////

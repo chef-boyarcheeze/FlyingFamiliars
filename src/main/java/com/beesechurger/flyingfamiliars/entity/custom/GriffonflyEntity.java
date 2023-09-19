@@ -99,6 +99,10 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
 		}
+		else if(this.isCarryingMob())
+		{
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
+		}
 		else
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
@@ -327,7 +331,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 				if(isFlying())
 					vec3 = getHoverVector(vec3, driver);
 			}
-			else if (driver instanceof Player)
+			else if (driver instanceof LivingEntity)
 			{
 				setDeltaMovement(Vec3.ZERO);
 				calculateEntityAnimation(this, true);
@@ -391,6 +395,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 					candidate.startRiding(this);
 					return true;
 				}
+				// Release carried mob
 				else
 				{
 					for(Entity e : getPassengers())
@@ -411,38 +416,29 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	@Override
 	public void positionRider(Entity rider)
 	{
-		if(rider == getControllingPassenger())
-			super.positionRider(rider);
-		else
+		if(this.hasPassenger(rider))
 		{
-			if(this.hasPassenger(rider))
-			{
-				rider.setPos(getRiderPosition(rider));
+			// set rider position relative to vehicle
+			rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
 
-				// fix rider rotation
-				rider.setYBodyRot(yBodyRot);
-				rider.setYHeadRot(yHeadRot);
-			}
+			// fix rider rotation
+			rider.xRotO = rider.getXRot();
+			rider.yRotO = rider.getYRot();
+			rider.setYBodyRot(yBodyRot);
 		}
 	}
 
 	public Vec3 getRiderPosition(Entity rider)
 	{
+		double x = 0;
+		double y;
+		double z = getScale() - 1;
+
 		if(rider == getControllingPassenger())
-		{
-			double x = 0;
-			double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
-			double z = getScale() - 1;
-
-			return new Vec3(x, y, z).yRot((float) Math.toRadians(-yBodyRot)).add(position());
-		}
+			y = getPassengersRidingOffset() + rider.getMyRidingOffset();
 		else
-		{
-			double x = 0;
-			double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
-			double z = getScale() - 1;
+			y = -0.5 * (getPassengersRidingOffset() + rider.getMyRidingOffset() + rider.getBbHeight());
 
-			return new Vec3(x, y, z).yRot((float) Math.toRadians(-yBodyRot)).add(position());
-		}
+		return new Vec3(x, y, z);
 	}
 }

@@ -224,6 +224,24 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		rider.setYBodyRot(this.getYRot());
 	}
+
+	@Override
+	public double getPassengersRidingOffset()
+	{
+		if(this instanceof GriffonflyEntity)
+			return (this.getDimensions(this.getPose()).height * 0.8);
+		else
+			return this.getDimensions(this.getPose()).height;
+	}
+
+	@Override
+	public Vec3 getDismountLocationForPassenger(LivingEntity entity)
+	{
+		if(isFlying())
+			return new Vec3(this.getX(), this.getBoundingBox().minY - 1, this.getZ());
+		else
+			return super.getDismountLocationForPassenger(entity);
+	}
 	
 	@Nullable
 	@Override
@@ -259,27 +277,6 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 // Movement:
 
 	@Override
-	public void positionRider(Entity rider)
-	{
-		LivingEntity driver = (LivingEntity) rider;
-
-		if(this.hasPassenger(rider))
-		{
-			double x = 0;
-			double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
-			double z = getScale() - 1;
-
-			Vec3 pos = new Vec3(x, y, z).yRot((float) Math.toRadians(-yBodyRot)).add(position());
-			rider.setPos(pos);
-
-			// fix rider rotation
-			driver.xRotO = driver.getXRot();
-			driver.yRotO = driver.getYRot();
-			driver.setYBodyRot(yBodyRot);
-		}
-	}
-
-	@Override
 	protected PathNavigation createNavigation(Level level)
 	{
 		FamiliarFlyingPathNavigation navigation = new FamiliarFlyingPathNavigation(this, level);
@@ -313,18 +310,6 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		if(rollO == roll) return roll;
 		return partialTicks == 1.0 ? roll : Mth.lerp(partialTicks, rollO, roll);
-	}
-
-	@Override
-	public double getPassengersRidingOffset()
-	{
-		return (this.getDimensions(this.getPose()).height * getOffsetScale());
-	}
-
-	private double getOffsetScale()
-	{
-		if(this instanceof GriffonflyEntity) return 0.8;
-		else return 0.6;
 	}
 	
 ////////////////////////////////
