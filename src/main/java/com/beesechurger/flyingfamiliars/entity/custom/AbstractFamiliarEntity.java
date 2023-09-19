@@ -42,6 +42,8 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
+	protected int familiarActionTimer = 0;
+
 	protected AbstractFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
 		super(entity, level);
@@ -146,10 +148,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	@Override
 	public boolean canBeControlledByRider()
 	{
-		return this.getControllingPassenger() instanceof LivingEntity;
+		return this.getControllingPassenger() instanceof Player;
 	}
 
-	public boolean notCarryingMobPassengers() {
+	public boolean notCarryingMobPassengers()
+	{
 		return !(getFirstPassenger() instanceof Mob);
 	}
 
@@ -234,6 +237,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
 		return 0;
 	}
+
+	protected void resetFamiliarActionTimer()
+	{
+		familiarActionTimer = 20;
+	}
 	
 // Damage:
 	
@@ -315,7 +323,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 	private double getOffsetScale()
 	{
-		if(this instanceof GriffonflyEntity) return 0.6;
+		if(this instanceof GriffonflyEntity) return 0.8;
 		else return 0.6;
 	}
 	

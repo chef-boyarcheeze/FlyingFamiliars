@@ -27,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class SoulWandProjectile extends ThrowableItemProjectile
 {
 	private ItemStack soul_wand;
+	private Player player = null;
 	private boolean action = false;
 	
 	public SoulWandProjectile(EntityType<? extends SoulWandProjectile> proj, Level level)
@@ -38,7 +39,8 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 	{
 		super(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), entity, level);
 	    soul_wand = stack;
-	    this.action = action_type;
+		if(entity instanceof Player) player = (Player) entity;
+	    action = action_type;
 	}
 	
 	public SoulWandProjectile(Level level, double x, double y, double z)
@@ -58,7 +60,7 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		{
 			if(capture(result.getEntity())) level.broadcastEntityEvent(this, (byte) 3);
 		}
-		
+
 		this.remove(RemovalReason.KILLED);
     }
 	

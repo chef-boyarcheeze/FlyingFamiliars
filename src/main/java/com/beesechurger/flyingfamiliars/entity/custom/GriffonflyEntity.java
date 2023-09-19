@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.custom;
 
 import com.beesechurger.flyingfamiliars.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
-import com.google.common.base.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
@@ -12,17 +11,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -33,7 +29,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
@@ -44,8 +39,6 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 	private final Item FOOD_ITEM = Items.SPIDER_EYE;
 	private final Item TAME_ITEM = Items.FERMENTED_SPIDER_EYE;
-
-	private int pickUpCooldown = 0;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -68,6 +61,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
 	}
 
 	private void selectVariant(int variant)
@@ -155,6 +149,25 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		return this.factory;
 	}
 
+// Entity booleans:
+
+	@Override
+	protected boolean canAddPassenger(Entity rider)
+	{
+		return this.getPassengers().size() < 2;
+	}
+
+	private boolean isCarryingMob()
+	{
+		for(Entity candidate : getPassengers())
+		{
+			if(candidate != getOwner() && candidate != getControllingPassenger())
+				return true;
+		}
+
+		return false;
+	}
+
 // Sound-controlling methods:
 
 	@Override
@@ -231,7 +244,6 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 					this.tame(player);
 					this.navigation.stop();
 					this.setTarget(null);
-					this.setOrderedToSit(true);
 					this.level.broadcastEntityEvent(this, (byte) 7);
 				}
 				else
@@ -280,6 +292,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 			if (!this.level.isClientSide)
 			{
 				setRidingPlayer(player);
+				resetFamiliarActionTimer();
 				navigation.stop();
 				setTarget(null);
 			}
@@ -350,11 +363,11 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 		if(!level.isClientSide())
 		{
-			if(pickUpCooldown > 0) --pickUpCooldown;
-			if(pickUpCooldown == 0 && isOwnerDoingFamiliarAction() && isFlying())
+			if(familiarActionTimer > 0) --familiarActionTimer;
+			if(familiarActionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
 			{
 				if(pickUpMob())
-					pickUpCooldown = 20;
+					resetFamiliarActionTimer();
 			}
 		}
 		if(shouldFly() != isFlying())
@@ -366,49 +379,70 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 
 	private boolean pickUpMob()
 	{
-		/*Vec3 Vector3d = rider.getEyePosition(1.0F);
-		Vec3 Vector3d1 = rider.getViewVector(1.0F);
-		Vec3 Vector3d2 = Vector3d.add(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist);
-		double d1 = dist;
-		Entity pointedEntity = null;
-		List<Entity> list = rider.level.getEntities(rider, rider.getBoundingBox().expandTowards(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist).inflate(1.0D, 1.0D, 1.0D), new Predicate<Entity>() {
-			@Override
-			public boolean apply(@Nullable Entity entity) {
-				if (onSameTeam(dragon, entity)) {
-					return false;
-				}
-				return entity != null && entity.isPickable() && entity instanceof LivingEntity && !entity.is(dragon) && !entity.isAlliedTo(dragon) && (!(entity instanceof IDeadMob) || !((IDeadMob) entity).isMobDead());
-			}
-		});
-		double d2 = d1;
-		for (int j = 0; j < list.size(); ++j) {
-			Entity entity1 = list.get(j);
-			AABB axisalignedbb = entity1.getBoundingBox().inflate((double) entity1.getPickRadius() + 2F);
-			Vec3 raytraceresult = axisalignedbb.clip(Vector3d, Vector3d2).orElse(net.minecraft.world.phys.Vec3.ZERO);
+		List<Entity> list = this.level.getEntities(this, this.getBoundingBox().expandTowards(0, -this.getBbHeight(), 0));
 
-			if (axisalignedbb.contains(Vector3d)) {
-				if (d2 >= 0.0D) {
-					pointedEntity = entity1;
-					d2 = 0.0D;
+		for(Entity candidate : list)
+		{
+			if(candidate != getOwner() && candidate != getControllingPassenger() && candidate instanceof LivingEntity)
+			{
+				// Pick up mob in bounding box (start riding this)
+				if(getPassengers().size() <= 1)
+				{
+					candidate.startRiding(this);
+					return true;
 				}
-			} else if (raytraceresult != null) {
-				double d3 = Vector3d.distanceTo(raytraceresult);
-
-				if (d3 < d2 || d2 == 0.0D) {
-					if (entity1.getRootVehicle() == rider.getRootVehicle() && !rider.canRiderInteract()) {
-						if (d2 == 0.0D) {
-							pointedEntity = entity1;
+				else
+				{
+					for(Entity e : getPassengers())
+					{
+						if(candidate == e)
+						{
+							candidate.stopRiding();
+							return true;
 						}
-					} else {
-						pointedEntity = entity1;
-						d2 = d3;
 					}
 				}
 			}
 		}
-		return (LivingEntity) pointedEntity;*/
 
-		this.level.getEntities()
 		return false;
+	}
+
+	@Override
+	public void positionRider(Entity rider)
+	{
+		if(rider == getControllingPassenger())
+			super.positionRider(rider);
+		else
+		{
+			if(this.hasPassenger(rider))
+			{
+				rider.setPos(getRiderPosition(rider));
+
+				// fix rider rotation
+				rider.setYBodyRot(yBodyRot);
+				rider.setYHeadRot(yHeadRot);
+			}
+		}
+	}
+
+	public Vec3 getRiderPosition(Entity rider)
+	{
+		if(rider == getControllingPassenger())
+		{
+			double x = 0;
+			double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
+			double z = getScale() - 1;
+
+			return new Vec3(x, y, z).yRot((float) Math.toRadians(-yBodyRot)).add(position());
+		}
+		else
+		{
+			double x = 0;
+			double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
+			double z = getScale() - 1;
+
+			return new Vec3(x, y, z).yRot((float) Math.toRadians(-yBodyRot)).add(position());
+		}
 	}
 }

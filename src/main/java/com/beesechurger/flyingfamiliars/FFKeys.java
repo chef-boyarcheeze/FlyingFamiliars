@@ -11,6 +11,7 @@ public class FFKeys
 	public static KeyMapping familiar_ascend;
 	public static KeyMapping familiar_descend;
 	public static KeyMapping familiar_action;
+	public static KeyMapping soul_wand_shift;
 	
 	private FFKeys()
 	{}
@@ -20,6 +21,7 @@ public class FFKeys
 		familiar_ascend = registerKey("familiar_ascend", GLFW.GLFW_KEY_SPACE, KeyMapping.CATEGORY_MOVEMENT);
 		familiar_descend = registerKey("familiar_descend", GLFW.GLFW_KEY_LEFT_CONTROL, KeyMapping.CATEGORY_MOVEMENT);
 		familiar_action = registerKey("familiar_action", GLFW.GLFW_KEY_Y, KeyMapping.CATEGORY_GAMEPLAY);
+		soul_wand_shift = registerKey("soul_wand_shift", GLFW.GLFW_KEY_LEFT_SHIFT, KeyMapping.CATEGORY_GAMEPLAY);
 	}
 
 	private static KeyMapping registerKey(String name, int keycode, String category)

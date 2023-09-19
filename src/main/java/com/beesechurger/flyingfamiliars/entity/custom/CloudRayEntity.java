@@ -204,6 +204,12 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 		return true;
 	}
 
+	@Override
+	protected boolean canAddPassenger(Entity rider)
+	{
+		return this.getPassengers().size() < 2;
+	}
+
 // Sound-controlling methods:
 
 	@Override
@@ -284,7 +290,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 					this.tame(player);
 					this.navigation.stop();
 					this.setTarget(null);
-					this.setOrderedToSit(true);
 					this.level.broadcastEntityEvent(this, (byte) 7);
 				}
 				else

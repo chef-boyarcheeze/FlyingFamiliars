@@ -30,7 +30,7 @@ public class FFEntityTypes
 	
 	public static final RegistryObject<EntityType<GriffonflyEntity>> GRIFFONFLY = ENTITY_TYPES.register("griffonfly", 
 			() -> EntityType.Builder.of(GriffonflyEntity::new, MobCategory.CREATURE)
-					.sized(2.0f, 2.0f)
+					.sized(1.5f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "griffonfly").toString()));
 	
 	public static final RegistryObject<EntityType<SoulWandProjectile>> SOUL_WAND_PROJECTILE = ENTITY_TYPES.register("soul_wand_projectile",
