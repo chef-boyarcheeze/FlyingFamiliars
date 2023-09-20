@@ -98,9 +98,10 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.00));
-		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.00));
+		this.goalSelector.addGoal(3, new FamiliarLandGoal(this, 0.3f, 10));
+		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
+		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
 
 	@Override
@@ -414,28 +415,10 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	{
 		super.tick();
 
-		if (!this.level.isClientSide)
-		{
-			// update flying state based on the distance to the ground
-			boolean flying = shouldFly();
-			if (flying != isFlying())
-			{
-				// notify client
-				setFlying(flying);
-
-				// update pathfinding method
-				if (flying)
-					navigation = new FlyingPathNavigation(this, level);
-				else
-					navigation = new GroundPathNavigation(this, level);
-			}
-		}
-	}
-
-	@Override
-	public double getPassengersRidingOffset()
-	{
-		return (this.getDimensions(this.getPose()).height * 0.6);
+		if(isFlying())
+			navigation = new FamiliarFlyingPathNavigation(this, level);
+		else
+			navigation = new GroundPathNavigation(this, level);
 	}
 
 ////////////////////////////////

@@ -5,14 +5,18 @@ import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +38,7 @@ import java.util.List;
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 20.00f;
-	public static final float FLYING_SPEED = 0.1f;
+	public static final float FLYING_SPEED = 0.25f;
 	public static final float ARMOR = 4.0f;
 
 	private final Item FOOD_ITEM = Items.SPIDER_EYE;
@@ -60,8 +64,10 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0f));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.8f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 5));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
+		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 	}
 
 	private void selectVariant(int variant)
@@ -95,13 +101,13 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	
 	private <E extends IAnimatable> PlayState legsController(AnimationEvent<E> event)
 	{
-		if(this.isFlying())
-		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
-		}
-		else if(this.isCarryingMob())
+		if(this.isCarryingMob())
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
+		}
+		else if(this.isFlying())
+		{
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
 		}
 		else
 		{
@@ -126,7 +132,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
 			
-			double speed = 2;			
+			double speed = 2.5;
 			event.getController().setAnimationSpeed(speed);
 		}
 		else
@@ -310,12 +316,10 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	@Override
 	public void travel(Vec3 vec3)
 	{
-		float speed;
+		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);;
 
 		if(canBeControlledByRider())
 		{
-			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 2.5f;
-			
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
 			this.setYRot(driver.getYRot());
 			this.yRotO = this.getYRot();
@@ -337,10 +341,6 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 				calculateEntityAnimation(this, true);
 				return;
 			}
-		}
-		else
-		{
-			speed = (float) getAttributeValue(Attributes.FLYING_SPEED) * 1.0f;
 		}
 
 		if(isFlying())
@@ -365,19 +365,21 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		super.tick();
 
+		if(isFlying())
+			navigation = createNavigation(level);
+
 		if(!level.isClientSide())
 		{
-			if(familiarActionTimer > 0) --familiarActionTimer;
 			if(familiarActionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
 			{
 				if(pickUpMob())
 					resetFamiliarActionTimer();
 			}
-		}
-		if(shouldFly() != isFlying())
-		{
-			setFlying(shouldFly());
-			if(shouldFly()) navigation = createNavigation(level);
+			if(getControllingPassenger() == null && getPassengers().size() != 0)
+			{
+				this.ejectPassengers();
+				level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+			}
 		}
 	}
 
@@ -393,6 +395,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 				if(getPassengers().size() <= 1)
 				{
 					candidate.startRiding(this);
+					level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
 					return true;
 				}
 				// Release carried mob
@@ -403,6 +406,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 						if(candidate == e)
 						{
 							candidate.stopRiding();
+							level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
 							return true;
 						}
 					}

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -43,6 +44,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public float rollO = 0, roll = 0;
 
 	protected int familiarActionTimer = 0;
+	protected int familiarLandTimer = 0;
 
 	protected AbstractFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
@@ -72,7 +74,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public void addAdditionalSaveData(CompoundTag tag)
 	{
 		super.addAdditionalSaveData(tag);
-		tag.putBoolean("isSitting", this.isSitting());
+		tag.putBoolean("isSitting", isSitting());
 		tag.putString("variant", getVariant());
 	}
 
@@ -109,9 +111,9 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	
 	public boolean isMoving()
 	{
-		double d0 = this.getX() - this.xo;
-		double d1 = this.getY() - this.yo;
-		double d2 = this.getZ() - this.zo;
+		double d0 = getX() - xo;
+		double d1 = getY() - yo;
+		double d2 = getZ() - zo;
 		return d0 * d0 + d1 * d1 + d2 * d2 > 2.5000003E-7F;
 	}
 	
@@ -142,13 +144,13 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 	public boolean isOwnerDoingFamiliarAction()
 	{
-		return getControllingPassenger() == this.getOwner() && FFKeys.familiar_action.isDown();
+		return getControllingPassenger() == getOwner() && FFKeys.familiar_action.isDown();
 	}
 	
 	@Override
 	public boolean canBeControlledByRider()
 	{
-		return this.getControllingPassenger() instanceof Player;
+		return getControllingPassenger() instanceof Player;
 	}
 
 	public boolean notCarryingMobPassengers()
@@ -192,11 +194,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	@Override
 	public Entity getControllingPassenger()
 	{
-		for (Entity passenger : this.getPassengers())
+		for (Entity passenger : getPassengers())
 		{
-			if (passenger instanceof Player player && this.getTarget() != passenger)
+			if (passenger instanceof Player player && getTarget() != passenger)
 			{
-				if (this.isTame() && this.getOwnerUUID() != null && this.getOwnerUUID().equals(player.getUUID()))
+				if (isTame() && getOwnerUUID() != null && getOwnerUUID().equals(player.getUUID()))
 				{
 					return player;
 				}
@@ -209,7 +211,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	@Override
 	public boolean shouldRiderSit()
 	{
-		return this.getControllingPassenger() != null;
+		return getControllingPassenger() != null;
 	}
 	
 	public void setRidingPlayer(Player player)
@@ -222,23 +224,25 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	@Override
 	public void onPassengerTurned(Entity rider)
 	{
-		rider.setYBodyRot(this.getYRot());
+		rider.setYBodyRot(getYRot());
 	}
 
 	@Override
 	public double getPassengersRidingOffset()
 	{
 		if(this instanceof GriffonflyEntity)
-			return (this.getDimensions(this.getPose()).height * 0.8);
+			return (getDimensions(getPose()).height * 0.8);
+		else if(this instanceof CloudRayEntity)
+			return (getDimensions(getPose()).height * 0.6);
 		else
-			return this.getDimensions(this.getPose()).height;
+			return getDimensions(getPose()).height;
 	}
 
 	@Override
 	public Vec3 getDismountLocationForPassenger(LivingEntity entity)
 	{
 		if(isFlying())
-			return new Vec3(this.getX(), this.getBoundingBox().minY - 1, this.getZ());
+			return new Vec3(getX(), getBoundingBox().minY - 1, getZ());
 		else
 			return super.getDismountLocationForPassenger(entity);
 	}
@@ -259,6 +263,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	protected void resetFamiliarActionTimer()
 	{
 		familiarActionTimer = 20;
+	}
+
+	protected void resetFamiliarLandTimer()
+	{
+		familiarLandTimer = 100;
 	}
 	
 // Damage:
@@ -296,6 +305,17 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		if(FFKeys.familiar_descend.isDown()) yMove -= 0.6;
 		
 		return new Vec3(xMove, yMove, zMove);
+	}
+
+	@Override
+	public void tick()
+	{
+		super.tick();
+
+		setFlying(shouldFly());
+
+		if(familiarActionTimer > 0) --familiarActionTimer;
+		if(familiarLandTimer > 0) --familiarLandTimer;
 	}
 
 // Entity values:
@@ -433,7 +453,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		}
 
 		private void rotateHeadTowardsFront() {
-			int i = this.headStableTime - 10;
+			int i = headStableTime - 10;
 			float f = Mth.clamp((float)i / 10.0F, 0.0F, 1.0F);
 			float f1 = (float) familiar.getMaxHeadYRot() * (1.0F - f);
 			familiar.yBodyRot = Mth.rotateIfNecessary(familiar.yBodyRot, familiar.yHeadRot, f1);
@@ -459,8 +479,10 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 				return;
 			}
 
-			if(this.operation == Operation.MOVE_TO)
+			if(operation == Operation.MOVE_TO)
 			{
+				operation = MoveControl.Operation.WAIT;
+
 				double flyingSpeed = familiar.getAttributeValue(Attributes.FLYING_SPEED);
 
 				float distX = (float) (wantedX - familiar.getX());
@@ -475,18 +497,22 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 				planeDist = Mth.sqrt(distX * distX + distZ * distZ);
 
-				double dist = Math.sqrt(distX * distX + distZ * distZ + distY * distY);
-				if (dist > BEGIN_FOLLOW_DISTANCE)
+				double dist = Math.sqrt(distX * distX + distY * distY + distZ * distZ);
+				if (dist > 1.0f)
 				{
-					float yaw = (float) Math.toDegrees(Mth.atan2(distZ, distX)) - 90.0F;
-					familiar.setYRot(rotlerp(familiar.getYRot(), yaw, 6));
-
+					float yaw = (float) Math.toDegrees(Mth.atan2(distZ, distX)) - 90.0f;
 					float pitch = (float) -Math.toDegrees(Mth.atan2(-distY, planeDist));
+
+					if(dist > BEGIN_FOLLOW_DISTANCE)
+						familiar.setYRot(rotlerp(familiar.getYRot(), yaw, 10));
 					familiar.setXRot(pitch);
 
 					double xAddVector = Math.cos(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distX / dist);
 					double yAddVector = Math.sin(Math.toRadians(pitch)) * Math.abs((double) distY / dist);
 					double zAddVector = Math.sin(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distZ / dist);
+
+					xAddVector = dist > BEGIN_FOLLOW_DISTANCE ? xAddVector : 0;
+					zAddVector = dist > BEGIN_FOLLOW_DISTANCE ? zAddVector : 0;
 
 					xAddVector = Math.abs(xAddVector) > flyingSpeed * speedModifier ? xAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : xAddVector;
 					yAddVector = Math.abs(yAddVector) > flyingSpeed * speedModifier ? yAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : yAddVector;
@@ -515,7 +541,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 				BlockPos target = getTargetPos();
 				if (target != null)
 				{
-					mob.getMoveControl().setWantedPosition(target.getX(), target.getY() + 1, target.getZ(), 1.0f);
+					mob.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0f);
 
 					maxDistanceToWaypoint = mob.getBbWidth() * mob.getBbWidth();
 					Vec3i position = new Vec3i(getTempMobPos().x, getTempMobPos().y, getTempMobPos().z);
@@ -560,8 +586,8 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 			if(owner != null)
 			{
 				if(!((owner instanceof Player && owner.isSpectator())
-						|| this.familiar.isOrderedToSit()
-						|| this.familiar.distanceToSqr(owner) < this.beginFollow * this.beginFollow))
+						|| familiar.isOrderedToSit()
+						|| familiar.distanceToSqr(owner) < beginFollow * beginFollow))
 				{
 					this.owner = owner;
 					return true;
@@ -574,88 +600,74 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		@Override
 		public boolean canContinueToUse()
 		{
-			return !noPath() && this.familiar.distanceToSqr(this.owner) > this.endFollow * this.endFollow
-					&& !this.familiar.isOrderedToSit();
+			return !noPath() && familiar.distanceToSqr(owner) > endFollow * endFollow
+					&& !familiar.isOrderedToSit();
 		}
 
 		private boolean noPath()
 		{
-			return this.familiar.getNavigation().getPath() == null;
+			return familiar.getNavigation().getPath() == null;
 		}
 
 		@Override
 		public void start()
 		{
-			this.timeToRecalcPath = 0;
-			this.oldWaterCost = this.familiar.getPathfindingMalus(BlockPathTypes.WATER);
-			this.familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
+			timeToRecalcPath = 0;
+			oldWaterCost = familiar.getPathfindingMalus(BlockPathTypes.WATER);
+			familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
 		}
 
 		@Override
 		public void stop()
 		{
-			this.owner = null;
-			this.familiar.getNavigation().stop();
-			this.familiar.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+			owner = null;
+			familiar.getNavigation().stop();
+			familiar.setPathfindingMalus(BlockPathTypes.WATER, oldWaterCost);
 		}
 
 		@Override
 		public void tick()
 		{
-			if(!this.familiar.isFlying())
+			if(!familiar.isFlying())
 			{
-				this.familiar.jumpFromGround();
+				familiar.jumpFromGround();
 				return;
 			}
 
-			if(this.owner != null)
+			if(owner != null)
 			{
-				this.familiar.getLookControl().setLookAt(this.owner, 10.0f, this.familiar.getMaxHeadXRot());
+				familiar.getLookControl().setLookAt(owner, 10.0f, familiar.getMaxHeadXRot());
 
-				if (--this.timeToRecalcPath <= 0)
+				if (--timeToRecalcPath <= 0)
 				{
-					this.timeToRecalcPath = this.adjustedTickDelay(10);
+					timeToRecalcPath = adjustedTickDelay(10);
 
-					if(this.familiar.distanceToSqr(this.owner) <= this.beginFollow * this.beginFollow)
+					if(familiar.distanceToSqr(owner) <= beginFollow * beginFollow)
 					{
-						if(this.familiar.isFlying())
-						this.familiar.getNavigation().stop();
+						familiar.getNavigation().stop();
 					}
-					else if(this.familiar.distanceToSqr(this.owner) > this.beginFollow * this.beginFollow * 16)
+					else if(familiar.distanceToSqr(owner) > beginFollow * beginFollow * 16)
 					{
 						teleportToOwner();
 					}
 					else
 					{
-						this.familiar.getNavigation().moveTo(this.owner, this.followSpeed);
+						familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), followSpeed);
 					}
 				}
 			}
 		}
 
-		private boolean tryMoveTo()
-		{
-			if (!familiar.isFlying())
-			{
-				return familiar.getNavigation().moveTo(this.owner, this.followSpeed);
-			}
-			else
-			{
-				this.familiar.getMoveControl().setWantedPosition(this.owner.getX(), this.owner.getY() + this.owner.getEyeHeight(), this.owner.getZ(), 1.0f);
-				return true;
-			}
-		}
-
 		private void teleportToOwner()
 		{
-			BlockPos blockpos = this.owner.blockPosition();
+			BlockPos blockpos = owner.blockPosition();
 
 			for(int i = 0; i < 10; ++i)
 			{
-				int j = this.randomIntInclusive(-3, 3);
-				int k = this.randomIntInclusive(-1, 1);
-				int l = this.randomIntInclusive(-3, 3);
-				boolean flag = this.maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
+				int j = randomIntInclusive(-3, 3);
+				int k = randomIntInclusive(-1, 1);
+				int l = randomIntInclusive(-3, 3);
+				boolean flag = maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 
 				if (flag)
 					return;
@@ -664,31 +676,118 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 		private boolean maybeTeleportTo(int currentX, int currentY, int currentZ)
 		{
-			if(Math.abs((double) currentX - this.owner.getX()) < 2.0D && Math.abs((double) currentZ - this.owner.getZ()) < 2.0D)
+			if(Math.abs((double) currentX - owner.getX()) < 2.0D && Math.abs((double) currentZ - owner.getZ()) < 2.0D)
 			{
 				return false;
 			}
-			else if(!this.canTeleportTo(new BlockPos(currentX, currentY, currentZ)))
+			else if(!canTeleportTo(new BlockPos(currentX, currentY, currentZ)))
 			{
 				return false;
 			}
 			else
 			{
-				this.familiar.moveTo((double) currentX + 0.5D, (double) currentY, (double) currentZ + 0.5D, this.familiar.getYRot(), this.familiar.getXRot());
-				this.familiar.getNavigation().stop();
+				familiar.moveTo((double) currentX + 0.5D, (double) currentY, (double) currentZ + 0.5D, familiar.getYRot(), familiar.getXRot());
+				familiar.getNavigation().stop();
 				return true;
 			}
 		}
 
 		protected boolean canTeleportTo(BlockPos pos)
 		{
-			BlockState blockstate = this.world.getBlockState(pos);
-			return	this.world.isEmptyBlock(pos.above()) && this.world.isEmptyBlock(pos.above((int) (familiar.getBbHeight() + 1)));
+			BlockState blockstate = world.getBlockState(pos);
+			return	world.isEmptyBlock(pos.above()) && world.isEmptyBlock(pos.above((int) (familiar.getBbHeight() + 1)));
 		}
 
 		private int randomIntInclusive(int p_25301_, int p_25302_)
 		{
-			return this.familiar.getRandom().nextInt(p_25302_ - p_25301_ + 1) + p_25301_;
+			return familiar.getRandom().nextInt(p_25302_ - p_25301_ + 1) + p_25301_;
+		}
+	}
+
+	static class FamiliarLandGoal extends Goal
+	{
+		private final AbstractFamiliarEntity familiar;
+		private final double moveSpeed;
+		private final int landingSearchDistance;
+		private int timeToRecalcPath;
+		private BlockPos.MutableBlockPos goal;
+		Level world;
+
+		public FamiliarLandGoal(AbstractFamiliarEntity familiar, double moveSpeed, int landingSearchDistance)
+		{
+			this.familiar = familiar;
+			this.world = familiar.level;
+			this.moveSpeed = moveSpeed;
+			this.landingSearchDistance = landingSearchDistance;
+			this.setFlags(EnumSet.of(Flag.MOVE));
+		}
+
+		@Override
+		public boolean canUse()
+		{
+			return familiar.isFlying();
+		}
+
+		@Override
+		public boolean canContinueToUse()
+		{
+			return !noPath() && familiar.isFlying() && goal != null;
+		}
+
+		private void solidBlockBelow()
+		{
+			for(int i = 0; i < landingSearchDistance; i++)
+			{
+				var block = familiar.blockPosition().mutable().move(0, -i, 0);
+
+				if(familiar.isFlying() && !world.getBlockState(block).isAir())
+				{
+					goal = block;
+					break;
+				}
+			}
+		}
+
+		private boolean noPath()
+		{
+			return familiar.getNavigation().getPath() == null;
+		}
+
+		@Override
+		public void start()
+		{
+			timeToRecalcPath = 0;
+			familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
+		}
+
+		@Override
+		public void stop()
+		{
+			goal = null;
+			familiar.getNavigation().stop();
+		}
+
+		@Override
+		public void tick()
+		{
+			solidBlockBelow();
+
+			if (--timeToRecalcPath <= 0)
+			{
+				timeToRecalcPath = adjustedTickDelay(10);
+
+				if(goal != null)
+				{
+					if(!familiar.isFlying())
+					{
+						familiar.getNavigation().stop();
+					}
+					else
+					{
+						familiar.getMoveControl().setWantedPosition(goal.getX(), goal.getY(), goal.getZ(), moveSpeed);
+					}
+				}
+			}
 		}
 	}
 }

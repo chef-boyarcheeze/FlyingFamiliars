@@ -3,9 +3,7 @@ package com.beesechurger.flyingfamiliars.entity;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
-import com.beesechurger.flyingfamiliars.entity.custom.PhoenixEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.projectile.SoulWandProjectile;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -22,11 +20,6 @@ public class FFEntityTypes
 			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
 					.sized(2.0f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
-	
-	public static final RegistryObject<EntityType<PhoenixEntity>> PHOENIX = ENTITY_TYPES.register("phoenix", 
-			() -> EntityType.Builder.of(PhoenixEntity::new, MobCategory.CREATURE)
-					.sized(0.8f, 0.6f)
-					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "phoenix").toString()));
 	
 	public static final RegistryObject<EntityType<GriffonflyEntity>> GRIFFONFLY = ENTITY_TYPES.register("griffonfly", 
 			() -> EntityType.Builder.of(GriffonflyEntity::new, MobCategory.CREATURE)

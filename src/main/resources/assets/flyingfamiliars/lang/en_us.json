@@ -6,13 +6,11 @@
 	"item.flyingfamiliars.hand_of_the_hells": "Hand of the Hells",
 	"item.flyingfamiliars.eye_of_the_storm": "Eye of the Storm",
 	"item.flyingfamiliars.pelt_of_the_forest": "Pelt of the Forest",
-	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
 	"item.flyingfamiliars.specter_mote": "Specter Mote",
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
 	
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
-	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	
 	"block.flyingfamiliars.brazier": "Brazier",
 	"block.flyingfamiliars.crystal_ball": "Crystal Ball",
@@ -60,7 +58,9 @@
 	"sounds.flyingfamiliars.griffonfly_flap1": "Griffonfly flaps",
 	"sounds.flyingfamiliars.griffonfly_flap2": "Griffonfly flaps",
 	"sounds.flyingfamiliars.griffonfly_flap3": "Griffonfly flaps",
+	"sounds.flyingfamiliars.griffonfly_grab": "Griffonfly grabs mob",
 	"sounds.flyingfamiliars.griffonfly_hurt": "Griffonfly hurts",
+	"sounds.flyingfamiliars.griffonfly_release": "Griffonfly releases mob",
 	"sounds.flyingfamiliars.soul_wand_swap": "Soul Wand mob selected",
 	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used",
 	"sounds.flyingfamiliars.specter_mote": "Spector Mote used"

@@ -38,7 +38,9 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP1 = registerSoundEvent("griffonfly_flap1");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP2 = registerSoundEvent("griffonfly_flap2");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP3 = registerSoundEvent("griffonfly_flap3");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_GRAB = registerSoundEvent("griffonfly_grab");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_HURT = registerSoundEvent("griffonfly_hurt");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_RELEASE = registerSoundEvent("griffonfly_release");
 	
 	public static final RegistryObject<SoundEvent> SOUL_WAND_SWAP = registerSoundEvent("soul_wand_swap");
 	public static final RegistryObject<SoundEvent> SOUL_WAND_THROW = registerSoundEvent("soul_wand_throw");

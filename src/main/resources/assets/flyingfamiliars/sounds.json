@@ -125,10 +125,22 @@
 			"flyingfamiliars:griffonfly_flap3"
 		]
 	},
+	"griffonfly_grab": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_grab",
+		"sounds": [
+			"flyingfamiliars:griffonfly_grab"
+		]
+	},
 	"griffonfly_hurt": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_hurt",
 		"sounds": [
 			"flyingfamiliars:griffonfly_hurt"
+		]
+	},
+	"griffonfly_release": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_release",
+		"sounds": [
+			"flyingfamiliars:griffonfly_release"
 		]
 	},
 	"soul_wand_swap": {

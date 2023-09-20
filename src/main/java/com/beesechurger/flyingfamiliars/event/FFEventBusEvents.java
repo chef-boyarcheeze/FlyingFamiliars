@@ -6,9 +6,7 @@ import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
-import com.beesechurger.flyingfamiliars.entity.custom.PhoenixEntity;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
-
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -24,7 +22,6 @@ public class FFEventBusEvents
     public static void entityAttributeEvent(EntityAttributeCreationEvent event)
     {
         event.put(FFEntityTypes.CLOUD_RAY.get(), CloudRayEntity.setAttributes());
-        event.put(FFEntityTypes.PHOENIX.get(), PhoenixEntity.setAttributes());
         event.put(FFEntityTypes.GRIFFONFLY.get(), GriffonflyEntity.setAttributes());
     }
     
