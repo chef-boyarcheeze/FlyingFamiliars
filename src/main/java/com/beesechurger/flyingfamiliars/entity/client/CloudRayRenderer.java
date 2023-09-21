@@ -2,9 +2,11 @@ package com.beesechurger.flyingfamiliars.entity.client;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
+import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -33,5 +35,17 @@ public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
 	{
 		stack.scale(1.5f, 1.5f, 1.5f);
 		return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+	}
+
+	@Override
+	protected void applyRotations(CloudRayEntity cloudRay, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+	{
+		super.applyRotations(cloudRay, stack, ageInTicks, rotationYaw, partialTicks);
+
+		float renderPitch = (float) cloudRay.getPitch(partialTicks);
+		float renderRoll = (float) cloudRay.getRoll(partialTicks);
+
+		stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(renderRoll));
 	}
 }

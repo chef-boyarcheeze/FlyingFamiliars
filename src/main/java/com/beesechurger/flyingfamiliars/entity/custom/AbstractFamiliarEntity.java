@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,8 +39,6 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	public static final float BEGIN_FOLLOW_DISTANCE = 16;
 	public static final float END_FOLLOW_DISTANCE = 8;
 	
-	public static float ANGLE_INTERVAL = 2.0f;
-    public static float ANGLE_LIMIT = 10;
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
@@ -52,12 +51,6 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		this.setTame(false);
 		moveControl = new FamiliarMoveControl(this);
 		lookControl = new LookControl(this);
-	}
-	
-	@Override
-	protected BodyRotationControl createBodyControl()
-	{
-		return new FamiliarBodyRotationControl(this);
 	}
 	
 // Additional Save Data:
@@ -241,7 +234,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	@Override
 	public Vec3 getDismountLocationForPassenger(LivingEntity entity)
 	{
-		if(isFlying())
+		if(isFlying() && !(entity instanceof Player))
 			return new Vec3(getX(), getBoundingBox().minY - 1, getZ());
 		else
 			return super.getDismountLocationForPassenger(entity);
@@ -295,15 +288,35 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		return navigation;
 	}
 
-	public Vec3 getHoverVector(Vec3 vec3, LivingEntity driver)
+	public Vec3 getHoverVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
 	{
 		double xMove = vec3.x + driver.xxa;
 		double yMove = vec3.y;
 		double zMove = vec3.z + driver.zza;
 		
-		if(FFKeys.familiar_ascend.isDown()) yMove += 0.6;
-		if(FFKeys.familiar_descend.isDown()) yMove -= 0.6;
+		if(FFKeys.familiar_ascend.isDown())
+			yMove += drivingSpeedMod;
+		if(FFKeys.familiar_descend.isDown())
+			yMove -= drivingSpeedMod;
 		
+		return new Vec3(xMove, yMove, zMove);
+	}
+
+	public Vec3 getForwardVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
+	{
+		double xMove = vec3.x;
+		double yMove = vec3.y;
+		double zMove = driver.zza > 0 ? vec3.z + Math.max(driver.zza, 0) : 0;
+
+		if(FFKeys.familiar_ascend.isDown())
+			yMove += drivingSpeedMod;
+		if(FFKeys.familiar_descend.isDown())
+			yMove -= drivingSpeedMod;
+		if (zMove > 0)
+			yMove += Math.toRadians(-driver.getXRot()) * drivingSpeedMod;
+		if(!FFKeys.familiar_ascend.isDown() && !FFKeys.familiar_descend.isDown() && zMove <= 0)
+			yMove = 0;
+
 		return new Vec3(xMove, yMove, zMove);
 	}
 
@@ -340,66 +353,29 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	{
         private final AbstractFamiliarEntity familiar;
 
+		private final String rotationType;
+		private final float angleLimit;
+		private final float angleInterval;
 		private int headStableTime;
 		private float lastStableYHeadRot;
 
-        public FamiliarBodyRotationControl(AbstractFamiliarEntity familiar)
+        public FamiliarBodyRotationControl(AbstractFamiliarEntity familiar, String rotationType, float angleLimit, float angleInterval)
         {
             super(familiar);
             this.familiar = familiar;
+			this.rotationType = rotationType;
+			this.angleLimit = angleLimit;
+			this.angleInterval = angleInterval;
         }
 
         @Override
         public void clientTick()
-        {        	
-        	LivingEntity driver = (LivingEntity) familiar.getFirstPassenger();
-    		
-            int forwardMove = Math.round(driver != null ? driver.zza : familiar.zza);
-            int sideMove = Math.round(driver != null ? driver.xxa : familiar.xxa);
-            
-            if(familiar.isFlying())
-            {
-            	switch(forwardMove)
-            	{
-            		case 0:
-            			centerPitch(familiar);
-            			break;
-            		case 1:
-            			familiar.pitchO = familiar.pitch;
-            			if(familiar.pitch < ANGLE_LIMIT) familiar.pitch += ANGLE_INTERVAL;
-            			break;
-            		case -1:
-            			familiar.pitchO = familiar.pitch;
-            			if(familiar.pitch > -ANGLE_LIMIT) familiar.pitch -= ANGLE_INTERVAL;
-            			break;
-            	}
-            }
-            else
-            {
-            	centerPitch(familiar);
-            }
-        	
-        	if(familiar.isFlying())
-        	{
-        		switch(sideMove)
-            	{
-            		case 0:
-            			centerRoll(familiar);
-            			break;
-            		case 1:
-            			familiar.rollO = familiar.roll;
-            			if(familiar.roll < ANGLE_LIMIT) familiar.roll += ANGLE_INTERVAL;
-            			break;
-            		case -1:
-            			familiar.rollO = familiar.roll;
-            			if(familiar.roll > -ANGLE_LIMIT) familiar.roll -= ANGLE_INTERVAL;
-            			break;
-            	}
-        	}
-        	else
-        	{
-        		centerRoll(familiar);
-        	}
+        {
+			switch(rotationType)
+			{
+				case "hover" -> rotationHover();
+				case "forward" -> rotationForward();
+			}
 
 			if(familiar.isMoving())
 			{
@@ -429,20 +405,102 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 				}
 			}
         }
-           	
-    	private void centerPitch(AbstractFamiliarEntity familiar)
-    	{
-    		familiar.pitchO = familiar.pitch;
-    		if(familiar.pitch < 0) familiar.pitch += ANGLE_INTERVAL;
-    		if(familiar.pitch > 0) familiar.pitch -= ANGLE_INTERVAL;
-    	}
-    	
-    	private void centerRoll(AbstractFamiliarEntity familiar)
-    	{
-    		familiar.rollO = familiar.roll;
-    		if(familiar.roll < 0) familiar.roll += ANGLE_INTERVAL;
-    		if(familiar.roll > 0) familiar.roll -= ANGLE_INTERVAL;
-    	}
+
+		private void rotationHover()
+		{
+			LivingEntity driver = (LivingEntity) familiar.getControllingPassenger();
+
+			float forwardMove = driver != null ? driver.zza : familiar.zza;
+			float sideMove = driver != null ? driver.xxa : familiar.xxa;
+
+			if(familiar.isFlying() && driver != null)
+			{
+				if(forwardMove > 0)
+					incrementPitch();
+				else if(forwardMove < 0)
+					decrementPitch();
+				else
+					centerPitch();
+			}
+			else
+				centerPitch();
+
+			if(familiar.isFlying() && driver != null)
+			{
+				if(sideMove > 0)
+					incrementRoll();
+				else if(sideMove < 0)
+					decrementRoll();
+				else
+					centerRoll();
+			}
+			else
+				centerRoll();
+		}
+
+		private void rotationForward()
+		{
+			LivingEntity driver = (LivingEntity) familiar.getControllingPassenger();
+
+			float wantedRotY;
+
+			if (driver != null)
+				wantedRotY = driver.getYRot();
+			else
+				wantedRotY = familiar.getYRot();
+
+			float yRotDifference = Mth.wrapDegrees(familiar.getYRot() - wantedRotY);
+
+			if(familiar.isFlying() && driver != null)
+			{
+				if(yRotDifference > 0.2f * angleLimit)
+					incrementRoll();
+				else if(yRotDifference < -0.2f * angleLimit)
+					decrementRoll();
+				else
+					centerRoll();
+			}
+			else
+				centerRoll();
+		}
+
+		private void incrementPitch()
+		{
+			familiar.pitchO = familiar.pitch;
+			if(familiar.pitch < angleLimit) familiar.pitch += angleInterval;
+		}
+
+		private void decrementPitch()
+		{
+			familiar.pitchO = familiar.pitch;
+			if(familiar.pitch > -angleLimit) familiar.pitch -= angleInterval;
+		}
+
+		private void incrementRoll()
+		{
+			familiar.rollO = familiar.roll;
+			if(familiar.roll < angleLimit) familiar.roll += angleInterval;
+		}
+
+		private void decrementRoll()
+		{
+			familiar.rollO = familiar.roll;
+			if(familiar.roll > -angleLimit) familiar.roll -= angleInterval;
+		}
+
+		private void centerPitch()
+		{
+			familiar.pitchO = familiar.pitch;
+			if(familiar.pitch > 0) familiar.pitch -= angleInterval;
+			if(familiar.pitch < 0) familiar.pitch += angleInterval;
+		}
+
+		private void centerRoll()
+		{
+			familiar.rollO = familiar.roll;
+			if(familiar.roll > 0) familiar.roll -= angleInterval;
+			if(familiar.roll < 0) familiar.roll += angleInterval;
+		}
 
 		private void rotateBodyIfNecessary() {
 			familiar.yBodyRot = Mth.rotateIfNecessary(familiar.yBodyRot, familiar.yHeadRot, (float) familiar.getMaxHeadYRot());
@@ -482,8 +540,9 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 			if(operation == Operation.MOVE_TO)
 			{
 				operation = MoveControl.Operation.WAIT;
+				familiar.setNoGravity(true);
 
-				double flyingSpeed = familiar.getAttributeValue(Attributes.FLYING_SPEED);
+				double speed = familiar.getAttributeValue(Attributes.MOVEMENT_SPEED);
 
 				float distX = (float) (wantedX - familiar.getX());
 				float distY = (float) (wantedY - familiar.getY());
@@ -504,7 +563,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 					float pitch = (float) -Math.toDegrees(Mth.atan2(-distY, planeDist));
 
 					if(dist > BEGIN_FOLLOW_DISTANCE)
-						familiar.setYRot(rotlerp(familiar.getYRot(), yaw, 10));
+						familiar.setYRot(rotlerp(familiar.getYRot(), yaw, (float) (3 * 10 * familiar.getAttributeValue(Attributes.MOVEMENT_SPEED))));
 					familiar.setXRot(pitch);
 
 					double xAddVector = Math.cos(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distX / dist);
@@ -514,9 +573,9 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 					xAddVector = dist > BEGIN_FOLLOW_DISTANCE ? xAddVector : 0;
 					zAddVector = dist > BEGIN_FOLLOW_DISTANCE ? zAddVector : 0;
 
-					xAddVector = Math.abs(xAddVector) > flyingSpeed * speedModifier ? xAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : xAddVector;
-					yAddVector = Math.abs(yAddVector) > flyingSpeed * speedModifier ? yAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : yAddVector;
-					zAddVector = Math.abs(zAddVector) > flyingSpeed * speedModifier ? zAddVector < 0 ? -flyingSpeed * speedModifier : flyingSpeed * speedModifier : zAddVector;
+					xAddVector = Math.abs(xAddVector) > speed * speedModifier ? xAddVector < 0 ? -speed * speedModifier : speed * speedModifier : xAddVector;
+					yAddVector = Math.abs(yAddVector) > speed * speedModifier ? yAddVector < 0 ? -speed * speedModifier : speed * speedModifier : yAddVector;
+					zAddVector = Math.abs(zAddVector) > speed * speedModifier ? zAddVector < 0 ? -speed * speedModifier : speed * speedModifier : zAddVector;
 
 					familiar.setDeltaMovement(familiar.getDeltaMovement().add(xAddVector, yAddVector, zAddVector));
 				}
@@ -561,7 +620,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	static class FamiliarFollowOwnerGoal extends Goal
 	{
 		private final AbstractFamiliarEntity familiar;
-		private final double followSpeed;
+		private final double speed;
 		Level world;
 		float endFollow;
 		float beginFollow;
@@ -569,11 +628,11 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		private int timeToRecalcPath;
 		private float oldWaterCost;
 
-		public FamiliarFollowOwnerGoal(AbstractFamiliarEntity familiar, double followSpeed, float beginFollow, float endFollow)
+		public FamiliarFollowOwnerGoal(AbstractFamiliarEntity familiar, double speed, float beginFollow, float endFollow)
 		{
 			this.familiar = familiar;
 			this.world = familiar.level;
-			this.followSpeed = followSpeed;
+			this.speed = speed * familiar.getAttributeValue(Attributes.MOVEMENT_SPEED);
 			this.beginFollow = beginFollow;
 			this.endFollow = endFollow;
 			this.setFlags(EnumSet.of(Flag.MOVE));
@@ -652,7 +711,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 					}
 					else
 					{
-						familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), followSpeed);
+						familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), speed);
 					}
 				}
 			}
@@ -707,17 +766,17 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	static class FamiliarLandGoal extends Goal
 	{
 		private final AbstractFamiliarEntity familiar;
-		private final double moveSpeed;
+		private final double speed;
 		private final int landingSearchDistance;
 		private int timeToRecalcPath;
 		private BlockPos.MutableBlockPos goal;
 		Level world;
 
-		public FamiliarLandGoal(AbstractFamiliarEntity familiar, double moveSpeed, int landingSearchDistance)
+		public FamiliarLandGoal(AbstractFamiliarEntity familiar, double speed, int landingSearchDistance)
 		{
 			this.familiar = familiar;
 			this.world = familiar.level;
-			this.moveSpeed = moveSpeed;
+			this.speed = speed * familiar.getAttributeValue(Attributes.MOVEMENT_SPEED);
 			this.landingSearchDistance = landingSearchDistance;
 			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
@@ -784,7 +843,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 					}
 					else
 					{
-						familiar.getMoveControl().setWantedPosition(goal.getX(), goal.getY(), goal.getZ(), moveSpeed);
+						familiar.getMoveControl().setWantedPosition(goal.getX(), goal.getY(), goal.getZ(), speed);
 					}
 				}
 			}

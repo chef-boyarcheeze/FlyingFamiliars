@@ -12,6 +12,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -38,7 +39,7 @@ import java.util.List;
 public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 20.00f;
-	public static final float FLYING_SPEED = 0.25f;
+	public static final float MOVEMENT_SPEED = 0.5f;
 	public static final float ARMOR = 4.0f;
 
 	private final Item FOOD_ITEM = Items.SPIDER_EYE;
@@ -56,7 +57,7 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
+				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED)
 				.add(Attributes.ARMOR, ARMOR).build();
 	}
 
@@ -64,10 +65,16 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.8f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 5));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 10));
 		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+	}
+
+	@Override
+	protected BodyRotationControl createBodyControl()
+	{
+		return new FamiliarBodyRotationControl(this, "hover", 10, 2.0f);
 	}
 
 	private void selectVariant(int variant)
@@ -316,40 +323,42 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	@Override
 	public void travel(Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);;
+		float speed = (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
+		float drivingSpeedMod = 0.5f;
 
 		if(canBeControlledByRider())
 		{
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
-			this.setYRot(driver.getYRot());
-			this.yRotO = this.getYRot();
-			this.setXRot(driver.getXRot() * 0.5F);
-            this.setRot(this.getYRot(), this.getXRot());
-            this.yBodyRot = this.getYRot();
-            this.yHeadRot = this.getYRot();
 
 			if(isControlledByLocalInstance())
 			{
-				if(!isFlying() && FFKeys.familiar_ascend.isDown())
-					jumpFromGround();
 				if(isFlying())
-					vec3 = getHoverVector(vec3, driver);
+					vec3 = getHoverVector(vec3, drivingSpeedMod, driver);
+				else if(FFKeys.familiar_ascend.isDown())
+					jumpFromGround();
+
+				speed *= drivingSpeedMod;
 			}
-			else if (driver instanceof LivingEntity)
+			else if(driver instanceof LivingEntity)
 			{
 				setDeltaMovement(Vec3.ZERO);
 				calculateEntityAnimation(this, true);
 				return;
 			}
+
+			setYRot(driver.getYRot());
+			yRotO = getYRot();
+			setXRot(driver.getXRot() * 0.5F);
+			setRot(getYRot(), getXRot());
+			yBodyRot = getYRot();
+			yHeadRot = getYRot();
 		}
 
 		if(isFlying())
 		{
-			// allows motion
 			moveRelative(speed, vec3);
 			move(MoverType.SELF, getDeltaMovement());
 
-			// Decelerate after not moving
 			setDeltaMovement(getDeltaMovement().scale(0.8f));
 			calculateEntityAnimation(this, true);
 		}
@@ -422,10 +431,8 @@ public class GriffonflyEntity extends AbstractFamiliarEntity implements IAnimata
 	{
 		if(this.hasPassenger(rider))
 		{
-			// set rider position relative to vehicle
 			rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
 
-			// fix rider rotation
 			rider.xRotO = rider.getXRot();
 			rider.yRotO = rider.getYRot();
 			rider.setYBodyRot(yBodyRot);

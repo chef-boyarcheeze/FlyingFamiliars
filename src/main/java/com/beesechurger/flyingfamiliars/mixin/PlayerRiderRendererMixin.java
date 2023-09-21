@@ -26,7 +26,7 @@ public class PlayerRiderRendererMixin<T extends LivingEntity>
             double renderOffset = familiar.getPassengersRidingOffset() + entity.getMyRidingOffset();
 
             if(entity.getVehicle() instanceof GriffonflyEntity griffonfly)
-                renderOffset = griffonfly.getRiderPosition(entity).y();
+                renderOffset = griffonfly.getRiderPosition(entity).y;
         	
         	stack.translate(0, -renderOffset, 0);
         	stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));

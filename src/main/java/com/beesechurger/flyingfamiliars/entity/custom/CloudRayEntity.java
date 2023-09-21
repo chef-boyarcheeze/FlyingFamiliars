@@ -67,8 +67,7 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
 
-	public static final float MAX_HEALTH = 50.00f;
-	public static final float FLYING_SPEED = 0.4f;
+	public static final float MAX_HEALTH = 40.0f;
 	public static final float MOVEMENT_SPEED = 0.3f;
 
 	private final Item FOOD_ITEM = Items.APPLE;
@@ -76,20 +75,15 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
-	private int animTickCounter = 0;
-
 	public CloudRayEntity(EntityType<CloudRayEntity> entityType, Level level)
 	{
 		super(entityType, level);
-		this.moveControl = new FlyingMoveControl(this, 5, false);
-		this.lookControl = new CloudRayLookControl(this);
 	}
 
 	public static AttributeSupplier setAttributes()
 	{
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
 				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).build();
 	}
 
@@ -107,20 +101,13 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new CloudRayBodyRotationControl(this);
+		return new FamiliarBodyRotationControl(this, "forward", 30, 3.0f);
 	}
 
 // GeckoLib animation controls:
 
 	private <E extends IAnimatable> PlayState predicateGeneral(AnimationEvent<E> event)
 	{
-		if(event.getController().getAnimationState() != AnimationState.Running)
-		{
-			animTickCounter = 0;
-		}
-
-		animTickCounter += 1;
-
 		if(this.isFlying())
 		{
 			if(FFKeys.familiar_ascend.isDown() && !FFKeys.familiar_descend.isDown())
@@ -150,12 +137,6 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 			{
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
 			}
-		}
-
-		if(event.getController().getCurrentAnimation() != null)
-		{
-			//System.out.print(event.getController().getCurrentAnimation().animationLength + "\n");
-			//event.getController().getCurrentAnimation().customInstructionKeyframes;
 		}
 
 		return PlayState.CONTINUE;
@@ -352,62 +333,53 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 	@Override
 	public void travel(Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(isFlying() ? Attributes.FLYING_SPEED : Attributes.MOVEMENT_SPEED) * 0.25f;
+		float speed = (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
+		float drivingSpeedMod = 0.25f;
 
-		if (canBeControlledByRider())
+		if(canBeControlledByRider())
 		{
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
-			double moveSideways = vec3.x;
-			double verticalMove = vec3.y;
-			double forwardMove = Math.min(Math.abs(driver.zza) + Math.abs(driver.xxa), 1);
 
-			// rotate head to match driver
-			float yaw = driver.yHeadRot;
-			if (forwardMove > 0) // rotate in the direction of the drivers controls
-				yaw += (float) (Mth.atan2(driver.zza, driver.xxa) * (180f / (float) Math.PI) - 90);
-			yHeadRot = yaw;
-
-			// rotate body towards the head
-			setYRot(Mth.rotateIfNecessary(yHeadRot, getYRot(), 8));
-			setXRot(driver.getXRot());
-
-			if (isControlledByLocalInstance()) // Client applies motion
+			if(isControlledByLocalInstance())
 			{
-				if (isFlying())
-				{
-					forwardMove = forwardMove > 0 ? forwardMove : 0;
-					if (FFKeys.familiar_ascend.isDown())
-						verticalMove += 0.6;
-					if (FFKeys.familiar_descend.isDown())
-						verticalMove += -0.6;
-					if (forwardMove > 0)
-						verticalMove += -driver.getXRot() * (Math.PI / 180);
-				}
-				else if (FFKeys.familiar_ascend.isDown()) jumpFromGround();
+				if(!isFlying() && FFKeys.familiar_ascend.isDown())
+					jumpFromGround();
 
-				vec3 = new Vec3(moveSideways, verticalMove, forwardMove);
+				vec3 = getForwardVector(vec3, 2.5f * drivingSpeedMod, driver);
+
+				if(vec3.z != 0)
+					speed *= drivingSpeedMod;
+				else if(vec3.y != 0)
+					speed *= drivingSpeedMod;
+
 				setSpeed(speed);
 			}
-			else if (driver instanceof Player)
+			else
 			{
-				calculateEntityAnimation(this, true);
 				setDeltaMovement(Vec3.ZERO);
+				calculateEntityAnimation(this, true);
 				return;
 			}
+
+			yRotO = getYRot();
+			setYRot(driver.getYHeadRot());
+			yBodyRot = getYRot();
+			yHeadRot = getYRot();
 		}
 
-		if (isFlying())
+		if(isFlying())
 		{
-			// allows motion
 			moveRelative(speed, vec3);
 			move(MoverType.SELF, getDeltaMovement());
 
-			// impose speed limit, and acceleration/deceleration
 			setDeltaMovement(getDeltaMovement().scale(0.9f));
-
 			calculateEntityAnimation(this, true);
 		}
-		else super.travel(vec3);
+		else
+		{
+			setDeltaMovement(getDeltaMovement().scale(0.9f));
+			super.travel(vec3);
+		}
 	}
 
 	@Override
@@ -421,139 +393,33 @@ public class CloudRayEntity extends AbstractFamiliarEntity implements IAnimatabl
 			navigation = new GroundPathNavigation(this, level);
 	}
 
-////////////////////////////////
-// Entity AI control classes: //
-////////////////////////////////
-
-	static class CloudRayLookControl extends LookControl
+	@Override
+	public void positionRider(Entity rider)
 	{
-		private final CloudRayEntity cloudRay;
-
-		public CloudRayLookControl(CloudRayEntity entity)
+		if(this.hasPassenger(rider))
 		{
-			super(entity);
-			cloudRay = entity;
-		}
+			rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
 
-		@Override
-		public void tick()
-		{
-			if (cloudRay.yBodyRot != cloudRay.getYHeadRot())
-			{
-				cloudRay.yHeadRot = Mth.rotLerp(0.05F, cloudRay.getYHeadRot(), cloudRay.yBodyRot);
-			}
+			rider.xRotO = rider.getXRot();
+			rider.yRotO = rider.getYRot();
+			rider.setYBodyRot(yBodyRot);
 		}
 	}
 
-	static class CloudRayBodyRotationControl extends BodyRotationControl
+	public Vec3 getRiderPosition(Entity rider)
 	{
-		private final CloudRayEntity cloudRay;
-		private int headStableTime;
-		private float lastStableYHeadRot;
+		double x = 0;
+		double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
+		double z = getScale() - 1;
 
-		public CloudRayBodyRotationControl(CloudRayEntity entity)
+		if(getPassengers().size() > 1)
 		{
-			super(entity);
-			cloudRay = entity;
-		}
-
-		@Override
-		public void clientTick()
-		{
-			if (cloudRay.isMoving())
-			{
-				cloudRay.yBodyRot = Mth.rotLerp(0.05F, cloudRay.yBodyRot, cloudRay.getYRot());
-				rotateHeadIfNecessary();
-				lastStableYHeadRot = cloudRay.yHeadRot;
-				headStableTime = 0;
-			}
+			if(rider == getControllingPassenger())
+				x = 0.5f;
 			else
-			{
-				if (notCarryingMobPassengers() && cloudRay.isFlying())
-				{
-					if (Math.abs(cloudRay.yHeadRot - lastStableYHeadRot) > 15.0F)
-					{
-						headStableTime = 0;
-						lastStableYHeadRot = cloudRay.yHeadRot;
-						rotateHeadIfNecessary();
-					}
-					else
-					{
-						++headStableTime;
-						if (headStableTime > 10)
-						{
-							rotateHeadTowardsFront();
-						}
-					}
-				}
-			}
+				x = -0.5f;
 		}
 
-		private void rotateHeadIfNecessary()
-		{
-			cloudRay.yHeadRot = Mth.rotLerp(0.05F, cloudRay.yHeadRot, cloudRay.yBodyRot);
-		}
-
-		private void rotateHeadTowardsFront()
-		{
-			cloudRay.yHeadRot = Mth.rotLerp(0.05F, cloudRay.yHeadRot, cloudRay.yBodyRot);
-		}
-
-		private boolean notCarryingMobPassengers()
-		{
-			return !(cloudRay.getFirstPassenger() instanceof Mob);
-		}
-	}
-
-	static class CloudRayWanderGoal extends Goal
-	{
-		private final CloudRayEntity cloudRay;
-
-		CloudRayWanderGoal(CloudRayEntity entity)
-		{
-			setFlags(EnumSet.of(Goal.Flag.MOVE));
-			cloudRay = entity;
-		}
-
-		@Override
-		public boolean canUse()
-		{
-			return cloudRay.navigation.isDone() && cloudRay.random.nextInt(3) == 0
-					&& !cloudRay.isVehicle();
-		}
-
-		@Override
-		public boolean canContinueToUse()
-		{
-			return cloudRay.navigation.isInProgress() && !cloudRay.isVehicle();
-		}
-
-		@Override
-		public void start()
-		{
-			Vec3 vec3 = this.findPos();
-			if (vec3 != null)
-			{
-				cloudRay.navigation.moveTo(cloudRay.navigation.createPath(new BlockPos(vec3), 3), 1.0D);
-			}
-		}
-
-		@Override
-		public void stop()
-		{
-			cloudRay.navigation.stop();
-		}
-
-		@Nullable
-		private Vec3 findPos()
-		{
-			Vec3 vec3 = cloudRay.getViewVector(0.5F);
-
-			Vec3 vec32 = HoverRandomPos.getPos(cloudRay, 20, 20, vec3.x, vec3.z, (float) Math.PI, 50, 15);
-			vec32 = vec32 != null ? vec32
-					: AirAndWaterRandomPos.getPos(cloudRay, 20, 20, -2, vec3.x, vec3.z, ((float) Math.PI));
-
-			return vec32;
-		}
+		return new Vec3(x, y, z);
 	}
 }
