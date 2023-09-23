@@ -1,12 +1,14 @@
 {
 	"itemGroup.flyingfamiliars": "Flying Familiars",
 	"item.flyingfamiliars.tab_icon": "Flying Familiars",
-	
+
+	"item.flyingfamiliars.breath_of_the_void": "Breath of the Void",
 	"item.flyingfamiliars.bones_of_the_earth": "Bones of the Earth",
 	"item.flyingfamiliars.hand_of_the_hells": "Hand of the Hells",
 	"item.flyingfamiliars.eye_of_the_storm": "Eye of the Storm",
 	"item.flyingfamiliars.pelt_of_the_forest": "Pelt of the Forest",
 	"item.flyingfamiliars.specter_mote": "Specter Mote",
+	"item.flyingfamiliars.soul_battery": "Soul Battery",
 	"item.flyingfamiliars.soul_wand": "Soul Wand",
 	
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",

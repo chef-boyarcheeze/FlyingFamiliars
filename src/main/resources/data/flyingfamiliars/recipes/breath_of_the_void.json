@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:chorus_fruit"
+		},
+		{
+			"item": "minecraft:ender_pearl"
+		},
+		{
+			"item": "minecraft:end_crystal"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:enderman"
+		},
+		{
+			"string": "minecraft:shulker"
+		},
+		{
+			"string": "minecraft:endermite"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:breath_of_the_void"
+	},
+	"outputEntity": {
+	}
+}

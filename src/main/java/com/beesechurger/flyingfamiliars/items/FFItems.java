@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.items;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
+import com.beesechurger.flyingfamiliars.items.custom.SoulBattery;
 import com.beesechurger.flyingfamiliars.items.custom.SpecterMote;
 import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
 import com.google.common.base.Supplier;
@@ -22,10 +23,12 @@ public class FFItems
 	public static final RegistryObject<Item> SOUL_WAND_PROJECTILE = register("soul_wand_projectile", () -> new Item(new Item.Properties()));
 	
 	// Utility tools:
+	public static final RegistryObject<Item> SOUL_BATTERY = register("soul_battery", () -> new SoulBattery(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
 	public static final RegistryObject<Item> SOUL_WAND = register("soul_wand", () -> new SoulWand(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> SPECTER_MOTE = register("specter_mote", () -> new SpecterMote(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1)));
 	
 	// General items:
+	public static final RegistryObject<Item> BREATH_OF_THE_VOID = register("breath_of_the_void", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> BONES_OF_THE_EARTH = register("bones_of_the_earth", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> HAND_OF_THE_HELLS = register("hand_of_the_hells", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> EYE_OF_THE_STORM = register("eye_of_the_storm", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.UNCOMMON)));

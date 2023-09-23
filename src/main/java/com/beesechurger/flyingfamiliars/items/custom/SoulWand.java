@@ -35,7 +35,7 @@ public class SoulWand extends Item
 		super(properties);
 	}
 
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) 
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
 	{
 		ItemStack stack = player.getItemInHand(hand);
 		
