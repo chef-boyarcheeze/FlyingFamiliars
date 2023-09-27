@@ -1,0 +1,37 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:prismarine_shard"
+		},
+		{
+			"item": "minecraft:prismarine_crystals"
+		},
+		{
+			"item": "minecraft:heart_of_the_sea"
+		},
+		{
+			"item": "minecraft:prismarine_crystals"
+		},
+		{
+			"item": "minecraft:prismarine_shard"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:guardian"
+		},
+		{
+			"string": "minecraft:guardian"
+		},
+		{
+			"string": "minecraft:guardian"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:soul_battery_blue"
+	},
+	"outputEntity": {
+		"string": "minecraft:dolphin"
+	}
+}

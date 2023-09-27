@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.event;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.custom.AbstractFamiliarEntity;
 
+import com.beesechurger.flyingfamiliars.entity.custom.BaseFamiliarEntity;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ public class ClientEvents
         
     	if(player.getVehicle() != null)
     	{
-    		if(player.getVehicle() instanceof AbstractFamiliarEntity familiar)
+    		if(player.getVehicle() instanceof BaseFamiliarEntity familiar)
             {
     			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.5 : 1.25;
     			double cameraRotMod = 0.5f;

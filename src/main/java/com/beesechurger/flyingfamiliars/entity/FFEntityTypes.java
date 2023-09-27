@@ -4,6 +4,7 @@ import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.projectile.SoulWandProjectile;
+import com.beesechurger.flyingfamiliars.entity.custom.projectile.VoidStaffProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -31,6 +32,12 @@ public class FFEntityTypes
 					.sized(0.5f, 0.5f)
 					.setShouldReceiveVelocityUpdates(true)
 					.build("soul_wand_projectile"));
+
+	public static final RegistryObject<EntityType<VoidStaffProjectile>> VOID_STAFF_PROJECTILE = ENTITY_TYPES.register("void_staff_projectile",
+			() -> EntityType.Builder.<VoidStaffProjectile>of(VoidStaffProjectile::new, MobCategory.MISC)
+					.sized(0.5f, 0.5f)
+					.setShouldReceiveVelocityUpdates(true)
+					.build("void_staff_projectile"));
 
 	public static void register(IEventBus eventbus)
 	{

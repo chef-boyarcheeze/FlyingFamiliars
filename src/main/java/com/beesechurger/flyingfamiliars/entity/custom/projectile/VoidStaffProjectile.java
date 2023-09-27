@@ -1,13 +1,10 @@
 package com.beesechurger.flyingfamiliars.entity.custom.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.items.custom.SoulItems.BaseEntityTagItem;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -28,88 +25,71 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 
-public class SoulWandProjectile extends ThrowableItemProjectile
+public class VoidStaffProjectile extends ThrowableItemProjectile
 {
-	private ItemStack stack;
+	private ItemStack soul_wand;
 	private Player player = null;
 	private boolean action = false;
-	
-	public SoulWandProjectile(EntityType<? extends SoulWandProjectile> proj, Level level)
+
+	public VoidStaffProjectile(EntityType<? extends VoidStaffProjectile> proj, Level level)
 	{
 		super(proj, level);
 	}
-	
-	public SoulWandProjectile(Level level, LivingEntity entity, ItemStack stack, boolean action)
+
+	public VoidStaffProjectile(Level level, LivingEntity entity, ItemStack stack, boolean action_type)
 	{
-		super(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), entity, level);
-	    this.stack = stack;
-		if(entity instanceof Player)
-			player = (Player) entity;
-	    this.action = action;
+		super(FFEntityTypes.VOID_STAFF_PROJECTILE.get(), entity, level);
+		soul_wand = stack;
+		if(entity instanceof Player) player = (Player) entity;
+		action = action_type;
 	}
-	
-	public SoulWandProjectile(Level level, double x, double y, double z)
+
+	public VoidStaffProjectile(Level level, double x, double y, double z)
 	{
-	    super(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), x, y, z, level);
+		super(FFEntityTypes.VOID_STAFF_PROJECTILE.get(), x, y, z, level);
 	}
-	
+
+	@Override
 	protected Item getDefaultItem()
 	{
-	    return FFItems.SOUL_WAND_PROJECTILE.get();
+		return FFItems.VOID_STAFF_PROJECTILE.get();
 	}
 
-	protected ParticleOptions getTrailParticle()
-	{
-		return ParticleTypes.BUBBLE_POP;
-	}
-
-	protected ParticleOptions getCaptureParticle()
-	{
-		return ParticleTypes.SOUL_FIRE_FLAME;
-	}
-
-	protected ParticleOptions getReleaseParticle()
-	{
-		return ParticleTypes.SOUL;
-	}
-	
 	@Override
-    protected void onHitEntity(EntityHitResult result)
+	protected void onHitEntity(EntityHitResult result)
 	{
-		if(!this.action && !level.isClientSide() && player != null)
+		if(!this.action && !level.isClientSide())
 		{
-			if(capture(result.getEntity()))
-				level.broadcastEntityEvent(this, (byte) 3);
+			if(capture(result.getEntity())) level.broadcastEntityEvent(this, (byte) 3);
 		}
 
 		this.remove(RemovalReason.KILLED);
-    }
-	
+	}
+
 	private boolean capture(Entity target)
 	{
-		if(stack.getItem() instanceof BaseEntityTagItem item)
+		if(soul_wand.getItem() instanceof BaseEntityTagItem item)
 		{
 			if(!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level.isClientSide())
 			{
-				EntityTagItemHelper.ensureTagPopulated(stack);
-				CompoundTag stackTag = stack.getTag();
-				ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
+				CompoundTag compound = soul_wand.getTag();
+				ListTag wandList = compound.getList(BASE_ENTITY_TAGNAME, 10);
 
 				for(int i = 0; i < item.getMaxEntities(); i++)
 				{
 					// Need to use regular Tag object for "Empty" compare here, not CompoundTag
-					if(stackList.get(i).toString().contains("Empty"))
+					if(wandList.get(i).toString().contains("Empty"))
 					{
 						CompoundTag entityNBT = new CompoundTag();
 
 						entityNBT.putString(BASE_ENTITY_TAGNAME, EntityType.getKey(target.getType()).toString());
 						target.saveWithoutId(entityNBT);
-						stackList.set(i, entityNBT);
+						wandList.set(i, entityNBT);
 
 						target.remove(RemovalReason.KILLED);
 
-						stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-						stack.setTag(stackTag);
+						compound.put(BASE_ENTITY_TAGNAME, wandList);
+						soul_wand.setTag(compound);
 
 						return true;
 					}
@@ -119,33 +99,31 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 
 		return false;
 	}
-	
+
 	@Override
-    protected void onHitBlock(BlockHitResult result)
-    {
-		if(this.action && !level.isClientSide() && player != null)
+	protected void onHitBlock(BlockHitResult result)
+	{
+		if(this.action && !level.isClientSide())
 		{
-			if(release(result))
-				level.broadcastEntityEvent(this, (byte) 4);
+			if(release(result)) level.broadcastEntityEvent(this, (byte) 4);
 		}
-		
+
 		this.remove(RemovalReason.KILLED);
-    }
-	
+	}
+
 	private boolean release(BlockHitResult result)
 	{
-		if(stack.getItem() instanceof BaseEntityTagItem item)
+		if(soul_wand.getItem() instanceof BaseEntityTagItem item)
 		{
-			EntityTagItemHelper.ensureTagPopulated(stack);
-			CompoundTag stackTag = stack.getTag();
-			ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
+			CompoundTag compound = soul_wand.getTag();
+			ListTag wandList = compound.getList(BASE_ENTITY_TAGNAME, 10);
 
 			for(int i = item.getMaxEntities(); i > 0; i--)
 			{
 				// Need to use regular Tag object for "Empty" compare here, not CompoundTag
-				if(!stackList.get(i-1).toString().contains("Empty"))
+				if(!wandList.get(i-1).toString().contains("Empty"))
 				{
-					CompoundTag entityNBT = stackList.getCompound(i-1);
+					CompoundTag entityNBT = wandList.getCompound(i-1);
 
 					EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
 					if (type != null)
@@ -164,20 +142,20 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 						level.addFreshEntity(entity);
 
 						entityNBT.putString(BASE_ENTITY_TAGNAME, "Empty");
-						stackList.set(i-1, entityNBT);
+						wandList.set(i-1, entityNBT);
 
-						stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-						stack.setTag(stackTag);
+						compound.put(BASE_ENTITY_TAGNAME, wandList);
+						soul_wand.setTag(compound);
 
 						return true;
 					}
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void tick()
 	{
@@ -185,32 +163,30 @@ public class SoulWandProjectile extends ThrowableItemProjectile
 		if(level.isClientSide())
 		{
 			Vec3 vec3d = this.getDeltaMovement();
-	        double d0 = this.getX() + vec3d.x;
-	        double d1 = this.getY() + vec3d.y;
-	        double d2 = this.getZ() + vec3d.z;
-	        this.level.addParticle(ParticleTypes.BUBBLE_POP, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
+			double d0 = this.getX() + vec3d.x;
+			double d1 = this.getY() + vec3d.y;
+			double d2 = this.getZ() + vec3d.z;
+			this.level.addParticle(ParticleTypes.SMOKE, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
 		}
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
-    public void handleEntityEvent(byte id)
+	public void handleEntityEvent(byte id)
 	{
-        if (id == 3) 
-        {
-            for (int i = 0; i < 360; i++)
-            {
-				// capture
-                if(i % 5 == 0) level.addParticle(getCaptureParticle(), getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 3) * Math.sin(i * 3)), 0.1 * Math.sin(i));
-            }
-        }
-        else if (id == 4) 
-        {
-            for (int i = 0; i < 360; i++)
-            {
-				// release
-                if(i % 5 == 0) level.addParticle(getReleaseParticle(), getX(), getY(), getZ(), 0.2 * Math.cos(i), 0.1, 0.2 * Math.sin(i));
-            }
-        }
-    }
+		if (id == 3)
+		{
+			for (int i = 0; i < 360; i++)
+			{
+				if(i % 5 == 0) level.addParticle(ParticleTypes.POOF, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 3) * Math.sin(i * 3)), 0.1 * Math.sin(i));
+			}
+		}
+		else if (id == 4)
+		{
+			for (int i = 0; i < 360; i++)
+			{
+				if(i % 5 == 0) level.addParticle(ParticleTypes.LARGE_SMOKE, getX(), getY(), getZ(), 0.2 * Math.cos(i), 0.1, 0.2 * Math.sin(i));
+			}
+		}
+	}
 }

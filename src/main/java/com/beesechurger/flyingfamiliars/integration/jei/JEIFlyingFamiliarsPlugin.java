@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.integration;
+package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.blocks.FFBlocks;

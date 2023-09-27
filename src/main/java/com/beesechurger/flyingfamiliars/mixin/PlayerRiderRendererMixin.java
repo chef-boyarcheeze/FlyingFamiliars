@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
-import com.beesechurger.flyingfamiliars.entity.custom.AbstractFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.custom.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -19,7 +19,7 @@ public class PlayerRiderRendererMixin<T extends LivingEntity>
     @Inject(method = "setupRotations(Lnet/minecraft/world/entity/LivingEntity;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V", at = @At("RETURN"))
     private void setupFamiliarRidingRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks, CallbackInfo ci)
     {
-        if (entity.getVehicle() instanceof AbstractFamiliarEntity familiar)
+        if (entity.getVehicle() instanceof BaseFamiliarEntity familiar)
         {
         	float renderPitch = (float) familiar.getPitch(partialTicks);
         	float renderRoll = (float) familiar.getRoll(partialTicks);
@@ -38,7 +38,7 @@ public class PlayerRiderRendererMixin<T extends LivingEntity>
     @Redirect(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getVehicle()Lnet/minecraft/world/entity/Entity;", ordinal = 2))
     private Entity redirectPlayerRotation(LivingEntity entity)
     {
-        if (entity.getVehicle() instanceof AbstractFamiliarEntity familiar) return null;
+        if (entity.getVehicle() instanceof BaseFamiliarEntity familiar) return null;
         else return entity.getVehicle();
     }
 }

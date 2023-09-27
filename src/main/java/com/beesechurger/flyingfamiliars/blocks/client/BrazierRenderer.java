@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 
 public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 {	
@@ -29,12 +30,12 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 	{
 		if(Minecraft.getInstance().level == null) return;
         float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
-		
+
 		for(int i = 0; i < brazierEntity.getItemCount(); i++)
 		{
 			float angle = ((i+1) * 360F / brazierEntity.getItemCount());
 			
-			ItemStack storedItem = brazierEntity.getItems().get(i);
+			ItemStack storedItem = brazierEntity.items.get(i);
 			BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(storedItem, brazierEntity.getLevel(), (LivingEntity)null, 0);
 
 			double craftingOffset = 0.25 * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
@@ -57,7 +58,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 			if(type != null)
 			{
 				Entity storedEntity = type.create(brazierEntity.getLevel());
-				storedEntity.load(brazierEntity.getEntitiesTag().getList("flyingfamiliars.entity", 10).getCompound(i));
+				storedEntity.load(brazierEntity.entities.getList(BASE_ENTITY_TAGNAME, 10).getCompound(i));
 				
 				double craftingOffset = 0.25 * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
 				double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;

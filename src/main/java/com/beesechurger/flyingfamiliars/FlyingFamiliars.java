@@ -8,6 +8,7 @@ import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.items.FFItemHandler;
 import com.beesechurger.flyingfamiliars.items.FFItems;
+import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.recipe.FFRecipes;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
@@ -71,6 +72,7 @@ public class FlyingFamiliars {
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
 		EntityRenderers.register(FFEntityTypes.GRIFFONFLY.get(), GriffonflyRenderer::new);
 		EntityRenderers.register(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), ThrownItemRenderer::new);
+		EntityRenderers.register(FFEntityTypes.VOID_STAFF_PROJECTILE.get(), ThrownItemRenderer::new);
 		
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());

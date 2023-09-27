@@ -17,7 +17,7 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	public GriffonflyRenderer(Context renderManager)
 	{
 		super(renderManager, new GriffonflyModel());
-		this.shadowRadius = 1.5f;
+		this.shadowRadius = 1.8f;
 	}
 	
 	@Override

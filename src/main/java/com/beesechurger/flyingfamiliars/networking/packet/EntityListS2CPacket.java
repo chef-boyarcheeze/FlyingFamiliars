@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.networking.packet;
 
 import java.util.function.Supplier;
 
+import com.beesechurger.flyingfamiliars.blocks.entity.custom.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
 
 import net.minecraft.client.Minecraft;
@@ -39,7 +40,7 @@ public class EntityListS2CPacket
 	{
 		supplier.get().enqueueWork(() -> 
 		{
-			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BrazierBlockEntity blockEntity)
+			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BaseEntityTagBE blockEntity)
 			{
 				blockEntity.setClientEntities(entities);
 			}

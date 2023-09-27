@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.integration;
+package com.beesechurger.flyingfamiliars.integration.jei;
 
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;

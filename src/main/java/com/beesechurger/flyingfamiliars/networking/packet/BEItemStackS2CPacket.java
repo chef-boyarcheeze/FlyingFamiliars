@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.beesechurger.flyingfamiliars.blocks.entity.custom.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
 
 import net.minecraft.client.Minecraft;
@@ -56,7 +57,7 @@ public class BEItemStackS2CPacket
 	{
 		supplier.get().enqueueWork(() -> 
 		{
-			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BrazierBlockEntity blockEntity)
+			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BaseEntityTagBE blockEntity)
 			{
 				blockEntity.setClientItems(items);
 			}

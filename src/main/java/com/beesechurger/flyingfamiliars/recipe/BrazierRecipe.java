@@ -93,8 +93,6 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	{
 		if(entities == null) return false;
 		
-		//for(String e : entities) System.out.println(e);
-		
 		List<String> handlerEntities = new ArrayList<>();
 		
 		for(int i = 0; i < entities.size(); i++)

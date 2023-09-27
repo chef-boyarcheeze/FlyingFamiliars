@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.custom;
 
-import com.beesechurger.flyingfamiliars.FFKeys;
+import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -17,9 +17,7 @@ import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,11 +28,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 
-public abstract class AbstractFamiliarEntity extends TamableAnimal
+public abstract class BaseFamiliarEntity extends TamableAnimal
 {
-	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.STRING);
-	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(AbstractFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
+	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 
 	public static final float BEGIN_FOLLOW_DISTANCE = 16;
 	public static final float END_FOLLOW_DISTANCE = 8;
@@ -45,7 +43,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	protected int familiarActionTimer = 0;
 	protected int familiarLandTimer = 0;
 
-	protected AbstractFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
+	protected BaseFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
 		super(entity, level);
 		this.setTame(false);
@@ -351,7 +349,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 	
 	static class FamiliarBodyRotationControl extends BodyRotationControl
 	{
-        private final AbstractFamiliarEntity familiar;
+        private final BaseFamiliarEntity familiar;
 
 		private final String rotationType;
 		private final float angleLimit;
@@ -359,7 +357,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		private int headStableTime;
 		private float lastStableYHeadRot;
 
-        public FamiliarBodyRotationControl(AbstractFamiliarEntity familiar, String rotationType, float angleLimit, float angleInterval)
+        public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, String rotationType, float angleLimit, float angleInterval)
         {
             super(familiar);
             this.familiar = familiar;
@@ -520,9 +518,9 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 	static class FamiliarMoveControl extends MoveControl
 	{
-		private final AbstractFamiliarEntity familiar;
+		private final BaseFamiliarEntity familiar;
 
-		public FamiliarMoveControl(AbstractFamiliarEntity familiar)
+		public FamiliarMoveControl(BaseFamiliarEntity familiar)
 		{
 			super(familiar);
 			this.familiar = familiar;
@@ -585,7 +583,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 	static class FamiliarFlyingPathNavigation extends FlyingPathNavigation
 	{
-		public FamiliarFlyingPathNavigation(AbstractFamiliarEntity familiar, Level level)
+		public FamiliarFlyingPathNavigation(BaseFamiliarEntity familiar, Level level)
 		{
 			super(familiar, level);
 		}
@@ -595,7 +593,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		{
 			if (!isDone() && canUpdatePath())
 			{
-				AbstractFamiliarEntity familiar = (AbstractFamiliarEntity) mob;
+				BaseFamiliarEntity familiar = (BaseFamiliarEntity) mob;
 
 				BlockPos target = getTargetPos();
 				if (target != null)
@@ -619,7 +617,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 	static class FamiliarFollowOwnerGoal extends Goal
 	{
-		private final AbstractFamiliarEntity familiar;
+		private final BaseFamiliarEntity familiar;
 		private final double speed;
 		Level world;
 		float endFollow;
@@ -628,7 +626,7 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 		private int timeToRecalcPath;
 		private float oldWaterCost;
 
-		public FamiliarFollowOwnerGoal(AbstractFamiliarEntity familiar, double speed, float beginFollow, float endFollow)
+		public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speed, float beginFollow, float endFollow)
 		{
 			this.familiar = familiar;
 			this.world = familiar.level;
@@ -765,14 +763,14 @@ public abstract class AbstractFamiliarEntity extends TamableAnimal
 
 	static class FamiliarLandGoal extends Goal
 	{
-		private final AbstractFamiliarEntity familiar;
+		private final BaseFamiliarEntity familiar;
 		private final double speed;
 		private final int landingSearchDistance;
 		private int timeToRecalcPath;
 		private BlockPos.MutableBlockPos goal;
 		Level world;
 
-		public FamiliarLandGoal(AbstractFamiliarEntity familiar, double speed, int landingSearchDistance)
+		public FamiliarLandGoal(BaseFamiliarEntity familiar, double speed, int landingSearchDistance)
 		{
 			this.familiar = familiar;
 			this.world = familiar.level;

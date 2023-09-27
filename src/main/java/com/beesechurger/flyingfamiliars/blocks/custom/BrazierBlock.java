@@ -6,8 +6,10 @@ import javax.annotation.Nullable;
 
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
-import com.beesechurger.flyingfamiliars.items.FFItems;
-import com.beesechurger.flyingfamiliars.items.custom.SoulWand;
+import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.items.custom.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.items.custom.SoulItems.SoulStaff.BaseSoulStaff;
+import com.beesechurger.flyingfamiliars.items.custom.SoulItems.SoulStaff.SoulWand;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.ChatFormatting;
@@ -79,22 +81,20 @@ public class BrazierBlock extends BaseEntityBlock
 				ItemStack stack = player.getItemInHand(hand);
 				Random random = new Random();
 				
-				if(stack.getItem() == FFItems.SOUL_WAND.get())
+				if(stack.getItem() instanceof BaseEntityTagItem item)
 				{
-					if(stack.getTag() == null) SoulWand.populateTag(stack);
+					EntityTagItemHelper.ensureTagPopulated(stack);
 
-					if(!SoulWand.isSelectionEmpty(stack))
+					if(!EntityTagItemHelper.isSelectionEmpty(stack))
 					{
-						String selectedEntity = SoulWand.getSelectedEntity(stack);
+						String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 						
 						if(brazierEntity.placeEntity(stack))
 						{
 							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.place_entity")
 																.withStyle(ChatFormatting.YELLOW)
 																.append(": " + selectedEntity), true);
-							
-							player.playSound(null, friction, explosionResistance);
-							level.playSound(player, pos, null, null, friction, explosionResistance);
+
 							level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, 
 									FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
 						}
@@ -103,7 +103,7 @@ public class BrazierBlock extends BaseEntityBlock
 					{
 						if(brazierEntity.removeEntity(stack))
 						{
-							String selectedEntity = SoulWand.getSelectedEntity(stack);
+							String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 							
 							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.remove_entity")
 																.withStyle(ChatFormatting.YELLOW)
@@ -114,8 +114,10 @@ public class BrazierBlock extends BaseEntityBlock
 						}
 					}
 				}
-				else if(!player.isShiftKeyDown()) brazierEntity.placeItem(stack);
-				else brazierEntity.removeItem(level, pos);
+				else if(!player.isShiftKeyDown())
+					brazierEntity.placeItem(stack);
+				else
+					brazierEntity.removeItem(level, pos);
 				
 				return InteractionResult.SUCCESS;
 			}

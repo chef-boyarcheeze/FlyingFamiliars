@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "flyingfamiliars:soul_battery_black",
+    "flyingfamiliars:soul_battery_blue",
+    "flyingfamiliars:soul_battery_green",
+    "flyingfamiliars:soul_battery_red",
+    "flyingfamiliars:soul_battery_yellow"
+  ]
+}
