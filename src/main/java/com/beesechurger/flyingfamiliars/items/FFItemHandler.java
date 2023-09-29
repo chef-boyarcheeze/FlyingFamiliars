@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.items;
 
-import com.beesechurger.flyingfamiliars.items.custom.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.SoulWandSelectC2SPacket;
 

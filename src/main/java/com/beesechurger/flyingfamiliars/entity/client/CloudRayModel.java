@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
+import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;

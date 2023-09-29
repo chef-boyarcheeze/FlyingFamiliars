@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
-import com.beesechurger.flyingfamiliars.entity.custom.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
+import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;

@@ -6,8 +6,11 @@ import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
+import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
 import com.beesechurger.flyingfamiliars.items.FFItemHandler;
 import com.beesechurger.flyingfamiliars.items.FFItems;
+import com.beesechurger.flyingfamiliars.items.client.SoulBatteryRenderer;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulBattery;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.recipe.FFRecipes;
@@ -22,16 +25,21 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib3.GeckoLib;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.CURIOS_MODNAME;
 
 @Mod("flyingfamiliars")
-public class FlyingFamiliars {
-
+public class FlyingFamiliars
+{
 	public static final String MOD_ID = "flyingfamiliars";
+
 	public static final CreativeModeTab FF_TAB = new CreativeModeTab(MOD_ID) 
 	{
 		@Override
@@ -42,7 +50,7 @@ public class FlyingFamiliars {
 		}
 	};
 	
-	public FlyingFamiliars() 
+	public FlyingFamiliars()
 	{
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		FFItems.ITEM_REG.register(bus);
@@ -58,6 +66,9 @@ public class FlyingFamiliars {
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(FFItemHandler.INSTANCE);
 		MinecraftForge.EVENT_BUS.addListener(ClientEvents::onCameraSetup);
+
+		if(ModList.get().isLoaded(CURIOS_MODNAME))
+			CuriosIntegration.register();
 		
 		GeckoLib.initialize();
 	}
@@ -71,11 +82,18 @@ public class FlyingFamiliars {
 	{
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
 		EntityRenderers.register(FFEntityTypes.GRIFFONFLY.get(), GriffonflyRenderer::new);
-		EntityRenderers.register(FFEntityTypes.SOUL_WAND_PROJECTILE.get(), ThrownItemRenderer::new);
-		EntityRenderers.register(FFEntityTypes.VOID_STAFF_PROJECTILE.get(), ThrownItemRenderer::new);
+		EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), ThrownItemRenderer::new);
 		
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
+
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_BLUE.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_GREEN.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_YELLOW.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_GOLD.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_RED.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_BLACK.get(), () -> new SoulBatteryRenderer());
+		//CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_WHITE.get(), () -> new SoulBatteryRenderer());
 		
 		FFKeys.init();
 	}

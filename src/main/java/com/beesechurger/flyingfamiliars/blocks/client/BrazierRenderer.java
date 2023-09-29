@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.blocks.client;
 
-import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.blocks.entity.common.BrazierBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 

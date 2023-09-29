@@ -154,12 +154,6 @@
 		"sounds": [
 			"flyingfamiliars:soul_wand_throw"
 		]
-	},
-	"specter_mote": {
-		"subtitle": "sounds.flyingfamiliars.specter_mote",
-		"sounds": [
-			"flyingfamiliars:specter_mote"
-		]
 	}
 }
 		

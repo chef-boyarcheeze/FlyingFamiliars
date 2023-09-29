@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
 import com.beesechurger.flyingfamiliars.items.FFItems;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulWand.BaseSoulWand;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +21,7 @@ public class PlayerRiderDismountMixin<T extends LivingEntity>
         if((Object) this instanceof Player player)
         {
             ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if(!stack.isEmpty() && stack.getItem() == FFItems.SOUL_WAND.get())
+            if(!stack.isEmpty() && stack.getItem() instanceof BaseSoulWand)
                 ci.cancel();
         }
     }

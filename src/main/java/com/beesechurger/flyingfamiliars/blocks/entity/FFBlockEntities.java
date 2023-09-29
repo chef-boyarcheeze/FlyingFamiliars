@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.blocks.entity;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.blocks.FFBlocks;
-import com.beesechurger.flyingfamiliars.blocks.entity.custom.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.blocks.entity.common.BrazierBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;

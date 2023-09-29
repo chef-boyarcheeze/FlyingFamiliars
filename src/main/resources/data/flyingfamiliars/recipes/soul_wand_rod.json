@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" MS",
+		"MSM",
+		"SM "
+	],
+	"key": {
+		"M": {
+			"item": "minecraft:phantom_membrane"
+		},
+		"S": {
+			"item": "minecraft:stick"
+		}
+	},
+	"result": {
+		"item": "flyingfamiliars:soul_wand_rod"
+	}
+}

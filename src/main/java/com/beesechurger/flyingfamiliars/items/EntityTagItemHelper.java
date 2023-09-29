@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.items;
 
-import com.beesechurger.flyingfamiliars.items.custom.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.items.custom.SoulItems.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.IModeCycleItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;

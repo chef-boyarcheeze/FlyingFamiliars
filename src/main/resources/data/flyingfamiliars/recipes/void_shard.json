@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_wand_rod"
+		},
+		{
+			"item": "minecraft:ender_pearl"
+		},
+		{
+			"item": "flyingfamiliars:pearl_of_the_void"
+		},
+		{
+			"item": "minecraft:popped_chorus_fruit"
+		},
+		{
+			"item": "minecraft:obsidian"
+		}
+	],
+	"inputEntities": [
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:void_shard"
+	},
+	"outputEntity": {
+	}
+}

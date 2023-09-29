@@ -1,10 +1,9 @@
 package com.beesechurger.flyingfamiliars.entity;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.custom.CloudRayEntity;
-import com.beesechurger.flyingfamiliars.entity.custom.GriffonflyEntity;
-import com.beesechurger.flyingfamiliars.entity.custom.projectile.SoulWandProjectile;
-import com.beesechurger.flyingfamiliars.entity.custom.projectile.VoidStaffProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
+import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
+import com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -27,17 +26,11 @@ public class FFEntityTypes
 					.sized(1.5f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "griffonfly").toString()));
 	
-	public static final RegistryObject<EntityType<SoulWandProjectile>> SOUL_WAND_PROJECTILE = ENTITY_TYPES.register("soul_wand_projectile",
-			() -> EntityType.Builder.<SoulWandProjectile>of(SoulWandProjectile::new, MobCategory.MISC)
+	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPES.register("capture_projectile",
+			() -> EntityType.Builder.<CaptureProjectile>of(CaptureProjectile::new, MobCategory.MISC)
 					.sized(0.5f, 0.5f)
 					.setShouldReceiveVelocityUpdates(true)
-					.build("soul_wand_projectile"));
-
-	public static final RegistryObject<EntityType<VoidStaffProjectile>> VOID_STAFF_PROJECTILE = ENTITY_TYPES.register("void_staff_projectile",
-			() -> EntityType.Builder.<VoidStaffProjectile>of(VoidStaffProjectile::new, MobCategory.MISC)
-					.sized(0.5f, 0.5f)
-					.setShouldReceiveVelocityUpdates(true)
-					.build("void_staff_projectile"));
+					.build("capture_projectile"));
 
 	public static void register(IEventBus eventbus)
 	{

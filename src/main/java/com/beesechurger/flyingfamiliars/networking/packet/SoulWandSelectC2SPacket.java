@@ -3,8 +3,8 @@ package com.beesechurger.flyingfamiliars.networking.packet;
 import java.util.function.Supplier;
 
 import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.items.custom.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.items.custom.SoulItems.ISoulCycleItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.ISoulCycleItem;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.ChatFormatting;
@@ -42,9 +42,9 @@ public class SoulWandSelectC2SPacket
 				cycle.cycleSoul(stack, player.isShiftKeyDown());
 				
 				level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
-				player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.soul_wand.select")
+				player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.select")
 						.append(": " + cycle.getID(base.getMaxEntities()-1, stack))
-						.withStyle(ChatFormatting.AQUA), true);
+						.withStyle(ChatFormatting.WHITE), true);
 			}
 		});
 		

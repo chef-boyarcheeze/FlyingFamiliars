@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_wand_rod"
+		},
+		{
+			"item": "minecraft:coal"
+		},
+		{
+			"item": "flyingfamiliars:hand_of_the_hells"
+		},
+		{
+			"item": "minecraft:quartz"
+		},
+		{
+			"item": "minecraft:blaze_rod"
+		}
+	],
+	"inputEntities": [
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:fiery_crook"
+	},
+	"outputEntity": {
+	}
+}

@@ -1,9 +1,9 @@
 package com.beesechurger.flyingfamiliars.blocks;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.blocks.custom.BrazierBlock;
-import com.beesechurger.flyingfamiliars.blocks.custom.CrystalBallBlock;
-import com.beesechurger.flyingfamiliars.blocks.custom.EffigyCoreBlock;
+import com.beesechurger.flyingfamiliars.blocks.common.BrazierBlock;
+import com.beesechurger.flyingfamiliars.blocks.common.CrystalBallBlock;
+import com.beesechurger.flyingfamiliars.blocks.common.EffigyCoreBlock;
 import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.google.common.base.Supplier;
 

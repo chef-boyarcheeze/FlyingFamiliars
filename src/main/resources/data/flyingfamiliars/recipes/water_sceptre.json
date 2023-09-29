@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_wand_rod"
+		},
+		{
+			"item": "minecraft:lapis_lazuli"
+		},
+		{
+			"item": "minecraft:heart_of_the_sea"
+		},
+		{
+			"item": "minecraft:prismarine_crystals"
+		},
+		{
+			"item": "minecraft:prismarine_shard"
+		}
+	],
+	"inputEntities": [
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:water_sceptre"
+	},
+	"outputEntity": {
+	}
+}
