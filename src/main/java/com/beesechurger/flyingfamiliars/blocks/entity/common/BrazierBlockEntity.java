@@ -64,6 +64,7 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 		};
 
 		this.itemCapacityMod = 5;
+		this.entityCapacityMod = 3;
 		this.items = NonNullList.withSize(getMaxItems(), ItemStack.EMPTY);
 	}
 	

@@ -113,7 +113,8 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
                 {
                     for (int i = 0; i < getMaxEntities(); i++)
                     {
-                        tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
+                        if(getID(i, stack) != "Empty")
+                            tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
                     }
                 }
                 else

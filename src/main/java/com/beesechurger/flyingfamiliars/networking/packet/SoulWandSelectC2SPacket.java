@@ -36,10 +36,7 @@ public class SoulWandSelectC2SPacket
 					&& stack.getItem() instanceof ISoulCycleItem cycle
 					&& stack.getItem() instanceof BaseEntityTagItem base)
 			{
-				if(!stack.hasTag())
-					EntityTagItemHelper.populateTag(stack);
-
-				cycle.cycleSoul(stack, player.isShiftKeyDown());
+				cycle.cycleSoul(player);
 				
 				level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
 				player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.select")

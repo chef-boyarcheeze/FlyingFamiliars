@@ -9,7 +9,7 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTIT
 public class EntityTagBlockHelper
 {
     public final static int MAX_ITEMS = 1;
-    public final static int MAX_ENTITIES = 3;
+    public final static int MAX_ENTITIES = 1;
 
     public static void populateTag(BaseEntityTagBE entity)
     {

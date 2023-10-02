@@ -1,31 +1,36 @@
 package com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulWand;
 
 import com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture.CaptureProjectile;
-import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
 import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.items.FFItems;
 import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.items.common.SoulItems.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulBattery;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.lwjgl.system.CallbackI;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
+import top.theillusivec4.curios.api.type.util.ICuriosHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.*;
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_GRAY;
 
 public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
 {
@@ -45,28 +50,19 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
-        if(!level.isClientSide())
-        {
-            for(ItemStack i : player.getArmorSlots())
-            {
-                System.out.println("[" + i.toString() + "]");
-                //player.get
-            }
-        }
-
-        ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
+        ItemStack wandStack = player.getItemInHand(hand);
+        EntityTagItemHelper.ensureTagPopulated(wandStack);
 
         if (!level.isClientSide())
         {
-            CaptureProjectile capture = new CaptureProjectile(level, player, stack, FFKeys.SOUL_WAND_SHIFT.isDown());
+            CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
             capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
             level.addFreshEntity(capture);
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
 
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+        return InteractionResultHolder.sidedSuccess(wandStack, level.isClientSide());
     }
 
     @Override

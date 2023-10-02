@@ -2,9 +2,17 @@ package com.beesechurger.flyingfamiliars.items;
 
 import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.items.common.SoulItems.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulBattery;
+import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
+
+import java.util.Optional;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ITEM_MODE_TAGNAME;
@@ -103,5 +111,69 @@ public class EntityTagItemHelper
         }
 
         return entityCount == 0;
+    }
+
+    public static ItemStack getOffHandBattery(Player player)
+    {
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+
+        if(offHand != null && offHand.getItem() instanceof SoulBattery item)
+            return offHand;
+
+            /*int entityCount = item.getEntityCount(offHand);
+
+            if(!FFKeys.SOUL_WAND_SHIFT.isDown())
+            {
+                if(entityCount < item.getMaxEntities())
+                    return offHand;
+            }
+            else
+            {
+                if(entityCount > 0)
+                    return offHand;
+            }*/
+
+        return null;
+    }
+
+    public static ItemStack getCurioCharmBattery(Player player)
+    {
+        Optional<SlotResult>[] checkCurios = new Optional[7];
+        checkCurios[0] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_BLUE.get());
+        checkCurios[1] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_GREEN.get());
+        checkCurios[2] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_YELLOW.get());
+        checkCurios[3] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_GOLD.get());
+        checkCurios[4] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_RED.get());
+        checkCurios[5] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_BLACK.get());
+        //checkCurios[6] = CuriosApi.getCuriosHelper().findFirstCurio(player, FFItems.SOUL_BATTERY_WHITE.get());
+
+        ItemStack curioCharm = null;
+
+        for(Optional<SlotResult> battery : checkCurios)
+        {
+            if(battery != null && battery.isPresent())
+            {
+                curioCharm = battery.get().stack();
+                break;
+            }
+        }
+
+        if(curioCharm != null && curioCharm.getItem() instanceof SoulBattery item)
+            return curioCharm;
+
+            /*int entityCount = item.getEntityCount(curioCharm);
+
+            if(!FFKeys.SOUL_WAND_SHIFT.isDown())
+            {
+                if(entityCount < item.getMaxEntities())
+                    return curioCharm;
+            }
+            else
+            {
+                if(entityCount > 0)
+                    return curioCharm;
+            }*/
+
+        return null;
     }
 }

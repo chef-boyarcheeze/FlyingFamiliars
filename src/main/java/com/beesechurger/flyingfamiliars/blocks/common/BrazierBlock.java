@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.blocks.entity.common.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.blocks.entity.common.BrazierBlockEntity;
 import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
@@ -14,6 +15,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,100 +35,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BrazierBlock extends BaseEntityBlock
+public class BrazierBlock extends BaseEntityTagBlock
 {
-	private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 14, 15);
-	
 	public BrazierBlock(Properties properties)
 	{
 		super(properties);
 		registerDefaultState(this.stateDefinition.any());
-	}
-	
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-	{
-		return SHAPE;
-	}
-	
-	@Override
-	public RenderShape getRenderShape(BlockState state)
-	{
-		return RenderShape.MODEL;
-	}
-	
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		if(state.getBlock() != newState.getBlock())
-		{
-			BlockEntity entity = level.getBlockEntity(pos);
-			if(entity instanceof BrazierBlockEntity)
-			{
-				((BrazierBlockEntity) entity).drops();
-			}
-		}
-	}
-	
-	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
-	{		
-		if(!level.isClientSide())
-		{
-			BlockEntity entity = level.getBlockEntity(pos);
-			if(entity instanceof BrazierBlockEntity)
-			{
-				BrazierBlockEntity brazierEntity = (BrazierBlockEntity) entity;
-				ItemStack stack = player.getItemInHand(hand);
-				Random random = new Random();
-				
-				if(stack.getItem() instanceof BaseEntityTagItem item)
-				{
-					EntityTagItemHelper.ensureTagPopulated(stack);
-
-					if(!EntityTagItemHelper.isSelectionEmpty(stack))
-					{
-						String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
-						
-						if(brazierEntity.placeEntity(stack))
-						{
-							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.place_entity")
-																.withStyle(ChatFormatting.YELLOW)
-																.append(": " + selectedEntity), true);
-
-							level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, 
-									FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
-						}
-					}
-					else
-					{
-						if(brazierEntity.removeEntity(stack))
-						{
-							String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
-							
-							player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.remove_entity")
-																.withStyle(ChatFormatting.YELLOW)
-																.append(": " + selectedEntity), true);
-							
-							level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, 
-									FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
-						}
-					}
-				}
-				else if(!player.isShiftKeyDown())
-					brazierEntity.placeItem(stack);
-				else
-					brazierEntity.removeItem(level, pos);
-				
-				return InteractionResult.SUCCESS;
-			}
-			else
-			{
-				throw new IllegalStateException("Flying Familiars Brazier container provider missing");
-			}
-		}
-		
-		return InteractionResult.sidedSuccess(level.isClientSide());
+		VoxelShape SHAPE = Block.box(1, 0, 1, 15, 14, 15);
 	}
 
 	@Nullable
@@ -171,4 +87,16 @@ public class BrazierBlock extends BaseEntityBlock
       										   (double) pos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
       										   0.0D, 0.005D, 0.0D);
     }
+
+	@Override
+	protected SoundEvent getPlaceEntitySound()
+	{
+		return FFSounds.BRAZIER_ADD_ENTITY.get();
+	}
+
+	@Override
+	protected SoundEvent getRemoveEntitySound()
+	{
+		return FFSounds.BRAZIER_REMOVE_ENTITY.get();
+	}
 }
