@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.blocks.FFBlocks;
+import com.beesechurger.flyingfamiliars.block.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

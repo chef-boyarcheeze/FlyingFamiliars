@@ -1,18 +1,14 @@
 package com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.items.FFItems;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.item.FFItems;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulWand.FieryCrook;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulWand.VoidShard;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulWand.WaterSceptre;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,15 +22,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 
@@ -107,8 +100,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
 				EntityTagItemHelper.ensureTagPopulated(stack);
-				CompoundTag compound = stack.getTag();
-				ListTag tempItem = compound.getList(BASE_ENTITY_TAGNAME, 10);
+				CompoundTag stackTag = stack.getTag();
+				ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
 				for(Tag tag : tempItem)
 				{
@@ -147,7 +140,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 			{
 				if(stack.getItem() instanceof BaseEntityTagItem item)
 				{
-					CompoundTag compound = stack.getTag();
+					CompoundTag stackTag = stack.getTag();
 					ListTag stackList = new ListTag();
 
 					for(int i = 0; i < item.getMaxEntities(); i++)
@@ -156,8 +149,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 						totalList.remove(0);
 					}
 
-					compound.put(BASE_ENTITY_TAGNAME, stackList);
-					stack.setTag(compound);
+					stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+					stack.setTag(stackTag);
 				}
 			}
 
@@ -185,9 +178,44 @@ public class CaptureProjectile extends ThrowableItemProjectile
 	
 	private boolean release(BlockHitResult result)
 	{
+		ItemStack mainHand = player.getMainHandItem();
+		EntityTagItemHelper.ensureTagPopulated(mainHand);
+		String selectedEntity = EntityTagItemHelper.getSelectedEntity(mainHand);
+
+		if(selectedEntity != "Empty")
+		{
+			CompoundTag stackTag = mainHand.getTag();
+			ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
+			CompoundTag entityNBT = stackList.getCompound(stackList.size()-1);
+
+			EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
+			if (type != null)
+			{
+				BlockPos pos = result.getBlockPos();
+				Direction dir = result.getDirection();
+
+				double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
+				double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
+				double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
+
+				Entity entity = type.create(level);
+				entity.load(entityNBT);
+
+				entity.absMoveTo(x, y, z, 0, 0);
+				level.addFreshEntity(entity);
+
+				entityNBT.putString(BASE_ENTITY_TAGNAME, "Empty");
+				stackList.set(stackList.size()-1, entityNBT);
+
+				stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+				mainHand.setTag(stackTag);
+
+				return true;
+			}
+		}
+
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
-		ItemStack mainHand = player.getMainHandItem();
 		ItemStack offHand = EntityTagItemHelper.getOffHandBattery(player);
 		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmBattery(player);
 
@@ -206,8 +234,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
 				EntityTagItemHelper.ensureTagPopulated(stack);
-				CompoundTag compound = stack.getTag();
-				ListTag tempItem = compound.getList(BASE_ENTITY_TAGNAME, 10);
+				CompoundTag stackTag = stack.getTag();
+				ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
 				for(Tag tag : tempItem)
 				{
@@ -256,7 +284,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 			{
 				if(stack.getItem() instanceof BaseEntityTagItem item)
 				{
-					CompoundTag compound = stack.getTag();
+					CompoundTag stackTag = stack.getTag();
 					ListTag stackList = new ListTag();
 
 					for(int i = 0; i < item.getMaxEntities(); i++)
@@ -265,8 +293,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 						totalList.remove(0);
 					}
 
-					compound.put(BASE_ENTITY_TAGNAME, stackList);
-					stack.setTag(compound);
+					stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+					stack.setTag(stackTag);
 				}
 			}
 
@@ -286,7 +314,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 	        double d0 = this.getX() + vec3d.x;
 	        double d1 = this.getY() + vec3d.y;
 	        double d2 = this.getZ() + vec3d.z;
-	        this.level.addParticle(ParticleTypes.SMOKE, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
+	        this.level.addParticle(ParticleTypes.END_ROD, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
 		}
 	}
 	

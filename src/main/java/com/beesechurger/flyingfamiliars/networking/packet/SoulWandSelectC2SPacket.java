@@ -2,9 +2,8 @@ package com.beesechurger.flyingfamiliars.networking.packet;
 
 import java.util.function.Supplier;
 
-import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.ISoulCycleItem;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.ISoulCycleItem;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
 import net.minecraft.ChatFormatting;

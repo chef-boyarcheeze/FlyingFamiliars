@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:totem_of_undying"
+		},
+		{
+			"item": "minecraft:nether_star"
+		},
+		{
+			"item": "minecraft:dragon_breath"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:glow_squid"
+		},
+		{
+			"string": "minecraft:elder_guardian"
+		},
+		{
+			"string": "minecraft:panda"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:strand_of_the_light"
+	},
+	"outputEntity": {
+	}
+}

@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.networking.packet;
 
 import java.util.function.Supplier;
 
-import com.beesechurger.flyingfamiliars.blocks.entity.common.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.common.BrazierBlockEntity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

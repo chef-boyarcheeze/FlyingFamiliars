@@ -1,16 +1,15 @@
 package com.beesechurger.flyingfamiliars;
 
-import com.beesechurger.flyingfamiliars.blocks.FFBlocks;
-import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.block.FFBlocks;
+import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
-import com.beesechurger.flyingfamiliars.items.FFItemHandler;
-import com.beesechurger.flyingfamiliars.items.FFItems;
-import com.beesechurger.flyingfamiliars.items.client.SoulBatteryRenderer;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.SoulBattery;
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
+import com.beesechurger.flyingfamiliars.item.FFItems;
+import com.beesechurger.flyingfamiliars.item.client.SoulBatteryRenderer;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.recipe.FFRecipes;

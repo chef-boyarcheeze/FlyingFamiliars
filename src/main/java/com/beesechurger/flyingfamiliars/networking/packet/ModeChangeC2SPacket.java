@@ -1,10 +1,8 @@
 package com.beesechurger.flyingfamiliars.networking.packet;
 
-import com.beesechurger.flyingfamiliars.items.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.items.common.SoulItems.IModeCycleItem;
-import net.minecraft.ChatFormatting;
+import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;

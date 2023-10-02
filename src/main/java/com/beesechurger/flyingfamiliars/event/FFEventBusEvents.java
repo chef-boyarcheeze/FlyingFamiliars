@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.event;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.blocks.client.BrazierRenderer;
-import com.beesechurger.flyingfamiliars.blocks.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.block.client.BrazierRenderer;
+import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
