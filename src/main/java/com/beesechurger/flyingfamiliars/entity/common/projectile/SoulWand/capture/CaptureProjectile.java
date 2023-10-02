@@ -150,11 +150,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 					CompoundTag compound = stack.getTag();
 					ListTag stackList = new ListTag();
 
-					System.out.println(stack);
-
 					for(int i = 0; i < item.getMaxEntities(); i++)
 					{
-						System.out.println(totalList.size());
 						stackList.add(totalList.get(0));
 						totalList.remove(0);
 					}
@@ -262,11 +259,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 					CompoundTag compound = stack.getTag();
 					ListTag stackList = new ListTag();
 
-					System.out.println(stack);
-
 					for(int i = 0; i < item.getMaxEntities(); i++)
 					{
-						System.out.println(totalList.size());
 						stackList.add(totalList.get(0));
 						totalList.remove(0);
 					}

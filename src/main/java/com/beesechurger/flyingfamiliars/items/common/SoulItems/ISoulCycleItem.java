@@ -73,11 +73,8 @@ public interface ISoulCycleItem
                 CompoundTag compound = stack.getTag();
                 ListTag tempItem = new ListTag();
 
-                System.out.println(stack);
-
                 for(int i = 0; i < item.getMaxEntities(); i++)
                 {
-                    System.out.println(tagList.size());
                     tempItem.add(tagList.get(0));
                     tagList.remove(0);
                 }

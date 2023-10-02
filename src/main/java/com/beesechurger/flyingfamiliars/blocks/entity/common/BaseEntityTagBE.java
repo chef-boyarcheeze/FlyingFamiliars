@@ -235,7 +235,6 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         for(int i = 0; i < getMaxEntities(); i++)
         {
             entityStrings.set(i, blockList.getCompound(i).getString(BASE_ENTITY_TAGNAME));
-            //System.out.println(blockList.getCompound(i).getString(BLOCK_ENTITIES_TAGNAME));
         }
 
         return entityStrings;
