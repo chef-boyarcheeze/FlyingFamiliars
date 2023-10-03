@@ -4,9 +4,9 @@ import net.minecraft.ChatFormatting;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.*;
 
-public class VerdantStaff extends BaseSoulWand
+public class VerdantBough extends BaseSoulWand
 {
-    public VerdantStaff(Properties properties)
+    public VerdantBough(Properties properties)
     {
         super(properties);
 

@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_wand_rod"
+		},
+		{
+			"item": "minecraft:diamond"
+		},
+		{
+			"item": "flyingfamiliars:strand_of_the_light"
+		},
+		{
+			"item": "minecraft:candle"
+		},
+		{
+			"item": "minecraft:nether_star"
+		}
+	],
+	"inputEntities": [
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:light_prism"
+	},
+	"outputEntity": {
+	}
+}

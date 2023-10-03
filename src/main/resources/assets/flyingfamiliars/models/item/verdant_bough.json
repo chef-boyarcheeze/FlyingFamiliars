@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "flyingfamiliars:item/verdant_staff"
+		"layer0": "flyingfamiliars:item/verdant_bough"
 	}
 }

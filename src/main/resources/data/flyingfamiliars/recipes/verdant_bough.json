@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_wand_rod"
+		},
+		{
+			"item": "minecraft:emerald"
+		},
+		{
+			"item": "flyingfamiliars:pelt_of_the_forest"
+		},
+		{
+			"item": "minecraft:dead_bush"
+		},
+		{
+			"item": "minecraft:dark_oak_sapling"
+		}
+	],
+	"inputEntities": [
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:verdant_bough"
+	},
+	"outputEntity": {
+	}
+}

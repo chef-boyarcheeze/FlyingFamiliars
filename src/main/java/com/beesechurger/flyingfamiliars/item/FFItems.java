@@ -3,10 +3,7 @@ package com.beesechurger.flyingfamiliars.item;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.FieryCrook;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.VerdantStaff;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.VoidShard;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.WaterSceptre;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.*;
 import com.google.common.base.Supplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -25,9 +22,12 @@ public class FFItems
 
 	// Soul Wands:
 	public static final RegistryObject<Item> WATER_SCEPTRE = register("water_sceptre", () -> new WaterSceptre(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> VERDANT_STAFF = register("verdant_staff", () -> new VerdantStaff(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> VERDANT_BOUGH = register("verdant_bough", () -> new VerdantBough(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> TEMPEST_STAFF = register("tempest_staff", () -> new TempestStaff(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> FISSURE_BATON = register("fissure_baton", () -> new FissureBaton(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> FIERY_CROOK = register("fiery_crook", () -> new FieryCrook(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> VOID_SHARD = register("void_shard", () -> new VoidShard(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> VOID_SHARD = register("void_shard", () -> new VoidShard(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.EPIC)));
+	public static final RegistryObject<Item> LIGHT_PRISM = register("light_prism", () -> new LightPrism(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.EPIC)));
 
 	// Soul Batteries:
 	public static final RegistryObject<Item> SOUL_BATTERY_BLUE = register("soul_battery_blue", () -> new SoulBattery(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.UNCOMMON), 1));

@@ -5,22 +5,22 @@
 			"item": "flyingfamiliars:soul_wand_rod"
 		},
 		{
-			"item": "minecraft:emerald"
+			"item": "minecraft:gold_ingot"
 		},
 		{
-			"item": "flyingfamiliars:pelt_of_the_forest"
+			"item": "flyingfamiliars:bones_of_the_earth"
 		},
 		{
-			"item": "minecraft:dead_bush"
+			"item": "minecraft:calcite"
 		},
 		{
-			"item": "minecraft:dark_oak_sapling"
+			"item": "minecraft:amethyst_shard"
 		}
 	],
 	"inputEntities": [
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:verdant_staff"
+		"item": "flyingfamiliars:fissure_baton"
 	},
 	"outputEntity": {
 	}

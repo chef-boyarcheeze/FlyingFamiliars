@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_wand_rod"
+		},
+		{
+			"item": "minecraft:copper_ingot"
+		},
+		{
+			"item": "flyingfamiliars:eye_of_the_storm"
+		},
+		{
+			"item": "minecraft:lightning_rod"
+		},
+		{
+			"item": "minecraft:redstone"
+		}
+	],
+	"inputEntities": [
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:tempest_staff"
+	},
+	"outputEntity": {
+	}
+}
