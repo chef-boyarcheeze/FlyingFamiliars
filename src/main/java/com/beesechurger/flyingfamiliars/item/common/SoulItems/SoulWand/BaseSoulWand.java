@@ -40,10 +40,10 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
-        ItemStack wandStack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(wandStack);
+        ItemStack stack = player.getItemInHand(hand);
+        EntityTagItemHelper.ensureTagPopulated(stack);
 
-        if (!level.isClientSide())
+        if(!level.isClientSide())
         {
             CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
             capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
@@ -51,16 +51,17 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
+        player.getCooldowns().addCooldown(this, 10);
 
-        return InteractionResultHolder.sidedSuccess(wandStack, level.isClientSide());
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
     @Override
     public Component getName(ItemStack stack)
     {
-        if(stack.getItem() instanceof IModeCycleItem item)
+        if(stack.getTag() != null)
         {
-            int mode = item.getMode(stack);
+            int mode = this.getMode(stack);
             TranslatableComponent base = new TranslatableComponent(super.getDescriptionId(stack));
 
             return switch(mode)
@@ -76,18 +77,16 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
                         .append(")");
             };
         }
-
-        return new TranslatableComponent(super.getDescriptionId(stack));
+        else
+            return new TranslatableComponent(super.getDescriptionId(stack));
     }
 
     @Override
     public int getBarColor(ItemStack stack)
     {
-        CompoundTag stackTag = stack.getTag();
-
-        if(stackTag != null && stack.getItem() instanceof IModeCycleItem item)
+        if(stack.getTag() != null)
         {
-            int mode = item.getMode(stack);
+            int mode = this.getMode(stack);
 
             return switch(mode)
             {
@@ -103,11 +102,9 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        CompoundTag stackTag = stack.getTag();
-
-        if(stackTag != null && stack.getItem() instanceof IModeCycleItem item)
+        if(stack.getTag() != null)
         {
-            int mode = item.getMode(stack);
+            int mode = this.getMode(stack);
 
             switch(mode)
             {
