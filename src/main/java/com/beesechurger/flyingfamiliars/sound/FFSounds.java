@@ -22,15 +22,16 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> BRAZIER_REMOVE_ENTITY = registerSoundEvent("brazier_remove_entity");
 	public static final RegistryObject<SoundEvent> BRAZIER_REMOVE_ITEM = registerSoundEvent("brazier_remove_item");
 	public static final RegistryObject<SoundEvent> BRAZIER_RESULT = registerSoundEvent("brazier_result");
-	
+
+	public static final RegistryObject<SoundEvent> CLOUD_RAY_APPLY_DOUSED = registerSoundEvent("cloud_ray_apply_doused");
+	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE1 = registerSoundEvent("cloud_ray_idle1");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE2 = registerSoundEvent("cloud_ray_idle2");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE3 = registerSoundEvent("cloud_ray_idle3");
+	public static final RegistryObject<SoundEvent> CLOUD_RAY_HURT = registerSoundEvent("cloud_ray_hurt");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP1 = registerSoundEvent("cloud_ray_step1");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP2 = registerSoundEvent("cloud_ray_step2");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP3 = registerSoundEvent("cloud_ray_step3");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_HURT = registerSoundEvent("cloud_ray_hurt");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
 	
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER1 = registerSoundEvent("griffonfly_chitter1");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER2 = registerSoundEvent("griffonfly_chitter2");

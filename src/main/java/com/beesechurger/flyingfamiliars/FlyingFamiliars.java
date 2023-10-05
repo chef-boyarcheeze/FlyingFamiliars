@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.block.FFBlocks;
 import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.effect.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
@@ -55,6 +56,7 @@ public class FlyingFamiliars
 		FFItems.ITEM_REG.register(bus);
 		FFBlocks.BLOCK_REG.register(bus);
 		FFBlockEntities.BLOCK_ENTITIES.register(bus);
+		FFEffects.EFFECTS.register(bus);
 		FFEntityTypes.ENTITY_TYPES.register(bus);
 		FFSounds.SOUND_EVENTS.register(bus);
 		FFRecipes.SERIALIZERS.register(bus);

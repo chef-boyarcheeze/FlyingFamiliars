@@ -8,7 +8,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "PlayerRiderDismountMixin",
+    "EntityDousedInWaterMixin",
+    "PlayerRiderDismountMixin"
   ],
   "client": [
     "PlayerRiderRendererMixin"

@@ -40,8 +40,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
-	protected int familiarActionTimer = 0;
-	protected int familiarLandTimer = 0;
+	protected int actionTimer = 0;
+	protected int landTimer = 0;
+
+	protected int resetActionTimerAmount = 20;
+	protected int resetLandTimerAmount = 100;
 
 	protected BaseFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
@@ -251,14 +254,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return 0;
 	}
 
-	protected void resetFamiliarActionTimer()
+	protected void resetActionTimer()
 	{
-		familiarActionTimer = 20;
+		actionTimer = resetActionTimerAmount;
 	}
 
-	protected void resetFamiliarLandTimer()
+	protected void resetLandTimer()
 	{
-		familiarLandTimer = 100;
+		landTimer = resetLandTimerAmount;
 	}
 	
 // Damage:
@@ -325,8 +328,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 		setFlying(shouldFly());
 
-		if(familiarActionTimer > 0) --familiarActionTimer;
-		if(familiarLandTimer > 0) --familiarLandTimer;
+		if(actionTimer > 0) --actionTimer;
+		if(landTimer > 0) --landTimer;
 	}
 
 // Entity values:
@@ -419,12 +422,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 					decrementPitch();
 				else
 					centerPitch();
-			}
-			else
-				centerPitch();
 
-			if(familiar.isFlying() && driver != null)
-			{
 				if(sideMove > 0)
 					incrementRoll();
 				else if(sideMove < 0)
@@ -433,7 +431,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 					centerRoll();
 			}
 			else
+			{
+				centerPitch();
 				centerRoll();
+			}
 		}
 
 		private void rotationForward()
@@ -451,6 +452,15 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 			if(familiar.isFlying() && driver != null)
 			{
+				if(FFKeys.FAMILIAR_ASCEND.isDown() && FFKeys.FAMILIAR_DESCEND.isDown())
+					centerPitch();
+				else if(FFKeys.FAMILIAR_ASCEND.isDown())
+					decrementPitch();
+				else if(FFKeys.FAMILIAR_DESCEND.isDown())
+					incrementPitch();
+				else
+					centerPitch();
+
 				if(yRotDifference > 0.2f * angleLimit)
 					incrementRoll();
 				else if(yRotDifference < -0.2f * angleLimit)
@@ -459,7 +469,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 					centerRoll();
 			}
 			else
+			{
+				centerPitch();
 				centerRoll();
+			}
 		}
 
 		private void incrementPitch()

@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
+import com.beesechurger.flyingfamiliars.effect.FFEffects;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
@@ -9,9 +10,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,6 +60,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	public CloudRayEntity(EntityType<CloudRayEntity> entityType, Level level)
 	{
 		super(entityType, level);
+		resetActionTimerAmount = 400;
 	}
 
 	public static AttributeSupplier setAttributes()
@@ -370,6 +374,19 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 			navigation = new FamiliarFlyingPathNavigation(this, level);
 		else
 			navigation = new GroundPathNavigation(this, level);
+
+		if(!level.isClientSide() && !isSitting() && getOwner() != null && actionTimer == 0)
+			if(distanceToSqr(getOwner()) < BEGIN_FOLLOW_DISTANCE * BEGIN_FOLLOW_DISTANCE)
+			{
+				if(getOwner().getEffect(FFEffects.DOUSED.get()) == null)
+				{
+					MobEffectInstance doused = new MobEffectInstance(FFEffects.DOUSED.get(), 1200);
+					getOwner().addEffect(doused);
+
+					resetActionTimer();
+					level.playSound(null, getX(), getY(), getZ(), FFSounds.CLOUD_RAY_APPLY_DOUSED.get(), SoundSource.NEUTRAL, 0.5f + random.nextFloat(), 1.5f * FFSounds.getPitch());
+				}
+			}
 	}
 
 	@Override

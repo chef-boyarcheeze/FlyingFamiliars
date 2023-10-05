@@ -307,7 +307,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 			if (!this.level.isClientSide)
 			{
 				setRidingPlayer(player);
-				resetFamiliarActionTimer();
+				resetActionTimer();
 				navigation.stop();
 				setTarget(null);
 			}
@@ -377,15 +377,15 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 
 		if(!level.isClientSide())
 		{
-			if(familiarActionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
+			if(actionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
 			{
 				if(pickUpMob())
-					resetFamiliarActionTimer();
+					resetActionTimer();
 			}
 			if(getControllingPassenger() == null && getPassengers().size() != 0)
 			{
 				this.ejectPassengers();
-				level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+				level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
 			}
 		}
 	}
@@ -402,7 +402,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 				if(getPassengers().size() <= 1)
 				{
 					candidate.startRiding(this);
-					level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+					level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
 					return true;
 				}
 				// Release carried mob
@@ -413,7 +413,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 						if(candidate == e)
 						{
 							candidate.stopRiding();
-							level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+							level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
 							return true;
 						}
 					}

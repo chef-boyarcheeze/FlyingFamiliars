@@ -41,6 +41,18 @@
 			"flyingfamiliars:brazier_result"
 		]
 	},
+	"cloud_ray_apply_doused": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_apply_doused",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_apply_doused"
+		]
+	},
+	"cloud_ray_death": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_death",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_death"
+		]
+	},
 	"cloud_ray_idle1": {
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle1",
 		"sounds": [
@@ -59,6 +71,12 @@
 			"flyingfamiliars:cloud_ray_idle3"
 		]
 	},
+	"cloud_ray_hurt": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_hurt",
+		"sounds": [
+			"flyingfamiliars:cloud_ray_hurt"
+		]
+	},
 	"cloud_ray_step1": {
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_step1",
 		"sounds": [
@@ -75,18 +93,6 @@
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_step3",
 		"sounds": [
 			"flyingfamiliars:cloud_ray_step3"
-		]
-	},
-	"cloud_ray_hurt": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_hurt",
-		"sounds": [
-			"flyingfamiliars:cloud_ray_hurt"
-		]
-	},
-	"cloud_ray_death": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_death",
-		"sounds": [
-			"flyingfamiliars:cloud_ray_death"
 		]
 	},
 	"griffonfly_chitter1": {
