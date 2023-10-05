@@ -1,0 +1,37 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_battery_gold"
+		},
+		{
+			"item": "minecraft:netherite_scrap"
+		},
+		{
+			"item": "flyingfamiliars:hand_of_the_hells"
+		},
+		{
+			"item": "minecraft:netherite_scrap"
+		},
+		{
+			"item": "flyingfamiliars:soul_battery_gold"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:wither_skeleton"
+		},
+		{
+			"string": "minecraft:piglin_brute"
+		},
+		{
+			"string": "minecraft:wither_skeleton"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:soul_battery_red"
+	},
+	"outputEntity": {
+		"string": "minecraft:strider"
+	}
+}

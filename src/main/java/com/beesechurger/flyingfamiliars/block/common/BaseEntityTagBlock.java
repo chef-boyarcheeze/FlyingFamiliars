@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.block.common;
 import com.beesechurger.flyingfamiliars.block.entity.common.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -74,36 +75,39 @@ public class BaseEntityTagBlock extends BaseEntityBlock
                 {
                     EntityTagItemHelper.ensureTagPopulated(stack);
 
-                    if(!EntityTagItemHelper.isSelectionEmpty(stack))
+                    if(!(stack.getItem() instanceof SoulBattery && item.getEntityCount(stack) == 0))
                     {
-                        String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
-
-                        if(baseEntity.placeEntity(stack))
-                        {
-                            player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.place_entity")
-                                    .withStyle(ChatFormatting.WHITE)
-                                    .append(": " + selectedEntity), true);
-
-                            level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
-                                    FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F, FFSounds.getPitch(), false);
-                        }
-                    }
-                    else
-                    {
-                        if(baseEntity.removeEntity(stack))
+                        if(!EntityTagItemHelper.isSelectionEmpty(stack))
                         {
                             String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 
-                            player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.remove_entity")
-                                    .withStyle(ChatFormatting.WHITE)
-                                    .append(": " + selectedEntity), true);
+                            if(baseEntity.placeEntity(stack))
+                            {
+                                player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.place_entity")
+                                        .withStyle(ChatFormatting.WHITE)
+                                        .append(": " + selectedEntity), true);
 
-                            level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
-                                    FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F, FFSounds.getPitch(), false);
+                                level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
+                                        FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F, FFSounds.getPitch(), false);
+                            }
                         }
-                    }
+                        else
+                        {
+                            if(baseEntity.removeEntity(stack))
+                            {
+                                String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 
-                    return InteractionResult.SUCCESS;
+                                player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.remove_entity")
+                                        .withStyle(ChatFormatting.WHITE)
+                                        .append(": " + selectedEntity), true);
+
+                                level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
+                                        FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F, FFSounds.getPitch(), false);
+                            }
+                        }
+
+                        return InteractionResult.SUCCESS;
+                    }
                 }
 
                 if(!player.isShiftKeyDown())

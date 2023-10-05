@@ -1,0 +1,37 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_battery_red"
+		},
+		{
+			"item": "minecraft:shulker_shell"
+		},
+		{
+			"item": "flyingfamiliars:pearl_of_the_void"
+		},
+		{
+			"item": "minecraft:shulker_shell"
+		},
+		{
+			"item": "flyingfamiliars:soul_battery_red"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:shulker"
+		},
+		{
+			"string": "minecraft:shulker"
+		},
+		{
+			"string": "minecraft:shulker"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:soul_battery_black"
+	},
+	"outputEntity": {
+		"string": "minecraft:endermite"
+	}
+}

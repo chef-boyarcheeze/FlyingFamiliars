@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.item.common.SoulItems;
 
+import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -42,11 +43,13 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
 
     public int getEntityCount(ItemStack stack)
     {
-        int entityCount = 0;
-        CompoundTag stackTag = stack.getTag();
+        EntityTagItemHelper.ensureTagPopulated(stack);
 
-        if(stackTag != null)
+        int entityCount = 0;
+
+        if(stack.hasTag())
         {
+            CompoundTag stackTag = stack.getTag();
             ListTag tagList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
             for(int i = 0; i < getMaxEntities(); i++)
@@ -78,19 +81,22 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
     @Override
     public boolean isFoil(ItemStack stack)
     {
-        return getEntityCount(stack) == getMaxEntities() && stack.getTag() != null;
+        return stack.hasTag() && getEntityCount(stack) == getMaxEntities();
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack)
     {
-        return getEntityCount(stack) > 0 && stack.getTag() != null;
+        return stack.hasTag() && getEntityCount(stack) > 0;
     }
 
     @Override
     public int getBarWidth(ItemStack stack)
     {
-        return Math.round((float) getEntityCount(stack) * 13.0f / (float) getMaxEntities());
+        if(stack.hasTag())
+            return Math.round((float) getEntityCount(stack) * 13.0f / (float) getMaxEntities());
+
+        return 0;
     }
 
     @Override
@@ -103,10 +109,11 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
         int entityCount = getEntityCount(stack);
-        CompoundTag stackTag = stack.getTag();
 
-        if (stackTag != null)
+        if (stack.hasTag())
         {
+            CompoundTag stackTag = stack.getTag();
+
             if(entityCount != 0)
             {
                 if(Screen.hasShiftDown())

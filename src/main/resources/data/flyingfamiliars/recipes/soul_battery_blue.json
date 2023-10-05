@@ -2,19 +2,19 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "minecraft:prismarine_shard"
+			"item": "minecraft:phantom_membrane"
 		},
 		{
-			"item": "minecraft:prismarine_crystals"
+			"item": "minecraft:prismarine_shard"
 		},
 		{
 			"item": "minecraft:heart_of_the_sea"
 		},
 		{
-			"item": "minecraft:prismarine_crystals"
+			"item": "minecraft:prismarine_shard"
 		},
 		{
-			"item": "minecraft:prismarine_shard"
+			"item": "minecraft:phantom_membrane"
 		}
 	],
 	"inputEntities": [

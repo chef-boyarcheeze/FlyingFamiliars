@@ -1,0 +1,37 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_battery_blue"
+		},
+		{
+			"item": "minecraft:rabbit_hide"
+		},
+		{
+			"item": "flyingfamiliars:pelt_of_the_forest"
+		},
+		{
+			"item": "minecraft:rabbit_hide"
+		},
+		{
+			"item": "flyingfamiliars:soul_battery_blue"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:evoker"
+		},
+		{
+			"string": "minecraft:ravager"
+		},
+		{
+			"string": "minecraft:vindicator"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:soul_battery_green"
+	},
+	"outputEntity": {
+		"string": "minecraft:rabbit"
+	}
+}

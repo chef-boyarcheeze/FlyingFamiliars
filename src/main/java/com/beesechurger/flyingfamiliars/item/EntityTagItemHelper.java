@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.item;
 
+import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
@@ -51,7 +52,12 @@ public class EntityTagItemHelper
 
     public static void ensureTagPopulated(ItemStack stack)
     {
-        if(!stack.hasTag())
+        if(stack.getItem() instanceof BaseEntityTagItem item && stack.hasTag())
+        {
+            if(stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).size() != item.getMaxEntities())
+                EntityTagItemHelper.populateTag(stack);
+        }
+        else if(!stack.hasTag())
             EntityTagItemHelper.populateTag(stack);
     }
 
@@ -59,10 +65,9 @@ public class EntityTagItemHelper
     {
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            CompoundTag stackTag = stack.getTag();
-
-            if(stackTag != null)
+            if(stack.hasTag())
             {
+                CompoundTag stackTag = stack.getTag();
                 ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
                 return stackList.getCompound(item.getMaxEntities()-1).getString(BASE_ENTITY_TAGNAME);
@@ -76,10 +81,9 @@ public class EntityTagItemHelper
     {
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            CompoundTag stackTag = stack.getTag();
-
-            if(stackTag != null)
+            if(stack.hasTag())
             {
+                CompoundTag stackTag = stack.getTag();
                 ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
                 return stackList.get(item.getMaxEntities()-1).toString().contains("Empty");
@@ -95,10 +99,9 @@ public class EntityTagItemHelper
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            CompoundTag stackTag = stack.getTag();
-
-            if(stackTag != null)
+            if(stack.hasTag())
             {
+                CompoundTag stackTag = stack.getTag();
                 ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
                 for(int i = 0; i < item.getMaxEntities(); i++)

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -434,6 +435,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 			rider.xRotO = rider.getXRot();
 			rider.yRotO = rider.getYRot();
 			rider.setYBodyRot(yBodyRot);
+
+			if(!(rider instanceof Player))
+				rider.setYHeadRot(yHeadRot);
 		}
 	}
 

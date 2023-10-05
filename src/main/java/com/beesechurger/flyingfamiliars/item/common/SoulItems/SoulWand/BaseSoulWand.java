@@ -59,7 +59,7 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     @Override
     public Component getName(ItemStack stack)
     {
-        if(stack.getTag() != null)
+        if(stack.hasTag())
         {
             int mode = this.getMode(stack);
             TranslatableComponent base = new TranslatableComponent(super.getDescriptionId(stack));
@@ -84,7 +84,7 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     @Override
     public int getBarColor(ItemStack stack)
     {
-        if(stack.getTag() != null)
+        if(stack.hasTag())
         {
             int mode = this.getMode(stack);
 
@@ -102,7 +102,7 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        if(stack.getTag() != null)
+        if(stack.hasTag())
         {
             int mode = this.getMode(stack);
 

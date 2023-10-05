@@ -1,0 +1,36 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:feather"
+		},
+		{
+			"item": "minecraft:dragon_head"
+		},
+		{
+			"item": "flyingfamiliars:pearl_of_the_void"
+		},
+		{
+			"item": "minecraft:phantom_membrane"
+		},
+		{
+			"item": "minecraft:feather"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:bat"
+		},
+		{
+			"string": "minecraft:shulker"
+		},
+		{
+			"string": "minecraft:bat"
+		}
+	],
+	"outputItem": {
+		"item": "minecraft:elytra"
+	},
+	"outputEntity": {
+	}
+}

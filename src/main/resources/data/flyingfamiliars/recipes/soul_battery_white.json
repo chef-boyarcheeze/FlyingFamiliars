@@ -1,0 +1,37 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:soul_battery_black"
+		},
+		{
+			"item": "minecraft:totem_of_undying"
+		},
+		{
+			"item": "flyingfamiliars:strand_of_the_light"
+		},
+		{
+			"item": "minecraft:totem_of_undying"
+		},
+		{
+			"item": "flyingfamiliars:soul_battery_black"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:glow_squid"
+		},
+		{
+			"string": "minecraft:elder_guardian"
+		},
+		{
+			"string": "minecraft:glow_squid"
+		}
+	],
+	"outputItem": {
+		"item": "flyingfamiliars:soul_battery_white"
+	},
+	"outputEntity": {
+		"string": "minecraft:panda"
+	}
+}

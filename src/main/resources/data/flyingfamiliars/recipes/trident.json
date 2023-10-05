@@ -1,0 +1,36 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:scute"
+		},
+		{
+			"item": "minecraft:diamond"
+		},
+		{
+			"item": "minecraft:conduit"
+		},
+		{
+			"item": "minecraft:diamond"
+		},
+		{
+			"item": "minecraft:scute"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:drowned"
+		},
+		{
+			"string": "minecraft:elder_guardian"
+		},
+		{
+			"string": "minecraft:drowned"
+		}
+	],
+	"outputItem": {
+		"item": "minecraft:trident"
+	},
+	"outputEntity": {
+	}
+}
