@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.item.common.SoulItems;
 
-import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;

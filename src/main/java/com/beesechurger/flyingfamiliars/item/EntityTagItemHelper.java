@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.item;
 
-import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;

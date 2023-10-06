@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.integration.curios;
 
-import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.InterModComms;

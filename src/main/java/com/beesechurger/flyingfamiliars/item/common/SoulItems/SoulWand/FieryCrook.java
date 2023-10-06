@@ -1,10 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
 
-import com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import net.minecraft.ChatFormatting;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;

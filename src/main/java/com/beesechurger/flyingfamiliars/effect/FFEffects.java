@@ -3,7 +3,6 @@ package com.beesechurger.flyingfamiliars.effect;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
