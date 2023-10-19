@@ -9,6 +9,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -227,11 +228,8 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	@Override
 	public boolean isInvulnerableTo(DamageSource source)
 	{
-		if(level.isClientSide())
-		{
-			System.out.println(source.toString());
-
-		}
+		if(!level.isClientSide() && source.getEntity() instanceof Player player && player.isAutoSpinAttack())
+			return true;
 
 		return super.isInvulnerableTo(source);
 	}
