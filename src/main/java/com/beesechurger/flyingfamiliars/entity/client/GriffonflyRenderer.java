@@ -50,12 +50,12 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	}
 	
 	@Override
-    protected void applyRotations(GriffonflyEntity griffonfly, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void applyRotations(GriffonflyEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
 	{
-        super.applyRotations(griffonfly, stack, ageInTicks, rotationYaw, partialTicks);
+        super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
         
-        float renderPitch = (float) griffonfly.getPitch(partialTicks);
-    	float renderRoll = (float) griffonfly.getRoll(partialTicks);
+        float renderPitch = (float) animatable.getPitch(partialTicks);
+    	float renderRoll = (float) animatable.getRoll(partialTicks);
 
         stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));
         stack.mulPose(Vector3f.ZP.rotationDegrees(renderRoll));

@@ -4,11 +4,14 @@ import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,6 +22,9 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -27,6 +33,9 @@ import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
 
 public abstract class BaseFamiliarEntity extends TamableAnimal
 {
@@ -140,6 +149,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 		return getControllingPassenger() == getOwner() && FFKeys.FAMILIAR_ACTION.isDown();
 	}
+
+	public boolean canOwnerRide()
+	{
+		return true;
+	}
 	
 	@Override
 	public boolean canBeControlledByRider()
@@ -157,6 +171,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 		return false;
 	}
+
+	abstract boolean isTameItem(ItemStack stack);
+
+	abstract boolean isFoodItem(ItemStack stack);
 	
 // Entity mutators:
 	
@@ -177,6 +195,92 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	}
 	
 // Player and entity interaction:
+
+	@Override
+	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	{
+		ItemStack stack = player.getItemInHand(hand);
+
+		InteractionResult stackResult = stack.interactLivingEntity(player, this, hand);
+		if (stackResult.consumesAction())
+			return stackResult;
+
+		final InteractionResult SUCCESS = InteractionResult.sidedSuccess(this.level.isClientSide);
+
+		// tame
+		if (!isTame())
+		{
+			if (isTameItem(stack))
+			{
+				if (!player.getAbilities().instabuild)
+				{
+					stack.shrink(1);
+				}
+
+				if (this.random.nextInt(10) == 0
+						&& !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player))
+				{
+					this.tame(player);
+					this.navigation.stop();
+					this.setTarget(null);
+					this.level.broadcastEntityEvent(this, (byte) 7);
+				}
+				else
+				{
+					this.level.broadcastEntityEvent(this, (byte) 6);
+				}
+
+				return InteractionResult.SUCCESS;
+			}
+		}
+
+		// heal
+		if (getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue() && isFoodItem(stack))
+		{
+			heal(5);
+			playSound(getEatingSound(stack), 0.7f, 1);
+			stack.shrink(1);
+
+			return SUCCESS;
+		}
+
+		// sit
+		if (isTamedFor(player) && player.isShiftKeyDown())
+		{
+			if (!this.level.isClientSide)
+			{
+				navigation.stop();
+				setSitting(!isSitting());
+
+				if (isOrderedToSit())
+				{
+					setTarget(null);
+					player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.sitting"), true);
+				}
+				else
+				{
+					player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.standing"), true);
+				}
+			}
+			return SUCCESS;
+		}
+
+		// ride on
+		if (canOwnerRide() && isTamedFor(player))
+		{
+			if (!this.level.isClientSide)
+			{
+				setRidingPlayer(player);
+				resetActionTimer();
+				navigation.stop();
+				setTarget(null);
+			}
+
+			return SUCCESS;
+		}
+
+		return super.mobInteract(player, hand);
+	}
 	
 	@Override
 	public Team getTeam()
@@ -374,8 +478,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
         {
 			switch(rotationType)
 			{
-				case "hover" -> rotationHover();
-				case "forward" -> rotationForward();
+				case MOVE_CONTROL_HOVER -> rotationHover();
+				case MOVE_CONTROL_FORWARD -> rotationForward();
+				default -> rotationNone();
 			}
 
 			if(familiar.isMoving())
@@ -473,6 +578,12 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 				centerPitch();
 				centerRoll();
 			}
+		}
+
+		private void rotationNone()
+		{
+			centerPitch();
+			centerRoll();
 		}
 
 		private void incrementPitch()

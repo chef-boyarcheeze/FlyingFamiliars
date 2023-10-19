@@ -30,6 +30,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
 public class CaptureProjectile extends ThrowableItemProjectile
 {
@@ -117,8 +118,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 			// Default fill soul wand:
 			for(int i = 0; i < totalList.size(); i++)
 			{
-				// Need to use regular Tag object for "Empty" compare here, not CompoundTag
-				if(totalList.get(i).toString().contains("Empty"))
+				// Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
+				if(totalList.get(i).toString().contains(ENTITY_EMPTY))
 				{
 					CompoundTag entityNBT = new CompoundTag();
 
@@ -182,7 +183,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 		EntityTagItemHelper.ensureTagPopulated(mainHand);
 		String selectedEntity = EntityTagItemHelper.getSelectedEntity(mainHand);
 
-		if(selectedEntity != "Empty")
+		if(selectedEntity != ENTITY_EMPTY)
 		{
 			CompoundTag stackTag = mainHand.getTag();
 			ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
@@ -204,7 +205,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 				entity.absMoveTo(x, y, z, 0, 0);
 				level.addFreshEntity(entity);
 
-				entityNBT.putString(BASE_ENTITY_TAGNAME, "Empty");
+				entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 				stackList.set(stackList.size()-1, entityNBT);
 
 				stackTag.put(BASE_ENTITY_TAGNAME, stackList);
@@ -248,8 +249,8 @@ public class CaptureProjectile extends ThrowableItemProjectile
 
 		for(int i = totalList.size(); i > 0; i--)
 		{
-			// Need to use regular Tag object for "Empty" compare here, not CompoundTag
-			if(!totalList.get(i-1).toString().contains("Empty"))
+			// Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
+			if(!totalList.get(i-1).toString().contains(ENTITY_EMPTY))
 			{
 				CompoundTag entityNBT = totalList.getCompound(i-1);
 
@@ -269,7 +270,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 					entity.absMoveTo(x, y, z, 0, 0);
 					level.addFreshEntity(entity);
 
-					entityNBT.putString(BASE_ENTITY_TAGNAME, "Empty");
+					entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 					totalList.set(i-1, entityNBT);
 
 					passFlag = true;

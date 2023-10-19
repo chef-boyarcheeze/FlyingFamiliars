@@ -22,6 +22,7 @@ public class FFEventBusEvents
     public static void entityAttributeEvent(EntityAttributeCreationEvent event)
     {
         event.put(FFEntityTypes.CLOUD_RAY.get(), CloudRayEntity.setAttributes());
+        event.put(FFEntityTypes.CORMORANT.get(), GriffonflyEntity.setAttributes());
         event.put(FFEntityTypes.GRIFFONFLY.get(), GriffonflyEntity.setAttributes());
     }
     

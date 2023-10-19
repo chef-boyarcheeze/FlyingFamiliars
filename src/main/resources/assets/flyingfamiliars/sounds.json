@@ -95,6 +95,18 @@
 			"flyingfamiliars:cloud_ray_step3"
 		]
 	},
+	"cormorant_squawk1": {
+		"subtitle": "sounds.flyingfamiliars.cormorant_squawk1",
+		"sounds": [
+			"flyingfamiliars:cormorant_squawk1"
+		]
+	},
+	"cormorant_squawk2": {
+		"subtitle": "sounds.flyingfamiliars.cormorant_squawk2",
+		"sounds": [
+			"flyingfamiliars:cormorant_squawk2"
+		]
+	},
 	"griffonfly_chitter1": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter1",
 		"sounds": [

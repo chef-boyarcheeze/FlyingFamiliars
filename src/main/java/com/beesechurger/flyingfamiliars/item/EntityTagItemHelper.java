@@ -13,8 +13,7 @@ import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.Optional;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ITEM_MODE_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
 public class EntityTagItemHelper
 {
@@ -28,7 +27,7 @@ public class EntityTagItemHelper
 
             CompoundTag entityNBT = new CompoundTag();
             ListTag tagList = entityNBT.getList(BASE_ENTITY_TAGNAME, 10);
-            entityNBT.putString(BASE_ENTITY_TAGNAME, "Empty");
+            entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 
             for(int i = 0; i < item.getMaxEntities(); i++)
             {
@@ -73,7 +72,7 @@ public class EntityTagItemHelper
             }
         }
 
-        return "Empty";
+        return ENTITY_EMPTY;
     }
 
     public static boolean isSelectionEmpty(ItemStack stack)
@@ -85,7 +84,7 @@ public class EntityTagItemHelper
                 CompoundTag stackTag = stack.getTag();
                 ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
-                return stackList.get(item.getMaxEntities()-1).toString().contains("Empty");
+                return stackList.get(item.getMaxEntities()-1).toString().contains(ENTITY_EMPTY);
             }
         }
 
@@ -106,7 +105,7 @@ public class EntityTagItemHelper
                 for(int i = 0; i < item.getMaxEntities(); i++)
                 {
                     // Need to use regular Tag object here, not CompoundTag
-                    if(!stackList.get(i).toString().contains("Empty")) entityCount++;
+                    if(!stackList.get(i).toString().contains(ENTITY_EMPTY)) entityCount++;
                 }
             }
         }

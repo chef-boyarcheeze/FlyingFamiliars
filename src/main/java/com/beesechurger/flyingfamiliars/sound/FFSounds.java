@@ -32,6 +32,9 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP1 = registerSoundEvent("cloud_ray_step1");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP2 = registerSoundEvent("cloud_ray_step2");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP3 = registerSoundEvent("cloud_ray_step3");
+
+	public static final RegistryObject<SoundEvent> CORMORANT_SQUAWK1 = registerSoundEvent("cormorant_squawk1");
+	public static final RegistryObject<SoundEvent> CORMORANT_SQUAWK2 = registerSoundEvent("cormorant_squawk2");
 	
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER1 = registerSoundEvent("griffonfly_chitter1");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER2 = registerSoundEvent("griffonfly_chitter2");

@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
 public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
 {
@@ -54,7 +55,7 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
             for(int i = 0; i < getMaxEntities(); i++)
             {
                 // Need to use regular Tag object here, not CompoundTag
-                if(!tagList.get(i).toString().contains("Empty")) entityCount++;
+                if(!tagList.get(i).toString().contains(ENTITY_EMPTY)) entityCount++;
             }
         }
 
@@ -119,7 +120,7 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
                 {
                     for (int i = 0; i < getMaxEntities(); i++)
                     {
-                        if(getID(i, stack) != "Empty")
+                        if(getID(i, stack) != ENTITY_EMPTY)
                             tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
                     }
                 }

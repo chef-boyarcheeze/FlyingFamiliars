@@ -129,8 +129,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
             for(int i = 0; i < getMaxEntities(); i++)
             {
-                // Need to use regular Tag object for "Empty" compare here, not CompoundTag
-                if(blockList.get(i).toString().contains("Empty"))
+                // Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
+                if(blockList.get(i).toString().contains(ENTITY_EMPTY))
                 {
                     CompoundTag entityNBT = stackList.getCompound(item.getMaxEntities()-1);
 
@@ -138,7 +138,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
                     entities.put(BASE_ENTITY_TAGNAME, blockList);
 
                     CompoundTag empty = new CompoundTag();
-                    empty.putString(BASE_ENTITY_TAGNAME, "Empty");
+                    empty.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
                     stackList.set(item.getMaxEntities()-1, empty);
 
                     stackTag.put(BASE_ENTITY_TAGNAME, stackList);
@@ -167,12 +167,12 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
             for(int i = getMaxEntities(); i > 0; i--)
             {
-                if(!blockList.get(i-1).toString().contains("Empty"))
+                if(!blockList.get(i-1).toString().contains(ENTITY_EMPTY))
                 {
                     CompoundTag entityNBT = blockList.getCompound(i-1);
 
                     CompoundTag empty = new CompoundTag();
-                    empty.putString(BASE_ENTITY_TAGNAME, "Empty");
+                    empty.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
                     blockList.set(i-1, empty);
                     entities.put(BASE_ENTITY_TAGNAME, blockList);
 
@@ -208,7 +208,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
             for(int i = 0; i < getMaxEntities(); i++)
             {
                 // Need to use regular Tag object here, not CompoundTag
-                if(!tagList.get(i).toString().contains("Empty")) entityCount++;
+                if(!tagList.get(i).toString().contains(ENTITY_EMPTY)) entityCount++;
             }
         }
 

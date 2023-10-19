@@ -22,6 +22,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
+
 public class BrazierRecipe implements Recipe<SimpleContainer>
 {
 	private final ResourceLocation id;
@@ -97,7 +99,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		
 		for(int i = 0; i < entities.size(); i++)
 		{
-			if(entities.get(i) != "Empty") handlerEntities.add(entities.get(i));
+			if(entities.get(i) != ENTITY_EMPTY) handlerEntities.add(entities.get(i));
 		}
 		
 		for(int i = 0; i < inputEntities.size(); i++)

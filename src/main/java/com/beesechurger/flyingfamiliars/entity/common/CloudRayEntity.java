@@ -15,11 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -44,16 +40,12 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
+
 public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 {
-	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(CloudRayEntity.class, EntityDataSerializers.BOOLEAN);
-
 	public static final float MAX_HEALTH = 40.0f;
 	public static final float MOVEMENT_SPEED = 0.3f;
-
-	private final Item FOOD_ITEM = Items.APPLE;
-	private final Item TAME_ITEM = Items.GLOW_BERRIES;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -84,10 +76,16 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new FamiliarBodyRotationControl(this, "forward", 30, 3.0f);
+		return new FamiliarBodyRotationControl(this, MOVE_CONTROL_FORWARD, 30, 3.0f);
 	}
 
-// GeckoLib animation controls:
+	@Override
+	public MobType getMobType()
+	{
+		return MobType.WATER;
+	}
+
+// GeckoLib animation control:
 
 	private <E extends IAnimatable> PlayState predicateGeneral(AnimationEvent<E> event)
 	{
@@ -155,27 +153,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 		return this.factory;
 	}
 
-// Entity booleans:
-
-	@Override
-	public boolean rideableUnderWater()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canBreatheUnderwater()
-	{
-		return true;
-	}
-
-	@Override
-	protected boolean canAddPassenger(Entity rider)
-	{
-		return this.getPassengers().size() < 2;
-	}
-
-// Sound-controlling methods:
+// Sound control:
 
 	@Override
 	public int getAmbientSoundInterval()
@@ -200,7 +178,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		if (this.isOnGround())
+		if(this.isOnGround())
 		{
 			return FFSounds.CLOUD_RAY_IDLE1.get();
 		}
@@ -226,92 +204,51 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 		return 0.3f;
 	}
 
-// Control utilities:
+// Entity booleans:
 
 	@Override
-	public InteractionResult mobInteract(Player player, InteractionHand hand)
+	public boolean rideableUnderWater()
 	{
-		ItemStack stack = player.getItemInHand(hand);
-
-		InteractionResult stackResult = stack.interactLivingEntity(player, this, hand);
-		if (stackResult.consumesAction())
-			return stackResult;
-
-		final InteractionResult SUCCESS = InteractionResult.sidedSuccess(this.level.isClientSide);
-
-		// tame
-		if (!isTame())
-		{
-			if (stack.is(TAME_ITEM))
-			{
-				if (!player.getAbilities().instabuild)
-				{
-					stack.shrink(1);
-				}
-
-				if (this.random.nextInt(10) == 0
-						&& !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player))
-				{
-					this.tame(player);
-					this.navigation.stop();
-					this.setTarget(null);
-					this.level.broadcastEntityEvent(this, (byte) 7);
-				}
-				else
-				{
-					this.level.broadcastEntityEvent(this, (byte) 6);
-				}
-
-				return InteractionResult.SUCCESS;
-			}
-		}
-
-		// heal
-		if (getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue() && stack.is(FOOD_ITEM))
-		{
-			heal(5);
-			playSound(getEatingSound(stack), 0.7f, 1);
-			stack.shrink(1);
-
-			return SUCCESS;
-		}
-
-		// sit
-		if (isTamedFor(player) && player.isShiftKeyDown())
-		{
-			if (!this.level.isClientSide)
-			{
-				navigation.stop();
-				setSitting(!isSitting());
-
-				if (isOrderedToSit())
-				{
-					setTarget(null);
-					player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.sitting"), true);
-				}
-				else
-				{
-					player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.standing"), true);
-				}
-			}
-			return SUCCESS;
-		}
-
-		// ride on
-		if (isTamedFor(player) && (!stack.is(FOOD_ITEM) || getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue()))
-		{
-			if (!this.level.isClientSide)
-			{
-				setRidingPlayer(player);
-				navigation.stop();
-				setTarget(null);
-			}
-
-			return SUCCESS;
-		}
-
-		return super.mobInteract(player, hand);
+		return true;
 	}
+
+	@Override
+	public boolean canBreatheUnderwater()
+	{
+		return true;
+	}
+
+	@Override
+	protected boolean canAddPassenger(Entity rider)
+	{
+		return this.getPassengers().size() < 2;
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource source)
+	{
+		if(level.isClientSide())
+		{
+			System.out.println(source.toString());
+
+		}
+
+		return super.isInvulnerableTo(source);
+	}
+
+	@Override
+	public boolean isTameItem(ItemStack stack)
+	{
+		return stack.is(Items.GLOW_BERRIES);
+	}
+
+	@Override
+	public boolean isFoodItem(ItemStack stack)
+	{
+		return isTameItem(stack) || stack.is(Items.SWEET_BERRIES) || stack.is(Items.APPLE) || stack.is(Items.GOLDEN_APPLE) || stack.is(Items.MELON_SLICE);
+	}
+
+// Mob AI:
 
 	@Override
 	public void travel(Vec3 vec3)

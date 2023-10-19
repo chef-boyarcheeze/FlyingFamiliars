@@ -47,9 +47,9 @@ public class GriffonflyModel extends AnimatedGeoModel<GriffonflyEntity> {
 	}
 
 	@Override
-	public void setLivingAnimations(GriffonflyEntity griffonfly, Integer uniqueID, @Nullable AnimationEvent customPredicate)
+	public void setLivingAnimations(GriffonflyEntity animatable, Integer uniqueID, @Nullable AnimationEvent customPredicate)
 	{
-		super.setLivingAnimations(griffonfly, uniqueID, customPredicate);
+		super.setLivingAnimations(animatable, uniqueID, customPredicate);
 
 		if(customPredicate == null)
 			return;

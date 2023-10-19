@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
 public class EntityTagBlockHelper
 {
@@ -17,7 +18,7 @@ public class EntityTagBlockHelper
 
         CompoundTag entityNBT = new CompoundTag();
         ListTag tagList = entityNBT.getList(BASE_ENTITY_TAGNAME, 10);
-        entityNBT.putString(BASE_ENTITY_TAGNAME, "Empty");
+        entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 
         for(int i = 0; i < entity.getMaxEntities(); i++)
         {

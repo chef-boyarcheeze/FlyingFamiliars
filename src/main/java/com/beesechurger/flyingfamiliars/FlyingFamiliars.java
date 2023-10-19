@@ -5,6 +5,7 @@ import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.effect.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.CormorantRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
@@ -82,6 +83,7 @@ public class FlyingFamiliars
 	private void clientSetup(final FMLClientSetupEvent event)
 	{
 		EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
+		EntityRenderers.register(FFEntityTypes.CORMORANT.get(), CormorantRenderer::new);
 		EntityRenderers.register(FFEntityTypes.GRIFFONFLY.get(), GriffonflyRenderer::new);
 		EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), ThrownItemRenderer::new);
 		
@@ -94,7 +96,7 @@ public class FlyingFamiliars
 		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_GOLD.get(), () -> new SoulBatteryRenderer());
 		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_RED.get(), () -> new SoulBatteryRenderer());
 		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_BLACK.get(), () -> new SoulBatteryRenderer());
-		//CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_WHITE.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_WHITE.get(), () -> new SoulBatteryRenderer());
 		
 		FFKeys.init();
 	}

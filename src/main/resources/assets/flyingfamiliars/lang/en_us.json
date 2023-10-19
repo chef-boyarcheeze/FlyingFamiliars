@@ -27,9 +27,11 @@
 	"item.flyingfamiliars.strand_of_the_light": "Strand of the Light",
 
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
+	"item.flyingfamiliars.cormorant_spawn_egg": "Cormorant Spawn Egg",
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
 
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
+	"entity.flyingfamiliars.cormorant": "Cormorant",
 	"entity.flyingfamiliars.griffonfly": "Griffonfly",
 
 	"effect.flyingfamiliars.doused": "Doused",
@@ -79,6 +81,8 @@
 	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
+	"sounds.flyingfamiliars.cormorant_squawk1": "Cormorant squawks",
+	"sounds.flyingfamiliars.cormorant_squawk2": "Cormorant squawks",
 	"sounds.flyingfamiliars.griffonfly_chitter1": "Griffonfly chitters",
 	"sounds.flyingfamiliars.griffonfly_chitter2": "Griffonfly chitters",
 	"sounds.flyingfamiliars.griffonfly_death": "Griffonfly dies",
