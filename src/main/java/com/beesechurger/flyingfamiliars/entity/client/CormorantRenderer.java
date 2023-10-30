@@ -24,7 +24,7 @@ public class CormorantRenderer extends GeoEntityRenderer<CormorantEntity>
 	@Override
 	public ResourceLocation getTextureLocation(CormorantEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/cormorant.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
 	}
 
 	@Override

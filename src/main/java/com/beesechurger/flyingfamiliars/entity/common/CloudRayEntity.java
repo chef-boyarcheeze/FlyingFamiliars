@@ -305,11 +305,6 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		super.tick();
 
-		if(isFlying())
-			navigation = new FamiliarFlyingPathNavigation(this, level);
-		else
-			navigation = new GroundPathNavigation(this, level);
-
 		if(!level.isClientSide() && !isSitting() && getOwner() != null && actionTimer == 0)
 			if(distanceToSqr(getOwner()) < BEGIN_FOLLOW_DISTANCE * BEGIN_FOLLOW_DISTANCE)
 			{

@@ -5,6 +5,8 @@ import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.*;
 import com.google.common.base.Supplier;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -37,6 +39,9 @@ public class FFItems
 	public static final RegistryObject<Item> SOUL_BATTERY_RED = register("soul_battery_red", () -> new SoulBattery(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.RARE), 5));
 	public static final RegistryObject<Item> SOUL_BATTERY_BLACK = register("soul_battery_black", () -> new SoulBattery(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.EPIC), 6));
 	public static final RegistryObject<Item> SOUL_BATTERY_WHITE = register("soul_battery_white", () -> new SoulBattery(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.EPIC), 7));
+
+	// Other tools:
+	public static final RegistryObject<Item> CORMORANT_RING = register("cormorant_ring", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).stacksTo(1).rarity(Rarity.COMMON)));
 
 	// General items:
 	public static final RegistryObject<Item> SOUL_WAND_ROD = register("soul_wand_rod", () -> new Item(new Item.Properties().tab(FlyingFamiliars.FF_TAB).rarity(Rarity.COMMON)));

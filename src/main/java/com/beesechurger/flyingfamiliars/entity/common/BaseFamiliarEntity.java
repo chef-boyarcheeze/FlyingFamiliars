@@ -425,6 +425,12 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return new Vec3(xMove, yMove, zMove);
 	}
 
+	protected void startFlying()
+	{
+		jumpFromGround();
+		resetLandTimer();
+	}
+
 	@Override
 	public void tick()
 	{
@@ -432,8 +438,15 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 		setFlying(shouldFly());
 
-		if(actionTimer > 0) --actionTimer;
-		if(landTimer > 0) --landTimer;
+		if(isFlying())
+			navigation = createNavigation(level);
+		else
+			navigation.stop();
+
+		if(landTimer > 0) System.out.println(landTimer);
+
+		if(actionTimer > 0) actionTimer -= 1;
+		if(landTimer > 0) landTimer -= 1;
 	}
 
 // Entity values:
@@ -811,7 +824,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		{
 			if(!familiar.isFlying())
 			{
-				familiar.jumpFromGround();
+				familiar.startFlying();
 				return;
 			}
 
@@ -906,13 +919,13 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		@Override
 		public boolean canUse()
 		{
-			return familiar.isFlying();
+			return familiar.isFlying() && familiar.landTimer == 0;
 		}
 
 		@Override
 		public boolean canContinueToUse()
 		{
-			return !noPath() && familiar.isFlying() && goal != null;
+			return !noPath() && familiar.isFlying() && familiar.landTimer == 0 && goal != null;
 		}
 
 		private void solidBlockBelow()

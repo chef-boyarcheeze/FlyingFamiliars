@@ -25,13 +25,16 @@ public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
 	@Override
 	public ResourceLocation getModelLocation(CormorantEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant.geo.json");
+		if(animatable.getHasRing())
+			return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant/cormorant_ring.geo.json");
+
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant/cormorant_no_ring.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(CormorantEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/cormorant.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
 	{
 		super.setLivingAnimations(animatable, uniqueID, customPredicate);
 
-		if(customPredicate == null)
+		if(customPredicate == null || animatable.isFlying())
 			return;
 
 		List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
@@ -59,6 +62,6 @@ public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
 
 		// compensation for bone rotations not being 0 initially
 		neck_lower_middle.setRotationZ((float) Math.toRadians(yRot));
-		head.setRotationZ((float) Math.toRadians(yRot * 2.0f));
+		head.setRotationZ((float) Math.toRadians(yRot));
 	}
 }

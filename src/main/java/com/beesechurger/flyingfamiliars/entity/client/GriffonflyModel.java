@@ -24,7 +24,7 @@ public class GriffonflyModel extends AnimatedGeoModel<GriffonflyEntity> {
 	@Override
 	public ResourceLocation getModelLocation(GriffonflyEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/griffonfly.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/griffonfly/griffonfly.geo.json");
 	}
 
 	@Override

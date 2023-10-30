@@ -50,7 +50,7 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        player.getCooldowns().addCooldown(this, 10);
+        player.getCooldowns().addCooldown(this, 5);
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }

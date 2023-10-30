@@ -17,7 +17,7 @@ public class CloudRayModel extends AnimatedGeoModel<CloudRayEntity> {
 	@Override
 	public ResourceLocation getModelLocation(CloudRayEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cloud_ray.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cloud_ray/cloud_ray.geo.json");
 	}
 
 	@Override

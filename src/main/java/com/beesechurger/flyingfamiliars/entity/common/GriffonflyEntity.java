@@ -78,12 +78,13 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		if(!hasVariant())
 		{
-            switch (variant) {
-                case 0 -> setVariant("Yellow");
-                case 1 -> setVariant("Green");
-                case 2 -> setVariant("Blue");
-                case 3 -> setVariant("Purple");
-                case 4 -> setVariant("Red");
+            switch(variant)
+			{
+                case 0 -> setVariant("yellow");
+                case 1 -> setVariant("green");
+                case 2 -> setVariant("blue");
+                case 3 -> setVariant("purple");
+                case 4 -> setVariant("red");
             }
 		}
 	}
@@ -135,9 +136,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 		if(this.isFlying())
 		{
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
-			
-			double speed = 2.5;
-			event.getController().setAnimationSpeed(speed);
+			event.getController().setAnimationSpeed(2.5f);
 		}
 		else
 		{
@@ -296,9 +295,6 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	public void tick()
 	{
 		super.tick();
-
-		if(isFlying())
-			navigation = createNavigation(level);
 
 		if(!level.isClientSide())
 		{

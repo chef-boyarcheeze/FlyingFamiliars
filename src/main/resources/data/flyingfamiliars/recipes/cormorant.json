@@ -1,0 +1,27 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "minecraft:heart_of_the_sea"
+		},
+		{
+			"item": "minecraft:fishing_rod"
+		},
+		{
+			"item": "minecraft:copper_ingot"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:parrot"
+		},
+		{
+			"string": "minecraft:cod"
+		}
+	],
+	"outputItem": {
+	},
+	"outputEntity": {
+		"string": "flyingfamiliars:cormorant"
+	}
+}
