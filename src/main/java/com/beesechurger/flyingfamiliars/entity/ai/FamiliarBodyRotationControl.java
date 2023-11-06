@@ -1,0 +1,196 @@
+package com.beesechurger.flyingfamiliars.entity.ai;
+
+import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.keys.FFKeys;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
+
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
+
+public class FamiliarBodyRotationControl extends BodyRotationControl
+{
+    private final BaseFamiliarEntity familiar;
+
+    private final String rotationType;
+    private final float angleLimit;
+    private final float angleInterval;
+    private int headStableTime;
+    private float lastStableYHeadRot;
+
+    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, String rotationType, float angleLimit, float angleInterval)
+    {
+        super(familiar);
+        this.familiar = familiar;
+        this.rotationType = rotationType;
+        this.angleLimit = angleLimit;
+        this.angleInterval = angleInterval;
+    }
+
+    @Override
+    public void clientTick()
+    {
+        switch(rotationType)
+        {
+            case MOVE_CONTROL_HOVER -> rotationHover();
+            case MOVE_CONTROL_FORWARD -> rotationForward();
+            default -> rotationNone();
+        }
+
+        if(familiar.isMoving())
+        {
+            familiar.yBodyRot = familiar.getYRot();
+            rotateHeadIfNecessary();
+            lastStableYHeadRot = familiar.yHeadRot;
+            headStableTime = 0;
+        }
+        else
+        {
+            if(familiar.notCarryingMobPassengers())
+            {
+                if(Math.abs(familiar.yHeadRot - lastStableYHeadRot) > 15.0F)
+                {
+                    headStableTime = 0;
+                    lastStableYHeadRot = familiar.yHeadRot;
+                    rotateBodyIfNecessary();
+                }
+                else
+                {
+                    ++headStableTime;
+                    if(headStableTime > 10)
+                    {
+                        rotateHeadTowardsFront();
+                    }
+                }
+            }
+        }
+    }
+
+    private void rotationHover()
+    {
+        LivingEntity driver = (LivingEntity) familiar.getControllingPassenger();
+
+        float forwardMove = driver != null ? driver.zza : familiar.zza;
+        float sideMove = driver != null ? driver.xxa : familiar.xxa;
+
+        if(familiar.isFlying() && driver != null)
+        {
+            if(forwardMove > 0)
+                incrementPitch();
+            else if(forwardMove < 0)
+                decrementPitch();
+            else
+                centerPitch();
+
+            if(sideMove > 0)
+                incrementRoll();
+            else if(sideMove < 0)
+                decrementRoll();
+            else
+                centerRoll();
+        }
+        else
+        {
+            centerPitch();
+            centerRoll();
+        }
+    }
+
+    private void rotationForward()
+    {
+        LivingEntity driver = (LivingEntity) familiar.getControllingPassenger();
+
+        float wantedRotY;
+
+        if (driver != null)
+            wantedRotY = driver.getYRot();
+        else
+            wantedRotY = familiar.getYRot();
+
+        float yRotDifference = Mth.wrapDegrees(familiar.getYRot() - wantedRotY);
+
+        if(familiar.isFlying() && driver != null)
+        {
+            if(FFKeys.FAMILIAR_ASCEND.isDown() && FFKeys.FAMILIAR_DESCEND.isDown())
+                centerPitch();
+            else if(FFKeys.FAMILIAR_ASCEND.isDown())
+                decrementPitch();
+            else if(FFKeys.FAMILIAR_DESCEND.isDown())
+                incrementPitch();
+            else
+                centerPitch();
+
+            if(yRotDifference > 0.2f * angleLimit)
+                incrementRoll();
+            else if(yRotDifference < -0.2f * angleLimit)
+                decrementRoll();
+            else
+                centerRoll();
+        }
+        else
+        {
+            centerPitch();
+            centerRoll();
+        }
+    }
+
+    private void rotationNone()
+    {
+        centerPitch();
+        centerRoll();
+    }
+
+    private void incrementPitch()
+    {
+        familiar.pitchO = familiar.pitch;
+        if(familiar.pitch < angleLimit) familiar.pitch += angleInterval;
+    }
+
+    private void decrementPitch()
+    {
+        familiar.pitchO = familiar.pitch;
+        if(familiar.pitch > -angleLimit) familiar.pitch -= angleInterval;
+    }
+
+    private void incrementRoll()
+    {
+        familiar.rollO = familiar.roll;
+        if(familiar.roll < angleLimit) familiar.roll += angleInterval;
+    }
+
+    private void decrementRoll()
+    {
+        familiar.rollO = familiar.roll;
+        if(familiar.roll > -angleLimit) familiar.roll -= angleInterval;
+    }
+
+    private void centerPitch()
+    {
+        familiar.pitchO = familiar.pitch;
+        if(familiar.pitch > 0) familiar.pitch -= angleInterval;
+        if(familiar.pitch < 0) familiar.pitch += angleInterval;
+    }
+
+    private void centerRoll()
+    {
+        familiar.rollO = familiar.roll;
+        if(familiar.roll > 0) familiar.roll -= angleInterval;
+        if(familiar.roll < 0) familiar.roll += angleInterval;
+    }
+
+    private void rotateBodyIfNecessary() {
+        familiar.yBodyRot = Mth.rotateIfNecessary(familiar.yBodyRot, familiar.yHeadRot, (float) familiar.getMaxHeadYRot());
+    }
+
+    private void rotateHeadIfNecessary() {
+        familiar.yHeadRot = Mth.rotateIfNecessary(familiar.yHeadRot, familiar.yBodyRot, (float) familiar.getMaxHeadYRot());
+    }
+
+    private void rotateHeadTowardsFront() {
+        int i = headStableTime - 10;
+        float f = Mth.clamp((float)i / 10.0F, 0.0F, 1.0F);
+        float f1 = (float) familiar.getMaxHeadYRot() * (1.0F - f);
+        familiar.yBodyRot = Mth.rotateIfNecessary(familiar.yBodyRot, familiar.yHeadRot, f1);
+    }
+}

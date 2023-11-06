@@ -1,13 +1,14 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
+import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -39,22 +39,23 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTR
 public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 20.00f;
-	public static final float MOVEMENT_SPEED = 0.5f;
+	public static final float FLYING_SPEED = 0.5f;
 	public static final float ARMOR = 4.0f;
+	public static final int VARIANTS = 5;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
 	public GriffonflyEntity(EntityType<GriffonflyEntity> entityType, Level level)
 	{
 		super(entityType, level);
-		selectVariant(this.random.nextInt(5));
+		selectVariant(this.random.nextInt(VARIANTS));
 	}
 
 	public static AttributeSupplier setAttributes()
 	{
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED)
+				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
 				.add(Attributes.ARMOR, ARMOR).build();
 	}
 
@@ -64,14 +65,15 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
 		this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 10));
-		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
-		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+		this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.75f));
+		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
+		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
 
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new FamiliarBodyRotationControl(this, MOVE_CONTROL_HOVER, 10, 2.0f);
+		return new FamiliarBodyRotationControl(this, getMoveControlType(), 10, 2.0f);
 	}
 
 	private void selectVariant(int variant)
@@ -94,8 +96,10 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		return MobType.ARTHROPOD;
 	}
-	
-// GeckoLib animation control:
+
+/////////////////////////////////
+// GeckoLib animation control: //
+/////////////////////////////////
 	
 	private <E extends IAnimatable> PlayState antennaeController(AnimationEvent<E> event)
 	{
@@ -162,7 +166,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 		return this.factory;
 	}
 
-// Sound control:
+////////////////////
+// Sound control: //
+////////////////////
 
 	@Override
 	public int getAmbientSoundInterval()
@@ -209,7 +215,19 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 		return 0.3f;
 	}
 
-// Entity booleans:
+///////////////////////
+// Entity accessors: //
+///////////////////////
+
+// Strings:
+
+	@Override
+	public String getMoveControlType()
+	{
+		return MOVE_CONTROL_HOVER;
+	}
+
+// Booleans:
 
 	@Override
 	protected boolean canAddPassenger(Entity rider)
@@ -239,57 +257,24 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		return stack.is(Items.SPIDER_EYE);
 	}
-	
-// Mob AI:
 
 	@Override
-	public void travel(Vec3 vec3)
+	public boolean canWalk()
 	{
-		float speed = (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
-		float drivingSpeedMod = 0.5f;
-
-		if(canBeControlledByRider())
-		{
-			LivingEntity driver = (LivingEntity) getControllingPassenger();
-
-			if(isControlledByLocalInstance())
-			{
-				if(isFlying())
-					vec3 = getHoverVector(vec3, drivingSpeedMod, driver);
-				else if(FFKeys.FAMILIAR_ASCEND.isDown())
-					jumpFromGround();
-
-				speed *= drivingSpeedMod;
-			}
-			else if(driver instanceof LivingEntity)
-			{
-				setDeltaMovement(Vec3.ZERO);
-				calculateEntityAnimation(this, true);
-				return;
-			}
-
-			setYRot(driver.getYRot());
-			yRotO = getYRot();
-			setXRot(driver.getXRot() * 0.5F);
-			setRot(getYRot(), getXRot());
-			yBodyRot = getYRot();
-			yHeadRot = getYRot();
-		}
-
-		if(isFlying())
-		{
-			moveRelative(speed, vec3);
-			move(MoverType.SELF, getDeltaMovement());
-
-			setDeltaMovement(getDeltaMovement().scale(0.8f));
-			calculateEntityAnimation(this, true);
-		}
-		else
-		{
-			setDeltaMovement(getDeltaMovement().scale(0.8f));
-			super.travel(vec3);
-		}
+		return false;
 	}
+
+// Floats:
+
+	@Override
+	protected float getDrivingSpeedMod()
+	{
+		return 0.5f;
+	}
+
+/////////////
+// Mob AI: //
+/////////////
 
 	@Override
 	public void tick()

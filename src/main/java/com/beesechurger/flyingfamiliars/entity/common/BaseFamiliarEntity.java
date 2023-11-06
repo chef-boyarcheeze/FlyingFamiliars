@@ -1,8 +1,10 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
+import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
+import com.beesechurger.flyingfamiliars.entity.ai.FamiliarFlyingPathNavigation;
+import com.beesechurger.flyingfamiliars.entity.ai.FamiliarMoveControl;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,22 +19,14 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumSet;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
@@ -59,11 +53,19 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 		super(entity, level);
 		this.setTame(false);
-		moveControl = new FamiliarMoveControl(this);
+		moveControl = new FamiliarMoveControl.FlightControl(this);
 		lookControl = new LookControl(this);
 	}
-	
-// Additional Save Data:
+
+	@Override
+	protected BodyRotationControl createBodyControl()
+	{
+		return new FamiliarBodyRotationControl(this, getMoveControlType(), 0, 0);
+	}
+
+///////////////////////////
+// Additional Save Data: //
+///////////////////////////
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag)
@@ -89,14 +91,22 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		entityData.define(SITTING, false);
 		entityData.define(FLYING, false);
 	}
-	
-// Entity accessors:
-	
+
+///////////////////////
+// Entity accessors: //
+///////////////////////
+
+// Strings:
+
 	public String getVariant()
 	{
 		return entityData.get(VARIANT);
 	}
-	
+
+	abstract String getMoveControlType();
+
+// Booleans:
+
 	public boolean hasVariant()
 	{
 		return false;
@@ -175,13 +185,52 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	abstract boolean isTameItem(ItemStack stack);
 
 	abstract boolean isFoodItem(ItemStack stack);
-	
-// Entity mutators:
-	
+
+	abstract boolean canWalk();
+
+// Integers:
+
+	public double getPitch(double partialTicks)
+	{
+		if(pitchO == pitch) return pitch;
+		return partialTicks == 1.0 ? pitch : Mth.lerp(partialTicks, pitchO, pitch);
+	}
+
+	public double getRoll(double partialTicks)
+	{
+		if(rollO == roll) return roll;
+		return partialTicks == 1.0 ? roll : Mth.lerp(partialTicks, rollO, roll);
+	}
+
+	public int getActionTimer()
+	{
+		return actionTimer;
+	}
+
+	public int getLandTimer()
+	{
+		return landTimer;
+	}
+
+// Floats:
+
+	protected float getDrivingSpeedMod()
+	{
+		return 0;
+	}
+
+//////////////////////
+// Entity mutators: //
+//////////////////////
+
+// Strings:
+
 	protected void setVariant(String variant)
 	{
 		entityData.set(VARIANT, variant);
 	}
+
+// Booleans:
 
 	protected void setSitting(boolean sitting)
 	{
@@ -193,8 +242,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 		entityData.set(FLYING, flying);
 	}
-	
-// Player and entity interaction:
+
+////////////////////////////////////
+// Player and entity interaction: //
+////////////////////////////////////
 
 	@Override
 	public InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -207,7 +258,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 		final InteractionResult SUCCESS = InteractionResult.sidedSuccess(this.level.isClientSide);
 
-		// tame
+		// Tame
 		if (!isTame())
 		{
 			if (isTameItem(stack))
@@ -234,7 +285,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 			}
 		}
 
-		// heal
+		// Heal
 		if (getHealth() < getAttribute(Attributes.MAX_HEALTH).getValue() && isFoodItem(stack))
 		{
 			heal(5);
@@ -244,7 +295,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 			return SUCCESS;
 		}
 
-		// sit
+		// Sit
 		if (isTamedFor(player) && player.isShiftKeyDown())
 		{
 			if (!this.level.isClientSide)
@@ -265,7 +316,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 			return SUCCESS;
 		}
 
-		// ride on
+		// Start riding
 		if (canOwnerRide() && isTamedFor(player))
 		{
 			if (!this.level.isClientSide)
@@ -367,8 +418,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 		landTimer = resetLandTimerAmount;
 	}
-	
-// Damage:
+
+/////////////
+// Damage: //
+/////////////
 	
 	@Override
 	public boolean causeFallDamage(float p_148750_, float p_148751_, DamageSource p_148752_)
@@ -381,7 +434,128 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 	}
 
-// Movement:
+///////////////
+// Movement: //
+///////////////
+
+	@Override
+	public void travel(Vec3 vec3)
+	{
+		switch(getMoveControlType())
+		{
+			case MOVE_CONTROL_HOVER -> moveHoverType(vec3);
+			case MOVE_CONTROL_FORWARD -> moveForwardType(vec3);
+			default -> performMotion((float) getAttributeValue(Attributes.FLYING_SPEED), vec3);
+		};
+	}
+
+	private void moveHoverType(Vec3 vec3)
+	{
+		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
+
+		if(canBeControlledByRider())
+		{
+			LivingEntity driver = (LivingEntity) getControllingPassenger();
+
+			if(isControlledByLocalInstance())
+			{
+				if(isFlying())
+					vec3 = getHoverVector(vec3, getDrivingSpeedMod(), driver);
+				else if(FFKeys.FAMILIAR_ASCEND.isDown())
+					jumpFromGround();
+
+				speed *= getDrivingSpeedMod();
+			}
+			else if(driver instanceof LivingEntity)
+			{
+				setDeltaMovement(Vec3.ZERO);
+				calculateEntityAnimation(this, true);
+				return;
+			}
+
+			setYRot(driver.getYRot());
+			yRotO = getYRot();
+			setXRot(driver.getXRot() * 0.5F);
+			setRot(getYRot(), getXRot());
+			yBodyRot = getYRot();
+			yHeadRot = getYRot();
+		}
+
+		performMotion(speed, vec3);
+	}
+
+	private void moveForwardType(Vec3 vec3)
+	{
+		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
+
+		if(canBeControlledByRider())
+		{
+			LivingEntity driver = (LivingEntity) getControllingPassenger();
+
+			if(isControlledByLocalInstance())
+			{
+				if(!isFlying() && FFKeys.FAMILIAR_ASCEND.isDown())
+					jumpFromGround();
+
+				vec3 = getForwardVector(vec3, 2.5f * getDrivingSpeedMod(), driver);
+
+				if(vec3.z != 0)
+					speed *= getDrivingSpeedMod();
+				else if(vec3.y != 0)
+					speed *= getDrivingSpeedMod();
+
+				setSpeed(speed);
+			}
+			else
+			{
+				setDeltaMovement(Vec3.ZERO);
+				calculateEntityAnimation(this, true);
+				return;
+			}
+
+			yRotO = getYRot();
+			setYRot(driver.getYHeadRot());
+			yBodyRot = getYRot();
+			yHeadRot = getYRot();
+		}
+
+		performMotion(speed, vec3);
+	}
+
+	private void performMotion(float speed, Vec3 vec3)
+	{
+		if(getControllingPassenger() == null && level.isClientSide())
+			return;
+
+		if(isFlying())
+		{
+			moveRelative(speed, vec3);
+			move(MoverType.SELF, getDeltaMovement());
+			setDeltaMovement(getDeltaMovement().scale(0.8f));
+			calculateEntityAnimation(this, true);
+		}
+		else
+		{
+			setDeltaMovement(getDeltaMovement().scale(0.8f));
+			super.travel(vec3);
+		}
+	}
+
+	@Override
+	public void tick()
+	{
+		super.tick();
+		setFlying(shouldFly());
+		this.setNoGravity(isFlying());
+
+		if(isFlying())
+			navigation = createNavigation(level);
+		else
+			navigation.stop();
+
+		if(actionTimer > 0) --actionTimer;
+		if(landTimer > 0) --landTimer;
+	}
 
 	@Override
 	protected PathNavigation createNavigation(Level level)
@@ -425,563 +599,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return new Vec3(xMove, yMove, zMove);
 	}
 
-	protected void startFlying()
+	public void startFlying()
 	{
 		jumpFromGround();
 		resetLandTimer();
-	}
-
-	@Override
-	public void tick()
-	{
-		super.tick();
-
-		setFlying(shouldFly());
-
-		if(isFlying())
-			navigation = createNavigation(level);
-		else
-			navigation.stop();
-
-		if(landTimer > 0) System.out.println(landTimer);
-
-		if(actionTimer > 0) actionTimer -= 1;
-		if(landTimer > 0) landTimer -= 1;
-	}
-
-// Entity values:
-	
-	public double getPitch(double partialTicks)
-	{
-		if(pitchO == pitch) return pitch;
-		return partialTicks == 1.0 ? pitch : Mth.lerp(partialTicks, pitchO, pitch);
-	}
-	
-	public double getRoll(double partialTicks)
-	{
-		if(rollO == roll) return roll;
-		return partialTicks == 1.0 ? roll : Mth.lerp(partialTicks, rollO, roll);
-	}
-	
-////////////////////////////////
-// Entity AI control classes: //
-////////////////////////////////
-	
-	static class FamiliarBodyRotationControl extends BodyRotationControl
-	{
-        private final BaseFamiliarEntity familiar;
-
-		private final String rotationType;
-		private final float angleLimit;
-		private final float angleInterval;
-		private int headStableTime;
-		private float lastStableYHeadRot;
-
-        public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, String rotationType, float angleLimit, float angleInterval)
-        {
-            super(familiar);
-            this.familiar = familiar;
-			this.rotationType = rotationType;
-			this.angleLimit = angleLimit;
-			this.angleInterval = angleInterval;
-        }
-
-        @Override
-        public void clientTick()
-        {
-			switch(rotationType)
-			{
-				case MOVE_CONTROL_HOVER -> rotationHover();
-				case MOVE_CONTROL_FORWARD -> rotationForward();
-				default -> rotationNone();
-			}
-
-			if(familiar.isMoving())
-			{
-				familiar.yBodyRot = familiar.getYRot();
-				rotateHeadIfNecessary();
-				lastStableYHeadRot = familiar.yHeadRot;
-				headStableTime = 0;
-			}
-			else
-			{
-				if(familiar.notCarryingMobPassengers())
-				{
-					if(Math.abs(familiar.yHeadRot - lastStableYHeadRot) > 15.0F)
-					{
-						headStableTime = 0;
-						lastStableYHeadRot = familiar.yHeadRot;
-						rotateBodyIfNecessary();
-					}
-					else
-					{
-						++headStableTime;
-						if(headStableTime > 10)
-						{
-							rotateHeadTowardsFront();
-						}
-					}
-				}
-			}
-        }
-
-		private void rotationHover()
-		{
-			LivingEntity driver = (LivingEntity) familiar.getControllingPassenger();
-
-			float forwardMove = driver != null ? driver.zza : familiar.zza;
-			float sideMove = driver != null ? driver.xxa : familiar.xxa;
-
-			if(familiar.isFlying() && driver != null)
-			{
-				if(forwardMove > 0)
-					incrementPitch();
-				else if(forwardMove < 0)
-					decrementPitch();
-				else
-					centerPitch();
-
-				if(sideMove > 0)
-					incrementRoll();
-				else if(sideMove < 0)
-					decrementRoll();
-				else
-					centerRoll();
-			}
-			else
-			{
-				centerPitch();
-				centerRoll();
-			}
-		}
-
-		private void rotationForward()
-		{
-			LivingEntity driver = (LivingEntity) familiar.getControllingPassenger();
-
-			float wantedRotY;
-
-			if (driver != null)
-				wantedRotY = driver.getYRot();
-			else
-				wantedRotY = familiar.getYRot();
-
-			float yRotDifference = Mth.wrapDegrees(familiar.getYRot() - wantedRotY);
-
-			if(familiar.isFlying() && driver != null)
-			{
-				if(FFKeys.FAMILIAR_ASCEND.isDown() && FFKeys.FAMILIAR_DESCEND.isDown())
-					centerPitch();
-				else if(FFKeys.FAMILIAR_ASCEND.isDown())
-					decrementPitch();
-				else if(FFKeys.FAMILIAR_DESCEND.isDown())
-					incrementPitch();
-				else
-					centerPitch();
-
-				if(yRotDifference > 0.2f * angleLimit)
-					incrementRoll();
-				else if(yRotDifference < -0.2f * angleLimit)
-					decrementRoll();
-				else
-					centerRoll();
-			}
-			else
-			{
-				centerPitch();
-				centerRoll();
-			}
-		}
-
-		private void rotationNone()
-		{
-			centerPitch();
-			centerRoll();
-		}
-
-		private void incrementPitch()
-		{
-			familiar.pitchO = familiar.pitch;
-			if(familiar.pitch < angleLimit) familiar.pitch += angleInterval;
-		}
-
-		private void decrementPitch()
-		{
-			familiar.pitchO = familiar.pitch;
-			if(familiar.pitch > -angleLimit) familiar.pitch -= angleInterval;
-		}
-
-		private void incrementRoll()
-		{
-			familiar.rollO = familiar.roll;
-			if(familiar.roll < angleLimit) familiar.roll += angleInterval;
-		}
-
-		private void decrementRoll()
-		{
-			familiar.rollO = familiar.roll;
-			if(familiar.roll > -angleLimit) familiar.roll -= angleInterval;
-		}
-
-		private void centerPitch()
-		{
-			familiar.pitchO = familiar.pitch;
-			if(familiar.pitch > 0) familiar.pitch -= angleInterval;
-			if(familiar.pitch < 0) familiar.pitch += angleInterval;
-		}
-
-		private void centerRoll()
-		{
-			familiar.rollO = familiar.roll;
-			if(familiar.roll > 0) familiar.roll -= angleInterval;
-			if(familiar.roll < 0) familiar.roll += angleInterval;
-		}
-
-		private void rotateBodyIfNecessary() {
-			familiar.yBodyRot = Mth.rotateIfNecessary(familiar.yBodyRot, familiar.yHeadRot, (float) familiar.getMaxHeadYRot());
-		}
-
-		private void rotateHeadIfNecessary() {
-			familiar.yHeadRot = Mth.rotateIfNecessary(familiar.yHeadRot, familiar.yBodyRot, (float) familiar.getMaxHeadYRot());
-		}
-
-		private void rotateHeadTowardsFront() {
-			int i = headStableTime - 10;
-			float f = Mth.clamp((float)i / 10.0F, 0.0F, 1.0F);
-			float f1 = (float) familiar.getMaxHeadYRot() * (1.0F - f);
-			familiar.yBodyRot = Mth.rotateIfNecessary(familiar.yBodyRot, familiar.yHeadRot, f1);
-		}
-    }
-
-	static class FamiliarMoveControl extends MoveControl
-	{
-		private final BaseFamiliarEntity familiar;
-
-		public FamiliarMoveControl(BaseFamiliarEntity familiar)
-		{
-			super(familiar);
-			this.familiar = familiar;
-		}
-
-		@Override
-		public void tick()
-		{
-			if(!familiar.isFlying())
-			{
-				super.tick();
-				return;
-			}
-
-			if(operation == Operation.MOVE_TO)
-			{
-				operation = MoveControl.Operation.WAIT;
-				familiar.setNoGravity(true);
-
-				double speed = familiar.getAttributeValue(Attributes.MOVEMENT_SPEED);
-
-				float distX = (float) (wantedX - familiar.getX());
-				float distY = (float) (wantedY - familiar.getY());
-				float distZ = (float) (wantedZ - familiar.getZ());
-
-				double planeDist = Math.sqrt(distX * distX + distZ * distZ);
-				double yDistMod = 1.0D - (double) Mth.abs(distY * 0.7F) / planeDist;
-
-				distX = (float) ((double) distX * yDistMod);
-				distZ = (float) ((double) distZ * yDistMod);
-
-				planeDist = Mth.sqrt(distX * distX + distZ * distZ);
-
-				double dist = Math.sqrt(distX * distX + distY * distY + distZ * distZ);
-				if (dist > 1.0f)
-				{
-					float yaw = (float) Math.toDegrees(Mth.atan2(distZ, distX)) - 90.0f;
-					float pitch = (float) -Math.toDegrees(Mth.atan2(-distY, planeDist));
-
-					if(dist > BEGIN_FOLLOW_DISTANCE)
-						familiar.setYRot(rotlerp(familiar.getYRot(), yaw, (float) (3 * 10 * familiar.getAttributeValue(Attributes.MOVEMENT_SPEED))));
-					familiar.setXRot(pitch);
-
-					double xAddVector = Math.cos(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distX / dist);
-					double yAddVector = Math.sin(Math.toRadians(pitch)) * Math.abs((double) distY / dist);
-					double zAddVector = Math.sin(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distZ / dist);
-
-					xAddVector = dist > BEGIN_FOLLOW_DISTANCE ? xAddVector : 0;
-					zAddVector = dist > BEGIN_FOLLOW_DISTANCE ? zAddVector : 0;
-
-					xAddVector = Math.abs(xAddVector) > speed * speedModifier ? xAddVector < 0 ? -speed * speedModifier : speed * speedModifier : xAddVector;
-					yAddVector = Math.abs(yAddVector) > speed * speedModifier ? yAddVector < 0 ? -speed * speedModifier : speed * speedModifier : yAddVector;
-					zAddVector = Math.abs(zAddVector) > speed * speedModifier ? zAddVector < 0 ? -speed * speedModifier : speed * speedModifier : zAddVector;
-
-					familiar.setDeltaMovement(familiar.getDeltaMovement().add(xAddVector, yAddVector, zAddVector));
-				}
-			}
-		}
-	}
-
-	static class FamiliarFlyingPathNavigation extends FlyingPathNavigation
-	{
-		public FamiliarFlyingPathNavigation(BaseFamiliarEntity familiar, Level level)
-		{
-			super(familiar, level);
-		}
-
-		@Override
-		public void tick()
-		{
-			if (!isDone() && canUpdatePath())
-			{
-				BaseFamiliarEntity familiar = (BaseFamiliarEntity) mob;
-
-				BlockPos target = getTargetPos();
-				if (target != null)
-				{
-					mob.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0f);
-
-					maxDistanceToWaypoint = mob.getBbWidth() * mob.getBbWidth();
-					Vec3i position = new Vec3i(getTempMobPos().x, getTempMobPos().y, getTempMobPos().z);
-
-					if (target.distSqr(position) <= maxDistanceToWaypoint) path = null;
-				}
-			}
-		}
-
-		@Override
-		public boolean isStableDestination(BlockPos pos)
-		{
-			return true;
-		}
-	}
-
-	static class FamiliarFollowOwnerGoal extends Goal
-	{
-		private final BaseFamiliarEntity familiar;
-		private final double speed;
-		Level world;
-		float endFollow;
-		float beginFollow;
-		private LivingEntity owner;
-		private int timeToRecalcPath;
-		private float oldWaterCost;
-
-		public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speed, float beginFollow, float endFollow)
-		{
-			this.familiar = familiar;
-			this.world = familiar.level;
-			this.speed = speed * familiar.getAttributeValue(Attributes.MOVEMENT_SPEED);
-			this.beginFollow = beginFollow;
-			this.endFollow = endFollow;
-			this.setFlags(EnumSet.of(Flag.MOVE));
-		}
-
-		@Override
-		public boolean canUse()
-		{
-			LivingEntity owner = this.familiar.getOwner();
-			if(owner != null)
-			{
-				if(!((owner instanceof Player && owner.isSpectator())
-						|| familiar.isOrderedToSit()
-						|| familiar.distanceToSqr(owner) < beginFollow * beginFollow))
-				{
-					this.owner = owner;
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		@Override
-		public boolean canContinueToUse()
-		{
-			return !noPath() && familiar.distanceToSqr(owner) > endFollow * endFollow
-					&& !familiar.isOrderedToSit();
-		}
-
-		private boolean noPath()
-		{
-			return familiar.getNavigation().getPath() == null;
-		}
-
-		@Override
-		public void start()
-		{
-			timeToRecalcPath = 0;
-			oldWaterCost = familiar.getPathfindingMalus(BlockPathTypes.WATER);
-			familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
-		}
-
-		@Override
-		public void stop()
-		{
-			owner = null;
-			familiar.getNavigation().stop();
-			familiar.setPathfindingMalus(BlockPathTypes.WATER, oldWaterCost);
-		}
-
-		@Override
-		public void tick()
-		{
-			if(!familiar.isFlying())
-			{
-				familiar.startFlying();
-				return;
-			}
-
-			if(owner != null)
-			{
-				familiar.getLookControl().setLookAt(owner, 10.0f, familiar.getMaxHeadXRot());
-
-				if (--timeToRecalcPath <= 0)
-				{
-					timeToRecalcPath = adjustedTickDelay(10);
-
-					if(familiar.distanceToSqr(owner) <= beginFollow * beginFollow)
-					{
-						familiar.getNavigation().stop();
-					}
-					else if(familiar.distanceToSqr(owner) > beginFollow * beginFollow * 16)
-					{
-						teleportToOwner();
-					}
-					else
-					{
-						familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), speed);
-					}
-				}
-			}
-		}
-
-		private void teleportToOwner()
-		{
-			BlockPos blockpos = owner.blockPosition();
-
-			for(int i = 0; i < 10; ++i)
-			{
-				int j = randomIntInclusive(-3, 3);
-				int k = randomIntInclusive(-1, 1);
-				int l = randomIntInclusive(-3, 3);
-				boolean flag = maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
-
-				if (flag)
-					return;
-			}
-		}
-
-		private boolean maybeTeleportTo(int currentX, int currentY, int currentZ)
-		{
-			if(Math.abs((double) currentX - owner.getX()) < 2.0D && Math.abs((double) currentZ - owner.getZ()) < 2.0D)
-			{
-				return false;
-			}
-			else if(!canTeleportTo(new BlockPos(currentX, currentY, currentZ)))
-			{
-				return false;
-			}
-			else
-			{
-				familiar.moveTo((double) currentX + 0.5D, (double) currentY, (double) currentZ + 0.5D, familiar.getYRot(), familiar.getXRot());
-				familiar.getNavigation().stop();
-				return true;
-			}
-		}
-
-		protected boolean canTeleportTo(BlockPos pos)
-		{
-			BlockState blockstate = world.getBlockState(pos);
-			return	world.isEmptyBlock(pos.above()) && world.isEmptyBlock(pos.above((int) (familiar.getBbHeight() + 1)));
-		}
-
-		private int randomIntInclusive(int p_25301_, int p_25302_)
-		{
-			return familiar.getRandom().nextInt(p_25302_ - p_25301_ + 1) + p_25301_;
-		}
-	}
-
-	static class FamiliarLandGoal extends Goal
-	{
-		private final BaseFamiliarEntity familiar;
-		private final double speed;
-		private final int landingSearchDistance;
-		private int timeToRecalcPath;
-		private BlockPos.MutableBlockPos goal;
-		Level world;
-
-		public FamiliarLandGoal(BaseFamiliarEntity familiar, double speed, int landingSearchDistance)
-		{
-			this.familiar = familiar;
-			this.world = familiar.level;
-			this.speed = speed * familiar.getAttributeValue(Attributes.MOVEMENT_SPEED);
-			this.landingSearchDistance = landingSearchDistance;
-			this.setFlags(EnumSet.of(Flag.MOVE));
-		}
-
-		@Override
-		public boolean canUse()
-		{
-			return familiar.isFlying() && familiar.landTimer == 0;
-		}
-
-		@Override
-		public boolean canContinueToUse()
-		{
-			return !noPath() && familiar.isFlying() && familiar.landTimer == 0 && goal != null;
-		}
-
-		private void solidBlockBelow()
-		{
-			for(int i = 0; i < landingSearchDistance; i++)
-			{
-				var block = familiar.blockPosition().mutable().move(0, -i, 0);
-
-				if(familiar.isFlying() && !world.getBlockState(block).isAir())
-				{
-					goal = block;
-					break;
-				}
-			}
-		}
-
-		private boolean noPath()
-		{
-			return familiar.getNavigation().getPath() == null;
-		}
-
-		@Override
-		public void start()
-		{
-			timeToRecalcPath = 0;
-			familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
-		}
-
-		@Override
-		public void stop()
-		{
-			goal = null;
-			familiar.getNavigation().stop();
-		}
-
-		@Override
-		public void tick()
-		{
-			solidBlockBelow();
-
-			if (--timeToRecalcPath <= 0)
-			{
-				timeToRecalcPath = adjustedTickDelay(10);
-
-				if(goal != null)
-				{
-					if(!familiar.isFlying())
-					{
-						familiar.getNavigation().stop();
-					}
-					else
-					{
-						familiar.getMoveControl().setWantedPosition(goal.getX(), goal.getY(), goal.getZ(), speed);
-					}
-				}
-			}
-		}
 	}
 }

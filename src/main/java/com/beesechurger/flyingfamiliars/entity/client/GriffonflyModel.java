@@ -5,6 +5,8 @@ import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -13,6 +15,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
+@OnlyIn(Dist.CLIENT)
 public class GriffonflyModel extends AnimatedGeoModel<GriffonflyEntity> {
 
 	@Override
@@ -31,15 +34,15 @@ public class GriffonflyModel extends AnimatedGeoModel<GriffonflyEntity> {
 	public ResourceLocation getTextureLocation(GriffonflyEntity animatable)
 	{
         return switch (animatable.getVariant()) {
-            case "Yellow" ->
+            case "yellow" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
-            case "Green" ->
+            case "green" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_green.png");
-            case "Blue" ->
+            case "blue" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_blue.png");
-            case "Purple" ->
+            case "purple" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
-            case "Red" ->
+            case "red" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_red.png");
             default ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");

@@ -2,10 +2,10 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:bones_of_the_earth"
+			"item": "flyingfamiliars:pelt_of_the_forest"
 		},
 		{
-			"item": "flyingfamiliars:pelt_of_the_forest"
+			"item": "flyingfamiliars:bones_of_the_earth"
 		},
 		{
 			"item": "minecraft:phantom_membrane"

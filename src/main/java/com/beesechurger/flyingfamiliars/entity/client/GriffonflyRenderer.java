@@ -10,8 +10,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+@OnlyIn(Dist.CLIENT)
 public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 {
 	public GriffonflyRenderer(Context renderManager)
@@ -25,15 +28,15 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	{
         return switch (animatable.getVariant())
 		{
-            case "Yellow" ->
+            case "yellow" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
-            case "Green" ->
+            case "green" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_green.png");
-            case "Blue" ->
+            case "blue" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_blue.png");
-            case "Purple" ->
+            case "purple" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
-            case "Red" ->
+            case "red" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_red.png");
             default ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");

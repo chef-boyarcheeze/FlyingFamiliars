@@ -6,6 +6,8 @@ import com.beesechurger.flyingfamiliars.entity.common.CormorantEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -14,6 +16,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 import java.util.List;
 
+@OnlyIn(Dist.CLIENT)
 public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
 
 	@Override
@@ -34,7 +37,16 @@ public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
 	@Override
 	public ResourceLocation getTextureLocation(CormorantEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+		return switch (animatable.getVariant()) {
+			case "great_cormorant" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+			case "australian_pied_cormorant" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/australian_pied_cormorant.png");
+			case "red_legged_cormorant" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/red_legged_cormorant.png");
+			default ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+		};
 	}
 
 	@Override

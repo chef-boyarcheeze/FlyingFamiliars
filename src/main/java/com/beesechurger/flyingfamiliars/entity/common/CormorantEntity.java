@@ -1,17 +1,18 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
+import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.item.FFItems;
-import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,7 +25,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -39,7 +39,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_NONE;
 
 public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
@@ -47,21 +46,22 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
     private static final EntityDataAccessor<Boolean> HAS_RING = SynchedEntityData.defineId(CormorantEntity.class, EntityDataSerializers.BOOLEAN);
 
     public static final float MAX_HEALTH = 8.00f;
-    public static final float MOVEMENT_SPEED = 0.4f;
+    public static final float FLYING_SPEED = 0.35f;
+    protected static final int VARIANTS = 3;
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public CormorantEntity(EntityType<CormorantEntity> entityType, Level level)
     {
         super(entityType, level);
-        //selectVariant(this.random.nextInt(3));
+        selectVariant(this.random.nextInt(VARIANTS));
     }
 
     public static AttributeSupplier setAttributes()
     {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, MAX_HEALTH)
-                .add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).build();
+                .add(Attributes.FLYING_SPEED, FLYING_SPEED).build();
     }
 
     @Override
@@ -70,14 +70,9 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
         this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 10));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-    }
-
-    @Override
-    protected BodyRotationControl createBodyControl()
-    {
-        return new FamiliarBodyRotationControl(this, MOVE_CONTROL_NONE, 0, 0);
+        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.25f));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
     private void selectVariant(int variant)
@@ -99,7 +94,9 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         return MobType.WATER;
     }
 
-// Additional save data:
+///////////////////////////
+// Additional save data: //
+///////////////////////////
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag)
@@ -122,7 +119,9 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         entityData.define(HAS_RING, false);
     }
 
-// Geckolib animation controls:
+//////////////////////////////////
+// Geckolib animation controls: //
+//////////////////////////////////
 
     private <E extends IAnimatable> PlayState generalController(AnimationEvent<E> event)
     {
@@ -184,7 +183,9 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         return this.factory;
     }
 
-// Sound-controlling methods:
+////////////////////////////////
+// Sound-controlling methods: //
+////////////////////////////////
 
     @Override
     public int getAmbientSoundInterval()
@@ -215,8 +216,19 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         return SoundEvents.PARROT_DEATH;
     }
 
-// Entity accessors:
+///////////////////////
+// Entity accessors: //
+///////////////////////
 
+// Strings:
+
+    @Override
+    public String getMoveControlType()
+    {
+        return MOVE_CONTROL_NONE;
+    }
+
+// Booleans:
     public boolean getHasRing()
     {
         return entityData.get(HAS_RING);
@@ -240,14 +252,24 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         return isTameItem(stack);
     }
 
-// Entity mutators:
+    @Override
+    public boolean canWalk()
+    {
+        return true;
+    }
+
+//////////////////////
+// Entity mutators: //
+//////////////////////
 
     protected void setHasRing(boolean hasRing)
     {
         entityData.set(HAS_RING, hasRing);
     }
 
-// Mob AI methods:
+/////////////////////
+// Mob AI methods: //
+/////////////////////
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -284,26 +306,6 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         }
 
         return super.mobInteract(player, hand);
-    }
-
-    @Override
-    public void travel(Vec3 vec3)
-    {
-        float speed = (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
-
-        if(isFlying())
-        {
-            moveRelative(speed, vec3);
-            move(MoverType.SELF, getDeltaMovement());
-
-            setDeltaMovement(getDeltaMovement().scale(0.9f));
-            calculateEntityAnimation(this, true);
-        }
-        else
-        {
-            setDeltaMovement(getDeltaMovement().scale(0.9f));
-            super.travel(vec3);
-        }
     }
 
     @Override
