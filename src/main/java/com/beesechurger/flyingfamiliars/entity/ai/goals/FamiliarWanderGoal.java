@@ -1,13 +1,19 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
+import com.mojang.math.Vector3d;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.util.AirRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-public class FamiliarWanderGoal extends WaterAvoidingRandomFlyingGoal
+public class FamiliarWanderGoal extends WaterAvoidingRandomStrollGoal
 {
     private final BaseFamiliarEntity familiar;
     private final double speed;
@@ -25,13 +31,13 @@ public class FamiliarWanderGoal extends WaterAvoidingRandomFlyingGoal
     @Override
     public boolean canUse()
     {
-        return super.canUse() && !familiar.isSitting();
+        return !familiar.isSitting();
     }
 
     @Override
     public boolean canContinueToUse()
     {
-        return super.canContinueToUse() && !familiar.isSitting();
+        return !familiar.isSitting();
     }
 
     @Override
@@ -39,6 +45,9 @@ public class FamiliarWanderGoal extends WaterAvoidingRandomFlyingGoal
     {
         timeToRecalcPath = 0;
         familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
+
+        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.WANDERING)
+            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.WANDERING);
     }
 
     @Override
@@ -50,15 +59,48 @@ public class FamiliarWanderGoal extends WaterAvoidingRandomFlyingGoal
     @Override
     public void tick()
     {
-        if(!familiar.isFlying())
+        if(familiar.getRandom().nextFloat() <= 0.1)
+        {
+            Vec3 goal = getPosition();
+
+            if(goal != null)
+            {
+                if(!familiar.isFlying())
+                {
+                    familiar.startFlying();
+                    return;
+                }
+
+                familiar.getLookControl().setLookAt(goal);
+
+                if (--timeToRecalcPath <= 0)
+                {
+                    timeToRecalcPath = adjustedTickDelay(10);
+                    familiar.getMoveControl().setWantedPosition(goal.x, goal.y, goal.z, speed);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Vec3 getPosition()
+    {
+        Vec3 goal = null;
+
+        if(!familiar.isFlying() || familiar.getLandTimer() > 0)
+            goal = LandRandomPos.getPos(familiar, 30, 30);
+        else
+        {
+            Vec3 vec3 = familiar.getLookAngle();
+            if (!familiar.isWithinRestriction())
+                vec3 = vec3.atLowerCornerOf(familiar.getRestrictCenter()).subtract(familiar.position()).normalize();
+
+            goal = AirRandomPos.getPosTowards(familiar, 30, 30, 10, vec3, Math.PI / 2);
+        }
+
+        if (goal != null && goal.y > familiar.getY() + familiar.getBbHeight() && !familiar.isFlying())
             familiar.startFlying();
 
-        System.out.println(getPosition().x + " " + getPosition().y + " " + getPosition().z);
-
-        if (--timeToRecalcPath <= 0)
-        {
-            timeToRecalcPath = adjustedTickDelay(10);
-            familiar.getMoveControl().setWantedPosition(getPosition().x, getPosition().y, getPosition().z, speed);
-        }
+        return goal == null ? super.getPosition() : goal;
     }
 }

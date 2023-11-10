@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.ai;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -25,11 +26,11 @@ public class FamiliarMoveControl
         @Override
         public void tick()
         {
-            if (!familiar.isFlying())
+            /*if (!familiar.isFlying())
             {
                 super.tick();
                 return;
-            }
+            }*/
 
             if(!familiar.level.isClientSide() && operation == Operation.MOVE_TO)
             {
@@ -51,13 +52,12 @@ public class FamiliarMoveControl
                 planeDist = Mth.sqrt(distX * distX + distZ * distZ);
 
                 double dist = Math.sqrt(distX * distX + distY * distY + distZ * distZ);
-                if (dist > 1.0f)
+                if(familiar.getGoalStatus() == FFEnumValues.FamiliarStatus.FOLLOWING && dist > BEGIN_FOLLOW_DISTANCE)
                 {
                     float yaw = (float) Math.toDegrees(Mth.atan2(distZ, distX)) - 90.0f;
                     float pitch = (float) -Math.toDegrees(Mth.atan2(-distY, planeDist));
 
-                    if (dist > BEGIN_FOLLOW_DISTANCE)
-                        familiar.setYRot(rotlerp(familiar.getYRot(), yaw, (float) (3 * 10 * familiar.getAttributeValue(Attributes.FLYING_SPEED))));
+                    familiar.setYRot(rotlerp(familiar.getYRot(), yaw, (float) (3 * 10 * familiar.getAttributeValue(Attributes.FLYING_SPEED))));
                     familiar.setXRot(pitch);
 
                     double xAddVector = Math.cos(Math.toRadians(familiar.getYRot() + 90.0f)) * Math.abs((double) distX / dist);

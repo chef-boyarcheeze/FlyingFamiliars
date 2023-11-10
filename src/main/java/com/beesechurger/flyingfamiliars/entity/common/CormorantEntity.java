@@ -6,6 +6,8 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
+import com.beesechurger.flyingfamiliars.util.FFStringConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -38,8 +40,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_NONE;
 
 public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
 {
@@ -220,12 +220,12 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
 // Entity accessors: //
 ///////////////////////
 
-// Strings:
+// Enums:
 
     @Override
-    public String getMoveControlType()
+    public FFEnumValues.FamiliarMoveTypes getMoveControlType()
     {
-        return MOVE_CONTROL_NONE;
+        return FFEnumValues.FamiliarMoveTypes.NONE;
     }
 
 // Booleans:

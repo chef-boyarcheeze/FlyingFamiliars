@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.common.SoulItems;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.util.FFValueConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -102,7 +103,7 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
     @Override
     public int getBarColor(ItemStack stack)
     {
-        return 32767;
+        return FFValueConstants.CHAT_GRAY;
     }
 
     @Override

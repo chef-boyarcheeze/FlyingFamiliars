@@ -10,11 +10,6 @@ public class FFStringConstants
     // Tag constants:
     public static final String ENTITY_EMPTY = "Empty";
 
-    // Familiar body rotation control move types:
-    public static final String MOVE_CONTROL_HOVER = "Hover";
-    public static final String MOVE_CONTROL_FORWARD = "Forward";
-    public static final String MOVE_CONTROL_NONE = "None";
-
     // Mod IDs:
     public static final String CURIOS_MODNAME = "curios";
 }

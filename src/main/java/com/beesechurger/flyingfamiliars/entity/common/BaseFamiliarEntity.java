@@ -4,7 +4,9 @@ import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarFlyingPathNavigation;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarMoveControl;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,6 +20,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
@@ -28,9 +31,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
-
 public abstract class BaseFamiliarEntity extends TamableAnimal
 {
 	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
@@ -39,15 +39,19 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 	public static final float BEGIN_FOLLOW_DISTANCE = 16;
 	public static final float END_FOLLOW_DISTANCE = 8;
+
+	private FFEnumValues.FamiliarStatus goalStatus = FFEnumValues.FamiliarStatus.WANDERING;
 	
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
 	protected int actionTimer = 0;
 	protected int landTimer = 0;
+	protected int wanderJumpTimer = 0;
 
 	protected int resetActionTimerAmount = 20;
 	protected int resetLandTimerAmount = 100;
+	protected int resetWanderJumpTimerAmount = 200;
 
 	protected BaseFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
@@ -103,7 +107,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return entityData.get(VARIANT);
 	}
 
-	abstract String getMoveControlType();
+	abstract FFEnumValues.FamiliarMoveTypes getMoveControlType();
+
+// Enums:
+
+	public FFEnumValues.FamiliarStatus getGoalStatus()
+	{
+		return goalStatus;
+	}
 
 // Booleans:
 
@@ -127,13 +138,13 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		double d0 = getX() - xo;
 		double d1 = getY() - yo;
 		double d2 = getZ() - zo;
-		return d0 * d0 + d1 * d1 + d2 * d2 > 2.5000003E-7F;
+		return d0 * d0 + d1 * d1 + d2 * d2 > 2.5000003E-7f;
 	}
-	
+
 	public boolean shouldFly()
 	{
 		var standingOn = blockPosition().mutable().move(0, -1, 0);
-		
+
 		if(isFlying())
 		{
 			if(isOnGround())
@@ -147,7 +158,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 				return true;
 			else
 				return false;
-		}
+		}//*/
 	}
 	
 	public boolean isTamedFor(Player player)
@@ -190,6 +201,31 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 // Integers:
 
+	public int getActionTimer()
+	{
+		return actionTimer;
+	}
+
+	public int getLandTimer()
+	{
+		return landTimer;
+	}
+
+	public int getWanderJumpTimer()
+	{
+		return wanderJumpTimer;
+	}
+
+// Floats:
+
+	@Override
+	protected float getJumpPower()
+	{
+		return this.getBbHeight() * this.getBlockJumpFactor() / 2;
+	}
+
+// Doubles:
+
 	public double getPitch(double partialTicks)
 	{
 		if(pitchO == pitch) return pitch;
@@ -202,21 +238,21 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return partialTicks == 1.0 ? roll : Mth.lerp(partialTicks, rollO, roll);
 	}
 
-	public int getActionTimer()
-	{
-		return actionTimer;
-	}
-
-	public int getLandTimer()
-	{
-		return landTimer;
-	}
-
 // Floats:
 
 	protected float getDrivingSpeedMod()
 	{
 		return 0;
+	}
+
+// Doubles:
+
+	public double getDistanceFromGround()
+	{
+		BlockPos.MutableBlockPos pos = blockPosition().mutable();
+
+		while (pos.getY() > 0 && !level.getBlockState(pos.move(Direction.DOWN)).getMaterial().isSolid());
+		return getY() - pos.getY();
 	}
 
 //////////////////////
@@ -230,12 +266,22 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		entityData.set(VARIANT, variant);
 	}
 
+// Enums:
+
+	public void setGoalStatus(FFEnumValues.FamiliarStatus goalStatus)
+	{
+		this.goalStatus = goalStatus;
+	}
+
 // Booleans:
 
 	protected void setSitting(boolean sitting)
 	{
 		entityData.set(SITTING, sitting);
 		setOrderedToSit(sitting);
+
+		if(sitting)
+			goalStatus = FFEnumValues.FamiliarStatus.SITTING;
 	}
 
 	protected void setFlying(boolean flying)
@@ -419,6 +465,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		landTimer = resetLandTimerAmount;
 	}
 
+	protected void resetWanderJumpTimer()
+	{
+		wanderJumpTimer = resetWanderJumpTimerAmount;
+	}
+
 /////////////
 // Damage: //
 /////////////
@@ -443,8 +494,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	{
 		switch(getMoveControlType())
 		{
-			case MOVE_CONTROL_HOVER -> moveHoverType(vec3);
-			case MOVE_CONTROL_FORWARD -> moveForwardType(vec3);
+			case HOVER -> moveHoverType(vec3);
+			case FORWARD -> moveForwardType(vec3);
 			default -> performMotion((float) getAttributeValue(Attributes.FLYING_SPEED), vec3);
 		};
 	}

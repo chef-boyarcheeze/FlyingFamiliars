@@ -8,6 +8,8 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
+import com.beesechurger.flyingfamiliars.util.FFStringConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -34,8 +36,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
 
 public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 {
@@ -210,9 +210,9 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 // Strings:
 
 	@Override
-	public String getMoveControlType()
+	public FFEnumValues.FamiliarMoveTypes getMoveControlType()
 	{
-		return MOVE_CONTROL_FORWARD;
+		return FFEnumValues.FamiliarMoveTypes.FORWARD;
 	}
 
 // Booleans:

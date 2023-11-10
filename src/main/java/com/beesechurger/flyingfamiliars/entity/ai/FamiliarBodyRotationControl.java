@@ -2,24 +2,22 @@ package com.beesechurger.flyingfamiliars.entity.ai;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_FORWARD;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
 
 public class FamiliarBodyRotationControl extends BodyRotationControl
 {
     private final BaseFamiliarEntity familiar;
 
-    private final String rotationType;
+    private final FFEnumValues.FamiliarMoveTypes rotationType;
     private final float angleLimit;
     private final float angleInterval;
     private int headStableTime;
     private float lastStableYHeadRot;
 
-    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, String rotationType, float angleLimit, float angleInterval)
+    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, FFEnumValues.FamiliarMoveTypes rotationType, float angleLimit, float angleInterval)
     {
         super(familiar);
         this.familiar = familiar;
@@ -33,8 +31,8 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
     {
         switch(rotationType)
         {
-            case MOVE_CONTROL_HOVER -> rotationHover();
-            case MOVE_CONTROL_FORWARD -> rotationForward();
+            case HOVER -> rotationHover();
+            case FORWARD -> rotationForward();
             default -> rotationNone();
         }
 

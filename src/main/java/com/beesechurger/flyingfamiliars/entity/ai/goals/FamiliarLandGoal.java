@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -70,6 +71,9 @@ public class FamiliarLandGoal extends Goal
     {
         timeToRecalcPath = 0;
         familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
+
+        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.LANDING)
+            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.LANDING);
     }
 
     @Override

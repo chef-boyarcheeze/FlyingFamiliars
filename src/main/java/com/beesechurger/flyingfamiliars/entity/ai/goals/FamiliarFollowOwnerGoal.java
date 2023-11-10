@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -76,6 +77,9 @@ public class FamiliarFollowOwnerGoal extends Goal
         timeToRecalcPath = 0;
         oldWaterCost = familiar.getPathfindingMalus(BlockPathTypes.WATER);
         familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
+
+        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.FOLLOWING)
+            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.FOLLOWING);
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.util.FFEnumValues;
+import com.beesechurger.flyingfamiliars.util.FFStringConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -33,8 +35,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
-
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.MOVE_CONTROL_HOVER;
 
 public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 {
@@ -64,8 +64,8 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 10));
-		this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.75f));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.75f));
+		this.goalSelector.addGoal(3, new FamiliarLandGoal(this, 0.3f, 10));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -219,12 +219,12 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 // Entity accessors: //
 ///////////////////////
 
-// Strings:
+// Enums:
 
 	@Override
-	public String getMoveControlType()
+	public FFEnumValues.FamiliarMoveTypes getMoveControlType()
 	{
-		return MOVE_CONTROL_HOVER;
+		return FFEnumValues.FamiliarMoveTypes.HOVER;
 	}
 
 // Booleans:
