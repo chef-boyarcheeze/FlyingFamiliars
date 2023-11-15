@@ -103,7 +103,8 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	
 	private <E extends IAnimatable> PlayState antennaeController(AnimationEvent<E> event)
 	{
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.antennae_idle", EDefaultLoopTypes.LOOP));
+		event.getController().setAnimation(new AnimationBuilder()
+				.addAnimation("animation.griffonfly.antennae_idle", EDefaultLoopTypes.LOOP));
 
 		return PlayState.CONTINUE;
 	}
@@ -112,15 +113,18 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		if(this.isCarryingMob())
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
 		}
 		else if(this.isFlying())
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
 		}
 		else
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
 		}
 
 		event.getController().setAnimationSpeed(0.8f);
@@ -129,7 +133,8 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	
 	private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
 	{
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.tail_idle", EDefaultLoopTypes.LOOP));
+		event.getController().setAnimation(new AnimationBuilder()
+				.addAnimation("animation.griffonfly.tail_idle", EDefaultLoopTypes.LOOP));
 		event.getController().setAnimationSpeed(0.6f);
 
 		return PlayState.CONTINUE;
@@ -139,12 +144,14 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		if(this.isFlying())
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
 			event.getController().setAnimationSpeed(2.5f);
 		}
 		else
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.griffonfly.wings_idle", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.wings_idle", EDefaultLoopTypes.LOOP));
 			event.getController().setAnimationSpeed(0.8f);
 		}
 

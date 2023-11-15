@@ -90,30 +90,36 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 		{
 			if(FFKeys.FAMILIAR_ASCEND.isDown() && !FFKeys.FAMILIAR_DESCEND.isDown())
 			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_ascend"));
+				event.getController().setAnimation(new AnimationBuilder()
+						.addAnimation("animation.cloud_ray.flying_ascend"));
 			}
 			else if(!FFKeys.FAMILIAR_ASCEND.isDown() && FFKeys.FAMILIAR_DESCEND.isDown())
 			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_descend"));
+				event.getController().setAnimation(new AnimationBuilder()
+						.addAnimation("animation.cloud_ray.flying_descend"));
 			}
 			else if(this.isMoving())
 			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying"));
+				event.getController().setAnimation(new AnimationBuilder()
+						.addAnimation("animation.cloud_ray.flying"));
 			}
 			else
 			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.flying_stationary"));
+				event.getController().setAnimation(new AnimationBuilder()
+						.addAnimation("animation.cloud_ray.flying_stationary"));
 			}
 		}
 		else
 		{
 			if (this.isMoving())
 			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.walking"));
+				event.getController().setAnimation(new AnimationBuilder()
+						.addAnimation("animation.cloud_ray.walking"));
 			}
 			else
 			{
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.grounded_long"));
+				event.getController().setAnimation(new AnimationBuilder()
+						.addAnimation("animation.cloud_ray.grounded_long"));
 			}
 		}
 
@@ -122,7 +128,8 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 
 	private <E extends IAnimatable> PlayState predicateFins(AnimationEvent<E> event)
 	{
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.move_fins", EDefaultLoopTypes.LOOP));
+		event.getController().setAnimation(new AnimationBuilder()
+				.addAnimation("animation.cloud_ray.move_fins", EDefaultLoopTypes.LOOP));
 		return PlayState.CONTINUE;
 	}
 
@@ -130,7 +137,8 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		if(getRandom().nextDouble(1) == 0)
 		{
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.head_move", EDefaultLoopTypes.PLAY_ONCE));
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.cloud_ray.head_move", EDefaultLoopTypes.PLAY_ONCE));
 		}
 
 		return PlayState.CONTINUE;

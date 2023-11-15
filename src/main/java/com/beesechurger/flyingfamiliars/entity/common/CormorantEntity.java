@@ -126,11 +126,14 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
     private <E extends IAnimatable> PlayState generalController(AnimationEvent<E> event)
     {
         if(isFlying())
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cormorant.general_flying", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.cormorant.general_flying", ILoopType.EDefaultLoopTypes.LOOP));
         else if(isInWater())
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cormorant.general_swimming", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.cormorant.general_swimming", ILoopType.EDefaultLoopTypes.LOOP));
         else
-            event.getController().setAnimation((new AnimationBuilder().addAnimation("animation.cormorant.general_idle", ILoopType.EDefaultLoopTypes.LOOP)));
+            event.getController().setAnimation((new AnimationBuilder()
+                    .addAnimation("animation.cormorant.general_idle", ILoopType.EDefaultLoopTypes.LOOP)));
 
         return PlayState.CONTINUE;
     }
@@ -139,17 +142,20 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
     {
         if(isFlying())
         {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cormorant.head_flying", ILoopType.EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.cormorant.head_flying", ILoopType.EDefaultLoopTypes.LOOP));
             event.getController().setAnimationSpeed(1.0f);
         }
         else if(isInWater())
         {
-            event.getController().setAnimation((new AnimationBuilder().addAnimation("animation.cormorant.head_swimming", ILoopType.EDefaultLoopTypes.LOOP)));
+            event.getController().setAnimation((new AnimationBuilder()
+                    .addAnimation("animation.cormorant.head_swimming", ILoopType.EDefaultLoopTypes.LOOP)));
             event.getController().setAnimationSpeed(0.25f);
         }
         else
         {
-            event.getController().setAnimation((new AnimationBuilder().addAnimation("animation.cormorant.head_idle", ILoopType.EDefaultLoopTypes.LOOP)));
+            event.getController().setAnimation((new AnimationBuilder()
+                    .addAnimation("animation.cormorant.head_idle", ILoopType.EDefaultLoopTypes.LOOP)));
             event.getController().setAnimationSpeed(0.25f);
         }
 
@@ -163,7 +169,8 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
 
     private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
     {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cormorant.tail_idle", ILoopType.EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(new AnimationBuilder()
+                .addAnimation("animation.cormorant.tail_idle", ILoopType.EDefaultLoopTypes.LOOP));
 
         return PlayState.CONTINUE;
     }

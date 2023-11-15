@@ -121,10 +121,23 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
         return PlayState.CONTINUE;
     }
 
+    private <E extends IAnimatable> PlayState tasselsController(AnimationEvent<E> event)
+    {
+        if(isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5))
+            event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.tassels_idle", ILoopType.EDefaultLoopTypes.LOOP));
+        else
+            event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.tassels_floating", ILoopType.EDefaultLoopTypes.LOOP));
+
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public void registerControllers(AnimationData data)
     {
         data.addAnimationController(new AnimationController<>(this, "generalController", 3, this::generalController));
+        data.addAnimationController(new AnimationController<>(this, "tasselsController", 3, this::tasselsController));
     }
 
     @Override
