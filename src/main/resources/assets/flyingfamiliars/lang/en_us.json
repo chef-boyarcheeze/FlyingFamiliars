@@ -29,10 +29,12 @@
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	"item.flyingfamiliars.cormorant_spawn_egg": "Cormorant Spawn Egg",
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
+	"item.flyingfamiliars.magic_carpet_spawn_egg": "Magic Carpet Spawn Egg",
 
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	"entity.flyingfamiliars.cormorant": "Cormorant",
 	"entity.flyingfamiliars.griffonfly": "Griffonfly",
+	"entity.flyingfamiliars.magic_carpet": "Magic Carpet",
 
 	"effect.flyingfamiliars.doused": "Doused",
 	

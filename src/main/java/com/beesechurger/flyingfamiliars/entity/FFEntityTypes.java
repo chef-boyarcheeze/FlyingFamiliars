@@ -4,6 +4,7 @@ import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.common.CormorantEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
+import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +32,11 @@ public class FFEntityTypes
 			() -> EntityType.Builder.of(GriffonflyEntity::new, MobCategory.CREATURE)
 					.sized(1.5f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "griffonfly").toString()));
+
+	public static final RegistryObject<EntityType<MagicCarpetEntity>> MAGIC_CARPET = ENTITY_TYPES.register("magic_carpet",
+			() -> EntityType.Builder.of(MagicCarpetEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "magic_carpet").toString()));
 	
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPES.register("capture_projectile",
 			() -> EntityType.Builder.<CaptureProjectile>of(CaptureProjectile::new, MobCategory.MISC)

@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.mixin;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
+import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -27,6 +28,8 @@ public class PlayerRiderRendererMixin<T extends LivingEntity>
 
             if(entity.getVehicle() instanceof GriffonflyEntity griffonfly)
                 renderOffset = griffonfly.getRiderPosition(entity).y;
+            else if(entity.getVehicle() instanceof MagicCarpetEntity magicCarpet)
+                renderOffset = magicCarpet.getRiderPosition(entity).y;
         	
         	stack.translate(0, -renderOffset, 0);
         	stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));

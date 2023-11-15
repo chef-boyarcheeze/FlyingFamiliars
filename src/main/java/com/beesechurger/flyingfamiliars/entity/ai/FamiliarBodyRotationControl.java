@@ -45,7 +45,7 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
         }
         else
         {
-            if(familiar.notCarryingMobPassengers())
+            if(familiar.notCarryingPassengers())
             {
                 if(Math.abs(familiar.yHeadRot - lastStableYHeadRot) > 15.0F)
                 {

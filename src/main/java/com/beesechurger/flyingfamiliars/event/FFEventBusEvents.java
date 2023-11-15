@@ -6,6 +6,7 @@ import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
+import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -24,6 +25,7 @@ public class FFEventBusEvents
         event.put(FFEntityTypes.CLOUD_RAY.get(), CloudRayEntity.setAttributes());
         event.put(FFEntityTypes.CORMORANT.get(), GriffonflyEntity.setAttributes());
         event.put(FFEntityTypes.GRIFFONFLY.get(), GriffonflyEntity.setAttributes());
+        event.put(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetEntity.setAttributes());
     }
     
     @SubscribeEvent

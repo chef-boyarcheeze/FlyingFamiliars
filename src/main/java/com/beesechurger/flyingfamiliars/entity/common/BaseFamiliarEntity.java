@@ -20,7 +20,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
@@ -120,7 +119,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 	public boolean hasVariant()
 	{
-		return false;
+		return getVariant() != "";
 	}
 
 	public boolean isSitting()
@@ -182,9 +181,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return getControllingPassenger() instanceof Player;
 	}
 
-	public boolean notCarryingMobPassengers()
+	public boolean notCarryingPassengers()
 	{
-		return !(getFirstPassenger() instanceof Mob);
+		return getPassengers().size() == 0;
 	}
 
 	@Override
@@ -198,6 +197,23 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	abstract boolean isFoodItem(ItemStack stack);
 
 	abstract boolean canWalk();
+
+	@Override
+	public boolean shouldRiderSit()
+	{
+		return getControllingPassenger() != null;
+	}
+
+	public boolean isOwnerNear(double radius)
+	{
+		for(Entity entity : this.level.getEntities(this, this.getBoundingBox().inflate(radius)))
+		{
+			if(entity == getOwner())
+				return true;
+		}
+
+		return false;
+	}
 
 // Integers:
 
@@ -216,12 +232,23 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return wanderJumpTimer;
 	}
 
+	@Override
+	protected int getExperienceReward(Player player)
+	{
+		return 0;
+	}
+
 // Floats:
 
 	@Override
 	protected float getJumpPower()
 	{
 		return this.getBbHeight() * this.getBlockJumpFactor() / 2;
+	}
+
+	protected float getDrivingSpeedMod()
+	{
+		return 0;
 	}
 
 // Doubles:
@@ -238,21 +265,23 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return partialTicks == 1.0 ? roll : Mth.lerp(partialTicks, rollO, roll);
 	}
 
-// Floats:
-
-	protected float getDrivingSpeedMod()
-	{
-		return 0;
-	}
-
-// Doubles:
-
 	public double getDistanceFromGround()
 	{
 		BlockPos.MutableBlockPos pos = blockPosition().mutable();
 
 		while (pos.getY() > 0 && !level.getBlockState(pos.move(Direction.DOWN)).getMaterial().isSolid());
 		return getY() - pos.getY();
+	}
+
+	@Override
+	public double getPassengersRidingOffset()
+	{
+		if(this instanceof GriffonflyEntity)
+			return (getDimensions(getPose()).height * 0.8);
+		else if(this instanceof CloudRayEntity)
+			return (getDimensions(getPose()).height * 0.6);
+		else
+			return getDimensions(getPose()).height;
 	}
 
 //////////////////////
@@ -402,12 +431,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 		return null;
 	}
-
-	@Override
-	public boolean shouldRiderSit()
-	{
-		return getControllingPassenger() != null;
-	}
 	
 	public void setRidingPlayer(Player player)
 	{
@@ -420,17 +443,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	public void onPassengerTurned(Entity rider)
 	{
 		rider.setYBodyRot(getYRot());
-	}
-
-	@Override
-	public double getPassengersRidingOffset()
-	{
-		if(this instanceof GriffonflyEntity)
-			return (getDimensions(getPose()).height * 0.8);
-		else if(this instanceof CloudRayEntity)
-			return (getDimensions(getPose()).height * 0.6);
-		else
-			return getDimensions(getPose()).height;
 	}
 
 	@Override
@@ -447,12 +459,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob familiar)
 	{
 		return null;
-	}
-
-	@Override
-	protected int getExperienceReward(Player player)
-	{
-		return 0;
 	}
 
 	protected void resetActionTimer()
@@ -592,6 +598,48 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		}
 	}
 
+	public void startFlying()
+	{
+		jumpFromGround();
+		resetLandTimer();
+	}
+
+	public Vec3 getHoverVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
+	{
+		double xMove = vec3.x + driver.xxa;
+		double yMove = vec3.y;
+		double zMove = vec3.z + driver.zza;
+
+		if(FFKeys.FAMILIAR_ASCEND.isDown())
+			yMove += drivingSpeedMod;
+		if(FFKeys.FAMILIAR_DESCEND.isDown())
+			yMove -= drivingSpeedMod;
+
+		return new Vec3(xMove, yMove, zMove);
+	}
+
+	public Vec3 getForwardVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
+	{
+		double xMove = vec3.x;
+		double yMove = vec3.y;
+		double zMove = driver.zza > 0 ? vec3.z + Math.max(driver.zza, 0) : 0;
+
+		if(FFKeys.FAMILIAR_ASCEND.isDown())
+			yMove += drivingSpeedMod;
+		if(FFKeys.FAMILIAR_DESCEND.isDown())
+			yMove -= drivingSpeedMod;
+		if (zMove > 0)
+			yMove += Math.toRadians(-driver.getXRot()) * drivingSpeedMod;
+		if(!FFKeys.FAMILIAR_ASCEND.isDown() && !FFKeys.FAMILIAR_DESCEND.isDown() && zMove <= 0)
+			yMove = 0;
+
+		return new Vec3(xMove, yMove, zMove);
+	}
+
+/////////////
+// Mob AI: //
+/////////////
+
 	@Override
 	public void tick()
 	{
@@ -616,43 +664,5 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		navigation.setCanFloat(true);
 		navigation.setCanPassDoors(true);
 		return navigation;
-	}
-
-	public Vec3 getHoverVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
-	{
-		double xMove = vec3.x + driver.xxa;
-		double yMove = vec3.y;
-		double zMove = vec3.z + driver.zza;
-		
-		if(FFKeys.FAMILIAR_ASCEND.isDown())
-			yMove += drivingSpeedMod;
-		if(FFKeys.FAMILIAR_DESCEND.isDown())
-			yMove -= drivingSpeedMod;
-		
-		return new Vec3(xMove, yMove, zMove);
-	}
-
-	public Vec3 getForwardVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
-	{
-		double xMove = vec3.x;
-		double yMove = vec3.y;
-		double zMove = driver.zza > 0 ? vec3.z + Math.max(driver.zza, 0) : 0;
-
-		if(FFKeys.FAMILIAR_ASCEND.isDown())
-			yMove += drivingSpeedMod;
-		if(FFKeys.FAMILIAR_DESCEND.isDown())
-			yMove -= drivingSpeedMod;
-		if (zMove > 0)
-			yMove += Math.toRadians(-driver.getXRot()) * drivingSpeedMod;
-		if(!FFKeys.FAMILIAR_ASCEND.isDown() && !FFKeys.FAMILIAR_DESCEND.isDown() && zMove <= 0)
-			yMove = 0;
-
-		return new Vec3(xMove, yMove, zMove);
-	}
-
-	public void startFlying()
-	{
-		jumpFromGround();
-		resetLandTimer();
 	}
 }

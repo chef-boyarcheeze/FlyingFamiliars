@@ -267,9 +267,9 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
         entityData.set(HAS_RING, hasRing);
     }
 
-/////////////////////
-// Mob AI methods: //
-/////////////////////
+////////////////////////////////////
+// Player and entity interaction: //
+////////////////////////////////////
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -307,6 +307,10 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
 
         return super.mobInteract(player, hand);
     }
+
+/////////////
+// Mob AI: //
+/////////////
 
     @Override
     public void tick()
