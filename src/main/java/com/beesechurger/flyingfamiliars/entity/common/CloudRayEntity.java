@@ -40,7 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 40.0f;
-	public static final float FLYING_SPEED = 0.3f;
+	public static final float FLYING_SPEED = 0.35f;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 

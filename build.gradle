@@ -118,7 +118,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.10'
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.46')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.57')
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))

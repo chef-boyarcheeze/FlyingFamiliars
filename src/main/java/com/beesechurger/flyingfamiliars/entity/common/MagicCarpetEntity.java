@@ -8,6 +8,10 @@ import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,6 +37,7 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.easing.EasingType;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -109,14 +114,70 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
 
     private <E extends IAnimatable> PlayState generalController(AnimationEvent<E> event)
     {
-        if(isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5))
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_rolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE)
-                    .addAnimation("animation.magic_carpet.general_rolled", ILoopType.EDefaultLoopTypes.HOLD_ON_LAST_FRAME));
-        else
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_unrolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE)
+        if(event.getController().getCurrentAnimation() != null && prevAnim != currentAnim)
+        {
+            startAnimTimer(event.getController().getCurrentAnimation().animationLength);
+            prevAnim = currentAnim;
+        }
+
+        boolean nearEnough = isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5);
+
+        if(currentAnim == MagicCarpetAnimation.UNROLLING)
+        {
+            if(!currentAnimInProgress)
+            {
+                if(nearEnough)
+                {
+                    currentAnim = MagicCarpetAnimation.ROLLING;
+                    //return PlayState.STOP;
+                }
+                else
+                {
+                    currentAnim = MagicCarpetAnimation.FLOATING;
+                }
+            }
+        }
+        else if(currentAnim == MagicCarpetAnimation.FLOATING)
+        {
+            if(nearEnough)
+                currentAnim = MagicCarpetAnimation.ROLLING;
+        }
+        else if(currentAnim == MagicCarpetAnimation.ROLLING)
+        {
+            if(!currentAnimInProgress)
+            {
+                if(!nearEnough)
+                {
+                    currentAnim = MagicCarpetAnimation.UNROLLING;
+                    //return PlayState.STOP;
+                }
+                else
+                {
+                    currentAnim = MagicCarpetAnimation.ROLLED;
+                }
+            }
+        }
+        else if(currentAnim == MagicCarpetAnimation.ROLLED)
+        {
+            if(!nearEnough)
+                currentAnim = MagicCarpetAnimation.UNROLLING;
+        }
+
+        switch(currentAnim)
+        {
+            case UNROLLING -> event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.general_unrolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            case FLOATING -> event.getController().setAnimation(new AnimationBuilder()
                     .addAnimation("animation.magic_carpet.general_floating", ILoopType.EDefaultLoopTypes.LOOP));
+            case ROLLING -> event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.general_rolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            case ROLLED -> event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.general_rolled", ILoopType.EDefaultLoopTypes.LOOP));
+            default -> event.getController().setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.general_floating", ILoopType.EDefaultLoopTypes.LOOP));
+        }
+
+        event.getController().setAnimationSpeed(0.75);
 
         return PlayState.CONTINUE;
     }
@@ -124,7 +185,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     @Override
     public void registerControllers(AnimationData data)
     {
-        data.addAnimationController(new AnimationController<>(this, "generalController", 3, this::generalController));
+        data.addAnimationController(new AnimationController<>(this, "generalController", 0, this::generalController));
     }
 
     @Override
@@ -132,6 +193,27 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     {
         return this.factory;
     }
+
+    private void startAnimTimer(double tickLength)
+    {
+        currentAnimTimer = 0;
+        currentAnimLength = tickLength;
+        currentAnimInProgress = true;
+    }
+
+    private static enum MagicCarpetAnimation
+    {
+        UNROLLING,
+        FLOATING,
+        ROLLING,
+        ROLLED;
+    }
+
+    private MagicCarpetAnimation currentAnim = MagicCarpetAnimation.FLOATING;
+    private MagicCarpetAnimation prevAnim = null;
+    private double currentAnimTimer = 0;
+    private double currentAnimLength = 0;
+    private boolean currentAnimInProgress = false;
 
 ////////////////////
 // Sound control: //
@@ -366,6 +448,13 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     {
         super.tick();
 
+        if(currentAnimInProgress)
+        {
+            currentAnimTimer++;
+            if(currentAnimTimer >= currentAnimLength + 5)
+                currentAnimInProgress = false;
+        }
+
         if(!level.isClientSide())
         {
             if(actionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
@@ -394,7 +483,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     public Vec3 getRiderPosition(Entity rider)
     {
         double x = 0;
-        double y = getPassengersRidingOffset() + rider.getMyRidingOffset() - 0.9;
+        double y = getPassengersRidingOffset() + rider.getMyRidingOffset() - 0.4;
         double z = getScale() - 1;
 
         return new Vec3(x, y, z);

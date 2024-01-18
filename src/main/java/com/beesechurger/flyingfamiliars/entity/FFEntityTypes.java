@@ -35,7 +35,7 @@ public class FFEntityTypes
 
 	public static final RegistryObject<EntityType<MagicCarpetEntity>> MAGIC_CARPET = ENTITY_TYPES.register("magic_carpet",
 			() -> EntityType.Builder.of(MagicCarpetEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(1.8f, 0.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "magic_carpet").toString()));
 	
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPES.register("capture_projectile",

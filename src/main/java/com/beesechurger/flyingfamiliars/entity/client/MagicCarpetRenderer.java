@@ -20,7 +20,7 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 	public MagicCarpetRenderer(Context renderManager)
 	{
 		super(renderManager, new MagicCarpetModel());
-		this.shadowRadius = 1.0f;
+		this.shadowRadius = 0.6f;
 	}
 	
 	@Override

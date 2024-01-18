@@ -39,7 +39,7 @@ import java.util.List;
 public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 20.00f;
-	public static final float FLYING_SPEED = 0.5f;
+	public static final float FLYING_SPEED = 0.4f;
 	public static final float ARMOR = 4.0f;
 	public static final int VARIANTS = 5;
 
@@ -162,9 +162,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	public void registerControllers(AnimationData data)
 	{
 		data.addAnimationController(new AnimationController<>(this, "antennaeController", 0, this::antennaeController));
-		data.addAnimationController(new AnimationController<>(this, "legsController", 2, this::legsController));
+		data.addAnimationController(new AnimationController<>(this, "legsController", 4, this::legsController));
 		data.addAnimationController(new AnimationController<>(this, "tailController", 0, this::tailController));
-		data.addAnimationController(new AnimationController<>(this, "wingsController", 1, this::wingsController));
+		data.addAnimationController(new AnimationController<>(this, "wingsController", 2, this::wingsController));
 	}
 
 	@Override
@@ -348,6 +348,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 			rider.yRotO = rider.getYRot();
 			rider.setYBodyRot(yBodyRot);
 
+			// Set griffonfly carried mob's look direction to griffonfly's look direction
 			if(!(rider instanceof Player))
 				rider.setYHeadRot(yHeadRot);
 		}
