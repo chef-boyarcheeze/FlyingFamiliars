@@ -34,7 +34,7 @@ public class FamiliarLandGoal extends Goal
     public boolean canUse()
     {
         return familiar.isFlying()
-                && (familiar.getLandTimer() == 0 || distanceToGround <= 1);
+                && (familiar.getFlyingTime() > 500 || distanceToGround <= 1);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class FamiliarLandGoal extends Goal
     {
         return !noPath()
                 && familiar.isFlying()
-                && (familiar.getLandTimer() == 0 || distanceToGround <= 1)
+                && (familiar.getFlyingTime() > 500 || distanceToGround <= 1)
                 && goal != null;
     }
 

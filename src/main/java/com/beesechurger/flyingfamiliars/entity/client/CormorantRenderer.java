@@ -22,7 +22,7 @@ public class CormorantRenderer extends GeoEntityRenderer<CormorantEntity>
 	public CormorantRenderer(Context renderManager)
 	{
 		super(renderManager, new CormorantModel());
-		this.shadowRadius = 0.4f;
+		this.shadowRadius = 0.35f;
 	}
 
 	@Override

@@ -1,13 +1,11 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
-import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
-import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoalOld;
 import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
-import com.beesechurger.flyingfamiliars.util.FFStringConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,7 +19,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
@@ -31,7 +28,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -68,9 +64,8 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-        this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 10));
-        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.25f));
+        this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.5d, 0, 0));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }

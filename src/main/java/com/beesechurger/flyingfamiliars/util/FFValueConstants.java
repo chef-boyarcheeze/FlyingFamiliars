@@ -19,4 +19,9 @@ public class FFValueConstants
     public static final int CHAT_LIGHT_PURPLE = 16733695;
     public static final int CHAT_YELLOW = 16777045;
     public static final int CHAT_WHITE = 16777215;
+
+    // Goal values:
+    public static final int BUILDING_LIMIT_LOW = -64;
+    public static final int BUILDING_LIMIT_HIGH = 320;
+    public static final int RANDOM_MOVE_CHANCE = 50;
 }

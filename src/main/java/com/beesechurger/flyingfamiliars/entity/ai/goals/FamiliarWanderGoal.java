@@ -1,106 +1,91 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
-import com.mojang.math.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.util.AirRandomPos;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class FamiliarWanderGoal extends WaterAvoidingRandomStrollGoal
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.RANDOM_MOVE_CHANCE;
+
+public class FamiliarWanderGoal extends Goal
 {
-    private final BaseFamiliarEntity familiar;
-    private final double speed;
-    private int timeToRecalcPath;
+    private BaseFamiliarEntity familiar;
+    private Level level;
+    private double speed;
+    private int flightLimitLow;
+    private int flightLimitHigh;
 
-    public FamiliarWanderGoal(BaseFamiliarEntity familiar, double speed)
+    public FamiliarWanderGoal(BaseFamiliarEntity familiar, double speed, int flightLimitLow, int flightLimitHigh)
     {
-        super(familiar, speed);
-
-        this.familiar = familiar;
-        this.speed = speed * familiar.getAttributeValue(Attributes.FLYING_SPEED);
         this.setFlags(EnumSet.of(Flag.MOVE));
+        this.familiar = familiar;
+        this.level = familiar.level;
+        this.speed = speed * familiar.getAttributeValue(Attributes.FLYING_SPEED);
+        this.flightLimitLow = flightLimitLow;
+        this.flightLimitHigh = flightLimitHigh;
     }
 
-    @Override
     public boolean canUse()
     {
-        return !familiar.isSitting();
+        return familiar.getNavigation().isDone() && familiar.getRandom().nextInt(RANDOM_MOVE_CHANCE) == 0;
     }
 
-    @Override
     public boolean canContinueToUse()
     {
-        return !familiar.isSitting();
+        return familiar.getNavigation().isInProgress();
     }
 
-    @Override
     public void start()
     {
-        timeToRecalcPath = 0;
-        familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
+        Vec3 vec3 = getPosition();
 
-        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.WANDERING)
-            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.WANDERING);
+        if (vec3 != null)
+            familiar.getNavigation().moveTo(familiar.getNavigation().createPath(new BlockPos(vec3), 1), 1.0);
     }
 
-    @Override
-    public void stop()
+    @Nullable
+    private Vec3 getPosition()
     {
-        familiar.getNavigation().stop();
-    }
+        Vec3 view = familiar.getViewVector(0.0F);
 
-    @Override
-    public void tick()
-    {
-        if(familiar.getRandom().nextFloat() <= 0.1)
-        {
-            Vec3 goal = getPosition();
-
-            if(goal != null)
-            {
-                if(!familiar.isFlying())
-                {
-                    familiar.startFlying();
-                    return;
-                }
-
-                familiar.getLookControl().setLookAt(goal);
-
-                if (--timeToRecalcPath <= 0)
-                {
-                    timeToRecalcPath = adjustedTickDelay(10);
-                    familiar.getMoveControl().setWantedPosition(goal.x, goal.y, goal.z, speed);
-                }
-            }
-        }
-    }
-
-    @Override
-    public Vec3 getPosition()
-    {
-        Vec3 goal = null;
-
-        if(!familiar.isFlying() || familiar.getLandTimer() > 0)
-            goal = LandRandomPos.getPos(familiar, 30, 30);
+        if(familiar.getFlyingTime() > 500)
+            return getSolidBlockBelow();
         else
         {
-            Vec3 vec3 = familiar.getLookAngle();
-            if (!familiar.isWithinRestriction())
-                vec3 = vec3.atLowerCornerOf(familiar.getRestrictCenter()).subtract(familiar.position()).normalize();
+            Vec3 position = HoverRandomPos.getPos(familiar, 8, 7, view.x, view.z, Mth.PI / 2, 3, 1);
+            return position != null ? position : AirAndWaterRandomPos.getPos(familiar, 8, 4, -2, view.x, view.z, Mth.PI / 2);
+        }
+    }
 
-            goal = AirRandomPos.getPosTowards(familiar, 30, 30, 10, vec3, Math.PI / 2);
+    private Vec3 getSolidBlockBelow()
+    {
+        BlockPos candidate = new BlockPos(familiar.position());
+
+        while(candidate.getY() > BUILDING_LIMIT_LOW)
+        {
+            candidate = candidate.below();
+
+            if(!level.isEmptyBlock(candidate) && level.getBlockState(candidate).getMaterial().isSolidBlocking() && !isTargetBlocked(Vec3.atCenterOf(candidate.above())))
+                return Vec3.atCenterOf(candidate);
         }
 
-        if (goal != null && goal.y > familiar.getY() + familiar.getBbHeight() && !familiar.isFlying())
-            familiar.startFlying();
+        return familiar.position();
+    }
 
-        return goal == null ? super.getPosition() : goal;
+    public boolean isTargetBlocked(Vec3 target)
+    {
+        Vec3 Vector3d = new Vec3(familiar.getX(), familiar.getEyeY(), familiar.getZ());
+        return level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, familiar)).getType() != HitResult.Type.MISS;
     }
 }

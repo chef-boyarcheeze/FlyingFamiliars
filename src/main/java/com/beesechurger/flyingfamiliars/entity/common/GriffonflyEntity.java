@@ -2,12 +2,9 @@ package com.beesechurger.flyingfamiliars.entity.common;
 
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
-import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
-import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
-import com.beesechurger.flyingfamiliars.util.FFStringConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -19,6 +16,7 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -63,9 +61,8 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.75f));
-		this.goalSelector.addGoal(3, new FamiliarLandGoal(this, 0.3f, 10));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.5d, 0, 0));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -290,10 +287,10 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 
 		if(!level.isClientSide())
 		{
-			if(actionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
+			if(actionCooldown == 0 && isOwnerDoingFamiliarAction() && isFlying())
 			{
 				if(pickUpMob())
-					resetActionTimer();
+					resetActionCooldown();
 			}
 			if(getControllingPassenger() == null && getPassengers().size() != 0)
 			{

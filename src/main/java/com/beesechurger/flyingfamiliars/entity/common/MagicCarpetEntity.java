@@ -2,16 +2,11 @@ package com.beesechurger.flyingfamiliars.entity.common;
 
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
-import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
-import com.beesechurger.flyingfamiliars.item.FFItems;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoalOld;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,7 +20,6 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,12 +31,9 @@ import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.easing.EasingType;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import java.util.List;
 
 public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
 {
@@ -69,9 +60,8 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-        this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.75f));
-        this.goalSelector.addGoal(3, new FamiliarLandGoal(this, 0.3f, 10));
+        this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+        this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.5d, 0, 0));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
@@ -116,17 +106,20 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     {
         if(event.getController().getCurrentAnimation() != null && prevAnim != currentAnim)
         {
-            startAnimTimer(event.getController().getCurrentAnimation().animationLength);
+            currentAnimLength = event.getController().getCurrentAnimation().animationLength;
+            currentAnimTimer = 0;
+            currentAnimInProgress = true;
+
             prevAnim = currentAnim;
         }
 
-        boolean nearEnough = isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5);
+        boolean shouldRoll = isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5);
 
         if(currentAnim == MagicCarpetAnimation.UNROLLING)
         {
             if(!currentAnimInProgress)
             {
-                if(nearEnough)
+                if(shouldRoll)
                 {
                     currentAnim = MagicCarpetAnimation.ROLLING;
                     //return PlayState.STOP;
@@ -139,14 +132,16 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
         }
         else if(currentAnim == MagicCarpetAnimation.FLOATING)
         {
-            if(nearEnough)
+            if(shouldRoll)
                 currentAnim = MagicCarpetAnimation.ROLLING;
+
+            event.getController().setAnimationSpeed(currentAnimTimer / currentAnimLength * 0.75);
         }
         else if(currentAnim == MagicCarpetAnimation.ROLLING)
         {
             if(!currentAnimInProgress)
             {
-                if(!nearEnough)
+                if(!shouldRoll)
                 {
                     currentAnim = MagicCarpetAnimation.UNROLLING;
                     //return PlayState.STOP;
@@ -159,7 +154,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
         }
         else if(currentAnim == MagicCarpetAnimation.ROLLED)
         {
-            if(!nearEnough)
+            if(!shouldRoll)
                 currentAnim = MagicCarpetAnimation.UNROLLING;
         }
 
@@ -177,28 +172,10 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
                     .addAnimation("animation.magic_carpet.general_floating", ILoopType.EDefaultLoopTypes.LOOP));
         }
 
-        event.getController().setAnimationSpeed(0.75);
+        if(currentAnim != MagicCarpetAnimation.FLOATING)
+            event.getController().setAnimationSpeed(0.75);
 
         return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data)
-    {
-        data.addAnimationController(new AnimationController<>(this, "generalController", 0, this::generalController));
-    }
-
-    @Override
-    public AnimationFactory getFactory()
-    {
-        return this.factory;
-    }
-
-    private void startAnimTimer(double tickLength)
-    {
-        currentAnimTimer = 0;
-        currentAnimLength = tickLength;
-        currentAnimInProgress = true;
     }
 
     private static enum MagicCarpetAnimation
@@ -214,6 +191,18 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     private double currentAnimTimer = 0;
     private double currentAnimLength = 0;
     private boolean currentAnimInProgress = false;
+
+    @Override
+    public void registerControllers(AnimationData data)
+    {
+        data.addAnimationController(new AnimationController<>(this, "generalController", 0, this::generalController));
+    }
+
+    @Override
+    public AnimationFactory getFactory()
+    {
+        return this.factory;
+    }
 
 ////////////////////
 // Sound control: //
@@ -450,14 +439,15 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
 
         if(currentAnimInProgress)
         {
-            currentAnimTimer++;
             if(currentAnimTimer >= currentAnimLength + 5)
                 currentAnimInProgress = false;
+
+            currentAnimTimer++;
         }
 
         if(!level.isClientSide())
         {
-            if(actionTimer == 0 && isOwnerDoingFamiliarAction() && isFlying())
+            if(actionCooldown == 0 && isOwnerDoingFamiliarAction() && isFlying())
             {
                 // Sand bomb type thing
             }

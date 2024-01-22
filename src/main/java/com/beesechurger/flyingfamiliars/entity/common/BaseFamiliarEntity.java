@@ -36,6 +36,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 
+	//public static final float
 	public static final float BEGIN_FOLLOW_DISTANCE = 16;
 	public static final float END_FOLLOW_DISTANCE = 8;
 
@@ -44,13 +45,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
-	protected int actionTimer = 0;
-	protected int landTimer = 0;
-	protected int wanderJumpTimer = 0;
+	protected int actionCooldown = 0;
+	protected int flyingTime = 0;
 
-	protected int resetActionTimerAmount = 20;
-	protected int resetLandTimerAmount = 100;
-	protected int resetWanderJumpTimerAmount = 200;
+	protected int actionCooldownTime = 20;
+
+	protected BlockPos orbitPos = null;
+	protected double orbitDist = 5.0D;
+	protected boolean orbitClockwise = false;
 
 	protected BaseFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
@@ -157,7 +159,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 				return true;
 			else
 				return false;
-		}//*/
+		}
 	}
 	
 	public boolean isTamedFor(Player player)
@@ -217,19 +219,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 // Integers:
 
-	public int getActionTimer()
+	public int getActionCooldown()
 	{
-		return actionTimer;
+		return actionCooldown;
 	}
 
-	public int getLandTimer()
+	public int getFlyingTime()
 	{
-		return landTimer;
-	}
-
-	public int getWanderJumpTimer()
-	{
-		return wanderJumpTimer;
+		return flyingTime;
 	}
 
 	@Override
@@ -313,7 +310,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 			goalStatus = FFEnumValues.FamiliarStatus.SITTING;
 	}
 
-	protected void setFlying(boolean flying)
+	public void setFlying(boolean flying)
 	{
 		entityData.set(FLYING, flying);
 	}
@@ -397,7 +394,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 			if (!this.level.isClientSide)
 			{
 				setRidingPlayer(player);
-				resetActionTimer();
+				resetActionCooldown();
 				navigation.stop();
 				setTarget(null);
 			}
@@ -461,19 +458,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		return null;
 	}
 
-	protected void resetActionTimer()
+	protected void resetActionCooldown()
 	{
-		actionTimer = resetActionTimerAmount;
+		actionCooldown = actionCooldownTime;
 	}
 
-	protected void resetLandTimer()
+	protected void resetFlyingTime()
 	{
-		landTimer = resetLandTimerAmount;
-	}
-
-	protected void resetWanderJumpTimer()
-	{
-		wanderJumpTimer = resetWanderJumpTimerAmount;
+		flyingTime = 0;
 	}
 
 /////////////
@@ -601,7 +593,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	public void startFlying()
 	{
 		jumpFromGround();
-		resetLandTimer();
 	}
 
 	public Vec3 getHoverVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
@@ -652,8 +643,18 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		else
 			navigation.stop();
 
-		if(actionTimer > 0) --actionTimer;
-		if(landTimer > 0) --landTimer;
+		updateTimers();
+	}
+
+	protected void updateTimers()
+	{
+		if(actionCooldown > 0)
+			--actionCooldown;
+
+		if(isFlying())
+			++flyingTime;
+		else
+			flyingTime = 0;
 	}
 
 	@Override

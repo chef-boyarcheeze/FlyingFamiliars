@@ -117,7 +117,8 @@ public class FamiliarFollowOwnerGoal extends Goal
                 }
                 else
                 {
-                    familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), speed);
+                    familiar.getNavigation().moveTo(owner.getX(), owner.getY(), owner.getZ(), speed);
+                    //familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), speed);
                 }
             }
         }

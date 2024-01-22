@@ -3,19 +3,19 @@ package com.beesechurger.flyingfamiliars.entity.common;
 import com.beesechurger.flyingfamiliars.effect.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
-import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarLandGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
-
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
-import com.beesechurger.flyingfamiliars.util.FFStringConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -47,7 +47,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	public CloudRayEntity(EntityType<CloudRayEntity> entityType, Level level)
 	{
 		super(entityType, level);
-		resetActionTimerAmount = 400;
+		actionCooldownTime = 400;
 	}
 
 	public static AttributeSupplier setAttributes()
@@ -61,9 +61,8 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75f, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarLandGoal(this, 0.3f, 10));
-		this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.5f));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.5, 0, 0));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -287,7 +286,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		super.tick();
 
-		if(!level.isClientSide() && !isSitting() && getOwner() != null && actionTimer == 0)
+		if(!level.isClientSide() && !isSitting() && getOwner() != null && actionCooldown == 0)
 			if(distanceToSqr(getOwner()) < BEGIN_FOLLOW_DISTANCE * BEGIN_FOLLOW_DISTANCE)
 			{
 				if(getOwner().getEffect(FFEffects.DOUSED.get()) == null)
@@ -295,7 +294,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 					MobEffectInstance doused = new MobEffectInstance(FFEffects.DOUSED.get(), 1200);
 					getOwner().addEffect(doused);
 
-					resetActionTimer();
+					resetActionCooldown();
 					level.playSound(null, getX(), getY(), getZ(), FFSounds.CLOUD_RAY_APPLY_DOUSED.get(), SoundSource.NEUTRAL, 0.5f + random.nextFloat(), 1.5f * FFSounds.getPitch());
 				}
 			}
