@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.magic_carpet.general_rolling": {
+		"animation.magic_carpet.body_rolling": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {
@@ -295,7 +295,7 @@
 				}
 			}
 		},
-		"animation.magic_carpet.general_unrolling": {
+		"animation.magic_carpet.body_unrolling": {
 			"animation_length": 1,
 			"bones": {
 				"fold1": {
@@ -588,7 +588,7 @@
 				}
 			}
 		},
-		"animation.magic_carpet.general_rolled": {
+		"animation.magic_carpet.body_rolled": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -648,7 +648,7 @@
 				}
 			}
 		},
-		"animation.magic_carpet.general_floating": {
+		"animation.magic_carpet.body_floating": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {

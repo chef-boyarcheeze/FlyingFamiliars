@@ -3,10 +3,12 @@ package com.beesechurger.flyingfamiliars.entity.common;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarFlyingPathNavigation;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarMoveControl;
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,6 +23,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,29 +34,25 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public abstract class BaseFamiliarEntity extends TamableAnimal
 {
 	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 
-	//public static final float
 	public static final float BEGIN_FOLLOW_DISTANCE = 16;
 	public static final float END_FOLLOW_DISTANCE = 8;
-
-	private FFEnumValues.FamiliarStatus goalStatus = FFEnumValues.FamiliarStatus.WANDERING;
 	
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
 	protected int actionCooldown = 0;
+	protected int actionCooldownTime = 20;
 	protected int flyingTime = 0;
 
-	protected int actionCooldownTime = 20;
-
-	protected BlockPos orbitPos = null;
-	protected double orbitDist = 5.0D;
-	protected boolean orbitClockwise = false;
+	protected NonNullList<FFAnimationController> animationControllers = NonNullList.create();
 
 	protected BaseFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
@@ -109,13 +109,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	}
 
 	abstract FFEnumValues.FamiliarMoveTypes getMoveControlType();
-
-// Enums:
-
-	public FFEnumValues.FamiliarStatus getGoalStatus()
-	{
-		return goalStatus;
-	}
 
 // Booleans:
 
@@ -292,22 +285,12 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 		entityData.set(VARIANT, variant);
 	}
 
-// Enums:
-
-	public void setGoalStatus(FFEnumValues.FamiliarStatus goalStatus)
-	{
-		this.goalStatus = goalStatus;
-	}
-
 // Booleans:
 
 	protected void setSitting(boolean sitting)
 	{
 		entityData.set(SITTING, sitting);
 		setOrderedToSit(sitting);
-
-		if(sitting)
-			goalStatus = FFEnumValues.FamiliarStatus.SITTING;
 	}
 
 	public void setFlying(boolean flying)
@@ -635,15 +618,17 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	public void tick()
 	{
 		super.tick();
+
 		setFlying(shouldFly());
 		this.setNoGravity(isFlying());
 
-		if(isFlying())
-			navigation = createNavigation(level);
-		else
-			navigation.stop();
+		navigation = createNavigation(level);
+		//moveControl = createMoveControl();
 
 		updateTimers();
+
+		for(FFAnimationController controller : animationControllers)
+			controller.updateProgress();
 	}
 
 	protected void updateTimers()
@@ -660,10 +645,29 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 	@Override
 	protected PathNavigation createNavigation(Level level)
 	{
-		FamiliarFlyingPathNavigation navigation = new FamiliarFlyingPathNavigation(this, level);
-		navigation.setCanOpenDoors(false);
-		navigation.setCanFloat(true);
-		navigation.setCanPassDoors(true);
-		return navigation;
+		if(isFlying())
+		{
+			FamiliarFlyingPathNavigation navigation = new FamiliarFlyingPathNavigation(this, level);
+			navigation.setCanOpenDoors(false);
+			navigation.setCanFloat(true);
+			navigation.setCanPassDoors(true);
+
+			return navigation;
+		}
+		else
+		{
+			PathNavigation navigation = new GroundPathNavigation(this, level);
+			navigation.setCanFloat(true);
+
+			return navigation;
+		}
+	}
+
+	protected MoveControl createMoveControl()
+	{
+		if(isFlying())
+			return new FamiliarMoveControl.FlightControl(this);
+		else
+			return new FamiliarMoveControl.WalkControl(this);
 	}
 }

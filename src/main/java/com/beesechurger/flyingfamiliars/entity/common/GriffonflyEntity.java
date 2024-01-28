@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.checkerframework.checker.units.qual.A;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -38,6 +39,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 {
 	public static final float MAX_HEALTH = 20.00f;
 	public static final float FLYING_SPEED = 0.4f;
+	public static final float MOVEMENT_SPEED = 0.4f;
 	public static final float ARMOR = 4.0f;
 	public static final int VARIANTS = 5;
 
@@ -54,6 +56,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
 				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
+				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED)
 				.add(Attributes.ARMOR, ARMOR).build();
 	}
 
@@ -62,7 +65,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.5d, 0, 0));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 1.0d, 0, 0));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -98,10 +101,10 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 // GeckoLib animation control: //
 /////////////////////////////////
 	
-	private <E extends IAnimatable> PlayState antennaeController(AnimationEvent<E> event)
+	private <E extends IAnimatable> PlayState headController(AnimationEvent<E> event)
 	{
 		event.getController().setAnimation(new AnimationBuilder()
-				.addAnimation("animation.griffonfly.antennae_idle", EDefaultLoopTypes.LOOP));
+				.addAnimation("animation.griffonfly.head_idle", EDefaultLoopTypes.LOOP));
 
 		return PlayState.CONTINUE;
 	}
@@ -109,31 +112,19 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	private <E extends IAnimatable> PlayState legsController(AnimationEvent<E> event)
 	{
 		if(this.isCarryingMob())
-		{
 			event.getController().setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
-		}
 		else if(this.isFlying())
-		{
 			event.getController().setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
-		}
+		else if(!this.isFlying() && this.isMoving())
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.legs_walking", EDefaultLoopTypes.LOOP));
 		else
-		{
 			event.getController().setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
-		}
 
-		event.getController().setAnimationSpeed(0.8f);
-		return PlayState.CONTINUE;
-	}
-	
-	private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
-	{
-		event.getController().setAnimation(new AnimationBuilder()
-				.addAnimation("animation.griffonfly.tail_idle", EDefaultLoopTypes.LOOP));
-		event.getController().setAnimationSpeed(0.6f);
-
+		//event.getController().setAnimationSpeed(0.8f);
 		return PlayState.CONTINUE;
 	}
 	
@@ -145,6 +136,12 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 					.addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
 			event.getController().setAnimationSpeed(2.5f);
 		}
+		else if(!this.isFlying() && this.isMoving())
+		{
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.wings_walking", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimationSpeed(1.0f);
+		}
 		else
 		{
 			event.getController().setAnimation(new AnimationBuilder()
@@ -155,13 +152,28 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 		return PlayState.CONTINUE;
 	}
 
+	private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+	{
+		if(this.isFlying())
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.body_flying", EDefaultLoopTypes.LOOP));
+		else if(!this.isFlying() && this.isMoving())
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.body_walking", EDefaultLoopTypes.LOOP));
+		else
+			event.getController().setAnimation(new AnimationBuilder()
+					.addAnimation("animation.griffonfly.body_idle", EDefaultLoopTypes.LOOP));
+
+		return PlayState.CONTINUE;
+	}
+
 	@Override
 	public void registerControllers(AnimationData data)
 	{
-		data.addAnimationController(new AnimationController<>(this, "antennaeController", 0, this::antennaeController));
-		data.addAnimationController(new AnimationController<>(this, "legsController", 4, this::legsController));
-		data.addAnimationController(new AnimationController<>(this, "tailController", 0, this::tailController));
+		data.addAnimationController(new AnimationController<>(this, "headController", 0, this::headController));
+		data.addAnimationController(new AnimationController<>(this, "legsController", 2, this::legsController));
 		data.addAnimationController(new AnimationController<>(this, "wingsController", 2, this::wingsController));
+		data.addAnimationController(new AnimationController<>(this, "bodyController", 2, this::bodyController));
 	}
 
 	@Override

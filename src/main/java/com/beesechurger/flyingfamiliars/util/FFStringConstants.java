@@ -10,6 +10,9 @@ public class FFStringConstants
     // Tag constants:
     public static final String ENTITY_EMPTY = "Empty";
 
+    // Animation constants:
+    public static final String ANIMATION_EMPTY = "Empty";
+
     // Mod IDs:
     public static final String CURIOS_MODNAME = "curios";
 }

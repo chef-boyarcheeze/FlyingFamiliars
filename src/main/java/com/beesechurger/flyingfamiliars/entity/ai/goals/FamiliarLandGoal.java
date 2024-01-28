@@ -71,9 +71,6 @@ public class FamiliarLandGoal extends Goal
     {
         timeToRecalcPath = 0;
         familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
-
-        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.LANDING)
-            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.LANDING);
     }
 
     @Override

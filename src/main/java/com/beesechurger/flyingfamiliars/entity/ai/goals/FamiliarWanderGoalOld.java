@@ -43,9 +43,6 @@ public class FamiliarWanderGoalOld extends WaterAvoidingRandomStrollGoal
     {
         timeToRecalcPath = 0;
         familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
-
-        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.WANDERING)
-            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.WANDERING);
     }
 
     @Override

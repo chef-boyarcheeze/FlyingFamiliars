@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.common;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
-import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoalOld;
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
@@ -30,10 +30,11 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
 
 public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
 {
@@ -102,83 +103,9 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
 // GeckoLib animation control: //
 /////////////////////////////////
 
-    private <E extends IAnimatable> PlayState generalController(AnimationEvent<E> event)
-    {
-        if(event.getController().getCurrentAnimation() != null && prevAnim != currentAnim)
-        {
-            currentAnimLength = event.getController().getCurrentAnimation().animationLength;
-            currentAnimTimer = 0;
-            currentAnimInProgress = true;
+    private MagicCarpetBodyAnimation bodyAnimation = MagicCarpetBodyAnimation.FLOATING;
 
-            prevAnim = currentAnim;
-        }
-
-        boolean shouldRoll = isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5);
-
-        if(currentAnim == MagicCarpetAnimation.UNROLLING)
-        {
-            if(!currentAnimInProgress)
-            {
-                if(shouldRoll)
-                {
-                    currentAnim = MagicCarpetAnimation.ROLLING;
-                    //return PlayState.STOP;
-                }
-                else
-                {
-                    currentAnim = MagicCarpetAnimation.FLOATING;
-                }
-            }
-        }
-        else if(currentAnim == MagicCarpetAnimation.FLOATING)
-        {
-            if(shouldRoll)
-                currentAnim = MagicCarpetAnimation.ROLLING;
-
-            event.getController().setAnimationSpeed(currentAnimTimer / currentAnimLength * 0.75);
-        }
-        else if(currentAnim == MagicCarpetAnimation.ROLLING)
-        {
-            if(!currentAnimInProgress)
-            {
-                if(!shouldRoll)
-                {
-                    currentAnim = MagicCarpetAnimation.UNROLLING;
-                    //return PlayState.STOP;
-                }
-                else
-                {
-                    currentAnim = MagicCarpetAnimation.ROLLED;
-                }
-            }
-        }
-        else if(currentAnim == MagicCarpetAnimation.ROLLED)
-        {
-            if(!shouldRoll)
-                currentAnim = MagicCarpetAnimation.UNROLLING;
-        }
-
-        switch(currentAnim)
-        {
-            case UNROLLING -> event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_unrolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-            case FLOATING -> event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_floating", ILoopType.EDefaultLoopTypes.LOOP));
-            case ROLLING -> event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_rolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-            case ROLLED -> event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_rolled", ILoopType.EDefaultLoopTypes.LOOP));
-            default -> event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.general_floating", ILoopType.EDefaultLoopTypes.LOOP));
-        }
-
-        if(currentAnim != MagicCarpetAnimation.FLOATING)
-            event.getController().setAnimationSpeed(0.75);
-
-        return PlayState.CONTINUE;
-    }
-
-    private static enum MagicCarpetAnimation
+    private static enum MagicCarpetBodyAnimation
     {
         UNROLLING,
         FLOATING,
@@ -186,16 +113,90 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
         ROLLED;
     }
 
-    private MagicCarpetAnimation currentAnim = MagicCarpetAnimation.FLOATING;
-    private MagicCarpetAnimation prevAnim = null;
-    private double currentAnimTimer = 0;
-    private double currentAnimLength = 0;
-    private boolean currentAnimInProgress = false;
+    private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+    {
+        FFAnimationController controller = (FFAnimationController) event.getController();
+
+        switch(bodyAnimation)
+        {
+            case UNROLLING -> controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.body_unrolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            case FLOATING -> controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.body_floating", ILoopType.EDefaultLoopTypes.LOOP));
+            case ROLLING -> controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.body_rolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+            case ROLLED -> controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.body_rolled", ILoopType.EDefaultLoopTypes.LOOP));
+            default -> controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.magic_carpet.body_floating", ILoopType.EDefaultLoopTypes.LOOP));
+        }
+
+        controller.updateCurrentAnimation(bodyAnimation.name());
+
+        if(controller.currentAnimation != ANIMATION_EMPTY && controller.hasAnimChanged())
+        {
+            controller.resetProgress();
+            controller.updatePreviousAnimation();
+        }
+
+        boolean shouldRoll = isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5);
+
+        if(bodyAnimation == MagicCarpetBodyAnimation.UNROLLING)
+        {
+            if(!controller.isAnimInProgress())
+            {
+                if(shouldRoll)
+                {
+                    bodyAnimation = MagicCarpetBodyAnimation.ROLLING;
+                    //return PlayState.STOP;
+                }
+                else
+                {
+                    bodyAnimation = MagicCarpetBodyAnimation.FLOATING;
+                }
+            }
+        }
+        else if(bodyAnimation == MagicCarpetBodyAnimation.FLOATING)
+        {
+            if(shouldRoll)
+                bodyAnimation = MagicCarpetBodyAnimation.ROLLING;
+
+            if(controller.getCurrentAnimation() != null)
+                controller.setAnimationSpeed(controller.progress / controller.getCurrentAnimation().animationLength * 0.75);
+        }
+        else if(bodyAnimation == MagicCarpetBodyAnimation.ROLLING)
+        {
+            if(!controller.isAnimInProgress())
+            {
+                if(!shouldRoll)
+                {
+                    bodyAnimation = MagicCarpetBodyAnimation.UNROLLING;
+                    //return PlayState.STOP;
+                }
+                else
+                {
+                    bodyAnimation = MagicCarpetBodyAnimation.ROLLED;
+                }
+            }
+        }
+        else if(bodyAnimation == MagicCarpetBodyAnimation.ROLLED)
+        {
+            if(!shouldRoll)
+                bodyAnimation = MagicCarpetBodyAnimation.UNROLLING;
+        }
+
+        if(bodyAnimation != MagicCarpetBodyAnimation.FLOATING)
+            controller.setAnimationSpeed(0.75);
+
+        return PlayState.CONTINUE;
+    }
 
     @Override
     public void registerControllers(AnimationData data)
     {
-        data.addAnimationController(new AnimationController<>(this, "generalController", 0, this::generalController));
+        FFAnimationController body = new FFAnimationController<>(this, "bodyController", 0, 6, this::bodyController);
+        data.addAnimationController(body);
+        animationControllers.add(body);
     }
 
     @Override
@@ -436,14 +437,6 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     public void tick()
     {
         super.tick();
-
-        if(currentAnimInProgress)
-        {
-            if(currentAnimTimer >= currentAnimLength + 5)
-                currentAnimInProgress = false;
-
-            currentAnimTimer++;
-        }
 
         if(!level.isClientSide())
         {

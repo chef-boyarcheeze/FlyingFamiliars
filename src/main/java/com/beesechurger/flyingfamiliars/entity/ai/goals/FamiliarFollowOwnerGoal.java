@@ -77,9 +77,6 @@ public class FamiliarFollowOwnerGoal extends Goal
         timeToRecalcPath = 0;
         oldWaterCost = familiar.getPathfindingMalus(BlockPathTypes.WATER);
         familiar.setPathfindingMalus(BlockPathTypes.WATER, 0);
-
-        if(familiar.getGoalStatus() != FFEnumValues.FamiliarStatus.FOLLOWING)
-            familiar.setGoalStatus(FFEnumValues.FamiliarStatus.FOLLOWING);
     }
 
     @Override

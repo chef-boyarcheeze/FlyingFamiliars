@@ -39,8 +39,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 {
-	public static final float MAX_HEALTH = 40.0f;
-	public static final float FLYING_SPEED = 0.35f;
+	protected static final float MAX_HEALTH = 40.0f;
+	protected static final float FLYING_SPEED = 0.35f;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -134,7 +134,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 
 	private <E extends IAnimatable> PlayState predicateHead(AnimationEvent<E> event)
 	{
-		if(getRandom().nextDouble(1) == 0)
+		if(getRandom().nextInt(100) == 0)
 		{
 			event.getController().setAnimation(new AnimationBuilder()
 					.addAnimation("animation.cloud_ray.head_move", EDefaultLoopTypes.PLAY_ONCE));
