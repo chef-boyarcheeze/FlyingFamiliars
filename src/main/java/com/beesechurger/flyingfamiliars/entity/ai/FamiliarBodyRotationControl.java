@@ -3,9 +3,11 @@ package com.beesechurger.flyingfamiliars.entity.ai;
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
+import net.minecraft.world.phys.Vec3;
 
 public class FamiliarBodyRotationControl extends BodyRotationControl
 {
@@ -29,12 +31,15 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
     @Override
     public void clientTick()
     {
-        switch(rotationType)
-        {
-            case HOVER -> rotationHover();
-            case FORWARD -> rotationForward();
-            default -> rotationNone();
-        }
+        if(familiar.notCarryingPassengers())
+            rotationAI();
+        else
+            switch(rotationType)
+            {
+                case HOVER -> rotationHover();
+                case FORWARD -> rotationForward();
+                default -> rotationNone();
+            }
 
         if(familiar.isMoving())
         {
@@ -57,9 +62,7 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
                 {
                     ++headStableTime;
                     if(headStableTime > 10)
-                    {
                         rotateHeadTowardsFront();
-                    }
                 }
             }
         }
@@ -139,42 +142,70 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
         centerRoll();
     }
 
+    private void rotationAI()
+    {
+        float yRotDifference = Mth.wrapDegrees(familiar.yRotO - familiar.getYRot());
+
+        if(familiar.isFlying() && familiar.isMoving())
+        {
+            if(yRotDifference > 0.2f * angleLimit)
+                incrementRoll();
+            else if(yRotDifference < -0.2f * angleLimit)
+                decrementRoll();
+            else
+                centerRoll();
+        }
+        else
+        {
+            centerPitch();
+            centerRoll();
+        }
+    }
+
     private void incrementPitch()
     {
         familiar.pitchO = familiar.pitch;
-        if(familiar.pitch < angleLimit) familiar.pitch += angleInterval;
+        if(familiar.pitch < angleLimit)
+            familiar.pitch += angleInterval;
     }
 
     private void decrementPitch()
     {
         familiar.pitchO = familiar.pitch;
-        if(familiar.pitch > -angleLimit) familiar.pitch -= angleInterval;
+        if(familiar.pitch > -angleLimit)
+            familiar.pitch -= angleInterval;
     }
 
     private void incrementRoll()
     {
         familiar.rollO = familiar.roll;
-        if(familiar.roll < angleLimit) familiar.roll += angleInterval;
+        if(familiar.roll < angleLimit)
+            familiar.roll += angleInterval;
     }
 
     private void decrementRoll()
     {
         familiar.rollO = familiar.roll;
-        if(familiar.roll > -angleLimit) familiar.roll -= angleInterval;
+        if(familiar.roll > -angleLimit)
+            familiar.roll -= angleInterval;
     }
 
     private void centerPitch()
     {
         familiar.pitchO = familiar.pitch;
-        if(familiar.pitch > 0) familiar.pitch -= angleInterval;
-        if(familiar.pitch < 0) familiar.pitch += angleInterval;
+        if(familiar.pitch > 0)
+            familiar.pitch -= angleInterval;
+        if(familiar.pitch < 0)
+            familiar.pitch += angleInterval;
     }
 
     private void centerRoll()
     {
         familiar.rollO = familiar.roll;
-        if(familiar.roll > 0) familiar.roll -= angleInterval;
-        if(familiar.roll < 0) familiar.roll += angleInterval;
+        if(familiar.roll > 0)
+            familiar.roll -= angleInterval;
+        if(familiar.roll < 0)
+            familiar.roll += angleInterval;
     }
 
     private void rotateBodyIfNecessary() {

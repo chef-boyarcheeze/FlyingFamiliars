@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.client.layer.LayerFamiliarRider;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

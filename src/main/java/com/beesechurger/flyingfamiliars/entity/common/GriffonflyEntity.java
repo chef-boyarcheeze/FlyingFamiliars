@@ -35,7 +35,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.List;
 
-public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
+public class GriffonflyEntity extends BaseFamiliarEntity
 {
 	public static final float MAX_HEALTH = 20.00f;
 	public static final float FLYING_SPEED = 0.4f;
@@ -65,7 +65,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 1.0d, 0, 0));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -73,7 +73,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IAnimatable
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new FamiliarBodyRotationControl(this, getMoveControlType(), 10, 2.0f);
+		return new FamiliarBodyRotationControl(this, getMoveControlType(), 12, 1.2f);
 	}
 
 	private void selectVariant(int variant)

@@ -20,6 +20,15 @@ public class FFValueConstants
     public static final int CHAT_YELLOW = 16777045;
     public static final int CHAT_WHITE = 16777215;
 
+    // Familiar "type" colors in decimal format:
+    public static final int FAMILIAR_TYPE_WATER = 0;
+    public static final int FAMILIAR_TYPE_PLANT = 0;
+    public static final int FAMILIAR_TYPE_AIR = 0;
+    public static final int FAMILIAR_TYPE_EARTH = 0;
+    public static final int FAMILIAR_TYPE_FIRE = 0;
+    public static final int FAMILIAR_TYPE_VOID = 0;
+    public static final int FAMILIAR_TYPE_LIGHT = 0;
+
     // Goal values:
     public static final int BUILDING_LIMIT_LOW = -64;
     public static final int BUILDING_LIMIT_HIGH = 320;

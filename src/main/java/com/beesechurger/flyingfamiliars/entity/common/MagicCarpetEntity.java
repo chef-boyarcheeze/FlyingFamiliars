@@ -36,7 +36,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
 
-public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
+public class MagicCarpetEntity extends BaseFamiliarEntity
 {
     public static final float MAX_HEALTH = 10.00f;
     public static final float FLYING_SPEED = 0.5f;
@@ -62,7 +62,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IAnimatable
     {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-        this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.5d, 0, 0));
+        this.goalSelector.addGoal(2, new FamiliarWanderGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }

@@ -37,7 +37,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
+public class CloudRayEntity extends BaseFamiliarEntity
 {
 	protected static final float MAX_HEALTH = 40.0f;
 	protected static final float FLYING_SPEED = 0.35f;
@@ -61,8 +61,8 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IAnimatable
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.5, 0, 0));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}

@@ -33,10 +33,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
 
 import java.util.List;
 
-public abstract class BaseFamiliarEntity extends TamableAnimal
+public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnimatable
 {
 	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
@@ -245,13 +246,17 @@ public abstract class BaseFamiliarEntity extends TamableAnimal
 
 	public double getPitch(double partialTicks)
 	{
-		if(pitchO == pitch) return pitch;
+		if(pitchO == pitch)
+			return pitch;
+
 		return partialTicks == 1.0 ? pitch : Mth.lerp(partialTicks, pitchO, pitch);
 	}
 
 	public double getRoll(double partialTicks)
 	{
-		if(rollO == roll) return roll;
+		if(rollO == roll)
+			return roll;
+
 		return partialTicks == 1.0 ? roll : Mth.lerp(partialTicks, rollO, roll);
 	}
 

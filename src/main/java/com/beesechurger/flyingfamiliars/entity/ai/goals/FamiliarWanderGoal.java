@@ -23,17 +23,13 @@ public class FamiliarWanderGoal extends Goal
     private BaseFamiliarEntity familiar;
     private Level level;
     private double speed;
-    private int flightLimitLow;
-    private int flightLimitHigh;
 
-    public FamiliarWanderGoal(BaseFamiliarEntity familiar, double speed, int flightLimitLow, int flightLimitHigh)
+    public FamiliarWanderGoal(BaseFamiliarEntity familiar)
     {
         this.setFlags(EnumSet.of(Flag.MOVE));
         this.familiar = familiar;
         this.level = familiar.level;
-        this.speed = speed * familiar.getAttributeValue(Attributes.FLYING_SPEED);
-        this.flightLimitLow = flightLimitLow;
-        this.flightLimitHigh = flightLimitHigh;
+        this.speed = familiar.getAttributeValue(Attributes.FLYING_SPEED);
     }
 
     public boolean canUse()

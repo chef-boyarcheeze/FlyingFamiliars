@@ -37,12 +37,13 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
+public class CormorantEntity extends BaseFamiliarEntity
 {
     private static final EntityDataAccessor<Boolean> HAS_RING = SynchedEntityData.defineId(CormorantEntity.class, EntityDataSerializers.BOOLEAN);
 
     public static final float MAX_HEALTH = 8.00f;
     public static final float FLYING_SPEED = 0.35f;
+    public static final float MOVEMENT_SPEED = 0.3f;
     protected static final int VARIANTS = 3;
 
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -57,7 +58,8 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
     {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, MAX_HEALTH)
-                .add(Attributes.FLYING_SPEED, FLYING_SPEED).build();
+                .add(Attributes.FLYING_SPEED, FLYING_SPEED)
+                .add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).build();
     }
 
     @Override
@@ -65,7 +67,7 @@ public class CormorantEntity extends BaseFamiliarEntity implements IAnimatable
     {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 0.5d, 0, 0));
+        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
