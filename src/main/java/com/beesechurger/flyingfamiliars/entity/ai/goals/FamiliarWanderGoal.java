@@ -21,15 +21,15 @@ import static com.beesechurger.flyingfamiliars.util.FFValueConstants.RANDOM_MOVE
 public class FamiliarWanderGoal extends Goal
 {
     private BaseFamiliarEntity familiar;
+    private final double speedModifier;
     private Level level;
-    private double speed;
 
-    public FamiliarWanderGoal(BaseFamiliarEntity familiar)
+    public FamiliarWanderGoal(BaseFamiliarEntity familiar, double speedModifier)
     {
         this.setFlags(EnumSet.of(Flag.MOVE));
         this.familiar = familiar;
+        this.speedModifier = speedModifier;
         this.level = familiar.level;
-        this.speed = familiar.getAttributeValue(Attributes.FLYING_SPEED);
     }
 
     public boolean canUse()
@@ -47,7 +47,7 @@ public class FamiliarWanderGoal extends Goal
         Vec3 vec3 = getPosition();
 
         if (vec3 != null)
-            familiar.getNavigation().moveTo(familiar.getNavigation().createPath(new BlockPos(vec3), 1), 1.0);
+            familiar.getNavigation().moveTo(familiar.getNavigation().createPath(new BlockPos(vec3), 1), speedModifier);
     }
 
     @Nullable

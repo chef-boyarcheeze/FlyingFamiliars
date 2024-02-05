@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.common;
 
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
-import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoalOld;
 import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
@@ -16,7 +15,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -42,8 +43,8 @@ public class CormorantEntity extends BaseFamiliarEntity
     private static final EntityDataAccessor<Boolean> HAS_RING = SynchedEntityData.defineId(CormorantEntity.class, EntityDataSerializers.BOOLEAN);
 
     public static final float MAX_HEALTH = 8.00f;
-    public static final float FLYING_SPEED = 0.35f;
-    public static final float MOVEMENT_SPEED = 0.3f;
+    public static final float FLYING_SPEED = 3.5f;
+    public static final float MOVEMENT_SPEED = 2.0f;
     protected static final int VARIANTS = 3;
 
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -67,7 +68,7 @@ public class CormorantEntity extends BaseFamiliarEntity
     {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this));
+        this.goalSelector.addGoal(3, new FamiliarWanderGoal(this, 1.0d));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }

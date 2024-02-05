@@ -1,10 +1,8 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -16,22 +14,21 @@ import java.util.EnumSet;
 public class FamiliarFollowOwnerGoal extends Goal
 {
     private final BaseFamiliarEntity familiar;
-    private final double speed;
-    Level world;
+    private final double speedModifier;
+    Level level;
     float endFollow;
     float beginFollow;
     private LivingEntity owner;
     private int timeToRecalcPath;
     private float oldWaterCost;
 
-    public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speed, float beginFollow, float endFollow)
+    public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speedModifier, float beginFollow, float endFollow)
     {
         this.familiar = familiar;
-        this.world = familiar.level;
-        this.speed = speed * familiar.getAttributeValue(Attributes.FLYING_SPEED);
+        this.level = familiar.level;
+        this.speedModifier = speedModifier;
         this.beginFollow = beginFollow;
         this.endFollow = endFollow;
-        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
@@ -114,8 +111,7 @@ public class FamiliarFollowOwnerGoal extends Goal
                 }
                 else
                 {
-                    familiar.getNavigation().moveTo(owner.getX(), owner.getY(), owner.getZ(), speed);
-                    //familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), speed);
+                    familiar.getNavigation().moveTo(owner.getX(), owner.getY(), owner.getZ(), speedModifier);
                 }
             }
         }
@@ -157,8 +153,8 @@ public class FamiliarFollowOwnerGoal extends Goal
 
     protected boolean canTeleportTo(BlockPos pos)
     {
-        BlockState blockstate = world.getBlockState(pos);
-        return	world.isEmptyBlock(pos.above()) && world.isEmptyBlock(pos.above((int) (familiar.getBbHeight() + 1)));
+        BlockState blockstate = level.getBlockState(pos);
+        return	level.isEmptyBlock(pos.above()) && level.isEmptyBlock(pos.above((int) (familiar.getBbHeight() + 1)));
     }
 
     private int randomIntInclusive(int p_25301_, int p_25302_)

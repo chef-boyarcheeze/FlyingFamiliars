@@ -16,14 +16,12 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.checkerframework.checker.units.qual.A;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -38,8 +36,8 @@ import java.util.List;
 public class GriffonflyEntity extends BaseFamiliarEntity
 {
 	public static final float MAX_HEALTH = 20.00f;
-	public static final float FLYING_SPEED = 0.4f;
-	public static final float MOVEMENT_SPEED = 0.4f;
+	public static final float FLYING_SPEED = 4.2f;
+	public static final float MOVEMENT_SPEED = 2.0f;
 	public static final float ARMOR = 4.0f;
 	public static final int VARIANTS = 5;
 
@@ -65,7 +63,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	{
 		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
 		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 1.0d));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -73,7 +71,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new FamiliarBodyRotationControl(this, getMoveControlType(), 12, 1.2f);
+		return new FamiliarBodyRotationControl(this, getMoveControlType(), 15, 1.5f);
 	}
 
 	private void selectVariant(int variant)

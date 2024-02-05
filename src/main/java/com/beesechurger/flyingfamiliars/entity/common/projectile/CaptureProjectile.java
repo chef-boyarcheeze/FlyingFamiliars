@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture;
+package com.beesechurger.flyingfamiliars.entity.common.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;

@@ -5,7 +5,7 @@ import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.common.CormorantEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
-import com.beesechurger.flyingfamiliars.entity.common.projectile.SoulWand.capture.CaptureProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.projectile.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

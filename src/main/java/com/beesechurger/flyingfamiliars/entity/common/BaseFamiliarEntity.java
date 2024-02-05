@@ -478,30 +478,34 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	@Override
 	public void travel(Vec3 vec3)
 	{
+		float speed;
+
+		if(isFlying())
+			speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
+		else
+			speed = (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
+
 		switch(getMoveControlType())
 		{
-			case HOVER -> moveHoverType(vec3);
-			case FORWARD -> moveForwardType(vec3);
-			default -> performMotion((float) getAttributeValue(Attributes.FLYING_SPEED), vec3);
+			case HOVER -> moveHoverType(speed, vec3);
+			case FORWARD -> moveForwardType(speed, vec3);
+			default -> performMotion(speed, vec3);
 		};
 	}
 
-	private void moveHoverType(Vec3 vec3)
+	private void moveHoverType(float speed, Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
-
 		if(canBeControlledByRider())
 		{
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
 
 			if(isControlledByLocalInstance())
 			{
-				if(isFlying())
-					vec3 = getHoverVector(vec3, getDrivingSpeedMod(), driver);
-				else if(FFKeys.FAMILIAR_ASCEND.isDown())
+				if(!isFlying() && FFKeys.FAMILIAR_ASCEND.isDown())
 					jumpFromGround();
 
-				speed *= getDrivingSpeedMod();
+				vec3 = getHoverVector(vec3, getDrivingSpeedMod(), driver);
+				speed *= (isFlying() ? getDrivingSpeedMod() : 1) / 10f;
 			}
 			else if(driver instanceof LivingEntity)
 			{
@@ -521,10 +525,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		performMotion(speed, vec3);
 	}
 
-	private void moveForwardType(Vec3 vec3)
+	private void moveForwardType(float speed, Vec3 vec3)
 	{
-		float speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
-
 		if(canBeControlledByRider())
 		{
 			LivingEntity driver = (LivingEntity) getControllingPassenger();
@@ -535,13 +537,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 					jumpFromGround();
 
 				vec3 = getForwardVector(vec3, 2.5f * getDrivingSpeedMod(), driver);
-
-				if(vec3.z != 0)
-					speed *= getDrivingSpeedMod();
-				else if(vec3.y != 0)
-					speed *= getDrivingSpeedMod();
-
-				setSpeed(speed);
+				speed *= (isFlying() ? getDrivingSpeedMod() : 1) / 10f;
 			}
 			else
 			{
@@ -564,18 +560,13 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		if(getControllingPassenger() == null && level.isClientSide())
 			return;
 
-		if(isFlying())
-		{
-			moveRelative(speed, vec3);
-			move(MoverType.SELF, getDeltaMovement());
-			setDeltaMovement(getDeltaMovement().scale(0.8f));
-			calculateEntityAnimation(this, true);
-		}
-		else
-		{
-			setDeltaMovement(getDeltaMovement().scale(0.8f));
+		moveRelative(speed, vec3);
+		move(MoverType.SELF, getDeltaMovement());
+		setDeltaMovement(getDeltaMovement().scale(0.8f));
+		calculateEntityAnimation(this, true);
+
+		if(!isFlying())
 			super.travel(vec3);
-		}
 	}
 
 	public void startFlying()
@@ -627,8 +618,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		setFlying(shouldFly());
 		this.setNoGravity(isFlying());
 
-		navigation = createNavigation(level);
-		//moveControl = createMoveControl();
+		if(navigation != createNavigation(level))
+		{
+			navigation = createNavigation(level);
+			moveControl = createMoveControl();
+		}
 
 		updateTimers();
 
