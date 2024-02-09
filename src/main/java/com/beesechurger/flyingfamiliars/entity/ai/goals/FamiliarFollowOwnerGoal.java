@@ -3,8 +3,8 @@ package com.beesechurger.flyingfamiliars.entity.ai.goals;
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -14,53 +14,45 @@ import java.util.EnumSet;
 public class FamiliarFollowOwnerGoal extends Goal
 {
     private final BaseFamiliarEntity familiar;
-    private final double speedModifier;
-    Level level;
-    float endFollow;
-    float beginFollow;
+    private Level level;
     private LivingEntity owner;
     private int timeToRecalcPath;
     private float oldWaterCost;
+    private final double speedModifier;
+    private final double followDist;
 
-    public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speedModifier, float beginFollow, float endFollow)
+    public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speedModifier)
     {
         this.familiar = familiar;
         this.level = familiar.level;
         this.speedModifier = speedModifier;
-        this.beginFollow = beginFollow;
-        this.endFollow = endFollow;
+        this.followDist = familiar.getAttributeValue(Attributes.FOLLOW_RANGE);
+
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
     public boolean canUse()
     {
-        LivingEntity owner = this.familiar.getOwner();
-        if(owner != null)
-        {
-            if(!((owner instanceof Player && owner.isSpectator())
-                    || familiar.isOrderedToSit()
-                    || familiar.distanceToSqr(owner) < beginFollow * beginFollow))
-            {
-                this.owner = owner;
-                return true;
-            }
-        }
+        owner = familiar.getOwner();
 
-        return false;
+        if(familiar.isSitting() || familiar.isLeashed() || familiar.hasRestriction())
+            return false;
+        else if(owner == null || owner.isSpectator())
+            return false;
+        else
+            return familiar.distanceToSqr(familiar.getOwner()) > 4 * followDist * followDist;
     }
 
     @Override
     public boolean canContinueToUse()
     {
-        if(super.canContinueToUse() && !noPath()
-            && familiar.distanceToSqr(owner) > endFollow * endFollow
-            && !familiar.isOrderedToSit())
-        {
-            this.owner = owner;
-            return true;
-        }
-
-        return false;
+        if(familiar.isSitting() || familiar.isLeashed() || noPath())
+            return false;
+        else if(owner == null || owner.isSpectator())
+            return false;
+        else
+            return familiar.distanceToSqr(familiar.getOwner()) > followDist * followDist;
     }
 
     private boolean noPath()
@@ -87,7 +79,7 @@ public class FamiliarFollowOwnerGoal extends Goal
     @Override
     public void tick()
     {
-        if(!familiar.isFlying())
+        if(!familiar.isFlying() && familiar.distanceToSqr(owner) > 4 * followDist * followDist * followDist)
         {
             familiar.startFlying();
             return;
@@ -101,23 +93,15 @@ public class FamiliarFollowOwnerGoal extends Goal
             {
                 timeToRecalcPath = adjustedTickDelay(10);
 
-                if(familiar.distanceToSqr(owner) <= beginFollow * beginFollow)
-                {
-                    familiar.getNavigation().stop();
-                }
-                else if(familiar.distanceToSqr(owner) > Math.pow(beginFollow, 3))
-                {
+                if(familiar.distanceToSqr(owner) > 8 * followDist * followDist * followDist)
                     teleportToOwner();
-                }
                 else
-                {
-                    familiar.getNavigation().moveTo(owner.getX(), owner.getY(), owner.getZ(), speedModifier);
-                }
+                    familiar.getMoveControl().setWantedPosition(owner.getX(), owner.getY(), owner.getZ(), speedModifier);
             }
         }
     }
 
-    private void teleportToOwner()
+    private boolean teleportToOwner()
     {
         BlockPos blockpos = owner.blockPosition();
 
@@ -129,8 +113,10 @@ public class FamiliarFollowOwnerGoal extends Goal
             boolean flag = maybeTeleportTo(blockpos.getX() + j, blockpos.getY() + k, blockpos.getZ() + l);
 
             if (flag)
-                return;
+                return true;
         }
+
+        return false;
     }
 
     private boolean maybeTeleportTo(int currentX, int currentY, int currentZ)

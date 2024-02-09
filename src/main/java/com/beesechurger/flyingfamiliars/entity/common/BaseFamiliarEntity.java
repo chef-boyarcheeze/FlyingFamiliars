@@ -20,6 +20,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.LookControl;
@@ -37,15 +38,14 @@ import software.bernie.geckolib3.core.IAnimatable;
 
 import java.util.List;
 
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
+
 public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnimatable
 {
 	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 
-	public static final float BEGIN_FOLLOW_DISTANCE = 16;
-	public static final float END_FOLLOW_DISTANCE = 8;
-	
 	public float pitchO = 0, pitch = 0;
 	public float rollO = 0, roll = 0;
 
@@ -59,7 +59,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	{
 		super(entity, level);
 		this.setTame(false);
-		moveControl = new FamiliarMoveControl.FlightControl(this);
+		moveControl = createMoveControl();
 		lookControl = new LookControl(this);
 	}
 
@@ -203,10 +203,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	public boolean isOwnerNear(double radius)
 	{
 		for(Entity entity : this.level.getEntities(this, this.getBoundingBox().inflate(radius)))
-		{
 			if(entity == getOwner())
 				return true;
-		}
 
 		return false;
 	}
@@ -237,11 +235,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		return this.getBbHeight() * this.getBlockJumpFactor() / 2;
 	}
 
-	protected float getDrivingSpeedMod()
-	{
-		return 0;
-	}
-
 // Doubles:
 
 	public double getPitch(double partialTicks)
@@ -264,7 +257,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	{
 		BlockPos.MutableBlockPos pos = blockPosition().mutable();
 
-		while (pos.getY() > 0 && !level.getBlockState(pos.move(Direction.DOWN)).getMaterial().isSolid());
+		while (pos.getY() > BUILDING_LIMIT_LOW && !level.getBlockState(pos.move(Direction.DOWN)).getMaterial().isSolid());
 		return getY() - pos.getY();
 	}
 
@@ -278,6 +271,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		else
 			return getDimensions(getPose()).height;
 	}
+
+	public abstract double getFlySpeedMod();
+
+	public abstract double getWalkSpeedMod();
 
 //////////////////////
 // Entity mutators: //
@@ -481,9 +478,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		float speed;
 
 		if(isFlying())
-			speed = (float) getAttributeValue(Attributes.FLYING_SPEED);
+			speed = (float) (getAttributeValue(Attributes.FLYING_SPEED) * getFlySpeedMod());
 		else
-			speed = (float) getAttributeValue(Attributes.MOVEMENT_SPEED);
+			speed = (float) (getAttributeValue(Attributes.MOVEMENT_SPEED) * getWalkSpeedMod());
 
 		switch(getMoveControlType())
 		{
@@ -504,8 +501,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 				if(!isFlying() && FFKeys.FAMILIAR_ASCEND.isDown())
 					jumpFromGround();
 
-				vec3 = getHoverVector(vec3, getDrivingSpeedMod(), driver);
-				speed *= (isFlying() ? getDrivingSpeedMod() : 1) / 10f;
+				double drivingSpeedMod = isFlying() ? getFlySpeedMod() : getWalkSpeedMod();
+				vec3 = getHoverVector(vec3, (float) drivingSpeedMod, driver);
 			}
 			else if(driver instanceof LivingEntity)
 			{
@@ -536,8 +533,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 				if(!isFlying() && FFKeys.FAMILIAR_ASCEND.isDown())
 					jumpFromGround();
 
-				vec3 = getForwardVector(vec3, 2.5f * getDrivingSpeedMod(), driver);
-				speed *= (isFlying() ? getDrivingSpeedMod() : 1) / 10f;
+				double drivingSpeedMod = isFlying() ? getFlySpeedMod() : getWalkSpeedMod();
+				vec3 = getForwardVector(vec3, (float) drivingSpeedMod, driver);
 			}
 			else
 			{
@@ -560,12 +557,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		if(getControllingPassenger() == null && level.isClientSide())
 			return;
 
-		moveRelative(speed, vec3);
-		move(MoverType.SELF, getDeltaMovement());
-		setDeltaMovement(getDeltaMovement().scale(0.8f));
-		calculateEntityAnimation(this, true);
-
-		if(!isFlying())
+		if(isVehicle() && canBeControlledByRider())
+		{
+			moveRelative(speed, vec3);
+			move(MoverType.SELF, getDeltaMovement());
+			setDeltaMovement(getDeltaMovement().scale(0.8f));
+			calculateEntityAnimation(this, true);
+		}
+		else
 			super.travel(vec3);
 	}
 
@@ -618,11 +617,15 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		setFlying(shouldFly());
 		this.setNoGravity(isFlying());
 
-		if(navigation != createNavigation(level))
-		{
+		// Update navigation only when navagation does not align with flight status
+		if(navigation instanceof FamiliarFlyingPathNavigation && !isFlying()
+				|| navigation instanceof GroundPathNavigation && isFlying())
 			navigation = createNavigation(level);
+
+		// Update move control only when move control does not align with flight status
+		if(moveControl instanceof FamiliarMoveControl.FlightControl && !isFlying()
+				|| moveControl instanceof FamiliarMoveControl.WalkControl && isFlying())
 			moveControl = createMoveControl();
-		}
 
 		updateTimers();
 

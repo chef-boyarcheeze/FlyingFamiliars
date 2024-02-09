@@ -28,7 +28,8 @@ public class FamiliarFlyingPathNavigation extends FlyingPathNavigation
                 maxDistanceToWaypoint = mob.getBbWidth() * mob.getBbWidth();
                 Vec3i position = new Vec3i(getTempMobPos().x, getTempMobPos().y, getTempMobPos().z);
 
-                if (target.distSqr(position) <= maxDistanceToWaypoint) path = null;
+                if (target.distSqr(position) <= maxDistanceToWaypoint)
+                    path = null;
             }
         }
     }

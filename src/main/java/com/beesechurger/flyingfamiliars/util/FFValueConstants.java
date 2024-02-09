@@ -33,4 +33,8 @@ public class FFValueConstants
     public static final int BUILDING_LIMIT_LOW = -64;
     public static final int BUILDING_LIMIT_HIGH = 320;
     public static final int RANDOM_MOVE_CHANCE = 50;
+
+    // Familiar movement values:
+    public static final float FLYING_SPEED = 0.1f;
+    public static final float MOVEMENT_SPEED = 0.1f;
 }

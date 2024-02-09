@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.common;
 import com.beesechurger.flyingfamiliars.effect.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
+import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,11 +37,13 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
+
 public class CloudRayEntity extends BaseFamiliarEntity
 {
 	protected static final float MAX_HEALTH = 40.0f;
-	protected static final float FLYING_SPEED = 3.0f;
-	public static final float MOVEMENT_SPEED = 2.0f;
+	protected static final int FOLLOW_RANGE = 8;
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -55,15 +57,17 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	{
 		return Mob.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.add(Attributes.FLYING_SPEED, FLYING_SPEED).build();
+				.add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
+				.add(Attributes.FLYING_SPEED, FLYING_SPEED)
+				.add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).build();
 	}
 
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 0.75d, BEGIN_FOLLOW_DISTANCE, END_FOLLOW_DISTANCE));
-		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 1.0d));
+		this.goalSelector.addGoal(0, new FamiliarSitGoal(this, 0.5d));
+		this.goalSelector.addGoal(1, new FamiliarFollowOwnerGoal(this, 1.0d));
+		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.75d));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 	}
@@ -270,12 +274,18 @@ public class CloudRayEntity extends BaseFamiliarEntity
 		return true;
 	}
 
-// Floats:
+// Doubles:
 
 	@Override
-	protected float getDrivingSpeedMod()
+	public double getFlySpeedMod()
 	{
-		return 0.33f;
+		return 1.0d;
+	}
+
+	@Override
+	public double getWalkSpeedMod()
+	{
+		return 1.0d;
 	}
 
 /////////////
@@ -288,7 +298,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 		super.tick();
 
 		if(!level.isClientSide() && !isSitting() && getOwner() != null && actionCooldown == 0)
-			if(distanceToSqr(getOwner()) < BEGIN_FOLLOW_DISTANCE * BEGIN_FOLLOW_DISTANCE)
+			if(distanceToSqr(getOwner()) < FOLLOW_RANGE * FOLLOW_RANGE)
 			{
 				if(getOwner().getEffect(FFEffects.DOUSED.get()) == null)
 				{

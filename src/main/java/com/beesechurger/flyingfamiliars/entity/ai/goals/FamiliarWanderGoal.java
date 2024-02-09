@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -21,15 +22,16 @@ import static com.beesechurger.flyingfamiliars.util.FFValueConstants.RANDOM_MOVE
 public class FamiliarWanderGoal extends Goal
 {
     private BaseFamiliarEntity familiar;
-    private final double speedModifier;
     private Level level;
+    private final double speedModifier;
 
     public FamiliarWanderGoal(BaseFamiliarEntity familiar, double speedModifier)
     {
-        this.setFlags(EnumSet.of(Flag.MOVE));
         this.familiar = familiar;
         this.speedModifier = speedModifier;
         this.level = familiar.level;
+
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     public boolean canUse()
@@ -47,7 +49,7 @@ public class FamiliarWanderGoal extends Goal
         Vec3 vec3 = getPosition();
 
         if (vec3 != null)
-            familiar.getNavigation().moveTo(familiar.getNavigation().createPath(new BlockPos(vec3), 1), speedModifier);
+            familiar.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, speedModifier);
     }
 
     @Nullable
@@ -55,12 +57,12 @@ public class FamiliarWanderGoal extends Goal
     {
         Vec3 view = familiar.getViewVector(0.0F);
 
-        if(familiar.getFlyingTime() > 500)
-            return getSolidBlockBelow();
+        if(familiar.getFlyingTime() > 300 || !familiar.isFlying())
+            return LandRandomPos.getPos(familiar, 12, 18);
         else
         {
-            Vec3 position = HoverRandomPos.getPos(familiar, 8, 7, view.x, view.z, Mth.PI / 2, 3, 1);
-            return position != null ? position : AirAndWaterRandomPos.getPos(familiar, 8, 4, -2, view.x, view.z, Mth.PI / 2);
+            Vec3 position = HoverRandomPos.getPos(familiar, 25, 20, view.x, view.z, Mth.PI / 2, 15, 5);
+            return position != null ? position : AirAndWaterRandomPos.getPos(familiar, 25, 16, -10, view.x, view.z, Mth.PI / 2);
         }
     }
 
