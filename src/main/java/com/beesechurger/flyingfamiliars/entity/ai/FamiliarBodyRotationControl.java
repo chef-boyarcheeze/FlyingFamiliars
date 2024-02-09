@@ -144,10 +144,12 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
 
     private void rotationAI()
     {
-        float yRotDifference = Mth.wrapDegrees(familiar.yRotO - familiar.getYRot());
+        centerPitch();
 
         if(familiar.isFlying() && familiar.isMoving())
         {
+            float yRotDifference = Mth.wrapDegrees(familiar.yRotO - familiar.getYRot());
+
             if(yRotDifference > 0.2f * angleLimit)
                 incrementRoll();
             else if(yRotDifference < -0.2f * angleLimit)
@@ -156,10 +158,7 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
                 centerRoll();
         }
         else
-        {
-            centerPitch();
             centerRoll();
-        }
     }
 
     private void incrementPitch()

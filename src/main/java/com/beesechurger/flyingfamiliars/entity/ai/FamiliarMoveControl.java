@@ -40,7 +40,7 @@ public class FamiliarMoveControl
                 double speed = familiar.getAttributeValue(Attributes.FLYING_SPEED) * familiar.getFlySpeedMod() * speedModifier;
                 Vec3 dist = new Vec3(wantedX - familiar.getX(), wantedY - familiar.getY(), wantedZ - familiar.getZ());
 
-                System.out.println(dist.length());
+                //System.out.println(dist.length());
 
                 if (dist.length() < familiar.getBbWidth())
                 {
@@ -81,7 +81,7 @@ public class FamiliarMoveControl
                 double speed = familiar.getAttributeValue(Attributes.MOVEMENT_SPEED) * familiar.getWalkSpeedMod() * speedModifier;
                 Vec3 dist = new Vec3(wantedX - familiar.getX(), wantedY - familiar.getY(), wantedZ - familiar.getZ());
 
-                System.out.println(dist.length());
+                //System.out.println(dist.length());
 
                 if (dist.length() < familiar.getBbWidth())
                 {

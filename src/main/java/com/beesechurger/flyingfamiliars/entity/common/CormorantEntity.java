@@ -274,13 +274,13 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     public double getFlySpeedMod()
     {
-        return 1.0d;
+        return 4d;
     }
 
     @Override
     public double getWalkSpeedMod()
     {
-        return 1.0d;
+        return 2d;
     }
 
 //////////////////////

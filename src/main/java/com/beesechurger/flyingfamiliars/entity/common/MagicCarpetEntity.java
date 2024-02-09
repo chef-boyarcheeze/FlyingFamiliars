@@ -306,13 +306,13 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     @Override
     public double getFlySpeedMod()
     {
-        return 1.0d;
+        return getControllingPassenger() == null ? 1d : 1d;
     }
 
     @Override
     public double getWalkSpeedMod()
     {
-        return 1.0d;
+        return getControllingPassenger() == null ? 1d : 1d;
     }
 
 ////////////////////////////////////

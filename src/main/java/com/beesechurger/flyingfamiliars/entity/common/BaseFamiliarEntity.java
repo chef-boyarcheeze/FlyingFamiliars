@@ -39,6 +39,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
 public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnimatable
 {
@@ -575,9 +576,12 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 
 	public Vec3 getHoverVector(Vec3 vec3, float drivingSpeedMod, LivingEntity driver)
 	{
-		double xMove = vec3.x + driver.xxa;
+		double xMod = isFlying()? 1.0d : 0.5d;
+		double zMod = isFlying() ? 1.0d : driver.zza > 0 ? 1.0d : 0.25d;
+
+		double xMove = vec3.x + xMod * driver.xxa;
 		double yMove = vec3.y;
-		double zMove = vec3.z + driver.zza;
+		double zMove = vec3.z + zMod * driver.zza;
 
 		if(FFKeys.FAMILIAR_ASCEND.isDown())
 			yMove += drivingSpeedMod;
