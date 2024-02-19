@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.common;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
@@ -127,54 +128,39 @@ public class CormorantEntity extends BaseFamiliarEntity
 // Geckolib animation controls: //
 //////////////////////////////////
 
-    private <E extends IAnimatable> PlayState generalController(AnimationEvent<E> event)
+    private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
     {
-        if(isFlying())
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.cormorant.general_flying", ILoopType.EDefaultLoopTypes.LOOP));
-        else if(isInWater())
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.cormorant.general_swimming", ILoopType.EDefaultLoopTypes.LOOP));
-        else
-            event.getController().setAnimation((new AnimationBuilder()
-                    .addAnimation("animation.cormorant.general_idle", ILoopType.EDefaultLoopTypes.LOOP)));
+        FFAnimationController controller = (FFAnimationController) event.getController();
 
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends IAnimatable> PlayState headController(AnimationEvent<E> event)
-    {
-        if(isFlying())
-        {
-            event.getController().setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.cormorant.head_flying", ILoopType.EDefaultLoopTypes.LOOP));
-            event.getController().setAnimationSpeed(1.0f);
-        }
-        else if(isInWater())
-        {
-            event.getController().setAnimation((new AnimationBuilder()
-                    .addAnimation("animation.cormorant.head_swimming", ILoopType.EDefaultLoopTypes.LOOP)));
-            event.getController().setAnimationSpeed(0.25f);
-        }
-        else
-        {
-            event.getController().setAnimation((new AnimationBuilder()
-                    .addAnimation("animation.cormorant.head_idle", ILoopType.EDefaultLoopTypes.LOOP)));
-            event.getController().setAnimationSpeed(0.25f);
-        }
+        controller.setAnimation(new AnimationBuilder()
+                .addAnimation("animation.cormorant.tail_idle", ILoopType.EDefaultLoopTypes.LOOP));
 
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState mouthController(AnimationEvent<E> event)
     {
+        FFAnimationController controller = (FFAnimationController) event.getController();
+
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
+    private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
     {
-        event.getController().setAnimation(new AnimationBuilder()
-                .addAnimation("animation.cormorant.tail_idle", ILoopType.EDefaultLoopTypes.LOOP));
+        FFAnimationController controller = (FFAnimationController) event.getController();
+
+        if(isFlying())
+            controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.cormorant.body_flapping", ILoopType.EDefaultLoopTypes.LOOP));
+        else if(isInWater())
+            controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.cormorant.body_swimming", ILoopType.EDefaultLoopTypes.LOOP));
+        else if(!isFlying() && isMoving())
+            controller.setAnimation(new AnimationBuilder()
+                    .addAnimation("animation.cormorant.body_walking", ILoopType.EDefaultLoopTypes.LOOP));
+        else
+            controller.setAnimation((new AnimationBuilder()
+                    .addAnimation("animation.cormorant.body_idle", ILoopType.EDefaultLoopTypes.LOOP)));
 
         return PlayState.CONTINUE;
     }
@@ -182,10 +168,17 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     public void registerControllers(AnimationData data)
     {
-        data.addAnimationController(new AnimationController<>(this, "generalController", 4, this::generalController));
-        data.addAnimationController(new AnimationController<>(this, "headController", 2, this::headController));
-        data.addAnimationController(new AnimationController<>(this, "mouthController", 0, this::mouthController));
-        data.addAnimationController(new AnimationController<>(this, "tailController", 4, this::tailController));
+        FFAnimationController tailController = new FFAnimationController<>(this, "tailController", 4, 0, this::tailController);
+        FFAnimationController mouthController = new FFAnimationController<>(this, "mouthController", 0, 0, this::mouthController);
+        FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
+
+        data.addAnimationController(tailController);
+        data.addAnimationController(mouthController);
+        data.addAnimationController(bodyController);
+
+        animationControllers.add(tailController);
+        animationControllers.add(mouthController);
+        animationControllers.add(bodyController);
     }
 
     @Override

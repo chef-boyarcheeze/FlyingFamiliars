@@ -49,6 +49,9 @@ public class FFAnimationController<T extends IAnimatable> extends AnimationContr
 
     public boolean isAnimInProgress()
     {
-        return progress < this.getCurrentAnimation().animationLength + buffer;
+        if(getCurrentAnimation() != null)
+            return progress < getCurrentAnimation().animationLength + buffer;
+
+        return false;
     }
 }

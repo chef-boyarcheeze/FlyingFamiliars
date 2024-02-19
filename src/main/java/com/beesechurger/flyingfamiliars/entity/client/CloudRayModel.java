@@ -26,6 +26,16 @@ public class CloudRayModel extends AnimatedGeoModel<CloudRayEntity> {
 	@Override
 	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray.png");
+		return switch (animatable.getVariant())
+		{
+			case "white" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
+			case "light_gray" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_light_gray.png");
+			case "dark_gray" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_dark_gray.png");
+			default ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
+		};
 	}
 }

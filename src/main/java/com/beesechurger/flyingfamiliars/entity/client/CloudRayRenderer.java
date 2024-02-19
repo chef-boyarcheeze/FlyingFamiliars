@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.client;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.layer.LayerFamiliarRider;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
+import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -24,11 +25,21 @@ public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
 		super(renderManager, new CloudRayModel());
 		this.shadowRadius = 1.5f;
 	}
-	
+
 	@Override
 	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray.png");
+		return switch (animatable.getVariant())
+		{
+			case "white" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
+			case "light_gray" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_light_gray.png");
+			case "dark_gray" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_dark_gray.png");
+			default ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
+		};
 	}
 
 	@Override
@@ -36,7 +47,7 @@ public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
 									MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
 									ResourceLocation textureLocation)
 	{
-		stack.scale(1.5f, 1.5f, 1.5f);
+		stack.scale(1.0f, 1.0f, 1.0f);
 		return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
 	}
 

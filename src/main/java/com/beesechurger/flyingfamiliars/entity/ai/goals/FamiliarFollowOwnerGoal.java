@@ -79,12 +79,6 @@ public class FamiliarFollowOwnerGoal extends Goal
     @Override
     public void tick()
     {
-        if(!familiar.isFlying() && familiar.distanceToSqr(owner) > 4 * followDist * followDist * followDist)
-        {
-            familiar.startFlying();
-            return;
-        }
-
         if(owner != null)
         {
             familiar.getLookControl().setLookAt(owner, 10.0f, familiar.getMaxHeadXRot());

@@ -4,6 +4,7 @@ import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.sound.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
@@ -106,7 +107,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	
 	private <E extends IAnimatable> PlayState headController(AnimationEvent<E> event)
 	{
-		event.getController().setAnimation(new AnimationBuilder()
+		FFAnimationController controller = (FFAnimationController) event.getController();
+
+		controller.setAnimation(new AnimationBuilder()
 				.addAnimation("animation.griffonfly.head_idle", EDefaultLoopTypes.LOOP));
 
 		return PlayState.CONTINUE;
@@ -114,42 +117,46 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	
 	private <E extends IAnimatable> PlayState legsController(AnimationEvent<E> event)
 	{
+		FFAnimationController controller = (FFAnimationController) event.getController();
+
 		if(this.isCarryingMob())
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
 		else if(this.isFlying())
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
 		else if(!this.isFlying() && this.isMoving())
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_walking", EDefaultLoopTypes.LOOP));
 		else
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
 
-		//event.getController().setAnimationSpeed(0.8f);
+		//controller.setAnimationSpeed(0.8f);
 		return PlayState.CONTINUE;
 	}
 	
 	private <E extends IAnimatable> PlayState wingsController(AnimationEvent<E> event)
 	{
-		if(this.isFlying())
+		FFAnimationController controller = (FFAnimationController) event.getController();
+
+		if(isFlying())
 		{
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
-			event.getController().setAnimationSpeed(2.5f);
+			controller.setAnimationSpeed(2.5f);
 		}
-		else if(!this.isFlying() && this.isMoving())
+		else if(!isFlying() && isMoving())
 		{
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.wings_walking", EDefaultLoopTypes.LOOP));
-			event.getController().setAnimationSpeed(1.0f);
+			controller.setAnimationSpeed(1.0f);
 		}
 		else
 		{
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.wings_idle", EDefaultLoopTypes.LOOP));
-			event.getController().setAnimationSpeed(0.8f);
+			controller.setAnimationSpeed(0.8f);
 		}
 
 		return PlayState.CONTINUE;
@@ -157,14 +164,16 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 
 	private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
 	{
-		if(this.isFlying())
-			event.getController().setAnimation(new AnimationBuilder()
+		FFAnimationController controller = (FFAnimationController) event.getController();
+
+		if(isFlying())
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.body_flying", EDefaultLoopTypes.LOOP));
-		else if(!this.isFlying() && this.isMoving())
-			event.getController().setAnimation(new AnimationBuilder()
+		else if(!isFlying() && isMoving())
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.body_walking", EDefaultLoopTypes.LOOP));
 		else
-			event.getController().setAnimation(new AnimationBuilder()
+			controller.setAnimation(new AnimationBuilder()
 					.addAnimation("animation.griffonfly.body_idle", EDefaultLoopTypes.LOOP));
 
 		return PlayState.CONTINUE;
@@ -173,10 +182,20 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	@Override
 	public void registerControllers(AnimationData data)
 	{
-		data.addAnimationController(new AnimationController<>(this, "headController", 0, this::headController));
-		data.addAnimationController(new AnimationController<>(this, "legsController", 5, this::legsController));
-		data.addAnimationController(new AnimationController<>(this, "wingsController", 2, this::wingsController));
-		data.addAnimationController(new AnimationController<>(this, "bodyController", 5, this::bodyController));
+		FFAnimationController headController = new FFAnimationController<>(this, "headController", 0, 0, this::headController);
+		FFAnimationController legsController = new FFAnimationController<>(this, "legsController", 5, 0, this::legsController);
+		FFAnimationController wingsController = new FFAnimationController<>(this, "wingsController", 2, 0, this::wingsController);
+		FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
+
+		data.addAnimationController(headController);
+		data.addAnimationController(legsController);
+		data.addAnimationController(wingsController);
+		data.addAnimationController(bodyController);
+
+		animationControllers.add(headController);
+		animationControllers.add(legsController);
+		animationControllers.add(wingsController);
+		animationControllers.add(bodyController);
 	}
 
 	@Override

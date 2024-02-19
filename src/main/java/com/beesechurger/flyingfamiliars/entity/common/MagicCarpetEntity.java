@@ -204,7 +204,9 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     public void registerControllers(AnimationData data)
     {
         FFAnimationController body = new FFAnimationController<>(this, "bodyController", 0, 6, this::bodyController);
+
         data.addAnimationController(body);
+
         animationControllers.add(body);
     }
 
