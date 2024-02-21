@@ -12,7 +12,7 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTIT
 
 public interface ISoulCycleItem
 {
-    default void cycleSoul(Player player)
+    default void cycleSoul(Player player, int direction)
     {
         NonNullList<ItemStack> stacks = NonNullList.create();
 
@@ -46,7 +46,7 @@ public interface ISoulCycleItem
             }
         }
 
-        if(player.isShiftKeyDown())
+        if(direction < 0)
         {
             for(int i = 1; i < tempTotal.size(); i++)
             {

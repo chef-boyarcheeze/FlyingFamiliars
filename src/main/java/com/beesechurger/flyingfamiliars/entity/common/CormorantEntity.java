@@ -107,7 +107,7 @@ public class CormorantEntity extends BaseFamiliarEntity
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setSitting(tag.getBoolean("hasRing"));
+        setHasRing(tag.getBoolean("hasRing"));
     }
 
     @Override
@@ -273,7 +273,7 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     public double getWalkSpeedMod()
     {
-        return 2d;
+        return 1.2d;
     }
 
 //////////////////////

@@ -17,11 +17,22 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class SoulWandSelectC2SPacket
 {
-	public SoulWandSelectC2SPacket() {}
+	private final int direction;
+
+	public SoulWandSelectC2SPacket(int di)
+	{
+		direction = di;
+	}
 	
-	public SoulWandSelectC2SPacket(FriendlyByteBuf buf) {}
+	public SoulWandSelectC2SPacket(FriendlyByteBuf buf)
+	{
+		direction = buf.readInt();
+	}
 	
-	public void toBytes(FriendlyByteBuf buf) {}
+	public void toBytes(FriendlyByteBuf buf)
+	{
+		buf.writeInt(direction);
+	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> supplier)
 	{
@@ -35,7 +46,7 @@ public class SoulWandSelectC2SPacket
 					&& stack.getItem() instanceof ISoulCycleItem cycle
 					&& stack.getItem() instanceof BaseEntityTagItem base)
 			{
-				cycle.cycleSoul(player);
+				cycle.cycleSoul(player, direction);
 				
 				level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
 				player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.select")
