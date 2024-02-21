@@ -202,7 +202,7 @@
 				},
 				"back_tail": {
 					"rotation": {
-						"vector": [0, 0, "5 + 5 * Math.sin(90 * query.anim_time)"]
+						"vector": [0, 0, "5 + 5 * Math.sin(90 * query.anim_time - 90)"]
 					}
 				},
 				"right_tail_end": {
@@ -303,19 +303,19 @@
 						},
 						"0.25": {
 							"vector": [-3, 0, 11.5],
-							"easing": "easeInSine"
+							"easing": "easeOutSine"
 						},
 						"0.5": {
 							"vector": [0, 0, 11.5],
-							"easing": "easeOutSine"
+							"easing": "easeInSine"
 						},
 						"0.75": {
 							"vector": [3, 0, 11.5],
-							"easing": "easeInSine"
+							"easing": "easeOutSine"
 						},
 						"1.0": {
 							"vector": [0, 0, 11.5],
-							"easing": "easeOutSine"
+							"easing": "easeInSine"
 						}
 					}
 				},
@@ -463,19 +463,19 @@
 						},
 						"0.25": {
 							"vector": [1, 0, -14.5],
-							"easing": "easeInSine"
+							"easing": "easeOutSine"
 						},
 						"0.5": {
 							"vector": [0, 0, -14.5],
-							"easing": "easeOutSine"
+							"easing": "easeInSine"
 						},
 						"0.75": {
 							"vector": [-1, 0, -14.5],
-							"easing": "easeInSine"
+							"easing": "easeOutSine"
 						},
 						"1.0": {
 							"vector": [0, 0, -14.5],
-							"easing": "easeOutSine"
+							"easing": "easeInSine"
 						}
 					}
 				}
