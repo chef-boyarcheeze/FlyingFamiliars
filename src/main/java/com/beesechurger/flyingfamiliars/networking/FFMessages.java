@@ -50,10 +50,10 @@ public class FFMessages
 				.consumer(EntityListS2CPacket::handle)
 				.add();
 		
-		net.messageBuilder(SoulWandSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-				.decoder(SoulWandSelectC2SPacket::new)
-				.encoder(SoulWandSelectC2SPacket::toBytes)
-				.consumer(SoulWandSelectC2SPacket::handle)
+		net.messageBuilder(SoulItemSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+				.decoder(SoulItemSelectC2SPacket::new)
+				.encoder(SoulItemSelectC2SPacket::toBytes)
+				.consumer(SoulItemSelectC2SPacket::handle)
 				.add();
 
 		net.messageBuilder(ModeChangeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)

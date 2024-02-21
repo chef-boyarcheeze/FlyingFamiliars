@@ -15,16 +15,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SoulWandSelectC2SPacket
+public class SoulItemSelectC2SPacket
 {
 	private final int direction;
 
-	public SoulWandSelectC2SPacket(int di)
+	public SoulItemSelectC2SPacket(int di)
 	{
 		direction = di;
 	}
 	
-	public SoulWandSelectC2SPacket(FriendlyByteBuf buf)
+	public SoulItemSelectC2SPacket(FriendlyByteBuf buf)
 	{
 		direction = buf.readInt();
 	}

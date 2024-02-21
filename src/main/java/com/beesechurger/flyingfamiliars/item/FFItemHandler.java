@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.item;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
-import com.beesechurger.flyingfamiliars.networking.packet.SoulWandSelectC2SPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.SoulItemSelectC2SPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +36,7 @@ public class FFItemHandler
 		{
 			ItemStack stack = player.getMainHandItem();
 			if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem)
-				FFMessages.sendToServer(new SoulWandSelectC2SPacket((int) event.getScrollDelta()));
+				FFMessages.sendToServer(new SoulItemSelectC2SPacket((int) event.getScrollDelta()));
 			event.setCanceled(true);
 		}
 	}
