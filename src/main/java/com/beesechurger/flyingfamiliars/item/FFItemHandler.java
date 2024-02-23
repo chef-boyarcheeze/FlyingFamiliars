@@ -36,8 +36,10 @@ public class FFItemHandler
 		{
 			ItemStack stack = player.getMainHandItem();
 			if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem)
+			{
 				FFMessages.sendToServer(new SoulItemSelectC2SPacket((int) event.getScrollDelta()));
-			event.setCanceled(true);
+				event.setCanceled(true);
+			}
 		}
 	}
 }

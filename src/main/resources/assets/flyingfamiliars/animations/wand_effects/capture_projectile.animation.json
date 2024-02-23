@@ -1,0 +1,37 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.capture_projectile.idle": {
+			"loop": true,
+			"animation_length": 6,
+			"bones": {
+				"interior": {
+					"rotation": {
+						"vector": ["-60 * query.anim_time", "60 * query.anim_time", 0]
+					}
+				},
+				"exterior": {
+					"rotation": {
+						"vector": ["120 * query.anim_time", "-120 * query.anim_time", 0]
+					}
+				},
+				"core": {
+					"rotation": {
+						"vector": ["30 * query.anim_time", "-30 * query.anim_time", 0]
+					}
+				}
+			}
+		},
+		"animation.capture_projectile.jank": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"position": {
+						"vector": [0, "Math.sin(360*query.anim_time)", 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

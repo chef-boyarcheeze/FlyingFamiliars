@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.common.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
@@ -22,21 +23,32 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class CaptureProjectile extends ThrowableItemProjectile
+public class CaptureProjectile extends ThrowableItemProjectile implements IAnimatable
 {
 	private NonNullList<ItemStack> stacks = NonNullList.create();
 	private Player player = null;
 	private boolean action = false;
+
+	private final AnimationFactory factory = new AnimationFactory(this);
 	
 	public CaptureProjectile(EntityType<? extends CaptureProjectile> proj, Level level)
 	{
@@ -56,10 +68,29 @@ public class CaptureProjectile extends ThrowableItemProjectile
 	{
 	    super(FFEntityTypes.CAPTURE_PROJECTILE.get(), x, y, z, level);
 	}
-	
-	protected Item getDefaultItem()
+
+	private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
 	{
-		return FFItems.CAPTURE_PROJECTILE.get();
+		//FFAnimationController controller = (FFAnimationController) event.getController();
+
+		event.getController().setAnimation(new AnimationBuilder()
+				.addAnimation("animation.capture_projectile.idle"));
+
+		return PlayState.CONTINUE;
+	}
+
+	@Override
+	public void registerControllers(AnimationData data)
+	{
+		AnimationController bodyController = new AnimationController<>(this, "bodyController", 0, this::bodyController);
+
+		data.addAnimationController(bodyController);
+	}
+
+	@Override
+	public AnimationFactory getFactory()
+	{
+		return this.factory;
 	}
 	
 	@Override
@@ -77,6 +108,12 @@ public class CaptureProjectile extends ThrowableItemProjectile
 
 		this.remove(RemovalReason.KILLED);
     }
+
+	@Override
+	protected Item getDefaultItem()
+	{
+		return Items.AIR;
+	}
 	
 	private boolean capture(Entity target)
 	{
@@ -315,7 +352,7 @@ public class CaptureProjectile extends ThrowableItemProjectile
 	        double d0 = this.getX() + vec3d.x;
 	        double d1 = this.getY() + vec3d.y;
 	        double d2 = this.getZ() + vec3d.z;
-	        this.level.addParticle(ParticleTypes.END_ROD, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
+	        //this.level.addParticle(ParticleTypes.END_ROD, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
 		}
 	}
 	

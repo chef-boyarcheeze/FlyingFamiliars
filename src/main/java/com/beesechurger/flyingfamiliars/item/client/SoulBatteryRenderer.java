@@ -45,7 +45,7 @@ public class SoulBatteryRenderer implements ICurioRenderer
         matrixStack.mulPose(Vector3f.YP.rotationDegrees(-90));
         matrixStack.scale(0.5f, 0.5f, 0.5f);
 
-        Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GROUND, false, matrixStack, renderTypeBuffer, 255, OverlayTexture.NO_OVERLAY, model);
+        Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GROUND, false, matrixStack, renderTypeBuffer, light, OverlayTexture.NO_OVERLAY, model);
         matrixStack.popPose();
     }
 }

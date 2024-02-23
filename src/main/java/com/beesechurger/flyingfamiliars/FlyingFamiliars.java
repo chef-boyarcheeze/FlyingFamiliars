@@ -8,6 +8,7 @@ import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.CormorantRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.MagicCarpetRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effects.CaptureProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
@@ -88,7 +89,7 @@ public class FlyingFamiliars
 		EntityRenderers.register(FFEntityTypes.CORMORANT.get(), CormorantRenderer::new);
 		EntityRenderers.register(FFEntityTypes.GRIFFONFLY.get(), GriffonflyRenderer::new);
 		EntityRenderers.register(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetRenderer::new);
-		EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), ThrownItemRenderer::new);
+		EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), CaptureProjectileRenderer::new);
 		
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
