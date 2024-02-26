@@ -4,10 +4,10 @@ import com.beesechurger.flyingfamiliars.block.entity.common.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -83,7 +83,7 @@ public class BaseEntityTagBlock extends BaseEntityBlock
 
                             if(baseEntity.placeEntity(stack))
                             {
-                                player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.place_entity")
+                                player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
                                         .withStyle(ChatFormatting.WHITE)
                                         .append(": " + selectedEntity), true);
 
@@ -97,7 +97,7 @@ public class BaseEntityTagBlock extends BaseEntityBlock
                             {
                                 String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 
-                                player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.remove_entity")
+                                player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
                                         .withStyle(ChatFormatting.WHITE)
                                         .append(": " + selectedEntity), true);
 

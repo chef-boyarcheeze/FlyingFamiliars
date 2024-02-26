@@ -2,8 +2,7 @@ package com.beesechurger.flyingfamiliars.block.client;
 
 import com.beesechurger.flyingfamiliars.block.entity.common.BrazierBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
-
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -14,6 +13,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
@@ -43,10 +43,10 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 			
 			stack.pushPose();
 			stack.translate(0.5D, 1.2D, 0.5D);
-			stack.mulPose(Vector3f.YP.rotationDegrees(angle + time));
+			stack.mulPose(Axis.YP.rotationDegrees(angle + time));
 			stack.translate(0.6D, craftingShift, 0);
-			stack.mulPose(Vector3f.YP.rotationDegrees(time * 2));
-			Minecraft.getInstance().getItemRenderer().render(storedItem, ItemTransforms.TransformType.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
+			stack.mulPose(Axis.YP.rotationDegrees(time * 2));
+			Minecraft.getInstance().getItemRenderer().render(storedItem, ItemDisplayContext.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
 			stack.popPose();
 		}
 		
@@ -66,10 +66,10 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 				
 				stack.pushPose();
 				stack.translate(0.5D, 1.6D, 0.5D);
-				stack.mulPose(Vector3f.YN.rotationDegrees(angle + time / 2));
+				stack.mulPose(Axis.YN.rotationDegrees(angle + time / 2));
 				stack.scale(0.2f, 0.2f, 0.2f);
 				stack.translate(centerShift, craftingShift, 0);
-				stack.mulPose(Vector3f.YP.rotationDegrees((float) (30 * Math.sin(time / 30) + 90)));
+				stack.mulPose(Axis.YP.rotationDegrees((float) (30 * Math.sin(time / 30) + 90)));
 				Minecraft.getInstance().getEntityRenderDispatcher().render(storedEntity, 0, 0, 0, 0, 0, stack, buffer, 255);
 				stack.popPose();
 			}			

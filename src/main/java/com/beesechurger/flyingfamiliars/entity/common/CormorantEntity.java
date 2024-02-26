@@ -4,8 +4,8 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
-import com.beesechurger.flyingfamiliars.item.FFItems;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFItems;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +24,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,14 +31,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
@@ -52,7 +50,7 @@ public class CormorantEntity extends BaseFamiliarEntity
     protected static final int FOLLOW_RANGE = 4;
     protected static final int VARIANTS = 3;
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public CormorantEntity(EntityType<CormorantEntity> entityType, Level level)
     {
@@ -128,53 +126,53 @@ public class CormorantEntity extends BaseFamiliarEntity
 // Geckolib animation controls: //
 //////////////////////////////////
 
-    private <E extends IAnimatable> PlayState tailController(AnimationEvent<E> event)
+    private <E extends GeoAnimatable> PlayState tailController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
 
-        controller.setAnimation(new AnimationBuilder()
-                .addAnimation("animation.cormorant.tail_idle", ILoopType.EDefaultLoopTypes.LOOP));
+        controller.setAnimation(RawAnimation.begin()
+                .thenLoop("animation.cormorant.tail_idle"));
 
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState mouthController(AnimationEvent<E> event)
+    private <E extends GeoAnimatable> PlayState mouthController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
 
         return PlayState.CONTINUE;
     }
 
-    private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+    private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
 
         if(isFlying())
-            controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.cormorant.body_flapping", ILoopType.EDefaultLoopTypes.LOOP));
+            controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.cormorant.body_flapping"));
         else if(isInWater())
-            controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.cormorant.body_swimming", ILoopType.EDefaultLoopTypes.LOOP));
+            controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.cormorant.body_swimming"));
         else if(!isFlying() && isMoving())
-            controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.cormorant.body_walking", ILoopType.EDefaultLoopTypes.LOOP));
+            controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.cormorant.body_walking"));
         else
-            controller.setAnimation((new AnimationBuilder()
-                    .addAnimation("animation.cormorant.body_idle", ILoopType.EDefaultLoopTypes.LOOP)));
+            controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.cormorant.body_idle"));
 
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data)
+    public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
         FFAnimationController tailController = new FFAnimationController<>(this, "tailController", 4, 0, this::tailController);
         FFAnimationController mouthController = new FFAnimationController<>(this, "mouthController", 0, 0, this::mouthController);
         FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
 
-        data.addAnimationController(tailController);
-        data.addAnimationController(mouthController);
-        data.addAnimationController(bodyController);
+        data.add(tailController);
+        data.add(mouthController);
+        data.add(bodyController);
 
         animationControllers.add(tailController);
         animationControllers.add(mouthController);
@@ -182,9 +180,9 @@ public class CormorantEntity extends BaseFamiliarEntity
     }
 
     @Override
-    public AnimationFactory getFactory()
+    public AnimatableInstanceCache getAnimatableInstanceCache()
     {
-        return this.factory;
+        return cache;
     }
 
 ////////////////////////////////
@@ -298,7 +296,7 @@ public class CormorantEntity extends BaseFamiliarEntity
         if (stackResult.consumesAction())
             return stackResult;
 
-        final InteractionResult SUCCESS = InteractionResult.sidedSuccess(this.level.isClientSide);
+        final InteractionResult SUCCESS = InteractionResult.sidedSuccess(level().isClientSide);
 
         if(isTamedFor(player) && player.isShiftKeyDown())
         {
@@ -308,8 +306,8 @@ public class CormorantEntity extends BaseFamiliarEntity
 
                 if(!player.isCreative())
                 {
-                    ItemEntity item = new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), new ItemStack(FFItems.CORMORANT_RING.get()));
-                    this.level.addFreshEntity(item);
+                    ItemEntity item = new ItemEntity(level(), this.getX(), this.getY(), this.getZ(), new ItemStack(FFItems.CORMORANT_RING.get()));
+                    level().addFreshEntity(item);
                 }
 
                 return SUCCESS;

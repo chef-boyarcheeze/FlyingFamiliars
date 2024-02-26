@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -70,7 +71,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
                 int j = 0;
                 for (; j < handlerItems.size(); j++)
                 {
-                    if (handlerItems.get(j).sameItem(stack))
+                    if (handlerItems.get(j).equals(stack))
                     {
                         found = true;
                         break;
@@ -124,7 +125,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	}
 
 	@Override
-	public ItemStack assemble(SimpleContainer container)
+	public ItemStack assemble(SimpleContainer container, RegistryAccess var)
 	{
 		return outputItem;
 	}
@@ -146,12 +147,17 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	}
 
 	@Override
-	public ItemStack getResultItem()
+	public ItemStack getResultItem(RegistryAccess var)
+	{
+		return outputItem.copy();
+	}
+
+	public ItemStack getOutputItem()
 	{
 		return outputItem.copy();
 	}
 	
-	public String getResultEntity()
+	public String getOutputEntity()
 	{
 		return outputEntity;
 	}
@@ -261,27 +267,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
                 buf.writeUtf(entity);
             }
             
-            buf.writeItemStack(recipe.getResultItem(), false);
-            buf.writeUtf(recipe.getResultEntity());
-        }
-
-        @Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name)
-        {
-            return INSTANCE;
-        }
-
-        @Nullable
-        @Override
-        public ResourceLocation getRegistryName()
-        {
-            return ID;
-        }
-
-        @Override
-        public Class<RecipeSerializer<?>> getRegistryType()
-        {
-            return Serializer.castClass(RecipeSerializer.class);
+            buf.writeItemStack(recipe.getOutputItem(), false);
+            buf.writeUtf(recipe.getOutputEntity());
         }
 
         @SuppressWarnings("unchecked")

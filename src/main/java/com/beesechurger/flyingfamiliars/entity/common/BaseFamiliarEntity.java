@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,7 +20,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.LookControl;
@@ -34,14 +33,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-
-import java.util.List;
+import software.bernie.geckolib.animatable.GeoEntity;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
-public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnimatable
+public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEntity
 {
 	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
@@ -143,14 +139,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 
 		if(isFlying())
 		{
-			if(isOnGround())
+			if(onGround())
 				return false;
 			else 
 				return true;
 		}
 		else
 		{
-			if(!isOnGround() && (getControllingPassenger() instanceof Player && FFKeys.FAMILIAR_ASCEND.isDown() || level.getBlockState(standingOn).isAir()))
+			if(!onGround() && (getControllingPassenger() instanceof Player && FFKeys.FAMILIAR_ASCEND.isDown() || level().getBlockState(standingOn).isAir()))
 				return true;
 			else
 				return false;
@@ -171,8 +167,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	{
 		return true;
 	}
-	
-	@Override
+
 	public boolean canBeControlledByRider()
 	{
 		return getControllingPassenger() instanceof Player;
@@ -203,7 +198,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 
 	public boolean isOwnerNear(double radius)
 	{
-		for(Entity entity : this.level.getEntities(this, this.getBoundingBox().inflate(radius)))
+		for(Entity entity : level().getEntities(this, this.getBoundingBox().inflate(radius)))
 			if(entity == getOwner())
 				return true;
 
@@ -223,7 +218,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	}
 
 	@Override
-	protected int getExperienceReward(Player player)
+	public int getExperienceReward()
 	{
 		return 0;
 	}
@@ -258,7 +253,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 	{
 		BlockPos.MutableBlockPos pos = blockPosition().mutable();
 
-		while (pos.getY() > BUILDING_LIMIT_LOW && !level.getBlockState(pos.move(Direction.DOWN)).getMaterial().isSolid());
+		while (pos.getY() > BUILDING_LIMIT_LOW && !level().getBlockState(pos.move(Direction.DOWN)).isSolid());
 		return getY() - pos.getY();
 	}
 
@@ -314,7 +309,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		if (stackResult.consumesAction())
 			return stackResult;
 
-		final InteractionResult SUCCESS = InteractionResult.sidedSuccess(this.level.isClientSide);
+		final InteractionResult SUCCESS = InteractionResult.sidedSuccess(level().isClientSide);
 
 		// Tame
 		if (!isTame())
@@ -332,11 +327,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 					this.tame(player);
 					this.navigation.stop();
 					this.setTarget(null);
-					this.level.broadcastEntityEvent(this, (byte) 7);
+					level().broadcastEntityEvent(this, (byte) 7);
 				}
 				else
 				{
-					this.level.broadcastEntityEvent(this, (byte) 6);
+					level().broadcastEntityEvent(this, (byte) 6);
 				}
 
 				return InteractionResult.SUCCESS;
@@ -356,7 +351,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		// Sit
 		if (isTamedFor(player) && player.isShiftKeyDown())
 		{
-			if (!this.level.isClientSide)
+			if (!level().isClientSide)
 			{
 				navigation.stop();
 				setSitting(!isSitting());
@@ -364,11 +359,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 				if (isOrderedToSit())
 				{
 					setTarget(null);
-					player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.sitting"), true);
+					player.displayClientMessage(Component.translatable("message.flyingfamiliars.sitting"), true);
 				}
 				else
 				{
-					player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.standing"), true);
+					player.displayClientMessage(Component.translatable("message.flyingfamiliars.standing"), true);
 				}
 			}
 			return SUCCESS;
@@ -377,7 +372,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		// Start riding
 		if (canOwnerRide() && isTamedFor(player))
 		{
-			if (!this.level.isClientSide)
+			if (!level().isClientSide)
 			{
 				setRidingPlayer(player);
 				resetActionCooldown();
@@ -397,9 +392,8 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		return super.getTeam();
 	}
 	
-	@Nullable
 	@Override
-	public Entity getControllingPassenger()
+	public LivingEntity getControllingPassenger()
 	{
 		for (Entity passenger : getPassengers())
 		{
@@ -508,7 +502,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 			else if(driver instanceof LivingEntity)
 			{
 				setDeltaMovement(Vec3.ZERO);
-				calculateEntityAnimation(this, true);
+				calculateEntityAnimation(true);
 				return;
 			}
 
@@ -540,7 +534,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 			else
 			{
 				setDeltaMovement(Vec3.ZERO);
-				calculateEntityAnimation(this, true);
+				calculateEntityAnimation(true);
 				return;
 			}
 
@@ -555,7 +549,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 
 	private void performMotion(float speed, Vec3 vec3)
 	{
-		if(getControllingPassenger() == null && level.isClientSide())
+		if(getControllingPassenger() == null && level().isClientSide())
 			return;
 
 		if(isVehicle() && canBeControlledByRider())
@@ -563,7 +557,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 			moveRelative(speed, vec3);
 			move(MoverType.SELF, getDeltaMovement());
 			setDeltaMovement(getDeltaMovement().scale(0.8f));
-			calculateEntityAnimation(this, true);
+			calculateEntityAnimation(true);
 		}
 		else
 			super.travel(vec3);
@@ -624,7 +618,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements IAnima
 		// Update navigation only when navagation does not align with flight status
 		if(navigation instanceof FamiliarFlyingPathNavigation && !isFlying()
 				|| navigation instanceof GroundPathNavigation && isFlying())
-			navigation = createNavigation(level);
+			navigation = createNavigation(level());
 
 		// Update move control only when move control does not align with flight status
 		if(moveControl instanceof FamiliarMoveControl.FlightControl && !isFlying()

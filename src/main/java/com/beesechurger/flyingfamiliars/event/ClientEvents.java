@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvents
 {
     @SubscribeEvent
-    public static void onCameraSetup(EntityViewRenderEvent.CameraSetup event)
+    public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event)
     {
     	Minecraft mc = Minecraft.getInstance();
     	Player player = mc.player;
@@ -29,14 +29,14 @@ public class ClientEvents
     			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.5 : 1.25;
     			double cameraRotMod = 0.5f;
     			
-    			float renderPitch = (float) (cameraRotMod * familiar.getPitch(event.getPartialTicks()) + 
+    			float renderPitch = (float) (cameraRotMod * familiar.getPitch(event.getPartialTick()) +
     					(mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ?
-    							-player.getViewXRot((float) event.getPartialTicks()) :
-    								player.getViewXRot((float) event.getPartialTicks())));
+    							-player.getViewXRot((float) event.getPartialTick()) :
+    								player.getViewXRot((float) event.getPartialTick())));
     			
     			float renderRoll = (float) (cameraRotMod * (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ?
-    					familiar.getRoll(event.getPartialTicks()) :
-    						-familiar.getRoll(event.getPartialTicks())));
+    					familiar.getRoll(event.getPartialTick()) :
+    						-familiar.getRoll(event.getPartialTick())));
     			
     			event.setPitch(renderPitch);
     			event.setRoll(renderRoll);

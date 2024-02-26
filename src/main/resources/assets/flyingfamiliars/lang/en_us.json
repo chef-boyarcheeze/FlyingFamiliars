@@ -1,6 +1,7 @@
 {
-	"itemGroup.flyingfamiliars": "Flying Familiars",
-	"item.flyingfamiliars.tab_icon": "Flying Familiars",
+	"itemGroup.flyingfamiliars.familiars": "Familiars",
+	"itemGroup.flyingfamiliars.wands_and_tools": "Wands and Tools",
+	"itemGroup.flyingfamiliars.blocks": "Blocks",
 
 	"item.flyingfamiliars.water_sceptre": "Water Sceptre",
 	"item.flyingfamiliars.verdant_bough": "Verdant Bough",

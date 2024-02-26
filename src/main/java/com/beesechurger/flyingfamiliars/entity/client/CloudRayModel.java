@@ -2,39 +2,35 @@ package com.beesechurger.flyingfamiliars.entity.client;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
-
-import com.beesechurger.flyingfamiliars.entity.common.projectile.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
 import java.util.List;
+import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
-public class CloudRayModel extends AnimatedGeoModel<CloudRayEntity> {
-
+public class CloudRayModel extends GeoModel<CloudRayEntity>
+{
 	@Override
-	public ResourceLocation getAnimationFileLocation(CloudRayEntity animatable)
-	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cloud_ray.animation.json");
-	}
-
-	@Override
-	public ResourceLocation getModelLocation(CloudRayEntity animatable)
+	public ResourceLocation getModelResource(CloudRayEntity cloudRayEntity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cloud_ray/cloud_ray.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
+	public ResourceLocation getTextureResource(CloudRayEntity cloudRayEntity)
 	{
-		return switch (animatable.getVariant())
+		return switch (cloudRayEntity.getVariant())
 		{
 			case "white" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
@@ -48,20 +44,25 @@ public class CloudRayModel extends AnimatedGeoModel<CloudRayEntity> {
 	}
 
 	@Override
-	public void setLivingAnimations(CloudRayEntity animatable, Integer uniqueID, @Nullable AnimationEvent customPredicate)
+	public ResourceLocation getAnimationResource(CloudRayEntity cloudRayEntity) {
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cloud_ray.animation.json");
+	}
+
+	@Override
+	public void setCustomAnimations(CloudRayEntity animatable, long instanceId, AnimationState customPredicate)
 	{
-		super.setLivingAnimations(animatable, uniqueID, customPredicate);
+		super.setCustomAnimations(animatable, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;
 
-		List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
-		IBone head = this.getAnimationProcessor().getBone("head");
+		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
+		CoreGeoBone head = this.getAnimationProcessor().getBone("head");
 
-		float yRot = Mth.clamp(extraDataOfType.get(0).netHeadYaw, -3.0f, 3.0f);
-		float zRot = Mth.clamp(extraDataOfType.get(0).headPitch + 20, 5.0f, 35.0f);
+		float yRot = Mth.clamp(extraDataOfType.netHeadYaw(), -3.0f, 3.0f);
+		float zRot = Mth.clamp(extraDataOfType.headPitch() + 20, 5.0f, 35.0f);
 
-		head.setRotationY((float) Math.toRadians(yRot));
-		head.setRotationZ((float) Math.toRadians(zRot));
+		head.setRotY((float) Math.toRadians(yRot));
+		head.setRotZ((float) Math.toRadians(zRot));
 	}
 }

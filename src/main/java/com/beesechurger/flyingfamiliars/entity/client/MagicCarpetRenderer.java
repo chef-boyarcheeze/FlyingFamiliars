@@ -5,14 +5,14 @@ import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
@@ -21,6 +21,7 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 	{
 		super(renderManager, new MagicCarpetModel());
 		this.shadowRadius = 0.6f;
+		this.withScale(1.5f);
 	}
 	
 	@Override
@@ -63,15 +64,6 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_white.png");
 		};
 	}
-
-	@Override
-	public RenderType getRenderType(MagicCarpetEntity animatable, float partialTicks, PoseStack stack,
-									MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
-									ResourceLocation textureLocation)
-	{
-		stack.scale(1.5f, 1.5f, 1.5f);
-		return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
-	}
 	
 	@Override
     protected void applyRotations(MagicCarpetEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
@@ -81,7 +73,7 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
         float renderPitch = (float) animatable.getPitch(partialTicks);
     	float renderRoll = (float) animatable.getRoll(partialTicks);
 
-        stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(renderRoll));
+        stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
+        stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
 	}
 }

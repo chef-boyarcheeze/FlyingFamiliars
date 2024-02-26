@@ -24,7 +24,7 @@ public class FamiliarFollowOwnerGoal extends Goal
     public FamiliarFollowOwnerGoal(BaseFamiliarEntity familiar, double speedModifier)
     {
         this.familiar = familiar;
-        this.level = familiar.level;
+        this.level = familiar.level();
         this.speedModifier = speedModifier;
         this.followDist = familiar.getAttributeValue(Attributes.FOLLOW_RANGE);
 

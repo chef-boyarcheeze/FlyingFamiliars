@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
@@ -40,12 +41,12 @@ public class SoulBatteryRenderer implements ICurioRenderer
         ICurioRenderer.rotateIfSneaking(matrixStack, slotContext.entity());
         ICurioRenderer.followBodyRotations(slotContext.entity());
 
-        matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180));
+        matrixStack.mulPose(Axis.ZP.rotationDegrees(180));
         matrixStack.translate(-0.25f, -0.7f, 0);
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(-90));
+        matrixStack.mulPose(Axis.YP.rotationDegrees(-90));
         matrixStack.scale(0.5f, 0.5f, 0.5f);
 
-        Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GROUND, false, matrixStack, renderTypeBuffer, light, OverlayTexture.NO_OVERLAY, model);
+        Minecraft.getInstance().getItemRenderer().render(stack, ItemDisplayContext.GROUND, false, matrixStack, renderTypeBuffer, light, OverlayTexture.NO_OVERLAY, model);
         matrixStack.popPose();
     }
 }

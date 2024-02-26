@@ -4,7 +4,7 @@ import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,8 +32,8 @@ public class PlayerRiderRendererMixin<T extends LivingEntity>
                 renderOffset = magicCarpet.getRiderPosition(entity).y;
         	
         	stack.translate(0, -renderOffset, 0);
-        	stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));
-            stack.mulPose(Vector3f.ZP.rotationDegrees(renderRoll));
+        	stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
+            stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
             stack.translate(0, renderOffset, 0);
         }
     }

@@ -5,12 +5,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,27 +27,28 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
     }
 
     @Override
-    public void render(PoseStack stack, @Nullable EntityTypeIngredient ingredient)
+    public void render(GuiGraphics graphics, @Nullable EntityTypeIngredient ingredient)
     {
-        if (Minecraft.getInstance().level == null || Minecraft.getInstance().player == null || ingredient == null) return;
+        if (Minecraft.getInstance().level == null || Minecraft.getInstance().player == null || ingredient == null)
+            return;
         if (ingredient.getEntity() != null && ingredient.getEntity() instanceof LivingEntity entity)
         {
-            stack.pushPose();
+            graphics.pose().pushPose();
             entity.tickCount = Minecraft.getInstance().player.tickCount;
-            stack.translate(0.5f * size, 0.9f * size, 0);
+            graphics.pose().translate(0.5f * size, 0.9f * size, 0);
 
             float scale = 0.5f * size * Math.min(1.7f / entity.getBbHeight(), 1f);
-            renderEntity(stack, entity, scale);
-            stack.popPose();
+            renderEntity(graphics, entity, scale);
+            graphics.pose().popPose();
         }
     }
 
-    private void renderEntity(PoseStack stack, LivingEntity entity, float scale)
+    private void renderEntity(GuiGraphics graphics, LivingEntity entity, float scale)
     {
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
-        modelView.mulPoseMatrix(stack.last().pose());
-        InventoryScreen.renderEntityInInventory(0, 0, (int) scale, 75, -20, entity);
+        modelView.mulPoseMatrix(graphics.pose().last().pose());
+    InventoryScreen.renderEntityInInventory(graphics, 0, 0, (int) scale, new Quaternionf(75, 75, 75, 75), new Quaternionf(-20, -20, -20, -20), entity);
         modelView.popPose();
         RenderSystem.applyModelViewMatrix();
     }
@@ -57,7 +60,7 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
         tooltip.add(ingredient.getEntity().getDisplayName());
         if(tooltipFlag.isAdvanced())
         {
-            tooltip.add(new TextComponent(ingredient.getEntityType().getRegistryName().toString()).withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.translatable(ForgeRegistries.ENTITY_TYPES.getKey(ingredient.getEntityType()).toString()).withStyle(ChatFormatting.DARK_GRAY));
         }
         return tooltip;
     }

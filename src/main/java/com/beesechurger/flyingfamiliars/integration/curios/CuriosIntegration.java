@@ -1,14 +1,19 @@
 package com.beesechurger.flyingfamiliars.integration.curios;
 
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.CURIOS_MODNAME;
 
@@ -24,16 +29,14 @@ public class CuriosIntegration
 
     public static void sendImc(final InterModEnqueueEvent event)
     {
-        InterModComms.sendTo(CURIOS_MODNAME, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
+        //InterModComms.sendTo(CURIOS_MODNAME, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
     }
 
-    public static LazyOptional<IItemHandlerModifiable> getAllWorn(LivingEntity living)
+    public Container getAllWornItems(LivingEntity living)
     {
-        return instance.getAllWornItems(living);
-    }
-
-    public LazyOptional<IItemHandlerModifiable> getAllWornItems(LivingEntity living)
-    {
-        return CuriosApi.getCuriosHelper().getEquippedCurios(living);
+        return CuriosApi.getCuriosInventory(living)
+                .map(ICuriosItemHandler::getEquippedCurios)
+                .<Container>map(RecipeWrapper::new)
+                .orElseGet(() -> new SimpleContainer(0));
     }
 }

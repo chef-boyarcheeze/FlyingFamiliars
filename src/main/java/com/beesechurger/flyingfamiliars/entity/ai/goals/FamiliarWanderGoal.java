@@ -29,7 +29,7 @@ public class FamiliarWanderGoal extends Goal
     {
         this.familiar = familiar;
         this.speedModifier = speedModifier;
-        this.level = familiar.level;
+        this.level = familiar.level();
 
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
@@ -58,7 +58,7 @@ public class FamiliarWanderGoal extends Goal
         Vec3 view = familiar.getViewVector(0.0F);
 
         if(familiar.getFlyingTime() > 300 || !familiar.isFlying())
-            return LandRandomPos.getPos(familiar, 12, 18);
+            return LandRandomPos.getPos(familiar, 25, 40);
         else
         {
             Vec3 position = HoverRandomPos.getPos(familiar, 25, 20, view.x, view.z, Mth.PI / 2, 15, 5);
@@ -68,13 +68,13 @@ public class FamiliarWanderGoal extends Goal
 
     private Vec3 getSolidBlockBelow()
     {
-        BlockPos candidate = new BlockPos(familiar.position());
+        BlockPos candidate = familiar.blockPosition();
 
         while(candidate.getY() > BUILDING_LIMIT_LOW)
         {
             candidate = candidate.below();
 
-            if(!level.isEmptyBlock(candidate) && level.getBlockState(candidate).getMaterial().isSolidBlocking() && !isTargetBlocked(Vec3.atCenterOf(candidate.above())))
+            if(!level.isEmptyBlock(candidate) && level.getBlockState(candidate).isSolid() && !isTargetBlocked(Vec3.atCenterOf(candidate.above())))
                 return Vec3.atCenterOf(candidate);
         }
 

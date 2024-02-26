@@ -5,7 +5,7 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -17,22 +17,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
@@ -46,7 +43,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	protected static final float ARMOR = 4.0f;
 	protected static final int VARIANTS = 5;
 
-	private final AnimationFactory factory = new AnimationFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public GriffonflyEntity(EntityType<GriffonflyEntity> entityType, Level level)
 	{
@@ -105,92 +102,92 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 // GeckoLib animation control: //
 /////////////////////////////////
 	
-	private <E extends IAnimatable> PlayState headController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState headController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
-		controller.setAnimation(new AnimationBuilder()
-				.addAnimation("animation.griffonfly.head_idle", EDefaultLoopTypes.LOOP));
+		controller.setAnimation(RawAnimation.begin()
+				.thenLoop("animation.griffonfly.head_idle"));
 
 		return PlayState.CONTINUE;
 	}
 	
-	private <E extends IAnimatable> PlayState legsController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState legsController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
 		if(this.isCarryingMob())
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.legs_grab", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.legs_grab"));
 		else if(this.isFlying())
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.legs_flying", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.legs_flying"));
 		else if(!this.isFlying() && this.isMoving())
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.legs_walking", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.legs_walking"));
 		else
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.legs_idle", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.legs_idle"));
 
 		//controller.setAnimationSpeed(0.8f);
 		return PlayState.CONTINUE;
 	}
 	
-	private <E extends IAnimatable> PlayState wingsController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState wingsController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
 		if(isFlying())
 		{
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.wings_flying", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.wings_flying"));
 			controller.setAnimationSpeed(2.5f);
 		}
 		else if(!isFlying() && isMoving())
 		{
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.wings_walking", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.wings_walking"));
 			controller.setAnimationSpeed(1.0f);
 		}
 		else
 		{
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.wings_idle", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.wings_idle"));
 			controller.setAnimationSpeed(0.8f);
 		}
 
 		return PlayState.CONTINUE;
 	}
 
-	private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
 		if(isFlying())
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.body_flying", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.body_flying"));
 		else if(!isFlying() && isMoving())
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.body_walking", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.body_walking"));
 		else
-			controller.setAnimation(new AnimationBuilder()
-					.addAnimation("animation.griffonfly.body_idle", EDefaultLoopTypes.LOOP));
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.griffonfly.body_idle"));
 
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data)
+	public void registerControllers(AnimatableManager.ControllerRegistrar data)
 	{
 		FFAnimationController headController = new FFAnimationController<>(this, "headController", 0, 0, this::headController);
 		FFAnimationController legsController = new FFAnimationController<>(this, "legsController", 5, 0, this::legsController);
 		FFAnimationController wingsController = new FFAnimationController<>(this, "wingsController", 2, 0, this::wingsController);
 		FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
 
-		data.addAnimationController(headController);
-		data.addAnimationController(legsController);
-		data.addAnimationController(wingsController);
-		data.addAnimationController(bodyController);
+		data.add(headController);
+		data.add(legsController);
+		data.add(wingsController);
+		data.add(bodyController);
 
 		animationControllers.add(headController);
 		animationControllers.add(legsController);
@@ -199,9 +196,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	}
 
 	@Override
-	public AnimationFactory getFactory()
+	public AnimatableInstanceCache getAnimatableInstanceCache()
 	{
-		return this.factory;
+		return cache;
 	}
 
 ////////////////////
@@ -325,7 +322,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	{
 		super.tick();
 
-		if(!level.isClientSide())
+		if(!level().isClientSide())
 		{
 			if(actionCooldown == 0 && isOwnerDoingFamiliarAction() && isFlying())
 			{
@@ -334,15 +331,15 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 			}
 			if(getControllingPassenger() == null && getPassengers().size() != 0)
 			{
-				this.ejectPassengers();
-				level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
+				ejectPassengers();
+				level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
 			}
 		}
 	}
 
 	private boolean pickUpMob()
 	{
-		List<Entity> list = this.level.getEntities(this, this.getBoundingBox().expandTowards(0, -this.getBbHeight(), 0));
+		List<Entity> list = level().getEntities(this, this.getBoundingBox().expandTowards(0, -this.getBbHeight(), 0));
 
 		for(Entity candidate : list)
 		{
@@ -352,7 +349,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 				if(getPassengers().size() <= 1)
 				{
 					candidate.startRiding(this);
-					level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
+					level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
 					return true;
 				}
 				// Release carried mob
@@ -363,7 +360,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 						if(candidate == e)
 						{
 							candidate.stopRiding();
-							level.playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
+							level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
 							return true;
 						}
 					}
@@ -375,7 +372,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	}
 
 	@Override
-	public void positionRider(Entity rider)
+	public void positionRider(Entity rider, MoveFunction function)
 	{
 		if(this.hasPassenger(rider))
 		{

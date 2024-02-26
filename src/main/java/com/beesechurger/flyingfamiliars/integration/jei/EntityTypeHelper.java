@@ -3,7 +3,9 @@ package com.beesechurger.flyingfamiliars.integration.jei;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,33 +20,22 @@ public class EntityTypeHelper implements IIngredientHelper<EntityTypeIngredient>
     @Override
     public @NotNull String getDisplayName(EntityTypeIngredient ingredient)
     {
+        if (ingredient.getEntity() == null)
+            return "Unknown Entity";
+
         return ingredient.getEntity().getDisplayName().toString();
     }
 
     @Override
     public @NotNull String getUniqueId(EntityTypeIngredient ingredient, @NotNull UidContext context)
     {
-        return ingredient.getEntityType().getRegistryName().toString();
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public @NotNull String getModId(EntityTypeIngredient ingredient)
-    {
-        return ingredient.getEntityType().getRegistryName().getNamespace();
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public String getResourceId(EntityTypeIngredient ingredient)
-    {
-        return ingredient.getEntityType().getRegistryName().getPath();
+        return ForgeRegistries.ENTITY_TYPES.getKey(ingredient.getEntityType()).toString();
     }
 
     @Override
     public ResourceLocation getResourceLocation(EntityTypeIngredient ingredient)
     {
-        return ingredient.getEntityType().getRegistryName();
+        return ForgeRegistries.ENTITY_TYPES.getKey(ingredient.getEntityType());
     }
 
     @Override
@@ -56,6 +47,6 @@ public class EntityTypeHelper implements IIngredientHelper<EntityTypeIngredient>
     @Override
     public String getErrorInfo(@Nullable EntityTypeIngredient ingredient)
     {
-        return "Entity: " + ingredient.getEntityType().getRegistryName().toString();
+        return "Entity: " + ForgeRegistries.ENTITY_TYPES.getKey(ingredient.getEntityType()).toString();
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -122,34 +121,34 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
                     for (int i = 0; i < getMaxEntities(); i++)
                     {
                         if(getID(i, stack) != ENTITY_EMPTY)
-                            tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
+                            tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
                     }
                 }
                 else
                 {
                     switch(entityCount)
                     {
-                        case 1: tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.stored_1").withStyle(ChatFormatting.GRAY));
+                        case 1: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_1").withStyle(ChatFormatting.GRAY));
                             break;
 
-                        case 2: tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.stored_2").withStyle(ChatFormatting.GRAY));
+                        case 2: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_2").withStyle(ChatFormatting.GRAY));
                             break;
 
-                        case 3: tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.stored_3").withStyle(ChatFormatting.GRAY));
+                        case 3: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_3").withStyle(ChatFormatting.GRAY));
                             break;
                     }
 
-                    tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
+                    tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
                 }
             }
             else
             {
-                tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.empty").withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.empty").withStyle(ChatFormatting.GRAY));
             }
         }
         else
         {
-            tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.entity_tag.empty").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.empty").withStyle(ChatFormatting.GRAY));
         }
     }
 }

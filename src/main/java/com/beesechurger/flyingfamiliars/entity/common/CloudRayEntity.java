@@ -1,13 +1,12 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
-import com.beesechurger.flyingfamiliars.effect.FFEffects;
+import com.beesechurger.flyingfamiliars.registries.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
-import com.beesechurger.flyingfamiliars.keys.FFKeys;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -29,14 +28,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
@@ -47,7 +45,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	protected static final int FOLLOW_RANGE = 8;
 	protected static final int VARIANTS = 3;
 
-	private final AnimationFactory factory = new AnimationFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public CloudRayEntity(EntityType<CloudRayEntity> entityType, Level level)
 	{
@@ -104,37 +102,37 @@ public class CloudRayEntity extends BaseFamiliarEntity
 // GeckoLib animation control: //
 /////////////////////////////////
 
-	private <E extends IAnimatable> PlayState finsController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState finsController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
-		controller.setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.fins_idle"));
+		controller.setAnimation(RawAnimation.begin().thenLoop("animation.cloud_ray.fins_idle"));
 
 		return PlayState.CONTINUE;
 	}
 
-	private <E extends IAnimatable> PlayState mouthController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState mouthController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
-		controller.setAnimation(new AnimationBuilder().addAnimation("animation.cloud_ray.mouth_idle"));
+		controller.setAnimation(RawAnimation.begin().thenLoop("animation.cloud_ray.mouth_idle"));
 
 		return PlayState.CONTINUE;
 	}
 
-	private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
 		if(isFlying())
-			event.getController().setAnimation(new AnimationBuilder()
-					.addAnimation("animation.cloud_ray.body_flapping"));
+			event.getController().setAnimation(RawAnimation.begin()
+					.thenLoop("animation.cloud_ray.body_flapping"));
 		else if(!isFlying() && isMoving())
-			event.getController().setAnimation(new AnimationBuilder()
-					.addAnimation("animation.cloud_ray.body_walking"));
+			event.getController().setAnimation(RawAnimation.begin()
+					.thenLoop("animation.cloud_ray.body_walking"));
 		else
-			event.getController().setAnimation(new AnimationBuilder()
-					.addAnimation("animation.cloud_ray.body_idle"));
+			event.getController().setAnimation(RawAnimation.begin()
+					.thenLoop("animation.cloud_ray.body_idle"));
 
 		controller.setAnimationSpeed(0.8d);
 
@@ -142,15 +140,15 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	}
 
 	@Override
-	public void registerControllers(AnimationData data)
+	public void registerControllers(AnimatableManager.ControllerRegistrar data)
 	{
 		FFAnimationController finsController = new FFAnimationController<>(this, "finsController", 0, 0, this::finsController);
 		FFAnimationController mouthController = new FFAnimationController<>(this, "mouthController", 0, 0, this::mouthController);
 		FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
 
-		data.addAnimationController(finsController);
-		data.addAnimationController(mouthController);
-		data.addAnimationController(bodyController);
+		data.add(finsController);
+		data.add(mouthController);
+		data.add(bodyController);
 
 		animationControllers.add(finsController);
 		animationControllers.add(mouthController);
@@ -158,9 +156,9 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	}
 
 	@Override
-	public AnimationFactory getFactory()
+	public AnimatableInstanceCache getAnimatableInstanceCache()
 	{
-		return this.factory;
+		return cache;
 	}
 
 ////////////////////
@@ -190,7 +188,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		if(this.isOnGround())
+		if(onGround())
 		{
 			return FFSounds.CLOUD_RAY_IDLE1.get();
 		}
@@ -231,7 +229,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 // Booleans:
 
 	@Override
-	public boolean rideableUnderWater()
+	public boolean dismountsUnderwater()
 	{
 		return true;
 	}
@@ -251,7 +249,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	@Override
 	public boolean isInvulnerableTo(DamageSource source)
 	{
-		if(!level.isClientSide() && source.getEntity() instanceof Player player && player.isAutoSpinAttack())
+		if(!level().isClientSide() && source.getEntity() instanceof Player player && player.isAutoSpinAttack())
 			return true;
 
 		return super.isInvulnerableTo(source);
@@ -298,7 +296,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	{
 		super.tick();
 
-		if(!level.isClientSide() && !isSitting() && getOwner() != null && actionCooldown == 0)
+		if(!level().isClientSide() && !isSitting() && getOwner() != null && actionCooldown == 0)
 			if(distanceToSqr(getOwner()) < FOLLOW_RANGE * FOLLOW_RANGE)
 			{
 				if(getOwner().getEffect(FFEffects.DOUSED.get()) == null)
@@ -307,13 +305,13 @@ public class CloudRayEntity extends BaseFamiliarEntity
 					getOwner().addEffect(doused);
 
 					resetActionCooldown();
-					level.playSound(null, getX(), getY(), getZ(), FFSounds.CLOUD_RAY_APPLY_DOUSED.get(), SoundSource.NEUTRAL, 0.5f + random.nextFloat(), 1.5f * FFSounds.getPitch());
+					level().playSound(null, getX(), getY(), getZ(), FFSounds.CLOUD_RAY_APPLY_DOUSED.get(), SoundSource.NEUTRAL, 0.5f + random.nextFloat(), 1.5f * FFSounds.getPitch());
 				}
 			}
 	}
 
 	@Override
-	public void positionRider(Entity rider)
+	public void positionRider(Entity rider, MoveFunction function)
 	{
 		if(this.hasPassenger(rider))
 		{

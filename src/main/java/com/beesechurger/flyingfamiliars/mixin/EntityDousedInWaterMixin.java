@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
-import com.beesechurger.flyingfamiliars.effect.FFEffects;
+import com.beesechurger.flyingfamiliars.registries.FFEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

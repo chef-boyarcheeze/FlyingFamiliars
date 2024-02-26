@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

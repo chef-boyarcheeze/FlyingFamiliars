@@ -4,9 +4,9 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.block.entity.common.BrazierBlockEntity;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

@@ -5,7 +5,7 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,15 +27,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.checkerframework.checker.units.qual.A;
-import org.w3c.dom.Attr;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
@@ -48,7 +45,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     protected static final int FOLLOW_RANGE = 6;
     protected static final int VARIANTS = 16;
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public MagicCarpetEntity(EntityType<MagicCarpetEntity> entityType, Level level)
     {
@@ -122,22 +119,22 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
         ROLLED;
     }
 
-    private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+    private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
 
         switch(bodyAnimation)
         {
-            case UNROLLING -> controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.body_unrolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-            case FLOATING -> controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.body_floating", ILoopType.EDefaultLoopTypes.LOOP));
-            case ROLLING -> controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.body_rolling", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-            case ROLLED -> controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.body_rolled", ILoopType.EDefaultLoopTypes.LOOP));
-            default -> controller.setAnimation(new AnimationBuilder()
-                    .addAnimation("animation.magic_carpet.body_floating", ILoopType.EDefaultLoopTypes.LOOP));
+            case UNROLLING -> controller.setAnimation(RawAnimation.begin()
+                    .thenPlay("animation.magic_carpet.body_unrolling"));
+            case FLOATING -> controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.magic_carpet.body_floating"));
+            case ROLLING -> controller.setAnimation(RawAnimation.begin()
+                    .thenPlay("animation.magic_carpet.body_rolling"));
+            case ROLLED -> controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.magic_carpet.body_rolled"));
+            default -> controller.setAnimation(RawAnimation.begin()
+                    .thenLoop("animation.magic_carpet.body_floating"));
         }
 
         controller.updateCurrentAnimation(bodyAnimation.name());
@@ -171,7 +168,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
                 bodyAnimation = MagicCarpetBodyAnimation.ROLLING;
 
             if(controller.getCurrentAnimation() != null)
-                controller.setAnimationSpeed(controller.progress / controller.getCurrentAnimation().animationLength * 0.75);
+                controller.setAnimationSpeed(controller.progress / controller.getCurrentAnimation().animation().length() * 0.75);
         }
         else if(bodyAnimation == MagicCarpetBodyAnimation.ROLLING)
         {
@@ -201,19 +198,19 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     }
 
     @Override
-    public void registerControllers(AnimationData data)
+    public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
         FFAnimationController body = new FFAnimationController<>(this, "bodyController", 0, 6, this::bodyController);
 
-        data.addAnimationController(body);
+        data.add(body);
 
         animationControllers.add(body);
     }
 
     @Override
-    public AnimationFactory getFactory()
+    public AnimatableInstanceCache getAnimatableInstanceCache()
     {
-        return this.factory;
+        return cache;
     }
 
 ////////////////////
@@ -330,7 +327,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
         if (stackResult.consumesAction())
             return stackResult;
 
-        final InteractionResult SUCCESS = InteractionResult.sidedSuccess(this.level.isClientSide);
+        final InteractionResult SUCCESS = InteractionResult.sidedSuccess(level().isClientSide);
 
         if(isTamedFor(player) && player.isShiftKeyDown())
         {
@@ -455,7 +452,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     {
         super.tick();
 
-        if(!level.isClientSide())
+        if(!level().isClientSide())
         {
             if(actionCooldown == 0 && isOwnerDoingFamiliarAction() && isFlying())
             {
@@ -465,7 +462,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     }
 
     @Override
-    public void positionRider(Entity rider)
+    public void positionRider(Entity rider, MoveFunction function)
     {
         if(this.hasPassenger(rider))
         {

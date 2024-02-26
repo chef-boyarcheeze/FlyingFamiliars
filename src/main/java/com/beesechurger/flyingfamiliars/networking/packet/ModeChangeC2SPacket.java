@@ -27,7 +27,7 @@ public class ModeChangeC2SPacket
         supplier.get().enqueueWork(() -> {
 
             Player player = supplier.get().getSender();
-            Level level = player.level;
+            Level level = player.level();
             ItemStack stack = player.getMainHandItem();
 
             if (!stack.isEmpty() && stack.getItem() instanceof IModeCycleItem item)

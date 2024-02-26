@@ -8,30 +8,27 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.model.GeoModel;
 
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class MagicCarpetModel extends AnimatedGeoModel<MagicCarpetEntity> {
+public class MagicCarpetModel extends GeoModel<MagicCarpetEntity> {
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(MagicCarpetEntity animatable)
+	public ResourceLocation getAnimationResource(MagicCarpetEntity animatable)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/magic_carpet.animation.json");
 	}
 
 	@Override
-	public ResourceLocation getModelLocation(MagicCarpetEntity animatable)
+	public ResourceLocation getModelResource(MagicCarpetEntity animatable)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/magic_carpet/magic_carpet.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MagicCarpetEntity animatable)
+	public ResourceLocation getTextureResource(MagicCarpetEntity animatable)
 	{
         return switch (animatable.getVariant()) {
             case "white" ->

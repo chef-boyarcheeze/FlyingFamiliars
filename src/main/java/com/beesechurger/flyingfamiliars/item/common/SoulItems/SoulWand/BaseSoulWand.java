@@ -7,7 +7,7 @@ import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
 import com.beesechurger.flyingfamiliars.keys.FFKeys;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -61,23 +61,23 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
         if(stack.hasTag())
         {
             int mode = this.getMode(stack);
-            TranslatableComponent base = new TranslatableComponent(super.getDescriptionId(stack));
+            MutableComponent base = Component.translatable(super.getDescriptionId(stack));
 
             return switch(mode)
             {
                 case 1 -> base.append(" (")
-                        .append(new TranslatableComponent("message.flyingfamiliars.mode_tag.attack"))
+                        .append(Component.translatable("message.flyingfamiliars.mode_tag.attack"))
                         .append(")");
                 case 2 -> base.append(" (")
-                        .append(new TranslatableComponent("message.flyingfamiliars.mode_tag.defense"))
+                        .append(Component.translatable("message.flyingfamiliars.mode_tag.defense"))
                         .append(")");
                 default -> base.append(" (")
-                        .append(new TranslatableComponent("message.flyingfamiliars.mode_tag.normal"))
+                        .append(Component.translatable("message.flyingfamiliars.mode_tag.normal"))
                         .append(")");
             };
         }
         else
-            return new TranslatableComponent(super.getDescriptionId(stack));
+            return Component.translatable(super.getDescriptionId(stack));
     }
 
     @Override
@@ -107,16 +107,16 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
 
             switch(mode)
             {
-                case 1 -> tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.mode_tag.attack")
+                case 1 -> tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.attack")
                         .withStyle(attackColorChat));
-                case 2 -> tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.mode_tag.defense")
+                case 2 -> tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.defense")
                         .withStyle(defenseColorChat));
-                default -> tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.mode_tag.normal")
+                default -> tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.normal")
                         .withStyle(normalColorChat));
             };
         }
         else
-            tooltip.add(new TranslatableComponent("tooltip.flyingfamiliars.mode_tag.normal")
+            tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.normal")
                     .withStyle(normalColorChat));
 
         super.appendHoverText(stack, level, tooltip, tipFlag);

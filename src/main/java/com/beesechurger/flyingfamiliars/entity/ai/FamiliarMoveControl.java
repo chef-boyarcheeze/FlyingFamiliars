@@ -89,11 +89,11 @@ public class FamiliarMoveControl
                     familiar.startFlying();
 
                 BlockPos blockpos = familiar.blockPosition();
-                BlockState state = familiar.level.getBlockState(blockpos);
+                BlockState state = familiar.level().getBlockState(blockpos);
                 Block block = state.getBlock();
-                VoxelShape voxelshape = state.getCollisionShape(familiar.level, blockpos);
+                VoxelShape voxelshape = state.getCollisionShape(familiar.level(), blockpos);
 
-                if (dist.y > (double) familiar.maxUpStep && dist.x * dist.x + dist.z * dist.z < (double) Math.max(1.0f, familiar.getBbWidth()) || !voxelshape.isEmpty() && familiar.getY() < voxelshape.max(Direction.Axis.Y) + (double) blockpos.getY() && !state.is(BlockTags.DOORS) && !state.is(BlockTags.FENCES))
+                if (dist.y > (double) familiar.maxUpStep() && dist.x * dist.x + dist.z * dist.z < (double) Math.max(1.0f, familiar.getBbWidth()) || !voxelshape.isEmpty() && familiar.getY() < voxelshape.max(Direction.Axis.Y) + (double) blockpos.getY() && !state.is(BlockTags.DOORS) && !state.is(BlockTags.FENCES))
                 {
                     familiar.getJumpControl().jump();
                     operation = MoveControl.Operation.JUMPING;

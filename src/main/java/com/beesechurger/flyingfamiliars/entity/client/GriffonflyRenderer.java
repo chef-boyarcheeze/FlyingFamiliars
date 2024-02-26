@@ -5,15 +5,15 @@ import com.beesechurger.flyingfamiliars.entity.client.layer.LayerFamiliarRider;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
@@ -22,6 +22,7 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	{
 		super(renderManager, new GriffonflyModel());
 		this.shadowRadius = 1.2f;
+		this.withScale(1.5f);
 	}
 	
 	@Override
@@ -43,15 +44,6 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
         };
 	}
-
-	@Override
-	public RenderType getRenderType(GriffonflyEntity animatable, float partialTicks, PoseStack stack,
-									MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
-									ResourceLocation textureLocation)
-	{
-		stack.scale(1.5f, 1.5f, 1.5f);
-		return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
-	}
 	
 	@Override
     protected void applyRotations(GriffonflyEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
@@ -61,7 +53,7 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
         float renderPitch = (float) animatable.getPitch(partialTicks);
     	float renderRoll = (float) animatable.getRoll(partialTicks);
 
-        stack.mulPose(Vector3f.XP.rotationDegrees(-renderPitch));
-        stack.mulPose(Vector3f.ZP.rotationDegrees(renderRoll));
+        stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
+        stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
 	}
 }

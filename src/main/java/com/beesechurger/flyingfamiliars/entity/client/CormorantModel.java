@@ -9,35 +9,30 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
-
+public class CormorantModel extends GeoModel<CormorantEntity>
+{
 	@Override
-	public ResourceLocation getAnimationFileLocation(CormorantEntity animatable)
+	public ResourceLocation getModelResource(CormorantEntity cormorantEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cormorant.animation.json");
-	}
-
-	@Override
-	public ResourceLocation getModelLocation(CormorantEntity animatable)
-	{
-		if(animatable.getHasRing())
+		if(cormorantEntity.getHasRing())
 			return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant/cormorant_ring.geo.json");
 
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant/cormorant_no_ring.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CormorantEntity animatable)
+	public ResourceLocation getTextureResource(CormorantEntity cormorantEntity)
 	{
-		return switch (animatable.getVariant()) {
+		return switch (cormorantEntity.getVariant()) {
 			case "great_cormorant" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
 			case "australian_pied_cormorant" ->
@@ -50,30 +45,36 @@ public class CormorantModel extends AnimatedGeoModel<CormorantEntity> {
 	}
 
 	@Override
-	public void setLivingAnimations(CormorantEntity animatable, Integer uniqueID, @Nullable AnimationEvent customPredicate)
+	public ResourceLocation getAnimationResource(CormorantEntity cormorantEntity)
 	{
-		super.setLivingAnimations(animatable, uniqueID, customPredicate);
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cormorant.animation.json");
+	}
 
-		if(customPredicate == null || animatable.isFlying())
+	@Override
+	public void setCustomAnimations(CormorantEntity cormorantEntity, long instanceId, AnimationState customPredicate)
+	{
+		super.setCustomAnimations(cormorantEntity, instanceId, customPredicate);
+
+		if(customPredicate == null || cormorantEntity.isFlying())
 			return;
 
-		List<EntityModelData> extraDataOfType = customPredicate.getExtraDataOfType(EntityModelData.class);
-		IBone neck_lower = this.getAnimationProcessor().getBone("neck_lower");
-		IBone neck_lower_middle = this.getAnimationProcessor().getBone("neck_lower_middle");
-		IBone neck_upper_middle = this.getAnimationProcessor().getBone("neck_upper_middle");
-		IBone neck_upper = this.getAnimationProcessor().getBone("neck_upper");
-		IBone head = this.getAnimationProcessor().getBone("head");
+		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
+		CoreGeoBone neck_lower = this.getAnimationProcessor().getBone("neck_lower");
+		CoreGeoBone neck_lower_middle = this.getAnimationProcessor().getBone("neck_lower_middle");
+		CoreGeoBone neck_upper_middle = this.getAnimationProcessor().getBone("neck_upper_middle");
+		CoreGeoBone neck_upper = this.getAnimationProcessor().getBone("neck_upper");
+		CoreGeoBone head = this.getAnimationProcessor().getBone("head");
 
-		float yRot = Mth.clamp(0.2f * extraDataOfType.get(0).netHeadYaw, -5.0f, 5.0f);
+		float yRot = Mth.clamp(0.2f * extraDataOfType.netHeadYaw(), -5.0f, 5.0f);
 
-		neck_lower.setRotationY((float) Math.toRadians(yRot));
-		neck_lower_middle.setRotationY((float) Math.toRadians(yRot));
-		neck_upper_middle.setRotationY((float) Math.toRadians(yRot));
-		neck_upper.setRotationY((float) Math.toRadians(yRot));
-		head.setRotationY((float) Math.toRadians(yRot * 2.0f));
+		neck_lower.setRotY((float) Math.toRadians(yRot));
+		neck_lower_middle.setRotY((float) Math.toRadians(yRot));
+		neck_upper_middle.setRotY((float) Math.toRadians(yRot));
+		neck_upper.setRotY((float) Math.toRadians(yRot));
+		head.setRotY((float) Math.toRadians(yRot * 2.0f));
 
 		// compensation for bone rotations not being 0 initially
-		neck_lower_middle.setRotationZ((float) Math.toRadians(yRot));
-		head.setRotationZ((float) Math.toRadians(yRot));
+		neck_lower_middle.setRotZ((float) Math.toRadians(yRot));
+		head.setRotZ((float) Math.toRadians(yRot));
 	}
 }

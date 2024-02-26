@@ -2,11 +2,11 @@ package com.beesechurger.flyingfamiliars.block.entity.common;
 
 import java.util.Random;
 
-import com.beesechurger.flyingfamiliars.block.entity.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.BEProgressS2CPacket;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -243,12 +243,12 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 		entity.resetProgress();
 		
 		// Spawn result item drop
-		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getResultItem());
+		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getOutputItem());
         drop.setDefaultPickUpDelay();
         entity.level.addFreshEntity(drop);
         
         // Add result entity to entity list
-        entity.addResultEntity(entity.currentRecipe.getResultEntity());
+        entity.addResultEntity(entity.currentRecipe.getOutputEntity());
 	}
 	
 	public void addResultEntity(String resultEntity)

@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.block.FFBlocks;
+import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,16 +12,17 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
 {
-    public final static ResourceLocation UID = new ResourceLocation(FlyingFamiliars.MOD_ID, "brazier");
+    public static final RecipeType<BrazierRecipe> TYPE = RecipeType.create(FlyingFamiliars.MOD_ID, "brazier", BrazierRecipe.class);
     public final static ResourceLocation INPUTS =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_inputs_jei.png");
     public final static ResourceLocation SINGLE_ARROW =
@@ -49,9 +50,15 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
     }
 
     @Override
+    public RecipeType<BrazierRecipe> getRecipeType()
+    {
+        return TYPE;
+    }
+
+    @Override
     public Component getTitle()
     {
-        return new TranslatableComponent("block.flyingfamiliars.brazier");
+        return Component.translatable("block.flyingfamiliars.brazier");
     }
 
     @Override
@@ -66,37 +73,23 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
         return icon;
     }
 
-    @SuppressWarnings("removal")
     @Override
-    public ResourceLocation getUid()
-    {
-        return UID;
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    public Class<? extends BrazierRecipe> getRecipeClass()
-    {
-        return BrazierRecipe.class;
-    }
-
-    @Override
-    public void draw(@NotNull BrazierRecipe recipe, @NotNull IRecipeSlotsView view, @NotNull PoseStack ms, double mouseX, double mouseY)
+    public void draw(@NotNull BrazierRecipe recipe, @NotNull IRecipeSlotsView view, @NotNull GuiGraphics graphics, double mouseX, double mouseY)
     {
         RenderSystem.enableBlend();
 
-        inputs.draw(ms, 21, 10);
+        inputs.draw(graphics, 21, 10);
 
-        if(recipe.getResultItem() != ItemStack.EMPTY && recipe.getResultEntity() != null)
+        if(recipe.getOutputItem() != ItemStack.EMPTY && recipe.getOutputEntity() != null)
         {
-            doubleArrow.draw(ms, 89, 25);
-            outputs.draw(ms, 122, 11);
-            outputs.draw(ms, 122, 41);
+            doubleArrow.draw(graphics, 89, 25);
+            outputs.draw(graphics, 122, 11);
+            outputs.draw(graphics, 122, 41);
         }
         else
         {
-            singleArrow.draw(ms, 89, 38);
-            outputs.draw(ms, 122, 26);
+            singleArrow.draw(graphics, 89, 38);
+            outputs.draw(graphics, 122, 26);
         }
 
         RenderSystem.disableBlend();
@@ -141,14 +134,14 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
         int yCenterOutput = 34;
         int yModOutput = 0;
 
-        if(recipe.getResultItem() != ItemStack.EMPTY && recipe.getResultEntity() != null)
+        if(recipe.getOutputItem() != ItemStack.EMPTY && recipe.getOutputEntity() != null)
             yModOutput = 15;
 
-        if(recipe.getResultItem() != ItemStack.EMPTY)
+        if(recipe.getOutputItem() != ItemStack.EMPTY)
             builder.addSlot(RecipeIngredientRole.OUTPUT, xCenterOutput, yCenterOutput + yModOutput)
-                    .addItemStack(recipe.getResultItem());
-        if(recipe.getResultEntity() != null)
+                    .addItemStack(recipe.getOutputItem());
+        if(recipe.getOutputEntity() != null)
             builder.addSlot(RecipeIngredientRole.OUTPUT, xCenterOutput, yCenterOutput - yModOutput)
-                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getResultEntity()));
+                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getOutputEntity()));
     }
 }

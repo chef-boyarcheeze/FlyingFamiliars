@@ -2,31 +2,34 @@ package com.beesechurger.flyingfamiliars.entity.client.layer;
 
 import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.world.entity.Entity;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
-import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
+import org.joml.Quaternionf;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class LayerFamiliarRider<T extends Entity & IAnimatable> extends GeoLayerRenderer<T>
+public class LayerFamiliarRider<T extends Entity & GeoEntity> extends GeoRenderLayer<T>
 {
-    public LayerFamiliarRider(IGeoRenderer<T> entityRendererIn)
+    public LayerFamiliarRider(GeoEntityRenderer<T> entityRendererIn)
     {
         super(entityRendererIn);
     }
 
     @Override
-    public void render(PoseStack stack, MultiBufferSource bufferIn, int packedLightIn, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch)
+    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay)
     {
-        BaseFamiliarEntity familiar = (BaseFamiliarEntity) entity;
+        BaseFamiliarEntity familiar = (BaseFamiliarEntity) animatable;
 
-        stack.pushPose();
+        poseStack.pushPose();
 
         if (!familiar.notCarryingPassengers())
         {
@@ -39,7 +42,7 @@ public class LayerFamiliarRider<T extends Entity & IAnimatable> extends GeoLayer
                 //ClientProxy.currentDragonRiders.remove(passenger.getUUID());
 
 
-                float riderRot = passenger.yRotO + (passenger.getYRot() - passenger.yRotO) * partialTicks;
+                float riderRot = passenger.yRotO + (passenger.getYRot() - passenger.yRotO) * partialTick;
 
                 /*
                 int animationTicks = 0;
@@ -79,16 +82,16 @@ public class LayerFamiliarRider<T extends Entity & IAnimatable> extends GeoLayer
                 }
                  */
 
-                stack.pushPose();
-                stack.mulPose(new Quaternion(Vector3f.ZP, 0, true));
-                stack.mulPose(new Quaternion(Vector3f.YP, riderRot + 180, true));
+                poseStack.pushPose();
+                poseStack.mulPose(Axis.ZP.rotationDegrees(0));
+                poseStack.mulPose(Axis.YP.rotationDegrees(riderRot + 180));
                 //stack.scale(1 / dragonScale, 1 / dragonScale, 1 / dragonScale);
-                stack.translate(0, -0.25F, 0);
-                Minecraft.getInstance().getEntityRenderDispatcher().render(passenger, 0, 0, 0, 0, partialTicks, stack, bufferIn, packedLightIn); // packedLightIn 255
-                stack.popPose();
+                poseStack.translate(0, -0.25F, 0);
+                Minecraft.getInstance().getEntityRenderDispatcher().render(passenger, 0, 0, 0, 0, partialTick, poseStack, bufferSource, packedLight); // packedLightIn 255
+                poseStack.popPose();
             }
         }
 
-        stack.popPose();
+        poseStack.popPose();
     }
 }

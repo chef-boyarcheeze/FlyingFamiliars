@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.block.FFBlocks;
+import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -39,13 +39,13 @@ public class JEIFlyingFamiliarsPlugin implements IModPlugin
     {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
         List<BrazierRecipe> recipes = rm.getAllRecipesFor(BrazierRecipe.Type.INSTANCE);
-        registration.addRecipes(new RecipeType<>(BrazierRecipeCategory.UID, BrazierRecipe.class), recipes);
+        registration.addRecipes(BrazierRecipeCategory.TYPE, recipes);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
-        registration.addRecipeCatalyst(new ItemStack(FFBlocks.BRAZIER.get()), new RecipeType<>(BrazierRecipeCategory.UID, BrazierRecipe.class));
+        registration.addRecipeCatalyst(new ItemStack(FFBlocks.BRAZIER.get()), BrazierRecipeCategory.TYPE);
     }
 
     @Override

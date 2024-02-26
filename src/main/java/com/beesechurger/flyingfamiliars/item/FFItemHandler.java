@@ -28,7 +28,7 @@ public class FFItemHandler
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void onPlayerScrollWheel(InputEvent.MouseScrollEvent event)
+	public void onPlayerScrollWheel(InputEvent.MouseScrollingEvent event)
 	{
 		Player player = Minecraft.getInstance().player;
 

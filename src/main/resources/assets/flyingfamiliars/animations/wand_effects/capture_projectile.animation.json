@@ -7,17 +7,17 @@
 			"bones": {
 				"interior": {
 					"rotation": {
-						"vector": ["-60 * query.anim_time", "60 * query.anim_time", 0]
+						"vector": ["-120 * query.anim_time", "120 * query.anim_time", 0]
 					}
 				},
 				"exterior": {
 					"rotation": {
-						"vector": ["120 * query.anim_time", "-120 * query.anim_time", 0]
+						"vector": ["240 * query.anim_time", "-240 * query.anim_time", 0]
 					}
 				},
 				"core": {
 					"rotation": {
-						"vector": ["30 * query.anim_time", "-30 * query.anim_time", 0]
+						"vector": ["60 * query.anim_time", "-60 * query.anim_time", 0]
 					}
 				}
 			}

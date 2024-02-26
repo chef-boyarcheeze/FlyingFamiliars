@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.sound;
+package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 
@@ -13,7 +13,7 @@ public class FFSounds
 {
 	private static float[] SCALE = {0.5f, 0.56f, 0.64f, 0.68f, 0.76f, 0.85f, 0.95f, 1.0f};
 	
-	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, FlyingFamiliars.MOD_ID);
+	public static final DeferredRegister<SoundEvent> SOUND_EVENT_REG = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, FlyingFamiliars.MOD_ID);
 	
 	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ENTITY = registerSoundEvent("brazier_add_entity");
 	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ITEM = registerSoundEvent("brazier_add_item");
@@ -51,12 +51,7 @@ public class FFSounds
 	
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name)
 	{
-		return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(FlyingFamiliars.MOD_ID, name)));
-	}
-	
-	public static void register(IEventBus eventBus)
-	{
-		SOUND_EVENTS.register(eventBus);
+		return SOUND_EVENT_REG.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(FlyingFamiliars.MOD_ID, name)));
 	}
 	
 	public static float getPitch()

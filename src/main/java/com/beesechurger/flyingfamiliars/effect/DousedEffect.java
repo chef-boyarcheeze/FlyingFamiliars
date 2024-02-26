@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class DousedEffect extends MobEffect
 {
-    protected DousedEffect(MobEffectCategory category, int color)
+    public DousedEffect(MobEffectCategory category, int color)
     {
         super(category, color);
     }

@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.ISoulCycleItem;
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,7 +39,7 @@ public class SoulItemSelectC2SPacket
 		supplier.get().enqueueWork(() -> {
 
 			Player player = supplier.get().getSender();
-			Level level = player.level;
+			Level level = player.level();
 			ItemStack stack = player.getMainHandItem();
 
 			if(!stack.isEmpty()
@@ -49,7 +49,7 @@ public class SoulItemSelectC2SPacket
 				cycle.cycleSoul(player, direction);
 				
 				level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
-				player.displayClientMessage(new TranslatableComponent("message.flyingfamiliars.entity_tag.select")
+				player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
 						.append(": " + cycle.getID(base.getMaxEntities()-1, stack))
 						.withStyle(ChatFormatting.WHITE), true);
 			}

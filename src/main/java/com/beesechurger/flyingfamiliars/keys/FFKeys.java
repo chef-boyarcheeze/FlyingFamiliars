@@ -5,10 +5,14 @@ import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.ModeChangeC2SPacket;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraft.core.registries.Registries;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 
+@Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FFKeys
 {
 	public static KeyMapping FAMILIAR_ASCEND;
@@ -16,24 +20,26 @@ public class FFKeys
 	public static KeyMapping FAMILIAR_ACTION;
 	public static KeyMapping SOUL_WAND_SHIFT;
 	public static ModeChangeKeyMapping ITEM_MODE_CYCLE;
-	
+
+
 	private FFKeys()
 	{}
-	
-	public static void init()
+
+	@SubscribeEvent
+	public static void init(RegisterKeyMappingsEvent event)
 	{
-		FAMILIAR_ASCEND = registerKey("familiar_ascend", GLFW.GLFW_KEY_SPACE, "Flying Familiars");
-		FAMILIAR_DESCEND = registerKey("familiar_descend", GLFW.GLFW_KEY_LEFT_CONTROL, "Flying Familiars");
-		FAMILIAR_ACTION = registerKey("familiar_action", GLFW.GLFW_KEY_Y, "Flying Familiars");
-		ITEM_MODE_CYCLE = ModeChangeKeyMapping.registerKey("item_mode_cycle", GLFW.GLFW_KEY_V, "Flying Familiars");
-		SOUL_WAND_SHIFT = registerKey("soul_wand_shift", GLFW.GLFW_KEY_LEFT_SHIFT, "Flying Familiars");
+		FAMILIAR_ASCEND = registerKey("familiar_ascend", GLFW.GLFW_KEY_SPACE, "Flying Familiars", event);
+		FAMILIAR_DESCEND = registerKey("familiar_descend", GLFW.GLFW_KEY_LEFT_CONTROL, "Flying Familiars", event);
+		FAMILIAR_ACTION = registerKey("familiar_action", GLFW.GLFW_KEY_Y, "Flying Familiars", event);
+		ITEM_MODE_CYCLE = ModeChangeKeyMapping.registerKey("item_mode_cycle", GLFW.GLFW_KEY_V, "Flying Familiars", event);
+		SOUL_WAND_SHIFT = registerKey("soul_wand_shift", GLFW.GLFW_KEY_LEFT_SHIFT, "Flying Familiars", event);
 	}
 
-	private static KeyMapping registerKey(String name, int keycode, String category)
+	private static KeyMapping registerKey(String name, int keycode, String category, RegisterKeyMappingsEvent event)
 	{
 		final var key = new KeyMapping("key." + FlyingFamiliars.MOD_ID + "." + name, keycode, category);
-		ClientRegistry.registerKeyBinding(key);
 		key.setKeyConflictContext(KeyConflictContext.IN_GAME);
+		event.register(key);
 		return key;
 	}
 
@@ -57,11 +63,11 @@ public class FFKeys
 				FFMessages.sendToServer(new ModeChangeC2SPacket());
 		}
 
-		public static ModeChangeKeyMapping registerKey(String name, int keycode, String category)
+		public static ModeChangeKeyMapping registerKey(String name, int keycode, String category, RegisterKeyMappingsEvent event)
 		{
 			final var key = new ModeChangeKeyMapping("key." + FlyingFamiliars.MOD_ID + "." + name, keycode, category);
-			ClientRegistry.registerKeyBinding(key);
 			key.setKeyConflictContext(KeyConflictContext.IN_GAME);
+			event.register(key);
 			return key;
 		}
 	}

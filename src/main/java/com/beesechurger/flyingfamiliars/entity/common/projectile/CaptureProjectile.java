@@ -1,12 +1,10 @@
 package com.beesechurger.flyingfamiliars.entity.common.projectile;
 
-import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
+import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
-
-import com.beesechurger.flyingfamiliars.sound.FFSounds;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -30,25 +28,25 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class CaptureProjectile extends ThrowableItemProjectile implements IAnimatable
+public class CaptureProjectile extends ThrowableItemProjectile implements GeoEntity
 {
 	private NonNullList<ItemStack> stacks = NonNullList.create();
 	private Player player = null;
 	private boolean action = false;
 
-	private final AnimationFactory factory = new AnimationFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	
 	public CaptureProjectile(EntityType<? extends CaptureProjectile> proj, Level level)
 	{
@@ -69,39 +67,39 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
 	    super(FFEntityTypes.CAPTURE_PROJECTILE.get(), x, y, z, level);
 	}
 
-	private <E extends IAnimatable> PlayState bodyController(AnimationEvent<E> event)
+	private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
 	{
-		//FFAnimationController controller = (FFAnimationController) event.getController();
+		FFAnimationController controller = (FFAnimationController) event.getController();
 
-		event.getController().setAnimation(new AnimationBuilder()
-				.addAnimation("animation.capture_projectile.idle"));
+		controller.setAnimation(RawAnimation.begin()
+				.thenLoop("animation.capture_projectile.idle"));
 
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data)
+	public void registerControllers(AnimatableManager.ControllerRegistrar data)
 	{
-		AnimationController bodyController = new AnimationController<>(this, "bodyController", 0, this::bodyController);
+		FFAnimationController bodyController = new FFAnimationController(this, "bodyController", 0, 0, this::bodyController);
 
-		data.addAnimationController(bodyController);
+		data.add(bodyController);
 	}
 
 	@Override
-	public AnimationFactory getFactory()
+	public AnimatableInstanceCache getAnimatableInstanceCache()
 	{
-		return this.factory;
+		return cache;
 	}
 	
 	@Override
     protected void onHitEntity(EntityHitResult result)
 	{
-		if(!this.action && !level.isClientSide() && player != null)
+		if(!this.action && !level().isClientSide() && player != null)
 		{
 			if(capture(result.getEntity()))
 			{
-				level.broadcastEntityEvent(this, (byte) 3);
-				level.playSound((Player)null, getX(), getY(), getZ(),
+				level().broadcastEntityEvent(this, (byte) 3);
+				level().playSound((Player)null, getX(), getY(), getZ(),
 						FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
 			}
 		}
@@ -150,7 +148,7 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
 
 		boolean passFlag = false;
 
-		if(!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level.isClientSide())
+		if(!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level().isClientSide())
 		{
 			// Default fill soul wand:
 			for(int i = 0; i < totalList.size(); i++)
@@ -201,12 +199,12 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
 	@Override
     protected void onHitBlock(BlockHitResult result)
     {
-		if(this.action && !level.isClientSide() && player != null)
+		if(this.action && !level().isClientSide() && player != null)
 		{
 			if(release(result))
 			{
-				level.broadcastEntityEvent(this, (byte) 3);
-				level.playSound((Player)null, getX(), getY(), getZ(),
+				level().broadcastEntityEvent(this, (byte) 3);
+				level().playSound((Player)null, getX(), getY(), getZ(),
 						FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
 			}
 		}
@@ -236,11 +234,11 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
 				double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
 				double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
 
-				Entity entity = type.create(level);
+				Entity entity = type.create(level());
 				entity.load(entityNBT);
 
 				entity.absMoveTo(x, y, z, 0, 0);
-				level.addFreshEntity(entity);
+				level().addFreshEntity(entity);
 
 				entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 				stackList.set(stackList.size()-1, entityNBT);
@@ -301,11 +299,11 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
 					double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
 					double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
 
-					Entity entity = type.create(level);
+					Entity entity = type.create(level());
 					entity.load(entityNBT);
 
 					entity.absMoveTo(x, y, z, 0, 0);
-					level.addFreshEntity(entity);
+					level().addFreshEntity(entity);
 
 					entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 					totalList.set(i-1, entityNBT);
@@ -346,7 +344,7 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
 	public void tick()
 	{
 		super.tick();
-		if(level.isClientSide())
+		if(level().isClientSide())
 		{
 			Vec3 vec3d = this.getDeltaMovement();
 	        double d0 = this.getX() + vec3d.x;
@@ -365,7 +363,7 @@ public class CaptureProjectile extends ThrowableItemProjectile implements IAnima
             for (int i = 0; i < 360; i++)
             {
 				// capture
-                if(i % 5 == 0) level.addParticle(ParticleTypes.CLOUD, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 9) * Math.sin(i * 9)), 0.1 * Math.sin(i));
+                if(i % 5 == 0) level().addParticle(ParticleTypes.CLOUD, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 9) * Math.sin(i * 9)), 0.1 * Math.sin(i));
             }
         }
     }

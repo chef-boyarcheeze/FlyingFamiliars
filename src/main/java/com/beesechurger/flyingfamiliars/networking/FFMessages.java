@@ -35,31 +35,31 @@ public class FFMessages
 		net.messageBuilder(BEItemStackS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
 				.decoder(BEItemStackS2CPacket::new)
 				.encoder(BEItemStackS2CPacket::toBytes)
-				.consumer(BEItemStackS2CPacket::handle)
+				.consumerMainThread(BEItemStackS2CPacket::handle)
 				.add();
 		
 		net.messageBuilder(BEProgressS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
 				.decoder(BEProgressS2CPacket::new)
 				.encoder(BEProgressS2CPacket::toBytes)
-				.consumer(BEProgressS2CPacket::handle)
+				.consumerMainThread(BEProgressS2CPacket::handle)
 				.add();
 		
 		net.messageBuilder(EntityListS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
 				.decoder(EntityListS2CPacket::new)
 				.encoder(EntityListS2CPacket::toBytes)
-				.consumer(EntityListS2CPacket::handle)
+				.consumerMainThread(EntityListS2CPacket::handle)
 				.add();
 		
 		net.messageBuilder(SoulItemSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
 				.decoder(SoulItemSelectC2SPacket::new)
 				.encoder(SoulItemSelectC2SPacket::toBytes)
-				.consumer(SoulItemSelectC2SPacket::handle)
+				.consumerMainThread(SoulItemSelectC2SPacket::handle)
 				.add();
 
 		net.messageBuilder(ModeChangeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
 				.decoder(ModeChangeC2SPacket::new)
 				.encoder(ModeChangeC2SPacket::toBytes)
-				.consumer(ModeChangeC2SPacket::handle)
+				.consumerMainThread(ModeChangeC2SPacket::handle)
 				.add();
 	}
 	
