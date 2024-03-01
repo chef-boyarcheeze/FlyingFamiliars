@@ -126,16 +126,6 @@ public class CormorantEntity extends BaseFamiliarEntity
 // Geckolib animation controls: //
 //////////////////////////////////
 
-    private <E extends GeoAnimatable> PlayState tailController(AnimationState<E> event)
-    {
-        FFAnimationController controller = (FFAnimationController) event.getController();
-
-        controller.setAnimation(RawAnimation.begin()
-                .thenLoop("animation.cormorant.tail_idle"));
-
-        return PlayState.CONTINUE;
-    }
-
     private <E extends GeoAnimatable> PlayState mouthController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
@@ -148,8 +138,12 @@ public class CormorantEntity extends BaseFamiliarEntity
         FFAnimationController controller = (FFAnimationController) event.getController();
 
         if(isFlying())
-            controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.cormorant.body_flapping"));
+            if(isMoving())
+                controller.setAnimation(RawAnimation.begin()
+                        .thenLoop("animation.cormorant.body_flapping"));
+            else
+                controller.setAnimation(RawAnimation.begin()
+                        .thenLoop("animation.cormorant.body_hovering"));
         else if(isInWater())
             controller.setAnimation(RawAnimation.begin()
                     .thenLoop("animation.cormorant.body_swimming"));
@@ -166,15 +160,12 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
-        FFAnimationController tailController = new FFAnimationController<>(this, "tailController", 4, 0, this::tailController);
         FFAnimationController mouthController = new FFAnimationController<>(this, "mouthController", 0, 0, this::mouthController);
         FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
 
-        data.add(tailController);
         data.add(mouthController);
         data.add(bodyController);
 
-        animationControllers.add(tailController);
         animationControllers.add(mouthController);
         animationControllers.add(bodyController);
     }
