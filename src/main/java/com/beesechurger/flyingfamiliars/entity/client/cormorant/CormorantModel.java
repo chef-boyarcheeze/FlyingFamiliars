@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.entity.client;
+package com.beesechurger.flyingfamiliars.entity.client.cormorant;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;

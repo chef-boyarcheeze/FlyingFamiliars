@@ -293,12 +293,6 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 		return stack.is(Items.SPIDER_EYE);
 	}
 
-	@Override
-	public boolean canWalk()
-	{
-		return false;
-	}
-
 // Doubles:
 
 	@Override

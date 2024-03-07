@@ -188,8 +188,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 
 	abstract boolean isFoodItem(ItemStack stack);
 
-	abstract boolean canWalk();
-
 	@Override
 	public boolean shouldRiderSit()
 	{

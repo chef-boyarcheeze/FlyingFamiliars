@@ -1,10 +1,10 @@
 package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.registries.*;
-import com.beesechurger.flyingfamiliars.entity.client.CloudRayRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.CormorantRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.GriffonflyRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.MagicCarpetRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.cloud_ray.CloudRayRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.cormorant.CormorantRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.griffonfly.GriffonflyRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.magic_carpet.MagicCarpetRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effects.CaptureProjectileRenderer;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;

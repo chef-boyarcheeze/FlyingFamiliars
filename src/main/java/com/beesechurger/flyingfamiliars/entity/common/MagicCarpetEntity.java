@@ -294,12 +294,6 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
         return stack.is(Items.WHITE_WOOL);
     }
 
-    @Override
-    public boolean canWalk()
-    {
-        return false;
-    }
-
 // Doubles:
 
     @Override

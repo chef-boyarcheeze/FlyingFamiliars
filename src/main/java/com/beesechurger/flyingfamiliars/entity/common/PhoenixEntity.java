@@ -42,20 +42,20 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
-public class CormorantEntity extends BaseFamiliarEntity
+public class PhoenixEntity extends BaseFamiliarEntity
 {
-    private static final EntityDataAccessor<Boolean> HAS_RING = SynchedEntityData.defineId(CormorantEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_RING = SynchedEntityData.defineId(PhoenixEntity.class, EntityDataSerializers.BOOLEAN);
 
     protected static final float MAX_HEALTH = 8.00f;
     protected static final int FOLLOW_RANGE = 4;
-    protected static final int VARIANTS = 3;
+    protected static final int VARIANTS = 2;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public CormorantEntity(EntityType<CormorantEntity> entityType, Level level)
+    public PhoenixEntity(EntityType<PhoenixEntity> entityType, Level level)
     {
         super(entityType, level);
-        selectVariant(this.random.nextInt(VARIANTS));
+        selectVariant(0);
     }
 
     public static AttributeSupplier setAttributes()
@@ -82,19 +82,13 @@ public class CormorantEntity extends BaseFamiliarEntity
     {
         if(!hasVariant())
         {
-            switch(variant)
+            switch (variant)
             {
-                case 0 -> setVariant("great_cormorant");
-                case 1 -> setVariant("australian_pied_cormorant");
-                case 2 -> setVariant("red_legged_cormorant");
+                case 0: setVariant("red");
+                case 1: setVariant("blue");
+                default: setVariant("red");
             }
         }
-    }
-
-    @Override
-    public MobType getMobType()
-    {
-        return MobType.WATER;
     }
 
 ///////////////////////////
@@ -105,30 +99,33 @@ public class CormorantEntity extends BaseFamiliarEntity
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setHasRing(tag.getBoolean("hasRing"));
+        // has Molted
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.putBoolean("hasRing", getHasRing());
+        // has Molted
     }
 
     @Override
     protected void defineSynchedData()
     {
         super.defineSynchedData();
-        entityData.define(HAS_RING, false);
+        // has molted
     }
 
 //////////////////////////////////
 // Geckolib animation controls: //
 //////////////////////////////////
 
-    private <E extends GeoAnimatable> PlayState mouthController(AnimationState<E> event)
+    private <E extends GeoAnimatable> PlayState crestController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
+
+        controller.setAnimation(RawAnimation.begin()
+                .thenLoop("animation.phoenix.crest_idle"));
 
         return PlayState.CONTINUE;
     }
@@ -140,19 +137,16 @@ public class CormorantEntity extends BaseFamiliarEntity
         if(isFlying())
             if(isMoving())
                 controller.setAnimation(RawAnimation.begin()
-                        .thenLoop("animation.cormorant.body_flapping"));
+                        .thenLoop("animation.phoenix.body_flapping"));
             else
                 controller.setAnimation(RawAnimation.begin()
-                        .thenLoop("animation.cormorant.body_hovering"));
-        else if(isInWater())
-            controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.cormorant.body_swimming"));
+                        .thenLoop("animation.phoenix.body_hovering"));
         else if(!isFlying() && isMoving())
             controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.cormorant.body_walking"));
+                    .thenLoop("animation.phoenix.body_walking"));
         else
             controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.cormorant.body_idle"));
+                    .thenLoop("animation.phoenix.body_idle"));
 
         return PlayState.CONTINUE;
     }
@@ -160,13 +154,13 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
-        FFAnimationController mouthController = new FFAnimationController<>(this, "mouthController", 0, 0, this::mouthController);
+        FFAnimationController crestController = new FFAnimationController<>(this, "crestController", 0, 0, this::crestController);
         FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
 
-        data.add(mouthController);
+        data.add(crestController);
         data.add(bodyController);
 
-        animationControllers.add(mouthController);
+        animationControllers.add(crestController);
         animationControllers.add(bodyController);
     }
 
@@ -194,7 +188,7 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return random.nextInt(2) == 0 ? FFSounds.CORMORANT_SQUAWK1.get() : FFSounds.CORMORANT_SQUAWK2.get();
+        return SoundEvents.PARROT_AMBIENT;
     }
 
     @Override
@@ -222,10 +216,6 @@ public class CormorantEntity extends BaseFamiliarEntity
     }
 
 // Booleans:
-    public boolean getHasRing()
-    {
-        return entityData.get(HAS_RING);
-    }
 
     @Override
     public boolean canOwnerRide()
@@ -236,13 +226,13 @@ public class CormorantEntity extends BaseFamiliarEntity
     @Override
     public boolean isTameItem(ItemStack stack)
     {
-        return stack.is(Items.COD) || stack.is(Items.SALMON) || stack.is(Items.TROPICAL_FISH);
+        return stack.is(Items.BLAZE_POWDER);
     }
 
     @Override
     public boolean isFoodItem(ItemStack stack)
     {
-        return isTameItem(stack);
+        return stack.is(Items.BAMBOO);
     }
 
 // Doubles:
@@ -285,21 +275,9 @@ public class CormorantEntity extends BaseFamiliarEntity
 
         if(isTamedFor(player) && player.isShiftKeyDown())
         {
-            if(getHasRing())
+            if(stack.is(Items.HEART_OF_THE_SEA))
             {
-                setHasRing(false);
-
-                if(!player.isCreative())
-                {
-                    ItemEntity item = new ItemEntity(level(), this.getX(), this.getY(), this.getZ(), new ItemStack(FFItems.CORMORANT_RING.get()));
-                    level().addFreshEntity(item);
-                }
-
-                return SUCCESS;
-            }
-            if(stack.is(FFItems.CORMORANT_RING.get()))
-            {
-                setHasRing(true);
+                selectVariant(1);
                 stack.shrink(1);
 
                 return SUCCESS;

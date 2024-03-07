@@ -1,15 +1,10 @@
-package com.beesechurger.flyingfamiliars.entity.client;
+package com.beesechurger.flyingfamiliars.entity.client.cloud_ray;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.client.layer.LayerFamiliarRider;
 import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
-import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,9 +23,9 @@ public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CloudRayEntity animatable)
+	public ResourceLocation getTextureLocation(CloudRayEntity cloudRayEntity)
 	{
-		return switch (animatable.getVariant())
+		return switch (cloudRayEntity.getVariant())
 		{
 			case "white" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
@@ -44,12 +39,12 @@ public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
 	}
 
 	@Override
-	protected void applyRotations(CloudRayEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+	protected void applyRotations(CloudRayEntity cloudRayEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
 	{
-		super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
+		super.applyRotations(cloudRayEntity, stack, ageInTicks, rotationYaw, partialTicks);
 
-		float renderPitch = (float) animatable.getPitch(partialTicks);
-		float renderRoll = (float) animatable.getRoll(partialTicks);
+		float renderPitch = (float) cloudRayEntity.getPitch(partialTicks);
+		float renderRoll = (float) cloudRayEntity.getRoll(partialTicks);
 
 		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
 		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));

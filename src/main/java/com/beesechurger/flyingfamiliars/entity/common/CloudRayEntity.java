@@ -267,12 +267,6 @@ public class CloudRayEntity extends BaseFamiliarEntity
 		return isTameItem(stack) || stack.is(Items.SWEET_BERRIES) || stack.is(Items.APPLE) || stack.is(Items.GOLDEN_APPLE) || stack.is(Items.MELON_SLICE);
 	}
 
-	@Override
-	public boolean canWalk()
-	{
-		return true;
-	}
-
 // Doubles:
 
 	@Override

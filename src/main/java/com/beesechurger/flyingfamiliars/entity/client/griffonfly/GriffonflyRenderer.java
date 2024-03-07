@@ -1,14 +1,10 @@
-package com.beesechurger.flyingfamiliars.entity.client;
+package com.beesechurger.flyingfamiliars.entity.client.griffonfly;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.client.layer.LayerFamiliarRider;
 import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,9 +22,9 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(GriffonflyEntity animatable)
+	public ResourceLocation getTextureLocation(GriffonflyEntity griffonflyEntity)
 	{
-        return switch (animatable.getVariant())
+        return switch (griffonflyEntity.getVariant())
 		{
             case "yellow" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
@@ -46,12 +42,12 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 	}
 	
 	@Override
-    protected void applyRotations(GriffonflyEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void applyRotations(GriffonflyEntity griffonflyEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
 	{
-        super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
+        super.applyRotations(griffonflyEntity, stack, ageInTicks, rotationYaw, partialTicks);
         
-        float renderPitch = (float) animatable.getPitch(partialTicks);
-    	float renderRoll = (float) animatable.getRoll(partialTicks);
+        float renderPitch = (float) griffonflyEntity.getPitch(partialTicks);
+    	float renderRoll = (float) griffonflyEntity.getRoll(partialTicks);
 
         stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
         stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));

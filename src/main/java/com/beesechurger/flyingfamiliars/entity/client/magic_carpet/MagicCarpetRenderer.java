@@ -1,13 +1,9 @@
-package com.beesechurger.flyingfamiliars.entity.client;
+package com.beesechurger.flyingfamiliars.entity.client.magic_carpet;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
 import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,9 +21,9 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(MagicCarpetEntity animatable)
+	public ResourceLocation getTextureLocation(MagicCarpetEntity magicCarpetEntity)
 	{
-		return switch (animatable.getVariant()) {
+		return switch (magicCarpetEntity.getVariant()) {
 			case "white" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_white.png");
 			case "light_gray" ->
@@ -66,12 +62,12 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 	}
 	
 	@Override
-    protected void applyRotations(MagicCarpetEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void applyRotations(MagicCarpetEntity magicCarpetEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
 	{
-        super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
+        super.applyRotations(magicCarpetEntity, stack, ageInTicks, rotationYaw, partialTicks);
         
-        float renderPitch = (float) animatable.getPitch(partialTicks);
-    	float renderRoll = (float) animatable.getRoll(partialTicks);
+        float renderPitch = (float) magicCarpetEntity.getPitch(partialTicks);
+    	float renderRoll = (float) magicCarpetEntity.getRoll(partialTicks);
 
         stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
         stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));

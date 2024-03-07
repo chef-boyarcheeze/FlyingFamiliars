@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.entity.client;
+package com.beesechurger.flyingfamiliars.entity.client.cormorant;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.CormorantEntity;
@@ -24,7 +24,7 @@ public class CormorantRenderer extends GeoEntityRenderer<CormorantEntity>
 	@Override
 	public ResourceLocation getTextureLocation(CormorantEntity cormorantEntity)
 	{
-		return switch (animatable.getVariant()) {
+		return switch (cormorantEntity.getVariant()) {
 			case "great_cormorant" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
 			case "australian_pied_cormorant" ->
