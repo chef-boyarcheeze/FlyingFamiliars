@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:soul_battery_green"
+			"item": "flyingfamiliars:phylactery_green"
 		},
 		{
 			"item": "minecraft:mushroom_stew"
@@ -14,7 +14,7 @@
 			"item": "minecraft:mushroom_stew"
 		},
 		{
-			"item": "flyingfamiliars:soul_battery_green"
+			"item": "flyingfamiliars:phylactery_green"
 		}
 	],
 	"inputEntities": [
@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_yellow"
+		"item": "flyingfamiliars:phylactery_yellow"
 	},
 	"outputEntity": {
 		"string": "minecraft:skeleton_horse"

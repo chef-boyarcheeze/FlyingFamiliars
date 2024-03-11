@@ -1,0 +1,30 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:hand_of_the_hells"
+		},
+		{
+			"item": "flyingfamiliars:phoenix_feather"
+		},
+		{
+			"item": "minecraft:totem_of_undying"
+		},
+		{
+			"item": "minecraft:coal"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:parrot"
+		},
+		{
+			"string": "minecraft:blaze"
+		}
+	],
+	"outputItem": {
+	},
+	"outputEntity": {
+		"string": "flyingfamiliars:phoenix"
+	}
+}

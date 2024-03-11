@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:soul_battery_blue"
+			"item": "flyingfamiliars:phylactery_blue"
 		},
 		{
 			"item": "minecraft:rabbit_hide"
@@ -14,7 +14,7 @@
 			"item": "minecraft:rabbit_hide"
 		},
 		{
-			"item": "flyingfamiliars:soul_battery_blue"
+			"item": "flyingfamiliars:phylactery_blue"
 		}
 	],
 	"inputEntities": [
@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_green"
+		"item": "flyingfamiliars:phylactery_green"
 	},
 	"outputEntity": {
 		"string": "minecraft:rabbit"

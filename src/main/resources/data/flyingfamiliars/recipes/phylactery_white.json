@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:soul_battery_black"
+			"item": "flyingfamiliars:phylactery_black"
 		},
 		{
 			"item": "minecraft:totem_of_undying"
@@ -14,7 +14,7 @@
 			"item": "minecraft:totem_of_undying"
 		},
 		{
-			"item": "flyingfamiliars:soul_battery_black"
+			"item": "flyingfamiliars:phylactery_black"
 		}
 	],
 	"inputEntities": [
@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_white"
+		"item": "flyingfamiliars:phylactery_white"
 	},
 	"outputEntity": {
 		"string": "minecraft:panda"

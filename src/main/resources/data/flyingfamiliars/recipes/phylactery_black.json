@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:soul_battery_red"
+			"item": "flyingfamiliars:phylactery_red"
 		},
 		{
 			"item": "minecraft:shulker_shell"
@@ -14,7 +14,7 @@
 			"item": "minecraft:shulker_shell"
 		},
 		{
-			"item": "flyingfamiliars:soul_battery_red"
+			"item": "flyingfamiliars:phylactery_red"
 		}
 	],
 	"inputEntities": [
@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_black"
+		"item": "flyingfamiliars:phylactery_black"
 	},
 	"outputEntity": {
 		"string": "minecraft:endermite"

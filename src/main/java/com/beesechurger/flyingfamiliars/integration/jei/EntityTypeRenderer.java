@@ -48,7 +48,7 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
         modelView.mulPoseMatrix(graphics.pose().last().pose());
-    InventoryScreen.renderEntityInInventory(graphics, 0, 0, (int) scale, new Quaternionf(75, 75, 75, 75), new Quaternionf(-20, -20, -20, -20), entity);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, 0, 0, (int) scale, 75, -20, entity);
         modelView.popPose();
         RenderSystem.applyModelViewMatrix();
     }

@@ -2,19 +2,16 @@ package com.beesechurger.flyingfamiliars.item;
 
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
-
-import java.util.Optional;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
@@ -120,7 +117,7 @@ public class EntityTagItemHelper
     {
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
 
-        if(offHand != null && offHand.getItem() instanceof SoulBattery item)
+        if(offHand != null && offHand.getItem() instanceof Phylactery item)
             return offHand;
 
         return null;
@@ -129,13 +126,13 @@ public class EntityTagItemHelper
     public static ItemStack getCurioCharmBattery(Player player)
     {
         ItemStack[] checkCurios = new ItemStack[7];
-        checkCurios[0] = findItem(player, FFItems.SOUL_BATTERY_BLUE.get());
-        checkCurios[1] = findItem(player, FFItems.SOUL_BATTERY_GREEN.get());
-        checkCurios[2] = findItem(player, FFItems.SOUL_BATTERY_YELLOW.get());
-        checkCurios[3] = findItem(player, FFItems.SOUL_BATTERY_GOLD.get());
-        checkCurios[4] = findItem(player, FFItems.SOUL_BATTERY_RED.get());
-        checkCurios[5] = findItem(player, FFItems.SOUL_BATTERY_BLACK.get());
-        checkCurios[6] = findItem(player, FFItems.SOUL_BATTERY_WHITE.get());
+        checkCurios[0] = findItem(player, FFItems.PHYLACTERY_BLUE.get());
+        checkCurios[1] = findItem(player, FFItems.PHYLACTERY_GREEN.get());
+        checkCurios[2] = findItem(player, FFItems.PHYLACTERY_YELLOW.get());
+        checkCurios[3] = findItem(player, FFItems.PHYLACTERY_GOLD.get());
+        checkCurios[4] = findItem(player, FFItems.PHYLACTERY_RED.get());
+        checkCurios[5] = findItem(player, FFItems.PHYLACTERY_BLACK.get());
+        checkCurios[6] = findItem(player, FFItems.PHYLACTERY_WHITE.get());
 
         ItemStack curioCharm = null;
 
@@ -148,7 +145,7 @@ public class EntityTagItemHelper
             }
         }
 
-        if(curioCharm != null && curioCharm.getItem() instanceof SoulBattery item)
+        if(curioCharm != null && curioCharm.getItem() instanceof Phylactery item)
             return curioCharm;
 
         return null;

@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.block.common;
 import com.beesechurger.flyingfamiliars.block.entity.common.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -75,7 +75,7 @@ public class BaseEntityTagBlock extends BaseEntityBlock
                 {
                     EntityTagItemHelper.ensureTagPopulated(stack);
 
-                    if(!(stack.getItem() instanceof SoulBattery && item.getEntityCount(stack) == 0))
+                    if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                     {
                         if(!EntityTagItemHelper.isSelectionEmpty(stack))
                         {

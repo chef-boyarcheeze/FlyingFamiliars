@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars;
 
+import com.beesechurger.flyingfamiliars.entity.client.phoenix.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.registries.*;
 import com.beesechurger.flyingfamiliars.entity.client.cloud_ray.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.cormorant.CormorantRenderer;
@@ -70,16 +71,17 @@ public class FlyingFamiliars
 		EntityRenderers.register(FFEntityTypes.GRIFFONFLY.get(), GriffonflyRenderer::new);
 		EntityRenderers.register(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetRenderer::new);
 		EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), CaptureProjectileRenderer::new);
+		EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
 		
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
 
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_BLUE.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_GREEN.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_YELLOW.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_GOLD.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_RED.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_BLACK.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.SOUL_BATTERY_WHITE.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GOLD.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_RED.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLACK.get(), () -> new SoulBatteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_WHITE.get(), () -> new SoulBatteryRenderer());
 	}
 }

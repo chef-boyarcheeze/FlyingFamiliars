@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:soul_battery_gold"
+			"item": "flyingfamiliars:phylactery_gold"
 		},
 		{
 			"item": "minecraft:netherite_scrap"
@@ -14,7 +14,7 @@
 			"item": "minecraft:netherite_scrap"
 		},
 		{
-			"item": "flyingfamiliars:soul_battery_gold"
+			"item": "flyingfamiliars:phylactery_gold"
 		}
 	],
 	"inputEntities": [
@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_red"
+		"item": "flyingfamiliars:phylactery_red"
 	},
 	"outputEntity": {
 		"string": "minecraft:strider"

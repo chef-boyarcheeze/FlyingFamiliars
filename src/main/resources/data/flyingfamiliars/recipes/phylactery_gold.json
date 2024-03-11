@@ -2,7 +2,7 @@
 	"type": "flyingfamiliars:brazier",
 	"inputItems": [
 		{
-			"item": "flyingfamiliars:soul_battery_yellow"
+			"item": "flyingfamiliars:phylactery_yellow"
 		},
 		{
 			"item": "minecraft:raw_iron_block"
@@ -14,7 +14,7 @@
 			"item": "minecraft:raw_iron_block"
 		},
 		{
-			"item": "flyingfamiliars:soul_battery_yellow"
+			"item": "flyingfamiliars:phylactery_yellow"
 		}
 	],
 	"inputEntities": [
@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_gold"
+		"item": "flyingfamiliars:phylactery_gold"
 	},
 	"outputEntity": {
 		"string": "minecraft:axolotl"

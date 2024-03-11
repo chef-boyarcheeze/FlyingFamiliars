@@ -11,13 +11,13 @@
 	"item.flyingfamiliars.void_shard": "Void Shard",
 	"item.flyingfamiliars.light_prism": "Light Prism",
 
-	"item.flyingfamiliars.soul_battery_blue": "Blue Soul Battery",
-	"item.flyingfamiliars.soul_battery_green": "Green Soul Battery",
-	"item.flyingfamiliars.soul_battery_yellow": "Yellow Soul Battery",
-	"item.flyingfamiliars.soul_battery_red": "Red Soul Battery",
-	"item.flyingfamiliars.soul_battery_gold": "Gold Soul Battery",
-	"item.flyingfamiliars.soul_battery_black": "Black Soul Battery",
-	"item.flyingfamiliars.soul_battery_white": "White Soul Battery",
+	"item.flyingfamiliars.phylactery_blue": "Blue Phylactery",
+	"item.flyingfamiliars.phylactery_green": "Green Phylactery",
+	"item.flyingfamiliars.phylactery_yellow": "Yellow Phylactery",
+	"item.flyingfamiliars.phylactery_red": "Red Phylactery",
+	"item.flyingfamiliars.phylactery_gold": "Gold Phylactery",
+	"item.flyingfamiliars.phylactery_black": "Black Phylactery",
+	"item.flyingfamiliars.phylactery_white": "White Phylactery",
 
 	"item.flyingfamiliars.soul_wand_rod": "Soul Wand Rod",
 	"item.flyingfamiliars.pelt_of_the_forest": "Pelt of the Forest",
@@ -27,15 +27,19 @@
 	"item.flyingfamiliars.pearl_of_the_void": "Pearl of the Void",
 	"item.flyingfamiliars.strand_of_the_light": "Strand of the Light",
 
+	"item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
+
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	"item.flyingfamiliars.cormorant_spawn_egg": "Cormorant Spawn Egg",
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
 	"item.flyingfamiliars.magic_carpet_spawn_egg": "Magic Carpet Spawn Egg",
+	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	"entity.flyingfamiliars.cormorant": "Cormorant",
 	"entity.flyingfamiliars.griffonfly": "Griffonfly",
 	"entity.flyingfamiliars.magic_carpet": "Magic Carpet",
+	"entity.flyingfamiliars.phoenix": "Phoenix",
 
 	"effect.flyingfamiliars.doused": "Doused",
 	

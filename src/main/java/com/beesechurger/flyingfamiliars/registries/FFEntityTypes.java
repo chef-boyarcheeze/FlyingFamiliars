@@ -1,10 +1,7 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
-import com.beesechurger.flyingfamiliars.entity.common.CormorantEntity;
-import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
-import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
+import com.beesechurger.flyingfamiliars.entity.common.*;
 import com.beesechurger.flyingfamiliars.entity.common.projectile.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -41,6 +38,11 @@ public class FFEntityTypes
 			() -> EntityType.Builder.of(MagicCarpetEntity::new, MobCategory.CREATURE)
 					.sized(1.8f, 0.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "magic_carpet").toString()));
+
+	public static final RegistryObject<EntityType<PhoenixEntity>> PHOENIX = ENTITY_TYPE_REG.register("phoenix",
+			() -> EntityType.Builder.of(PhoenixEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "phoenix").toString()));
 	
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPE_REG.register("capture_projectile",
 			() -> EntityType.Builder.<CaptureProjectile>of(CaptureProjectile::new, MobCategory.MISC)
@@ -55,5 +57,6 @@ public class FFEntityTypes
 		event.put(FFEntityTypes.CORMORANT.get(), GriffonflyEntity.setAttributes());
 		event.put(FFEntityTypes.GRIFFONFLY.get(), GriffonflyEntity.setAttributes());
 		event.put(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetEntity.setAttributes());
+		event.put(FFEntityTypes.PHOENIX.get(), PhoenixEntity.setAttributes());
 	}
 }

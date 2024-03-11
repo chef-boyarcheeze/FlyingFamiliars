@@ -24,6 +24,7 @@ public class FFCreativeTabs
                 output.accept(FFItems.CORMORANT_SPAWN_EGG.get());
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
                 output.accept(FFItems.MAGIC_CARPET_SPAWN_EGG.get());
+                output.accept(FFItems.PHOENIX_SPAWN_EGG.get());
 
                 // Familiar items
                 output.accept(FFItems.PHOENIX_FEATHER.get());
@@ -48,13 +49,13 @@ public class FFCreativeTabs
                 output.accept(FFItems.LIGHT_PRISM.get());
 
                 // Phylacteries
-                output.accept(FFItems.SOUL_BATTERY_BLUE.get());
-                output.accept(FFItems.SOUL_BATTERY_GREEN.get());
-                output.accept(FFItems.SOUL_BATTERY_YELLOW.get());
-                output.accept(FFItems.SOUL_BATTERY_GOLD.get());
-                output.accept(FFItems.SOUL_BATTERY_RED.get());
-                output.accept(FFItems.SOUL_BATTERY_BLACK.get());
-                output.accept(FFItems.SOUL_BATTERY_WHITE.get());
+                output.accept(FFItems.PHYLACTERY_BLUE.get());
+                output.accept(FFItems.PHYLACTERY_GREEN.get());
+                output.accept(FFItems.PHYLACTERY_YELLOW.get());
+                output.accept(FFItems.PHYLACTERY_GOLD.get());
+                output.accept(FFItems.PHYLACTERY_RED.get());
+                output.accept(FFItems.PHYLACTERY_BLACK.get());
+                output.accept(FFItems.PHYLACTERY_WHITE.get());
 
                 // Misc items
                 output.accept(FFItems.SOUL_WAND_ROD.get());

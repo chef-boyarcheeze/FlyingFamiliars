@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.item.common.SoulItems;
 
-public class SoulBattery extends BaseEntityTagItem
+public class Phylactery extends BaseEntityTagItem
 {
-    public SoulBattery(Properties properties, int capacityMod)
+    public Phylactery(Properties properties, int capacityMod)
     {
         super(properties);
         this.capacityMod = capacityMod;

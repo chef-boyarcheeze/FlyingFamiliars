@@ -155,7 +155,7 @@ public class PhoenixEntity extends BaseFamiliarEntity
     public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
         FFAnimationController crestController = new FFAnimationController<>(this, "crestController", 0, 0, this::crestController);
-        FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
+        FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 8, 0, this::bodyController);
 
         data.add(crestController);
         data.add(bodyController);

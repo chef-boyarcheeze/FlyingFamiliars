@@ -45,7 +45,7 @@ public class PhoenixModel extends GeoModel<PhoenixEntity>
 	{
 		super.setCustomAnimations(phoenixEntity, instanceId, customPredicate);
 
-		if(customPredicate == null || phoenixEntity.isFlying())
+		/*if(customPredicate == null || phoenixEntity.isFlying())
 			return;
 
 		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
@@ -65,6 +65,6 @@ public class PhoenixModel extends GeoModel<PhoenixEntity>
 
 		// compensation for bone rotations not being 0 initially
 		neck_lower_middle.setRotZ((float) Math.toRadians(yRot));
-		head.setRotZ((float) Math.toRadians(yRot));
+		head.setRotZ((float) Math.toRadians(yRot));*/
 	}
 }

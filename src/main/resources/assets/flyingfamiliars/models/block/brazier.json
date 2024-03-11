@@ -2,9 +2,11 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "brazier_fluid",
-		"4": "brazier_sands",
-		"particle": "brazier"
+		"0": "flyingfamiliars:block/brazier/brazier",
+		"2": "flyingfamiliars:block/brazier/brazier_flame",
+		"3": "flyingfamiliars:block/brazier/brazier_fluid",
+		"4": "flyingfamiliars:block/brazier/brazier_sands",
+		"particle": "minecraft:block/gold_block"
 	},
 	"elements": [
 		{
@@ -424,8 +426,8 @@
 			"from": [4, 12.25, 4],
 			"to": [12, 12.25, 12],
 			"faces": {
-				"up": {"uv": [12, 12, 0, 0], "texture": "#0"},
-				"down": {"uv": [12, 0, 0, 12], "texture": "#0"}
+				"up": {"uv": [12, 12, 0, 0], "texture": "#3"},
+				"down": {"uv": [12, 0, 0, 12], "texture": "#3"}
 			}
 		},
 		{
@@ -434,8 +436,8 @@
 			"to": [8, 24, 8],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 17.5, 8]},
 			"faces": {
-				"east": {"uv": [8, 1, 14, 16], "texture": "#0"},
-				"west": {"uv": [2, 1, 8, 16], "texture": "#0"}
+				"east": {"uv": [8, 1, 14, 16], "texture": "#2"},
+				"west": {"uv": [2, 1, 8, 16], "texture": "#2"}
 			}
 		},
 		{
@@ -444,8 +446,8 @@
 			"to": [12.5, 24, 8],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 17.5, 8]},
 			"faces": {
-				"north": {"uv": [2, 1, 8, 16], "texture": "#0"},
-				"south": {"uv": [8, 1, 14, 16], "texture": "#0"}
+				"north": {"uv": [2, 1, 8, 16], "texture": "#2"},
+				"south": {"uv": [8, 1, 14, 16], "texture": "#2"}
 			}
 		},
 		{
@@ -454,8 +456,8 @@
 			"to": [8, 24, 12.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 17.5, 8]},
 			"faces": {
-				"east": {"uv": [2, 1, 8, 16], "texture": "#0"},
-				"west": {"uv": [8, 1, 14, 16], "texture": "#0"}
+				"east": {"uv": [2, 1, 8, 16], "texture": "#2"},
+				"west": {"uv": [8, 1, 14, 16], "texture": "#2"}
 			}
 		},
 		{
@@ -464,8 +466,8 @@
 			"to": [8, 24, 8],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 17.5, 8]},
 			"faces": {
-				"north": {"uv": [8, 1, 14, 16], "texture": "#0"},
-				"south": {"uv": [2, 1, 8, 16], "texture": "#0"}
+				"north": {"uv": [8, 1, 14, 16], "texture": "#2"},
+				"south": {"uv": [2, 1, 8, 16], "texture": "#2"}
 			}
 		},
 		{

@@ -29,7 +29,7 @@
 		}
 	],
 	"outputItem": {
-		"item": "flyingfamiliars:soul_battery_blue"
+		"item": "flyingfamiliars:phylactery_blue"
 	},
 	"outputEntity": {
 		"string": "minecraft:dolphin"

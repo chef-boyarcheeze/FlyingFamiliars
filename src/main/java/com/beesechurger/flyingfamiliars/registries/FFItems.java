@@ -1,8 +1,7 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulBattery;
+import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.*;
 import com.google.common.base.Supplier;
 import net.minecraft.world.item.Item;
@@ -26,13 +25,13 @@ public class FFItems
 	public static final RegistryObject<Item> LIGHT_PRISM = register("light_prism", () -> new LightPrism(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 
 	// Soul Batteries:
-	public static final RegistryObject<Item> SOUL_BATTERY_BLUE = register("soul_battery_blue", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 1));
-	public static final RegistryObject<Item> SOUL_BATTERY_GREEN = register("soul_battery_green", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 2));
-	public static final RegistryObject<Item> SOUL_BATTERY_YELLOW = register("soul_battery_yellow", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 3));
-	public static final RegistryObject<Item> SOUL_BATTERY_GOLD = register("soul_battery_gold", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 4));
-	public static final RegistryObject<Item> SOUL_BATTERY_RED = register("soul_battery_red", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 5));
-	public static final RegistryObject<Item> SOUL_BATTERY_BLACK = register("soul_battery_black", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), 6));
-	public static final RegistryObject<Item> SOUL_BATTERY_WHITE = register("soul_battery_white", () -> new SoulBattery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), 7));
+	public static final RegistryObject<Item> PHYLACTERY_BLUE = register("phylactery_blue", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 1));
+	public static final RegistryObject<Item> PHYLACTERY_GREEN = register("phylactery_green", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 2));
+	public static final RegistryObject<Item> PHYLACTERY_YELLOW = register("phylactery_yellow", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 3));
+	public static final RegistryObject<Item> PHYLACTERY_GOLD = register("phylactery_gold", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 4));
+	public static final RegistryObject<Item> PHYLACTERY_RED = register("phylactery_red", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 5));
+	public static final RegistryObject<Item> PHYLACTERY_BLACK = register("phylactery_black", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), 6));
+	public static final RegistryObject<Item> PHYLACTERY_WHITE = register("phylactery_white", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), 7));
 
 	// Other tools:
 	public static final RegistryObject<Item> CORMORANT_RING = register("cormorant_ring", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON)));
@@ -54,6 +53,7 @@ public class FFItems
 	public static final RegistryObject<ForgeSpawnEggItem> CORMORANT_SPAWN_EGG = register("cormorant_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CORMORANT, 0x070F1C, 0x1B3B6E, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> GRIFFONFLY_SPAWN_EGG = register("griffonfly_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.GRIFFONFLY, 0xCE9800, 0x7C1096, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> MAGIC_CARPET_SPAWN_EGG = register("magic_carpet_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.MAGIC_CARPET, 0xFCFCFC, 0xFFD93E, new Item.Properties()));
+	public static final RegistryObject<ForgeSpawnEggItem> PHOENIX_SPAWN_EGG = register("phoenix_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.PHOENIX, 0xC00C00, 0xFDD000, new Item.Properties()));
 	
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> item)
 	{

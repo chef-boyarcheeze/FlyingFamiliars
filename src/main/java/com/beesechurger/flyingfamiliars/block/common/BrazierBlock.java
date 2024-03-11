@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -42,7 +43,7 @@ public class BrazierBlock extends BaseEntityTagBlock
 		return createTickerHelper(blockEntity, FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierBlockEntity::tick);
 	}
 	
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
 	{
 		if (random.nextInt(20) == 0)
 		{

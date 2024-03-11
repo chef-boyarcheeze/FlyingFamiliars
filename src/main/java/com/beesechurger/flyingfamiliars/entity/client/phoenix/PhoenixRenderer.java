@@ -19,21 +19,19 @@ public class PhoenixRenderer extends GeoEntityRenderer<PhoenixEntity>
 	{
 		super(renderManager, new PhoenixModel());
 		this.shadowRadius = 0.35f;
-		this.withScale(1.4f);
+		this.withScale(1.0f);
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(PhoenixEntity phoenixEntity)
 	{
 		return switch (phoenixEntity.getVariant()) {
-			case "great_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
-			case "australian_pied_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/australian_pied_cormorant.png");
-			case "red_legged_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/red_legged_cormorant.png");
+			case "red" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_red.png");
+			case "blue" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_blue.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_red.png");
 		};
 	}
 
