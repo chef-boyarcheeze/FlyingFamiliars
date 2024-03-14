@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.common.projectile;
 
+import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
@@ -12,16 +13,16 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -35,33 +36,26 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class CaptureProjectile extends ThrowableItemProjectile implements GeoEntity
+public class CaptureProjectile extends BaseWandEffectEntity implements GeoEntity
 {
 	private NonNullList<ItemStack> stacks = NonNullList.create();
-	private Player player = null;
 	private boolean action = false;
 
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	
 	public CaptureProjectile(EntityType<? extends CaptureProjectile> proj, Level level)
 	{
 		super(proj, level);
 	}
-	
+
 	public CaptureProjectile(Level level, LivingEntity entity, boolean action)
 	{
 		super(FFEntityTypes.CAPTURE_PROJECTILE.get(), entity, level);
-
-		if(entity instanceof Player)
-			player = (Player) entity;
 	    this.action = action;
 	}
-	
+
 	public CaptureProjectile(Level level, double x, double y, double z)
 	{
 	    super(FFEntityTypes.CAPTURE_PROJECTILE.get(), x, y, z, level);
@@ -71,8 +65,20 @@ public class CaptureProjectile extends ThrowableItemProjectile implements GeoEnt
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();
 
-		controller.setAnimation(RawAnimation.begin()
-				.thenLoop("animation.capture_projectile.idle"));
+		if(!isDead())
+		{
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.capture_projectile.idle"));
+
+			controller.setAnimationSpeed(3.0f);
+		}
+		else
+		{
+			controller.setAnimation(RawAnimation.begin()
+					.thenLoop("animation.capture_projectile.death"));
+
+			controller.setAnimationSpeed(1.0f);
+		}
 
 		return PlayState.CONTINUE;
 	}
@@ -80,38 +86,45 @@ public class CaptureProjectile extends ThrowableItemProjectile implements GeoEnt
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar data)
 	{
-		FFAnimationController bodyController = new FFAnimationController(this, "bodyController", 0, 0, this::bodyController);
+		FFAnimationController bodyController = new FFAnimationController(this, "bodyController", 2, 0, this::bodyController);
 
 		data.add(bodyController);
 	}
 
+///////////////////////
+// Entity accessors: //
+///////////////////////
+
+// Integers:
+
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public int getDeadTimerMax()
 	{
-		return cache;
+		return 10;
 	}
+
+////////////////////////////////////
+// Player and entity interaction: //
+////////////////////////////////////
 	
 	@Override
     protected void onHitEntity(EntityHitResult result)
 	{
-		if(!this.action && !level().isClientSide() && player != null)
+		if(!isDead())
 		{
-			if(capture(result.getEntity()))
+			if(!action && !level().isClientSide() && player != null)
 			{
-				level().broadcastEntityEvent(this, (byte) 3);
-				level().playSound((Player)null, getX(), getY(), getZ(),
-						FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+				if(capture(result.getEntity()))
+				{
+					level().broadcastEntityEvent(this, (byte) 3);
+					level().playSound((Player)null, getX(), getY(), getZ(),
+							FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+				}
 			}
+
+			setDead(true);
 		}
-
-		this.remove(RemovalReason.KILLED);
     }
-
-	@Override
-	protected Item getDefaultItem()
-	{
-		return Items.AIR;
-	}
 	
 	private boolean capture(Entity target)
 	{
@@ -199,17 +212,20 @@ public class CaptureProjectile extends ThrowableItemProjectile implements GeoEnt
 	@Override
     protected void onHitBlock(BlockHitResult result)
     {
-		if(this.action && !level().isClientSide() && player != null)
+		if(!isDead())
 		{
-			if(release(result))
+			if(action && !level().isClientSide() && player != null)
 			{
-				level().broadcastEntityEvent(this, (byte) 3);
-				level().playSound((Player)null, getX(), getY(), getZ(),
-						FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+				if(release(result))
+				{
+					level().broadcastEntityEvent(this, (byte) 3);
+					level().playSound((Player)null, getX(), getY(), getZ(),
+							FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+				}
 			}
+
+			setDead(true);
 		}
-		
-		this.remove(RemovalReason.KILLED);
     }
 	
 	private boolean release(BlockHitResult result)
@@ -339,18 +355,22 @@ public class CaptureProjectile extends ThrowableItemProjectile implements GeoEnt
 
 		return false;
 	}
-	
+
+////////////////
+// Entity AI: //
+////////////////
+
 	@Override
 	public void tick()
 	{
 		super.tick();
-		if(level().isClientSide())
+		if(level().isClientSide() && !isDead())
 		{
-			Vec3 vec3d = this.getDeltaMovement();
-	        double d0 = this.getX() + vec3d.x;
-	        double d1 = this.getY() + vec3d.y;
-	        double d2 = this.getZ() + vec3d.z;
-	        //this.level.addParticle(ParticleTypes.END_ROD, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
+			Vec3 vec3d = getDeltaMovement();
+	        double d0 = getX() + vec3d.x;
+	        double d1 = getY() + vec3d.y;
+	        double d2 = getZ() + vec3d.z;
+	        level().addParticle(ParticleTypes.END_ROD, d0 - vec3d.x * 0.25D, d1 - vec3d.y * 0.25D, d2 - vec3d.z * 0.25D, 0, 0, 0);
 		}
 	}
 	

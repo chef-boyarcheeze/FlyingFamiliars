@@ -61,8 +61,8 @@ public class FamiliarWanderGoal extends Goal
             return LandRandomPos.getPos(familiar, 25, 40);
         else
         {
-            Vec3 position = HoverRandomPos.getPos(familiar, 25, 20, view.x, view.z, Mth.PI / 2, 15, 5);
-            return position != null ? position : AirAndWaterRandomPos.getPos(familiar, 25, 16, -10, view.x, view.z, Mth.PI / 2);
+            Vec3 position = HoverRandomPos.getPos(familiar, (int) (5 * familiar.getBbWidth()), (int) (5 * familiar.getBbWidth()), view.x, view.z, Mth.PI / 2, (int) (3 * familiar.getBbWidth()), (int) (familiar.getBbWidth()));
+            return position != null ? position : AirAndWaterRandomPos.getPos(familiar, (int) (5 * familiar.getBbWidth()), (int) (5 * familiar.getBbWidth()), -(int) (2 * familiar.getBbWidth()), view.x, view.z, Mth.PI / 2);
         }
     }
 

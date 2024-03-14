@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
 import com.beesechurger.flyingfamiliars.registries.FFEffects;
-import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
@@ -45,13 +43,10 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	protected static final int FOLLOW_RANGE = 8;
 	protected static final int VARIANTS = 3;
 
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
 	public CloudRayEntity(EntityType<CloudRayEntity> entityType, Level level)
 	{
 		super(entityType, level);
 		selectVariant(this.random.nextInt(VARIANTS));
-		actionCooldownTime = 400;
 	}
 
 	public static AttributeSupplier setAttributes()
@@ -71,12 +66,6 @@ public class CloudRayEntity extends BaseFamiliarEntity
 		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.75d));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-	}
-
-	@Override
-	protected BodyRotationControl createBodyControl()
-	{
-		return new FamiliarBodyRotationControl(this, getMoveControlType(), 30, 3.0f);
 	}
 
 	private void selectVariant(int variant)
@@ -134,7 +123,7 @@ public class CloudRayEntity extends BaseFamiliarEntity
 			event.getController().setAnimation(RawAnimation.begin()
 					.thenLoop("animation.cloud_ray.body_idle"));
 
-		controller.setAnimationSpeed(0.8d);
+		controller.setAnimationSpeed(0.6d);
 
 		return PlayState.CONTINUE;
 	}
@@ -153,12 +142,6 @@ public class CloudRayEntity extends BaseFamiliarEntity
 		animationControllers.add(finsController);
 		animationControllers.add(mouthController);
 		animationControllers.add(bodyController);
-	}
-
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
-	{
-		return cache;
 	}
 
 ////////////////////
@@ -267,6 +250,14 @@ public class CloudRayEntity extends BaseFamiliarEntity
 		return isTameItem(stack) || stack.is(Items.SWEET_BERRIES) || stack.is(Items.APPLE) || stack.is(Items.GOLDEN_APPLE) || stack.is(Items.MELON_SLICE);
 	}
 
+// Integers:
+
+	@Override
+	public int getActionCooldownMax()
+	{
+		return 400;
+	}
+
 // Doubles:
 
 	@Override
@@ -279,6 +270,18 @@ public class CloudRayEntity extends BaseFamiliarEntity
 	public double getWalkSpeedMod()
 	{
 		return getControllingPassenger() == null ? 3.5d : 0.4d;
+	}
+
+	@Override
+	public double getBodyRotationAngleLimit()
+	{
+		return 30d;
+	}
+
+	@Override
+	public double getBodyRotationAngleInterval()
+	{
+		return getBodyRotationAngleLimit() / 15d;
 	}
 
 /////////////

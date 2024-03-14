@@ -33,7 +33,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 
 		for(int i = 0; i < brazierEntity.getItemCount(); i++)
 		{
-			float angle = ((i+1) * 360F / brazierEntity.getItemCount());
+			float angle = ((i+1) * 360f / brazierEntity.getItemCount());
 			
 			ItemStack storedItem = brazierEntity.items.get(i);
 			BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(storedItem, brazierEntity.getLevel(), (LivingEntity)null, 0);
@@ -42,9 +42,9 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 			double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
 			
 			stack.pushPose();
-			stack.translate(0.5D, 1.2D, 0.5D);
+			stack.translate(0.5d, 1.2d, 0.5d);
 			stack.mulPose(Axis.YP.rotationDegrees(angle + time));
-			stack.translate(0.6D, craftingShift, 0);
+			stack.translate(0.6d, craftingShift, 0);
 			stack.mulPose(Axis.YP.rotationDegrees(time * 2));
 			Minecraft.getInstance().getItemRenderer().render(storedItem, ItemDisplayContext.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
 			stack.popPose();
@@ -52,7 +52,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 		
 		for(int i = 0; i < brazierEntity.getEntityCount(); i++)
 		{
-			float angle = ((i+1) * 360F / brazierEntity.getEntityCount());
+			float angle = ((i+1) * 360f / brazierEntity.getEntityCount());
 			
 			EntityType<?> type = EntityType.byString(brazierEntity.getEntitiesStrings().get(i)).orElse(null);
 			if(type != null)
@@ -60,12 +60,12 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 				Entity storedEntity = type.create(brazierEntity.getLevel());
 				storedEntity.load(brazierEntity.entities.getList(BASE_ENTITY_TAGNAME, 10).getCompound(i));
 				
-				double craftingOffset = 0.25 * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
+				double craftingOffset = 0.25d * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
 				double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
-				double centerShift = brazierEntity.getEntityCount() == 1 ? 0 : 2.5D;
+				double centerShift = 0.6d * (brazierEntity.getEntityCount() - 1);
 				
 				stack.pushPose();
-				stack.translate(0.5D, 1.6D, 0.5D);
+				stack.translate(0.5d, 1.6d, 0.5d);
 				stack.mulPose(Axis.YN.rotationDegrees(angle + time / 2));
 				stack.scale(0.2f, 0.2f, 0.2f);
 				stack.translate(centerShift, craftingShift, 0);

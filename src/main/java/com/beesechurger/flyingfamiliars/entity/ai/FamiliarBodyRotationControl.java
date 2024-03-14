@@ -14,12 +14,12 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
     private final BaseFamiliarEntity familiar;
 
     private final FFEnumValues.FamiliarMoveTypes rotationType;
-    private final float angleLimit;
-    private final float angleInterval;
+    private final double angleLimit;
+    private final double angleInterval;
     private int headStableTime;
     private float lastStableYHeadRot;
 
-    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, FFEnumValues.FamiliarMoveTypes rotationType, float angleLimit, float angleInterval)
+    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, FFEnumValues.FamiliarMoveTypes rotationType, double angleLimit, double angleInterval)
     {
         super(familiar);
         this.familiar = familiar;

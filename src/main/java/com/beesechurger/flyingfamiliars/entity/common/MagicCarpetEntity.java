@@ -45,8 +45,6 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     protected static final int FOLLOW_RANGE = 6;
     protected static final int VARIANTS = 16;
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
     public MagicCarpetEntity(EntityType<MagicCarpetEntity> entityType, Level level)
     {
         super(entityType, level);
@@ -76,7 +74,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     @Override
     protected BodyRotationControl createBodyControl()
     {
-        return new FamiliarBodyRotationControl(this, getMoveControlType(), 10, 2.0f);
+        return new FamiliarBodyRotationControl(this, getMoveControlType(), getBodyRotationAngleLimit(), getBodyRotationAngleInterval());
     }
 
     private void selectVariant(int variant, boolean playerSet)
@@ -207,12 +205,6 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
         animationControllers.add(body);
     }
 
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
-    {
-        return cache;
-    }
-
 ////////////////////
 // Sound control: //
 ////////////////////
@@ -306,6 +298,18 @@ public class MagicCarpetEntity extends BaseFamiliarEntity
     public double getWalkSpeedMod()
     {
         return getControllingPassenger() == null ? 1d : 1d;
+    }
+
+    @Override
+    public double getBodyRotationAngleLimit()
+    {
+        return 10d;
+    }
+
+    @Override
+    public double getBodyRotationAngleInterval()
+    {
+        return getBodyRotationAngleLimit() / 5d;
     }
 
 ////////////////////////////////////

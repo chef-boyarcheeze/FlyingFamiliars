@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.util;
 
+import com.beesechurger.flyingfamiliars.entity.common.projectile.BaseWandEffectEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimationController;
 

@@ -43,8 +43,6 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	protected static final float ARMOR = 4.0f;
 	protected static final int VARIANTS = 5;
 
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
 	public GriffonflyEntity(EntityType<GriffonflyEntity> entityType, Level level)
 	{
 		super(entityType, level);
@@ -69,12 +67,6 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 		this.goalSelector.addGoal(2, new FamiliarWanderGoal(this, 0.75d));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0f));
 		this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-	}
-
-	@Override
-	protected BodyRotationControl createBodyControl()
-	{
-		return new FamiliarBodyRotationControl(this, getMoveControlType(), 15, 1.5f);
 	}
 
 	private void selectVariant(int variant)
@@ -195,12 +187,6 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 		animationControllers.add(bodyController);
 	}
 
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
-	{
-		return cache;
-	}
-
 ////////////////////
 // Sound control: //
 ////////////////////
@@ -305,6 +291,12 @@ public class GriffonflyEntity extends BaseFamiliarEntity
 	public double getWalkSpeedMod()
 	{
 		return getControllingPassenger() == null ? 3d : 0.3d;
+	}
+
+	@Override
+	public double getBodyRotationAngleLimit()
+	{
+		return 15d;
 	}
 
 /////////////

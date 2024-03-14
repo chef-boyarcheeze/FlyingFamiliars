@@ -50,8 +50,6 @@ public class PhoenixEntity extends BaseFamiliarEntity
     protected static final int FOLLOW_RANGE = 4;
     protected static final int VARIANTS = 2;
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
     public PhoenixEntity(EntityType<PhoenixEntity> entityType, Level level)
     {
         super(entityType, level);
@@ -162,12 +160,6 @@ public class PhoenixEntity extends BaseFamiliarEntity
 
         animationControllers.add(crestController);
         animationControllers.add(bodyController);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
-    {
-        return cache;
     }
 
 ////////////////////////////////

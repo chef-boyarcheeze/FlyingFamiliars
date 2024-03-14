@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "flyingfamiliars:soul_battery_blue",
-    "flyingfamiliars:soul_battery_green",
-    "flyingfamiliars:soul_battery_yellow",
-    "flyingfamiliars:soul_battery_gold",
-    "flyingfamiliars:soul_battery_red",
-    "flyingfamiliars:soul_battery_black",
-    "flyingfamiliars:soul_battery_white"
+    "flyingfamiliars:phylactery_blue",
+    "flyingfamiliars:phylactery_green",
+    "flyingfamiliars:phylactery_yellow",
+    "flyingfamiliars:phylactery_gold",
+    "flyingfamiliars:phylactery_red",
+    "flyingfamiliars:phylactery_black",
+    "flyingfamiliars:phylactery_white"
   ]
 }

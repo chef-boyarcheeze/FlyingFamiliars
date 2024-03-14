@@ -39,7 +39,7 @@ public class ClientEvents
     						-familiar.getRoll(event.getPartialTick())));
     			
     			event.setPitch(renderPitch);
-    			event.setRoll(renderRoll);
+				event.setRoll(renderRoll);
     			
     			event.getCamera().move(-event.getCamera().getMaxZoom(cameraZoom), 0, 0);
             }

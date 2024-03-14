@@ -47,7 +47,7 @@ public class FamiliarMoveControl
                 }
                 else
                 {
-                    familiar.setYRot(rotlerp(familiar.getYRot(), (float) Math.toDegrees(Mth.atan2(dist.z, dist.x)) - 90f, (float) speed * 200f));
+                    familiar.setYRot(rotlerp(familiar.getYRot(), (float) Math.toDegrees(Mth.atan2(dist.z, dist.x)) - 90f, (float) speed * 50f));
                     familiar.yBodyRot = familiar.getYRot();
 
                     familiar.setDeltaMovement(familiar.getDeltaMovement().add(dist.scale(speed / (10f * dist.length()))));
@@ -99,7 +99,7 @@ public class FamiliarMoveControl
                     operation = MoveControl.Operation.JUMPING;
                 }
 
-                familiar.setYRot(rotlerp(familiar.getYRot(), (float) Math.toDegrees(Mth.atan2(dist.z, dist.x)) - 90f, (float) speed * 200f));
+                familiar.setYRot(rotlerp(familiar.getYRot(), (float) Math.toDegrees(Mth.atan2(dist.z, dist.x)) - 90f, (float) speed * 50f));
                 familiar.setSpeed((float) speed);
                 operation = Operation.WAIT;
             }

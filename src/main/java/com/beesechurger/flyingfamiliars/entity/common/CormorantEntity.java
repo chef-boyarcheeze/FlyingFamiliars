@@ -50,8 +50,6 @@ public class CormorantEntity extends BaseFamiliarEntity
     protected static final int FOLLOW_RANGE = 4;
     protected static final int VARIANTS = 3;
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
     public CormorantEntity(EntityType<CormorantEntity> entityType, Level level)
     {
         super(entityType, level);
@@ -168,12 +166,6 @@ public class CormorantEntity extends BaseFamiliarEntity
 
         animationControllers.add(mouthController);
         animationControllers.add(bodyController);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
-    {
-        return cache;
     }
 
 ////////////////////////////////

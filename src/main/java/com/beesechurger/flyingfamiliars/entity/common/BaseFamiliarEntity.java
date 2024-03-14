@@ -34,6 +34,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
 
@@ -47,10 +49,10 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 	public float rollO = 0, roll = 0;
 
 	protected int actionCooldown = 0;
-	protected int actionCooldownTime = 20;
 	protected int flyingTime = 0;
 
 	protected NonNullList<FFAnimationController> animationControllers = NonNullList.create();
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	protected BaseFamiliarEntity(EntityType<? extends TamableAnimal> entity, Level level)
 	{
@@ -63,7 +65,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
-		return new FamiliarBodyRotationControl(this, getMoveControlType(), 0, 0);
+		return new FamiliarBodyRotationControl(this, getMoveControlType(), getBodyRotationAngleLimit(), getBodyRotationAngleInterval());
 	}
 
 ///////////////////////////
@@ -210,6 +212,11 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return actionCooldown;
 	}
 
+	public int getActionCooldownMax()
+	{
+		return 20;
+	}
+
 	public int getFlyingTime()
 	{
 		return flyingTime;
@@ -269,6 +276,24 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 	public abstract double getFlySpeedMod();
 
 	public abstract double getWalkSpeedMod();
+
+	public double getBodyRotationAngleLimit()
+	{
+		return 0;
+	}
+
+	public double getBodyRotationAngleInterval()
+	{
+		return getBodyRotationAngleLimit() / 10d;
+	}
+
+// Misc:
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache()
+	{
+		return cache;
+	}
 
 //////////////////////
 // Entity mutators: //
@@ -438,7 +463,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 
 	protected void resetActionCooldown()
 	{
-		actionCooldown = actionCooldownTime;
+		actionCooldown = getActionCooldownMax();
 	}
 
 	protected void resetFlyingTime()
@@ -601,9 +626,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return new Vec3(xMove, yMove, zMove);
 	}
 
-/////////////
-// Mob AI: //
-/////////////
+////////////////
+// Entity AI: //
+////////////////
 
 	@Override
 	public void tick()
