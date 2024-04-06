@@ -50,7 +50,7 @@ public class FamiliarMoveControl
                     familiar.setYRot(rotlerp(familiar.getYRot(), (float) Math.toDegrees(Mth.atan2(dist.z, dist.x)) - 90f, (float) speed * 50f));
                     familiar.yBodyRot = familiar.getYRot();
 
-                    familiar.setDeltaMovement(familiar.getDeltaMovement().add(dist.scale(speed / (10f * dist.length()))));
+                    familiar.setDeltaMovement(familiar.getDeltaMovement().add(dist.scale(speed / (10f * dist.length())).multiply(1, 0.5d, 1)));
                 }
             }
         }

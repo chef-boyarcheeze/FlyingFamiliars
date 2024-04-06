@@ -18,7 +18,7 @@ public class CormorantRenderer extends GeoEntityRenderer<CormorantEntity>
 	{
 		super(renderManager, new CormorantModel());
 		this.shadowRadius = 0.35f;
-		this.withScale(1.4f);
+		this.withScale(1.5f);
 	}
 
 	@Override
@@ -26,23 +26,23 @@ public class CormorantRenderer extends GeoEntityRenderer<CormorantEntity>
 	{
 		return switch (cormorantEntity.getVariant()) {
 			case "great_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/great_cormorant.png");
 			case "australian_pied_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/australian_pied_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/australian_pied_cormorant.png");
 			case "red_legged_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/red_legged_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/red_legged_cormorant.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/great_cormorant.png");
 		};
 	}
 
 	@Override
-	protected void applyRotations(CormorantEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+	protected void applyRotations(CormorantEntity cormorantEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
 	{
-		super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
+		super.applyRotations(cormorantEntity, stack, ageInTicks, rotationYaw, partialTicks);
 
-		float renderPitch = (float) animatable.getPitch(partialTicks);
-		float renderRoll = (float) animatable.getRoll(partialTicks);
+		float renderPitch = (float) cormorantEntity.getPitch(partialTicks);
+		float renderRoll = (float) cormorantEntity.getRoll(partialTicks);
 
 		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
 		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));

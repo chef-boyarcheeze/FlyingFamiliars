@@ -34,6 +34,7 @@
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
 	"item.flyingfamiliars.magic_carpet_spawn_egg": "Magic Carpet Spawn Egg",
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
+	"item.flyingfamiliars.void_moth_spawn_egg": "Void Moth Spawn Egg",
 
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	"entity.flyingfamiliars.cormorant": "Cormorant",
@@ -44,8 +45,6 @@
 	"effect.flyingfamiliars.doused": "Doused",
 	
 	"block.flyingfamiliars.brazier": "Brazier",
-	"block.flyingfamiliars.crystal_ball": "Crystal Ball",
-	"block.flyingfamiliars.effigy_core": "Effigy Core",
 
 	"key.flyingfamiliars.familiar_ascend": "Familiar Ascend",
 	"key.flyingfamiliars.familiar_descend": "Familiar Descend",

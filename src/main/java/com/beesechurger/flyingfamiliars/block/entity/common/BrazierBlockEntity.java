@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.block.entity.common;
 
 import java.util.Random;
 
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.networking.packet.BEProgressS2CPacket;
@@ -22,10 +23,16 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
-public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
+public class BrazierBlockEntity extends BaseEntityTagBE
 {
 	private BrazierRecipe currentRecipe;
 	
@@ -65,7 +72,11 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 
 		this.itemCapacityMod = 5;
 		this.entityCapacityMod = 3;
-		this.items = NonNullList.withSize(getMaxItems(), ItemStack.EMPTY);
+		this.fluidCapacityMod = 1;
+
+		createItems();
+		createEntities();
+		createFluid();
 	}
 	
 	@Override
@@ -81,6 +92,31 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 		super.load(tag);
 	    progress = tag.getInt(BLOCK_PROGRESS_TAGNAME);
 	}
+
+/////////////////////////////////
+// GeckoLib animation control: //
+/////////////////////////////////
+
+	private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
+	{
+		FFAnimationController controller = (FFAnimationController) event.getController();
+
+		return PlayState.CONTINUE;
+	}
+
+	@Override
+	public void registerControllers(AnimatableManager.ControllerRegistrar data)
+	{
+		FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 0, 0, this::bodyController);
+
+		data.add(bodyController);
+
+		animationControllers.add(bodyController);
+	}
+
+///////////////////
+// Item methods: //
+///////////////////
 
 	@Override
 	public boolean placeItem(ItemStack stack)
@@ -109,7 +145,11 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 
 		return false;
 	}
-	
+
+/////////////////////
+// Entity methods: //
+/////////////////////
+
 	@Override
 	public boolean placeEntity(ItemStack stack)
 	{
@@ -137,24 +177,93 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 
 		return false;
 	}
-	
+
+////////////////
+// Accessors: //
+////////////////
+
+// Ints:
+
 	public int getProgress()
 	{
 		return progress;
 	}
-	
-	public void setProgress(int pr)
-	{
-		progress = pr;
-	}
-	
+
 	public int getMaxProgress()
 	{
 		return maxProgress;
 	}
-	
+
+///////////////
+// Mutators: //
+///////////////
+
+// Ints:
+
+	public void setProgress(int pr)
+	{
+		progress = pr;
+	}
+
+///////////////////////
+// Crafting methods: //
+///////////////////////
+
+	private void findMatch()
+	{
+		boolean found = false;
+		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
+		{
+			if(entry.itemsMatch(items) && entry.entitiesMatch(getEntitiesStrings()))
+			{
+				currentRecipe = entry;
+				found = true;
+				break;
+			}
+		}
+		if(!found) currentRecipe = null;
+	}
+
+	private static void craft(BlockPos pos, BrazierBlockEntity entity)
+	{
+		// Clear all fields
+		entity.clearContent();
+		entity.resetProgress();
+
+		// Spawn result item drop
+		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getOutputItem());
+		drop.setDefaultPickUpDelay();
+		entity.level.addFreshEntity(drop);
+
+		// Add result entity to entity list
+		entity.addResultEntity(entity.currentRecipe.getOutputEntity());
+	}
+
+	public void addResultEntity(String resultEntity)
+	{
+		if(resultEntity == null) return;
+
+		EntityType<?> type = EntityType.byString(resultEntity).orElse(null);
+		if(type != null)
+		{
+			CompoundTag entityNBT = new CompoundTag();
+			ListTag tagList = entities.getList(BASE_ENTITY_TAGNAME, 10);
+			Entity entity = type.create(level);
+
+			entityNBT.putString(BASE_ENTITY_TAGNAME, EntityType.getKey(entity.getType()).toString());
+			entity.saveWithoutId(entityNBT);
+
+			tagList.set(0, entityNBT);
+			entities.put(BASE_ENTITY_TAGNAME, tagList);
+		}
+	}
+
+///////////////////////////
+// Block Entity methods: //
+///////////////////////////
+
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
-	{		
+	{
 		if(level.isClientSide())
 		{
 			if(entity.progress >= entity.maxProgress)
@@ -168,6 +277,7 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 			
 			return;
 		}
+
 		if(entity.currentRecipe != null)
 		{
 			if(entity.currentRecipe.itemsMatch(entity.items))
@@ -194,6 +304,9 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 		}
 		
 		FFMessages.sendToClients(new BEProgressS2CPacket(entity.progress, entity.worldPosition));
+
+		for(FFAnimationController controller : entity.animationControllers)
+			controller.updateProgress();
 	}
 	
 	private void playSound(int source)
@@ -219,55 +332,6 @@ public class BrazierBlockEntity extends BaseEntityTagBE implements Clearable
 			default:
 				break;
 		}
-	}
-	
-	private void findMatch()
-	{
-		boolean found = false;
-		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
-		{
-			if(entry.itemsMatch(items) && entry.entitiesMatch(getEntitiesStrings()))
-			{
-				currentRecipe = entry;
-				found = true;
-				break;
-			}
-		}
-		if(!found) currentRecipe = null;
-	}
-	
-	private static void craft(BlockPos pos, BrazierBlockEntity entity)
-	{		
-		// Clear all fields
-		entity.clearContent();
-		entity.resetProgress();
-		
-		// Spawn result item drop
-		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getOutputItem());
-        drop.setDefaultPickUpDelay();
-        entity.level.addFreshEntity(drop);
-        
-        // Add result entity to entity list
-        entity.addResultEntity(entity.currentRecipe.getOutputEntity());
-	}
-	
-	public void addResultEntity(String resultEntity)
-	{
-		if(resultEntity == null) return;
-		
-    	EntityType<?> type = EntityType.byString(resultEntity).orElse(null);
-    	if(type != null)
-    	{
-    		CompoundTag entityNBT = new CompoundTag();
-    		ListTag tagList = entities.getList(BASE_ENTITY_TAGNAME, 10);
-    		Entity entity = type.create(level);
-    		
-    		entityNBT.putString(BASE_ENTITY_TAGNAME, EntityType.getKey(entity.getType()).toString());
-    		entity.saveWithoutId(entityNBT);
-    		
-    		tagList.set(0, entityNBT);
-    		entities.put(BASE_ENTITY_TAGNAME, tagList);
-    	}
 	}
 	
 	private void resetProgress()

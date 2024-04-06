@@ -4,6 +4,8 @@ import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.common.types.IEarthEntity;
+import com.beesechurger.flyingfamiliars.entity.common.types.IPlantEntity;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
@@ -36,7 +38,7 @@ import java.util.List;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
-public class GriffonflyEntity extends BaseFamiliarEntity
+public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity, IEarthEntity
 {
 	protected static final float MAX_HEALTH = 20.00f;
 	protected static final int FOLLOW_RANGE = 6;

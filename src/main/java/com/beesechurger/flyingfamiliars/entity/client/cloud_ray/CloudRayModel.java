@@ -24,7 +24,7 @@ public class CloudRayModel extends GeoModel<CloudRayEntity>
 	@Override
 	public ResourceLocation getModelResource(CloudRayEntity cloudRayEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cloud_ray/cloud_ray.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/cloud_ray/cloud_ray.geo.json");
 	}
 
 	@Override
@@ -33,19 +33,19 @@ public class CloudRayModel extends GeoModel<CloudRayEntity>
 		return switch (cloudRayEntity.getVariant())
 		{
 			case "white" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
 			case "light_gray" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_light_gray.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_light_gray.png");
 			case "dark_gray" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_dark_gray.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_dark_gray.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cloud_ray/cloud_ray_white.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
 		};
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(CloudRayEntity cloudRayEntity) {
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cloud_ray.animation.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/cloud_ray.animation.json");
 	}
 
 	@Override

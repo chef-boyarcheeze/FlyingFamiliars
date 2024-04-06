@@ -27,9 +27,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseEntityTagBlock extends BaseEntityBlock
+public abstract class BaseEntityTagBlock extends BaseEntityBlock
 {
-    protected VoxelShape SHAPE = Block.box(0, 1, 0, 16, 16,16);
+    protected VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16,16);
 
     protected BaseEntityTagBlock(Properties properties)
     {
@@ -40,12 +40,6 @@ public class BaseEntityTagBlock extends BaseEntityBlock
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state)
-    {
-        return RenderShape.MODEL;
     }
 
     @Override
@@ -75,7 +69,7 @@ public class BaseEntityTagBlock extends BaseEntityBlock
                 {
                     EntityTagItemHelper.ensureTagPopulated(stack);
 
-                    if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
+                    if(item.getEntityCount(stack) != 0)
                     {
                         if(!EntityTagItemHelper.isSelectionEmpty(stack))
                         {

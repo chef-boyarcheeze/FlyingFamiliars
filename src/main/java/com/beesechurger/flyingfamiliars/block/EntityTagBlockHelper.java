@@ -11,6 +11,7 @@ public class EntityTagBlockHelper
 {
     public final static int MAX_ITEMS = 1;
     public final static int MAX_ENTITIES = 1;
+    public final static int MAX_FLUID = 250;
 
     public static void populateTag(BaseEntityTagBE entity)
     {

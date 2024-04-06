@@ -26,7 +26,7 @@ public class FFValueConstants
     public static final int FAMILIAR_TYPE_AIR = 0;
     public static final int FAMILIAR_TYPE_EARTH = 0;
     public static final int FAMILIAR_TYPE_FIRE = 0;
-    public static final int FAMILIAR_TYPE_VOID = 0;
+    public static final int FAMILIAR_TYPE_SHADOW = 0;
     public static final int FAMILIAR_TYPE_LIGHT = 0;
 
     // Goal values:

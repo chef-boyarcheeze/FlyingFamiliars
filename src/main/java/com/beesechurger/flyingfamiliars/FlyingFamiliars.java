@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.entity.client.phoenix.PhoenixRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.void_moth.VoidMothRenderer;
 import com.beesechurger.flyingfamiliars.registries.*;
 import com.beesechurger.flyingfamiliars.entity.client.cloud_ray.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.cormorant.CormorantRenderer;
@@ -10,7 +11,7 @@ import com.beesechurger.flyingfamiliars.entity.client.wand_effects.CaptureProjec
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
-import com.beesechurger.flyingfamiliars.item.client.SoulBatteryRenderer;
+import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
 import com.beesechurger.flyingfamiliars.registries.FFRecipes;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
@@ -72,16 +73,16 @@ public class FlyingFamiliars
 		EntityRenderers.register(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetRenderer::new);
 		EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), CaptureProjectileRenderer::new);
 		EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
-		
-		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(FFBlocks.CRYSTAL_BALL.get(), RenderType.translucent());
+		EntityRenderers.register(FFEntityTypes.VOID_MOTH.get(), VoidMothRenderer::new);
 
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GOLD.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_RED.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLACK.get(), () -> new SoulBatteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_WHITE.get(), () -> new SoulBatteryRenderer());
+
+
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GOLD.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_RED.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLACK.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_WHITE.get(), () -> new PhylacteryRenderer());
 	}
 }

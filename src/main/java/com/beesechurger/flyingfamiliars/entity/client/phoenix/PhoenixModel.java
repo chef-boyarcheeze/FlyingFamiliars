@@ -18,7 +18,7 @@ public class PhoenixModel extends GeoModel<PhoenixEntity>
 	@Override
 	public ResourceLocation getModelResource(PhoenixEntity phoenixEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/phoenix/phoenix.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/phoenix/phoenix.geo.json");
 	}
 
 	@Override
@@ -26,18 +26,18 @@ public class PhoenixModel extends GeoModel<PhoenixEntity>
 	{
 		return switch (phoenixEntity.getVariant()) {
 			case "red" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_red.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 			case "blue" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_blue.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_blue.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_red.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 		};
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(PhoenixEntity phoenixEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/phoenix.animation.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/phoenix.animation.json");
 	}
 
 	@Override

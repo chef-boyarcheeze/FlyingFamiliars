@@ -19,7 +19,7 @@ public class PhoenixRenderer extends GeoEntityRenderer<PhoenixEntity>
 	{
 		super(renderManager, new PhoenixModel());
 		this.shadowRadius = 0.35f;
-		this.withScale(1.0f);
+		this.withScale(1.2f);
 	}
 
 	@Override
@@ -27,21 +27,21 @@ public class PhoenixRenderer extends GeoEntityRenderer<PhoenixEntity>
 	{
 		return switch (phoenixEntity.getVariant()) {
 			case "red" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_red.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 			case "blue" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_blue.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_blue.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/phoenix/phoenix_red.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 		};
 	}
 
 	@Override
-	protected void applyRotations(PhoenixEntity animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+	protected void applyRotations(PhoenixEntity phoenixEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
 	{
-		super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
+		super.applyRotations(phoenixEntity, stack, ageInTicks, rotationYaw, partialTicks);
 
-		float renderPitch = (float) animatable.getPitch(partialTicks);
-		float renderRoll = (float) animatable.getRoll(partialTicks);
+		float renderPitch = (float) phoenixEntity.getPitch(partialTicks);
+		float renderRoll = (float) phoenixEntity.getRoll(partialTicks);
 
 		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
 		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));

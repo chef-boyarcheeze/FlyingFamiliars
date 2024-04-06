@@ -24,9 +24,9 @@ public class CormorantModel extends GeoModel<CormorantEntity>
 	public ResourceLocation getModelResource(CormorantEntity cormorantEntity)
 	{
 		if(cormorantEntity.getHasRing())
-			return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant/cormorant_ring.geo.json");
+			return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/cormorant/cormorant_ring.geo.json");
 
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/cormorant/cormorant_no_ring.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/cormorant/cormorant_no_ring.geo.json");
 	}
 
 	@Override
@@ -34,20 +34,20 @@ public class CormorantModel extends GeoModel<CormorantEntity>
 	{
 		return switch (cormorantEntity.getVariant()) {
 			case "great_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/great_cormorant.png");
 			case "australian_pied_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/australian_pied_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/australian_pied_cormorant.png");
 			case "red_legged_cormorant" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/red_legged_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/red_legged_cormorant.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/cormorant/great_cormorant.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/great_cormorant.png");
 		};
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(CormorantEntity cormorantEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/cormorant.animation.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/cormorant.animation.json");
 	}
 
 	@Override

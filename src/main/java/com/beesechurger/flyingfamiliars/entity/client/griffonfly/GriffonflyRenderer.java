@@ -27,17 +27,17 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
         return switch (griffonflyEntity.getVariant())
 		{
             case "yellow" ->
-                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_yellow.png");
             case "green" ->
-                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_green.png");
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_green.png");
             case "blue" ->
-                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_blue.png");
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_blue.png");
             case "purple" ->
-                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_purple.png");
+                    new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_purple.png");
             case "red" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_red.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_red.png");
             default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/griffonfly/griffonfly_yellow.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_yellow.png");
         };
 	}
 	

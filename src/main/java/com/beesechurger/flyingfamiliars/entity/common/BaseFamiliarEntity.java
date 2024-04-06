@@ -97,9 +97,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		entityData.define(FLYING, false);
 	}
 
-///////////////////////
-// Entity accessors: //
-///////////////////////
+////////////////
+// Accessors: //
+////////////////
 
 // Strings:
 
@@ -295,9 +295,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return cache;
 	}
 
-//////////////////////
-// Entity mutators: //
-//////////////////////
+///////////////
+// Mutators: //
+///////////////
 
 // Strings:
 

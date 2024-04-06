@@ -44,10 +44,10 @@ public class FFMessages
 				.consumerMainThread(BEProgressS2CPacket::handle)
 				.add();
 		
-		net.messageBuilder(EntityListS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-				.decoder(EntityListS2CPacket::new)
-				.encoder(EntityListS2CPacket::toBytes)
-				.consumerMainThread(EntityListS2CPacket::handle)
+		net.messageBuilder(BEEntityListS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+				.decoder(BEEntityListS2CPacket::new)
+				.encoder(BEEntityListS2CPacket::toBytes)
+				.consumerMainThread(BEEntityListS2CPacket::handle)
 				.add();
 		
 		net.messageBuilder(SoulItemSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)

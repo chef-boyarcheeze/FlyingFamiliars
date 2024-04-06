@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.common;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.common.types.IWaterEntity;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
@@ -42,7 +43,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
-public class CormorantEntity extends BaseFamiliarEntity
+public class CormorantEntity extends BaseFamiliarEntity implements IWaterEntity
 {
     private static final EntityDataAccessor<Boolean> HAS_RING = SynchedEntityData.defineId(CormorantEntity.class, EntityDataSerializers.BOOLEAN);
 

@@ -1,0 +1,85 @@
+package com.beesechurger.flyingfamiliars.block.client.brazier;
+
+import com.beesechurger.flyingfamiliars.block.entity.common.BrazierBlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
+
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
+
+@OnlyIn(Dist.CLIENT)
+public class BrazierRenderer extends GeoBlockRenderer<BrazierBlockEntity> implements BlockEntityRenderer<BrazierBlockEntity>
+{
+    public BrazierRenderer(BlockEntityRendererProvider.Context context)
+    {
+        super(new BrazierModel());
+    }
+
+    @Override
+    public void render(BrazierBlockEntity brazierEntity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLight, int combinedOverlay)
+    {
+        if(Minecraft.getInstance().level != null)
+        {
+            float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
+
+            // render items
+            for(int i = 0; i < brazierEntity.getItemCount(); i++)
+            {
+                float angle = ((i+1) * 360f / brazierEntity.getItemCount());
+
+                ItemStack storedItem = brazierEntity.items.get(i);
+                BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(storedItem, brazierEntity.getLevel(), (LivingEntity)null, 0);
+
+                double craftingOffset = 0.25 * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
+                double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
+
+                stack.pushPose();
+                stack.translate(0.5d, 1.2d, 0.5d);
+                stack.mulPose(Axis.YP.rotationDegrees(angle + time));
+                stack.translate(0.6d, craftingShift, 0);
+                stack.mulPose(Axis.YP.rotationDegrees(time * 2));
+                Minecraft.getInstance().getItemRenderer().render(storedItem, ItemDisplayContext.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
+                stack.popPose();
+            }
+
+            // render entities
+            for(int i = 0; i < brazierEntity.getEntityCount(); i++)
+            {
+                float angle = ((i+1) * 360f / brazierEntity.getEntityCount());
+
+                EntityType<?> type = EntityType.byString(brazierEntity.getEntitiesStrings().get(i)).orElse(null);
+                if(type != null)
+                {
+                    Entity storedEntity = type.create(brazierEntity.getLevel());
+                    storedEntity.load(brazierEntity.entities.getList(BASE_ENTITY_TAGNAME, 10).getCompound(i));
+
+                    double craftingOffset = 0.25d * ((double) brazierEntity.getProgress() / (double) brazierEntity.getMaxProgress());
+                    double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
+                    double centerShift = 0.6d * (brazierEntity.getEntityCount() - 1);
+
+                    stack.pushPose();
+                    stack.translate(0.5d, 1.6d, 0.5d);
+                    stack.mulPose(Axis.YN.rotationDegrees(angle + time / 2));
+                    stack.scale(0.2f, 0.2f, 0.2f);
+                    stack.translate(centerShift, craftingShift, 0);
+                    stack.mulPose(Axis.YP.rotationDegrees((float) (30 * Math.sin(time / 30) + 90)));
+                    Minecraft.getInstance().getEntityRenderDispatcher().render(storedEntity, 0, 0, 0, 0, 0, stack, buffer, 255);
+                    stack.popPose();
+                }
+            }
+        }
+    }
+}

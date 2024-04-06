@@ -43,6 +43,11 @@ public class FFEntityTypes
 			() -> EntityType.Builder.of(PhoenixEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "phoenix").toString()));
+
+	public static final RegistryObject<EntityType<VoidMothEntity>> VOID_MOTH = ENTITY_TYPE_REG.register("void_moth",
+			() -> EntityType.Builder.of(VoidMothEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "void_moth").toString()));
 	
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPE_REG.register("capture_projectile",
 			() -> EntityType.Builder.<CaptureProjectile>of(CaptureProjectile::new, MobCategory.MISC)
@@ -58,5 +63,6 @@ public class FFEntityTypes
 		event.put(FFEntityTypes.GRIFFONFLY.get(), GriffonflyEntity.setAttributes());
 		event.put(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetEntity.setAttributes());
 		event.put(FFEntityTypes.PHOENIX.get(), PhoenixEntity.setAttributes());
+		event.put(FFEntityTypes.VOID_MOTH.get(), VoidMothEntity.setAttributes());
 	}
 }

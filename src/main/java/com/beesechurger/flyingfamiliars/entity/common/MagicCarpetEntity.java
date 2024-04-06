@@ -4,6 +4,8 @@ import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.common.types.IAirEntity;
+import com.beesechurger.flyingfamiliars.entity.common.types.IEarthEntity;
 import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
@@ -39,7 +41,7 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
-public class MagicCarpetEntity extends BaseFamiliarEntity
+public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntity, IAirEntity
 {
     protected static final float MAX_HEALTH = 10.00f;
     protected static final int FOLLOW_RANGE = 6;

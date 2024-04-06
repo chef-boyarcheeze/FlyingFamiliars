@@ -1,0 +1,33 @@
+{
+	"type": "flyingfamiliars:brazier",
+	"inputItems": [
+		{
+			"item": "flyingfamiliars:pearl_of_the_void"
+		},
+		{
+			"item": "minecraft:ender_chest"
+		},
+		{
+			"item": "minecraft:phantom_membrane"
+		},
+		{
+			"item": "minecraft:shulker_box"
+		}
+	],
+	"inputEntities": [
+		{
+			"string": "minecraft:bee"
+		},
+		{
+			"string": "minecraft:endermite"
+		},
+		{
+			"string": "minecraft:silverfish"
+		}
+	],
+	"outputItem": {
+	},
+	"outputEntity": {
+		"string": "flyingfamiliars:void_moth"
+	}
+}

@@ -1,5 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.common;
 
+import com.beesechurger.flyingfamiliars.entity.common.types.IAirEntity;
+import com.beesechurger.flyingfamiliars.entity.common.types.IWaterEntity;
 import com.beesechurger.flyingfamiliars.registries.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
@@ -37,7 +39,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
 
-public class CloudRayEntity extends BaseFamiliarEntity
+public class CloudRayEntity extends BaseFamiliarEntity implements IWaterEntity, IAirEntity
 {
 	protected static final float MAX_HEALTH = 40.0f;
 	protected static final int FOLLOW_RANGE = 8;

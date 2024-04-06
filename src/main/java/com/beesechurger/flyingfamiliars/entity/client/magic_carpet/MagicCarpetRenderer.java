@@ -25,39 +25,39 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 	{
 		return switch (magicCarpetEntity.getVariant()) {
 			case "white" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_white.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_white.png");
 			case "light_gray" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_light_gray.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_light_gray.png");
 			case "gray" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_gray.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_gray.png");
 			case "black" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_black.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_black.png");
 			case "red" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_red.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_red.png");
 			case "orange" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_orange.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_orange.png");
 			case "yellow" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_yellow.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_yellow.png");
 			case "lime" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_lime.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_lime.png");
 			case "green" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_green.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_green.png");
 			case "cyan" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_cyan.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_cyan.png");
 			case "light_blue" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_light_blue.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_light_blue.png");
 			case "blue" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_blue.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_blue.png");
 			case "purple" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_purple.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_purple.png");
 			case "magenta" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_magenta.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_magenta.png");
 			case "pink" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_pink.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_pink.png");
 			case "brown" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_brown.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_brown.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/entity/magic_carpet/magic_carpet_white.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_white.png");
 		};
 	}
 	

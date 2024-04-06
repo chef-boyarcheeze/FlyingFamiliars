@@ -25,6 +25,7 @@ public class FFCreativeTabs
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
                 output.accept(FFItems.MAGIC_CARPET_SPAWN_EGG.get());
                 output.accept(FFItems.PHOENIX_SPAWN_EGG.get());
+                output.accept(FFItems.VOID_MOTH_SPAWN_EGG.get());
 
                 // Familiar items
                 output.accept(FFItems.PHOENIX_FEATHER.get());
@@ -78,10 +79,7 @@ public class FFCreativeTabs
 
                 // Block entities
                 output.accept(FFBlocks.BRAZIER.get());
-
-                // misc
-                output.accept(FFBlocks.CRYSTAL_BALL.get());
-                output.accept(FFBlocks.EFFIGY_CORE.get());
+                output.accept(FFBlocks.OBELISK.get());
             })
             .build());
 }

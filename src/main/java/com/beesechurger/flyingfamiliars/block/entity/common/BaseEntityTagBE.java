@@ -1,11 +1,13 @@
 package com.beesechurger.flyingfamiliars.block.entity.common;
 
 import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
+import com.beesechurger.flyingfamiliars.entity.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.networking.FFMessages;
+import com.beesechurger.flyingfamiliars.networking.packet.BEFluidLevelS2CPacket;
 import com.beesechurger.flyingfamiliars.networking.packet.BEItemStackS2CPacket;
-import com.beesechurger.flyingfamiliars.networking.packet.EntityListS2CPacket;
+import com.beesechurger.flyingfamiliars.networking.packet.BEEntityListS2CPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -22,21 +24,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
-public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
+public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, GeoBlockEntity
 {
-    public NonNullList<ItemStack> items;
-    public CompoundTag entities = new CompoundTag();
-
     protected int itemCapacityMod = 1;
     protected int entityCapacityMod = 1;
+    protected int fluidCapacityMod = 4;
+
+    public NonNullList<ItemStack> items = null;
+    public CompoundTag entities = null;
+    public FluidTank fluid = null;
+
+    protected NonNullList<FFAnimationController> animationControllers = NonNullList.create();
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BaseEntityTagBE(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
         super(type, pos, blockState);
-        items = NonNullList.withSize(getMaxItems(), ItemStack.EMPTY);
     }
 
     @Override
@@ -56,7 +66,24 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         entities = tag.getCompound(BASE_ENTITY_TAGNAME);
     }
 
-// Item related methods:
+/////////////////////////////////
+// GeckoLib animation control: //
+/////////////////////////////////
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache()
+    {
+        return cache;
+    }
+
+///////////////////////////
+// Item related methods: //
+///////////////////////////
+
+    protected void createItems()
+    {
+        items = NonNullList.withSize(getMaxItems(), ItemStack.EMPTY);
+    }
 
     public boolean placeItem(ItemStack stack)
     {
@@ -113,7 +140,14 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return EntityTagBlockHelper.MAX_ITEMS * itemCapacityMod;
     }
 
-// Entity tag related methods:
+/////////////////////////////////
+// Entity tag related methods: //
+/////////////////////////////////
+
+    protected void createEntities()
+    {
+        entities = new CompoundTag();
+    }
 
     public boolean placeEntity(ItemStack stack)
     {
@@ -240,7 +274,28 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return entityStrings;
     }
 
-// General Block Entity methods:
+////////////////////////////
+// Fluid related methods: //
+////////////////////////////
+
+    public void createFluid()
+    {
+        fluid = new FluidTank(getMaxFluid());
+    }
+
+    public int getFluidLevel()
+    {
+        return fluid.getFluidAmount();
+    }
+
+    public int getMaxFluid()
+    {
+        return EntityTagBlockHelper.MAX_FLUID * fluidCapacityMod;
+    }
+
+//////////////////////
+// Storage methods: //
+//////////////////////
 
     protected void contentsChanged()
     {
@@ -251,7 +306,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
             EntityTagBlockHelper.ensureTagPopulated(this);
 
             FFMessages.sendToClients(new BEItemStackS2CPacket(items, worldPosition));
-            FFMessages.sendToClients(new EntityListS2CPacket(entities, worldPosition));
+            FFMessages.sendToClients(new BEEntityListS2CPacket(entities, worldPosition));
+            FFMessages.sendToClients(new BEFluidLevelS2CPacket(entities, worldPosition));
         }
     }
 
@@ -260,6 +316,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     {
         this.items.clear();
         EntityTagBlockHelper.populateTag(this);
+        // clear fluid
     }
 
     public void drops()
@@ -272,7 +329,12 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
         entities = new CompoundTag();
+        // clear fluid
     }
+
+///////////////////////////
+// Block Entity methods: //
+///////////////////////////
 
     public ClientboundBlockEntityDataPacket getUpdatePacket()
     {
