@@ -1,13 +1,12 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.common.*;
-import com.beesechurger.flyingfamiliars.entity.common.projectile.CaptureProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.*;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;

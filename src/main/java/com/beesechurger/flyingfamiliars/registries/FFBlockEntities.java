@@ -2,9 +2,8 @@ package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.block.client.brazier.BrazierRenderer;
-import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskRenderer;
-import com.beesechurger.flyingfamiliars.block.entity.common.BrazierBlockEntity;
-import com.beesechurger.flyingfamiliars.block.entity.common.ObeliskBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.ObeliskBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,6 +24,6 @@ public class FFBlockEntities
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
 	{
 		event.registerBlockEntityRenderer(FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierRenderer::new);
-		event.registerBlockEntityRenderer(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), ObeliskRenderer::new);
+		//event.registerBlockEntityRenderer(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), ObeliskRenderer::new);
 	}
 }

@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
-import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.entity.common.GriffonflyEntity;
-import com.beesechurger.flyingfamiliars.entity.common.MagicCarpetEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.GriffonflyEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.MagicCarpetEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;

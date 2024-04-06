@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
-import com.beesechurger.flyingfamiliars.block.entity.common.BaseEntityTagBE;
+import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
@@ -9,7 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -43,6 +42,12 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
     }
 
     @Override
+    public RenderShape getRenderShape(BlockState state)
+    {
+        return RenderShape.MODEL;
+    }
+
+    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         if(state.getBlock() != newState.getBlock())
@@ -69,7 +74,7 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
                 {
                     EntityTagItemHelper.ensureTagPopulated(stack);
 
-                    if(item.getEntityCount(stack) != 0)
+                    if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                     {
                         if(!EntityTagItemHelper.isSelectionEmpty(stack))
                         {
@@ -126,13 +131,7 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
         return null;
     }
 
-    protected SoundEvent getPlaceEntitySound()
-    {
-        return SoundEvents.ITEM_PICKUP;
-    }
+    abstract SoundEvent getPlaceEntitySound();
 
-    protected SoundEvent getRemoveEntitySound()
-    {
-        return SoundEvents.ITEM_PICKUP;
-    }
+    abstract SoundEvent getRemoveEntitySound();
 }

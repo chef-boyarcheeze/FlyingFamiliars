@@ -1,30 +1,23 @@
 package com.beesechurger.flyingfamiliars.block.client.obelisk;
 
-import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.block.entity.common.ObeliskBlockEntity;
-import com.beesechurger.flyingfamiliars.entity.common.CloudRayEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.model.GeoModel;
 
-@OnlyIn(Dist.CLIENT)
-public class ObeliskModel extends GeoModel<ObeliskBlockEntity>
+import java.util.function.Function;
+
+public class ObeliskModel extends Model
 {
-    @Override
-    public ResourceLocation getModelResource(ObeliskBlockEntity obeliskBlockEntity)
+    public ObeliskModel(Function<ResourceLocation, RenderType> function)
     {
-        return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/block/obelisk.geo.json");
+        super(function);
     }
 
     @Override
-    public ResourceLocation getTextureResource(ObeliskBlockEntity obeliskBlockEntity)
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int i1, float v, float v1, float v2, float v3)
     {
-        return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/block/obelisk/obelisk_inactive.png");
-    }
 
-    @Override
-    public ResourceLocation getAnimationResource(ObeliskBlockEntity obeliskBlockEntity) {
-        return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/block/obelisk.animation.json");
     }
 }

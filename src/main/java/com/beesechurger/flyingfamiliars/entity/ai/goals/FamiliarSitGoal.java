@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
-import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.phys.Vec3;

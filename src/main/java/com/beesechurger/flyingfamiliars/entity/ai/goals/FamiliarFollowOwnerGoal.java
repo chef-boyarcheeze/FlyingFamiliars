@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
-import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;

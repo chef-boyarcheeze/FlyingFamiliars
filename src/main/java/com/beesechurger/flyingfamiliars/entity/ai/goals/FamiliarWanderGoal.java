@@ -1,9 +1,8 @@
 package com.beesechurger.flyingfamiliars.entity.ai.goals;
 
-import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;

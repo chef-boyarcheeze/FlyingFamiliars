@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.block;
 
-import com.beesechurger.flyingfamiliars.block.entity.common.BaseEntityTagBE;
+import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 

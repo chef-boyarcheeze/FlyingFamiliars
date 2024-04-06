@@ -1,5 +1,0 @@
-package com.beesechurger.flyingfamiliars.entity.common.types;
-
-public interface ILightEntity
-{
-}

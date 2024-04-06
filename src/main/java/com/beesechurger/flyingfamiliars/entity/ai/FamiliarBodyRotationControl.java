@@ -1,13 +1,11 @@
 package com.beesechurger.flyingfamiliars.entity.ai;
 
-import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.keys.FFKeys;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.phys.Vec3;
 
 public class FamiliarBodyRotationControl extends BodyRotationControl
 {

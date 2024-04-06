@@ -1,12 +1,10 @@
 package com.beesechurger.flyingfamiliars.entity.ai;
 
-import com.beesechurger.flyingfamiliars.entity.common.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Position;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class FamiliarFlyingPathNavigation extends FlyingPathNavigation
 {

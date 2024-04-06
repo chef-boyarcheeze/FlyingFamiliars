@@ -1,18 +1,18 @@
 package com.beesechurger.flyingfamiliars;
 
-import com.beesechurger.flyingfamiliars.entity.client.phoenix.PhoenixRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.void_moth.VoidMothRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.phoenix.PhoenixRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth.VoidMothRenderer;
 import com.beesechurger.flyingfamiliars.registries.*;
-import com.beesechurger.flyingfamiliars.entity.client.cloud_ray.CloudRayRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.cormorant.CormorantRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.griffonfly.GriffonflyRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.magic_carpet.MagicCarpetRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.wand_effects.CaptureProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.cloud_ray.CloudRayRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.cormorant.CormorantRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.griffonfly.GriffonflyRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet.MagicCarpetRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.CaptureProjectileRenderer;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
-import com.beesechurger.flyingfamiliars.networking.FFMessages;
+import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.registries.FFRecipes;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -62,7 +62,7 @@ public class FlyingFamiliars
 	
 	private void commonSetup(final FMLCommonSetupEvent event)
 	{
-		FFMessages.register();
+		FFPackets.register();
 	}
 	
 	private void clientSetup(final FMLClientSetupEvent event)
@@ -75,14 +75,14 @@ public class FlyingFamiliars
 		EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
 		EntityRenderers.register(FFEntityTypes.VOID_MOTH.get(), VoidMothRenderer::new);
 
+		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 
-
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), () -> new PhylacteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), () -> new PhylacteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), () -> new PhylacteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GOLD.get(), () -> new PhylacteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_RED.get(), () -> new PhylacteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLACK.get(), () -> new PhylacteryRenderer());
-		CuriosRendererRegistry.register(FFItems.PHYLACTERY_WHITE.get(), () -> new PhylacteryRenderer());
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), PhylacteryRenderer::new);
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), PhylacteryRenderer::new);
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), PhylacteryRenderer::new);
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GOLD.get(), PhylacteryRenderer::new);
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_RED.get(), PhylacteryRenderer::new);
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLACK.get(), PhylacteryRenderer::new);
+		CuriosRendererRegistry.register(FFItems.PHYLACTERY_WHITE.get(), PhylacteryRenderer::new);
 	}
 }
