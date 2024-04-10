@@ -1,20 +1,21 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
 import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
+import com.beesechurger.flyingfamiliars.block.entity.ObeliskBlockEntity;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import net.minecraft.ChatFormatting;
+import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -77,35 +78,32 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
                     if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                     {
                         if(!EntityTagItemHelper.isSelectionEmpty(stack))
-                        {
-                            String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
-
-                            if(baseEntity.placeEntity(stack))
-                            {
-                                player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
-                                        .withStyle(ChatFormatting.WHITE)
-                                        .append(": " + selectedEntity), true);
-
-                                level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
-                                        FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F, FFSounds.getPitch(), false);
-                            }
-                        }
+                            baseEntity.placeEntity(player, hand);
                         else
-                        {
-                            if(baseEntity.removeEntity(stack))
-                            {
-                                String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
-
-                                player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
-                                        .withStyle(ChatFormatting.WHITE)
-                                        .append(": " + selectedEntity), true);
-
-                                level.playLocalSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
-                                        FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F, FFSounds.getPitch(), false);
-                            }
-                        }
+                            baseEntity.removeEntity(player, hand);
 
                         return InteractionResult.SUCCESS;
+                    }
+                }
+
+                // if stack.getItem() == vita bottle
+
+                if(entity instanceof ObeliskBlockEntity)
+                {
+                    ObeliskBlockEntity et = (ObeliskBlockEntity) entity;
+
+                    if(et.clicked == false)
+                        et.clicked = true;
+                    else
+                        et.clicked = false;
+
+                    Packet<?> packet = et.getUpdatePacket();
+                    if (packet != null)
+                    {
+                        BlockPos posn = et.getBlockPos();
+                        ((ServerChunkCache) level.getChunkSource()).chunkMap
+                                .getPlayers(new ChunkPos(posn), false)
+                                .forEach(e -> e.connection.send(packet));
                     }
                 }
 

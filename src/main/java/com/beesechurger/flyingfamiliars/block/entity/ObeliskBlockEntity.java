@@ -20,8 +20,7 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_
 
 public class ObeliskBlockEntity extends BaseEntityTagBE
 {
-    //protected NonNullList<FFAnimationController> animationControllers = NonNullList.create();
-    //private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public boolean clicked = false;
 
     public ObeliskBlockEntity(BlockPos pos, BlockState blockState)
     {
@@ -54,117 +53,12 @@ public class ObeliskBlockEntity extends BaseEntityTagBE
         //progress = tag.getInt(BLOCK_PROGRESS_TAGNAME);
     }
 
-/////////////////////////////////
-// GeckoLib animation control: //
-/////////////////////////////////
-
-/*    private ObeliskBodyAnimation bodyAnimation = ObeliskBodyAnimation.INACTIVE;
-
-    private static enum ObeliskBodyAnimation
-    {
-        INACTIVE,
-        ACTIVATING,
-        ACTIVE,
-        INACTIVATING;
-    }
-
-    private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
-    {
-        FFAnimationController controller = (FFAnimationController) event.getController();
-
-        *//*switch(bodyAnimation)
-        {
-            case INACTIVE -> controller.setAnimation(RawAnimation.begin()
-                    .thenPlay("animation.obelisk.body_inactive"));
-            case ACTIVATING -> controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.obelisk.body_activation"));
-            case ACTIVE -> controller.setAnimation(RawAnimation.begin()
-                    .thenPlay("animation.obelisk.body_active"));
-            case INACTIVATING -> controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.obelisk.body_inactivation"));
-            default -> controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.obelisk.body_inactive"));
-        }
-
-        controller.updateCurrentAnimation(bodyAnimation.name());
-
-        if(controller.currentAnimation != ANIMATION_EMPTY && controller.hasAnimChanged())
-        {
-            controller.resetProgress();
-            controller.updatePreviousAnimation();
-        }
-
-        boolean shouldActivate = true;
-
-        if(bodyAnimation == ObeliskBodyAnimation.INACTIVATING)
-        {
-            if(!controller.isAnimInProgress())
-            {
-                if(shouldActivate)
-                {
-                    bodyAnimation = ObeliskBodyAnimation.ACTIVATING;
-                }
-                else
-                {
-                    bodyAnimation = ObeliskBodyAnimation.INACTIVE;
-                }
-            }
-        }
-        else if(bodyAnimation == ObeliskBodyAnimation.INACTIVE)
-        {
-            if(shouldActivate)
-                bodyAnimation = ObeliskBodyAnimation.ACTIVATING;
-        }
-        else if(bodyAnimation == ObeliskBodyAnimation.ACTIVATING)
-        {
-            if(!controller.isAnimInProgress())
-            {
-                if(!shouldActivate)
-                {
-                    bodyAnimation = ObeliskBodyAnimation.INACTIVATING;
-                }
-                else
-                {
-                    bodyAnimation = ObeliskBodyAnimation.ACTIVE;
-                }
-            }
-        }
-        else if(bodyAnimation == ObeliskBodyAnimation.ACTIVE)
-        {
-            if(!shouldActivate)
-                bodyAnimation = ObeliskBodyAnimation.INACTIVATING;
-        }*//*
-
-        controller.setAnimation(RawAnimation.begin()
-                .thenPlay("animation.obelisk.body_activation")
-                .thenPlay("animation.obelisk.body_inactivation"));
-
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar data)
-    {
-        FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 0, 0, this::bodyController);
-
-        data.add(bodyController);
-
-        animationControllers.add(bodyController);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
-    {
-        return cache;
-    }*/
-
 ///////////////////////////
 // Block Entity methods: //
 ///////////////////////////
 
     public static void tick(Level level, BlockPos pos, BlockState state, ObeliskBlockEntity entity)
     {
-        //for(FFAnimationController controller : entity.animationControllers)
-        //    controller.updateProgress();
+
     }
 }

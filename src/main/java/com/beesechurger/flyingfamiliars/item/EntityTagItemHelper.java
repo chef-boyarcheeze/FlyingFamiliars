@@ -113,7 +113,7 @@ public class EntityTagItemHelper
         return entityCount == 0;
     }
 
-    public static ItemStack getOffHandBattery(Player player)
+    public static ItemStack getOffHandTagItem(Player player)
     {
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
 
@@ -123,7 +123,7 @@ public class EntityTagItemHelper
         return null;
     }
 
-    public static ItemStack getCurioCharmBattery(Player player)
+    public static ItemStack getCurioCharmTagItem(Player player)
     {
         ItemStack[] checkCurios = new ItemStack[7];
         checkCurios[0] = findItem(player, FFItems.PHYLACTERY_BLUE.get());

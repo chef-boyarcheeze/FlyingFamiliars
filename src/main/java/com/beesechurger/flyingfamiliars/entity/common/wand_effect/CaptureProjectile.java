@@ -126,8 +126,8 @@ public class CaptureProjectile extends BaseWandEffectEntity implements GeoEntity
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
 		ItemStack mainHand = player.getMainHandItem();
-		ItemStack offHand = EntityTagItemHelper.getOffHandBattery(player);
-		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmBattery(player);
+		ItemStack offHand = EntityTagItemHelper.getOffHandTagItem(player);
+		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmTagItem(player);
 
 		if(mainHand != null)
 			stacks.add(mainHand);
@@ -251,8 +251,9 @@ public class CaptureProjectile extends BaseWandEffectEntity implements GeoEntity
 				entity.absMoveTo(x, y, z, 0, 0);
 				level().addFreshEntity(entity);
 
-				entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-				stackList.set(stackList.size()-1, entityNBT);
+				CompoundTag emptyNBT = new CompoundTag();
+				emptyNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
+				stackList.set(stackList.size()-1, emptyNBT);
 
 				stackTag.put(BASE_ENTITY_TAGNAME, stackList);
 				mainHand.setTag(stackTag);
@@ -263,8 +264,8 @@ public class CaptureProjectile extends BaseWandEffectEntity implements GeoEntity
 
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
-		ItemStack offHand = EntityTagItemHelper.getOffHandBattery(player);
-		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmBattery(player);
+		ItemStack offHand = EntityTagItemHelper.getOffHandTagItem(player);
+		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmTagItem(player);
 
 		if(mainHand != null)
 			stacks.add(mainHand);

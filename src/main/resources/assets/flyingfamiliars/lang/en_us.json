@@ -68,6 +68,7 @@
 	"message.flyingfamiliars.entity_tag.select": "Current Selection",
 	"message.flyingfamiliars.entity_tag.place_entity": "Placed Entity",
 	"message.flyingfamiliars.entity_tag.remove_entity": "Removed Entity",
+	"message.flyingfamiliars.entity_tag.tamed_entity": "Can't place tamed entity",
 	"message.flyingfamiliars.mode_tag.normal": "Normal",
 	"message.flyingfamiliars.mode_tag.attack": "Attack",
 	"message.flyingfamiliars.mode_tag.defense": "Defense",

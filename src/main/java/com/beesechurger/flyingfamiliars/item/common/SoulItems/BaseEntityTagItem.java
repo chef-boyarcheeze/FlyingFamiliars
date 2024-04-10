@@ -35,7 +35,6 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
-
         EntityTagItemHelper.ensureTagPopulated(stack);
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
@@ -65,11 +64,6 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
     public int getMaxEntities()
     {
         return EntityTagItemHelper.MAX_ENTITIES * capacityMod;
-    }
-
-    public String getID(int listValue, ItemStack stack)
-    {
-        return stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).getCompound(listValue).getString(BASE_ENTITY_TAGNAME);
     }
 
     @Override
@@ -114,19 +108,23 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
         {
             CompoundTag stackTag = stack.getTag();
 
-            if(entityCount != 0)
+            if (entityCount != 0)
             {
-                if(Screen.hasShiftDown())
+                if (Screen.hasShiftDown())
                 {
                     for (int i = 0; i < getMaxEntities(); i++)
                     {
-                        if(getID(i, stack) != ENTITY_EMPTY)
-                            tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.slot").withStyle(ChatFormatting.YELLOW).append(" " + (i+1) + ": " + getID(i, stack)));
+                        CompoundTag tag = getEntityTag(stack, i);
+                        ChatFormatting format = isEntityTamed(tag) && !isEntityEmpty(tag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+
+                        if (!isEntityEmpty(tag))
+                            tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.slot")
+                                    .withStyle(format).append(" " + (i+1) + ": " + getEntityID(tag)));
                     }
                 }
                 else
                 {
-                    switch(entityCount)
+                    switch (entityCount)
                     {
                         case 1: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_1").withStyle(ChatFormatting.GRAY));
                             break;

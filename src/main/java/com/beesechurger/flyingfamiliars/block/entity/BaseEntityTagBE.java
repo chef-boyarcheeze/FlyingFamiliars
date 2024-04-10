@@ -3,22 +3,21 @@ package com.beesechurger.flyingfamiliars.block.entity;
 import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.packet.BEFluidLevelS2CPacket;
-import com.beesechurger.flyingfamiliars.packet.BEItemStackS2CPacket;
-import com.beesechurger.flyingfamiliars.packet.BEEntityListS2CPacket;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Clearable;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -132,9 +131,12 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         entities = new CompoundTag();
     }
 
-    public boolean placeEntity(ItemStack stack)
+    public boolean placeEntity(Player player, InteractionHand hand)
     {
         EntityTagBlockHelper.ensureTagPopulated(this);
+
+        ItemStack stack = player.getItemInHand(hand);
+        String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
@@ -151,18 +153,31 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
                 {
                     CompoundTag entityNBT = stackList.getCompound(item.getMaxEntities()-1);
 
-                    blockList.set(i, entityNBT);
-                    entities.put(BASE_ENTITY_TAGNAME, blockList);
+                    if(!entityNBT.contains("Owner"))
+                    {
+                        blockList.set(i, entityNBT);
+                        entities.put(BASE_ENTITY_TAGNAME, blockList);
 
-                    CompoundTag empty = new CompoundTag();
-                    empty.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-                    stackList.set(item.getMaxEntities()-1, empty);
+                        CompoundTag empty = new CompoundTag();
+                        empty.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
+                        stackList.set(item.getMaxEntities()-1, empty);
 
-                    stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-                    stack.setTag(stackTag);
-                    contentsChanged();
+                        stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+                        stack.setTag(stackTag);
+                        contentsChanged();
 
-                    return true;
+                        player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
+                                .withStyle(ChatFormatting.WHITE)
+                                .append(": " + selectedEntity), true);
+
+                        return true;
+                    }
+                    else
+                    {
+                        player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.tamed_entity")
+                                .withStyle(ChatFormatting.WHITE)
+                                .append(": " + selectedEntity), true);
+                    }
                 }
             }
         }
@@ -170,9 +185,11 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return false;
     }
 
-    public boolean removeEntity(ItemStack stack)
+    public boolean removeEntity(Player player, InteractionHand hand)
     {
         EntityTagBlockHelper.ensureTagPopulated(this);
+
+        ItemStack stack = player.getItemInHand(hand);
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
@@ -198,6 +215,12 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
                     stackTag.put(BASE_ENTITY_TAGNAME, stackList);
                     stack.setTag(stackTag);
                     contentsChanged();
+
+                    String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
+
+                    player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
+                            .withStyle(ChatFormatting.WHITE)
+                            .append(": " + selectedEntity), true);
 
                     return true;
                 }
@@ -288,9 +311,14 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         {
             EntityTagBlockHelper.ensureTagPopulated(this);
 
-            FFPackets.sendToClients(new BEItemStackS2CPacket(items, worldPosition));
-            FFPackets.sendToClients(new BEEntityListS2CPacket(entities, worldPosition));
-            //FFPackets.sendToClients(new BEFluidLevelS2CPacket(entities, worldPosition));
+            Packet<?> packet = getUpdatePacket();
+            if (packet != null)
+            {
+                BlockPos pos = getBlockPos();
+                ((ServerChunkCache) level.getChunkSource()).chunkMap
+                        .getPlayers(new ChunkPos(pos), false)
+                        .forEach(e -> e.connection.send(packet));
+            }
         }
     }
 

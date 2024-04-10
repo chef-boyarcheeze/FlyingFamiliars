@@ -32,22 +32,10 @@ public class FFPackets
 		
 		INSTANCE = net;
 		
-		net.messageBuilder(BEItemStackS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-				.decoder(BEItemStackS2CPacket::new)
-				.encoder(BEItemStackS2CPacket::toBytes)
-				.consumerMainThread(BEItemStackS2CPacket::handle)
-				.add();
-		
 		net.messageBuilder(BEProgressS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
 				.decoder(BEProgressS2CPacket::new)
 				.encoder(BEProgressS2CPacket::toBytes)
 				.consumerMainThread(BEProgressS2CPacket::handle)
-				.add();
-		
-		net.messageBuilder(BEEntityListS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-				.decoder(BEEntityListS2CPacket::new)
-				.encoder(BEEntityListS2CPacket::toBytes)
-				.consumerMainThread(BEEntityListS2CPacket::handle)
 				.add();
 		
 		net.messageBuilder(SoulItemSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)

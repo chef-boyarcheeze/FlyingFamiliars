@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
 public interface ISoulCycleItem
 {
@@ -17,8 +18,8 @@ public interface ISoulCycleItem
         NonNullList<ItemStack> stacks = NonNullList.create();
 
         ItemStack mainHand = player.getMainHandItem();
-        ItemStack offHand = EntityTagItemHelper.getOffHandBattery(player);
-        ItemStack curioCharm = EntityTagItemHelper.getCurioCharmBattery(player);
+        ItemStack offHand = EntityTagItemHelper.getOffHandTagItem(player);
+        ItemStack curioCharm = EntityTagItemHelper.getCurioCharmTagItem(player);
 
         if(mainHand != null)
             stacks.add(mainHand);
@@ -84,8 +85,23 @@ public interface ISoulCycleItem
         }
     }
 
-    default String getID(int listValue, ItemStack stack)
+    default CompoundTag getEntityTag(ItemStack stack, int listValue)
     {
-        return stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).getCompound(listValue).getString(BASE_ENTITY_TAGNAME);
+        return stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).getCompound(listValue);
+    }
+
+    default String getEntityID(CompoundTag tag)
+    {
+        return tag.getString(BASE_ENTITY_TAGNAME);
+    }
+
+    default Boolean isEntityTamed(CompoundTag tag)
+    {
+        return tag.contains("Owner");
+    }
+
+    default Boolean isEntityEmpty(CompoundTag tag)
+    {
+        return getEntityID(tag) == ENTITY_EMPTY;
     }
 }

@@ -27,7 +27,9 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 	@Override
 	public void render(BrazierBlockEntity brazierEntity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight)
 	{
-		if(Minecraft.getInstance().level == null) return;
+		if(Minecraft.getInstance().level == null)
+			return;
+
         float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
 
 		for(int i = 0; i < brazierEntity.getItemCount(); i++)

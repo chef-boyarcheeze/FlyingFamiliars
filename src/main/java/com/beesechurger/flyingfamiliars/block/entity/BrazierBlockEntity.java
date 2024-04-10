@@ -14,9 +14,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -126,9 +128,9 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 /////////////////////
 
 	@Override
-	public boolean placeEntity(ItemStack stack)
+	public boolean placeEntity(Player player, InteractionHand hand)
 	{
-		if(super.placeEntity(stack))
+		if(super.placeEntity(player, hand))
 		{
 			findMatch();
 			playSound(3);
@@ -140,9 +142,9 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 	}
 
 	@Override
-	public boolean removeEntity(ItemStack stack)
+	public boolean removeEntity(Player player, InteractionHand hand)
 	{
-		if(super.removeEntity(stack))
+		if(super.removeEntity(player, hand))
 		{
 			findMatch();
 			playSound(4);

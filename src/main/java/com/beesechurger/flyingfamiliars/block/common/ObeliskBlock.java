@@ -24,8 +24,8 @@ public class ObeliskBlock extends BaseEntityTagBlock
         super(properties);
         registerDefaultState(this.stateDefinition.any());
         this.SHAPE = Shapes.join(Block.box(0, 0, 0, 16, 3, 16),
-                Shapes.join(Block.box(2, 0, 2, 14, 5.5, 14),
-                        Block.box(4, 0, 4, 12, 30, 12), BooleanOp.OR), BooleanOp.OR);
+                Shapes.join(Block.box(2, 0, 2, 14, 5, 14),
+                        Block.box(4, 0, 4, 12, 36, 12), BooleanOp.OR), BooleanOp.OR);
     }
 
 
