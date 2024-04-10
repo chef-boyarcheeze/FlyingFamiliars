@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/slab",
+	"textures": {
+		"bottom": "flyingfamiliars:block/runic_bricks",
+		"side": "flyingfamiliars:block/runic_bricks",
+		"top": "flyingfamiliars:block/runic_bricks"
+	}
+}

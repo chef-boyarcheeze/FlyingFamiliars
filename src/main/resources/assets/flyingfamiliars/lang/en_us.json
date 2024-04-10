@@ -43,7 +43,11 @@
 	"entity.flyingfamiliars.phoenix": "Phoenix",
 
 	"effect.flyingfamiliars.doused": "Doused",
-	
+
+	"block.flyingfamiliars.runic_bricks": "Runic Bricks",
+	"block.flyingfamiliars.runic_brick_slab": "Runic Brick Slab",
+	"block.flyingfamiliars.inscribed_runic_bricks": "Inscribed Runic Bricks",
+	"block.flyingfamiliars.inscribed_runic_brick_slab": "Inscribed Runic Brick Slab",
 	"block.flyingfamiliars.brazier": "Brazier",
 	"block.flyingfamiliars.obelisk": "Obelisk",
 
