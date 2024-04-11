@@ -41,13 +41,19 @@
 	"entity.flyingfamiliars.griffonfly": "Griffonfly",
 	"entity.flyingfamiliars.magic_carpet": "Magic Carpet",
 	"entity.flyingfamiliars.phoenix": "Phoenix",
+	"entity.flyingfamiliars.void_moth": "Void Moth",
 
 	"effect.flyingfamiliars.doused": "Doused",
 
 	"block.flyingfamiliars.runic_bricks": "Runic Bricks",
 	"block.flyingfamiliars.runic_brick_slab": "Runic Brick Slab",
+	"block.flyingfamiliars.runic_brick_stairs": "Runic Brick Stairs",
+	"block.flyingfamiliars.runic_brick_wall": "Runic Brick Wall",
 	"block.flyingfamiliars.inscribed_runic_bricks": "Inscribed Runic Bricks",
 	"block.flyingfamiliars.inscribed_runic_brick_slab": "Inscribed Runic Brick Slab",
+	"block.flyingfamiliars.inscribed_runic_brick_stairs": "Inscribed Runic Brick Stairs",
+	"block.flyingfamiliars.inscribed_runic_brick_wall": "Inscribed Runic Brick Wall",
+
 	"block.flyingfamiliars.brazier": "Brazier",
 	"block.flyingfamiliars.obelisk": "Obelisk",
 

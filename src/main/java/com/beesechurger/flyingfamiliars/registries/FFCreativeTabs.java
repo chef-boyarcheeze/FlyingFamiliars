@@ -80,9 +80,11 @@ public class FFCreativeTabs
                 // Normal blocks
                 output.accept(FFBlocks.RUNIC_BRICKS.get());
                 output.accept(FFBlocks.RUNIC_BRICK_SLAB.get());
+                output.accept(FFBlocks.RUNIC_BRICK_STAIRS.get());
 
                 output.accept(FFBlocks.INSCRIBED_RUNIC_BRICKS.get());
                 output.accept(FFBlocks.INSCRIBED_RUNIC_BRICK_SLAB.get());
+                output.accept(FFBlocks.INSCRIBED_RUNIC_BRICK_STAIRS.get());
 
                 // Block entities
                 output.accept(FFBlocks.BRAZIER.get());
