@@ -2,6 +2,13 @@
   "replace": false,
   "values": [
     "flyingfamiliars:runic_bricks",
+    "flyingfamiliars:runic_brick_slab",
+    "flyingfamiliars:runic_brick_stairs",
+    "flyingfamiliars:runic_brick_wall",
+    "flyingfamiliars:inscribed_runic_bricks",
+    "flyingfamiliars:inscribed_runic_brick_slab",
+    "flyingfamiliars:inscribed_runic_brick_stairs",
+    "flyingfamiliars:inscribed_runic_brick_wall",
     "flyingfamiliars:brazier",
     "flyingfamiliars:obelisk"
   ]

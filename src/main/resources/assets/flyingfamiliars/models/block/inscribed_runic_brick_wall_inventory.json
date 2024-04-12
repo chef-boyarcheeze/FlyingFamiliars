@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/wall_inventory",
+    "textures": {
+        "wall": "flyingfamiliars:block/inscribed_runic_bricks"
+    }
+}
