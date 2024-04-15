@@ -316,7 +316,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity
 			if(getControllingPassenger() == null && getPassengers().size() != 0)
 			{
 				ejectPassengers();
-				level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
+				level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 2f + random.nextFloat(), 1.5f * FFSounds.getPitch());
 			}
 		}
 	}
@@ -333,7 +333,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity
 				if(getPassengers().size() <= 1)
 				{
 					candidate.startRiding(this);
-					level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
+					level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_GRAB.get(), SoundSource.NEUTRAL, 2f + random.nextFloat(), 2f * FFSounds.getPitch());
 					return true;
 				}
 				// Release carried mob
@@ -344,7 +344,7 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity
 						if(candidate == e)
 						{
 							candidate.stopRiding();
-							level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 0.5F + random.nextFloat(), 1.5f * FFSounds.getPitch());
+							level().playSound(null, getX(), getY(), getZ(), FFSounds.GRIFFONFLY_RELEASE.get(), SoundSource.NEUTRAL, 2f + random.nextFloat(), 2f * FFSounds.getPitch());
 							return true;
 						}
 					}

@@ -2,43 +2,77 @@
 	"brazier_add_entity": {
 		"subtitle": "sounds.flyingfamiliars.brazier_add_entity",
 		"sounds": [
-			"flyingfamiliars:brazier_add_entity"
+			"flyingfamiliars:brazier/brazier_add_entity"
 		]
 	},
 	"brazier_add_item": {
 		"subtitle": "sounds.flyingfamiliars.brazier_add_item",
 		"sounds": [
-			"flyingfamiliars:brazier_add_item"
+			"flyingfamiliars:brazier/brazier_add_item"
 		]
 	},
 	"brazier_ambient": {
 		"subtitle": "sounds.flyingfamiliars.brazier_ambient",
 		"sounds": [
-			"flyingfamiliars:brazier_ambient"
+			"flyingfamiliars:brazier/brazier_ambient"
 		]
 	},
 	"brazier_craft": {
 		"subtitle": "sounds.flyingfamiliars.brazier_craft",
 		"sounds": [
-			"flyingfamiliars:brazier_craft"
+			"flyingfamiliars:brazier/brazier_craft"
 		]
 	},
 	"brazier_remove_entity": {
 		"subtitle": "sounds.flyingfamiliars.brazier_remove_entity",
 		"sounds": [
-			"flyingfamiliars:brazier_remove_entity"
+			"flyingfamiliars:brazier/brazier_remove_entity"
 		]
 	},
 	"brazier_remove_item": {
 		"subtitle": "sounds.flyingfamiliars.brazier_remove_item",
 		"sounds": [
-			"flyingfamiliars:brazier_remove_item"
+			"flyingfamiliars:brazier/brazier_remove_item"
 		]
 	},
-	"brazier_result": {
-		"subtitle": "sounds.flyingfamiliars.brazier_result",
+	"runic_bricks_break": {
+		"subtitle": "sounds.flyingfamiliars.runic_bricks_break",
 		"sounds": [
-			"flyingfamiliars:brazier_result"
+			"flyingfamiliars:runic_bricks/runic_bricks_break_1",
+			"flyingfamiliars:runic_bricks/runic_bricks_break_2",
+			"flyingfamiliars:runic_bricks/runic_bricks_break_3"
+		]
+	},
+	"runic_bricks_fall": {
+		"subtitle": "sounds.flyingfamiliars.runic_bricks_fall",
+		"sounds": [
+			"flyingfamiliars:runic_bricks/runic_bricks_fall_1",
+			"flyingfamiliars:runic_bricks/runic_bricks_fall_2",
+			"flyingfamiliars:runic_bricks/runic_bricks_fall_3"
+		]
+	},
+	"runic_bricks_hit": {
+		"subtitle": "sounds.flyingfamiliars.runic_bricks_hit",
+		"sounds": [
+			"flyingfamiliars:runic_bricks/runic_bricks_hit_1",
+			"flyingfamiliars:runic_bricks/runic_bricks_hit_2",
+			"flyingfamiliars:runic_bricks/runic_bricks_hit_3"
+		]
+	},
+	"runic_bricks_place": {
+		"subtitle": "sounds.flyingfamiliars.runic_bricks_place",
+		"sounds": [
+			"flyingfamiliars:runic_bricks/runic_bricks_place_1",
+			"flyingfamiliars:runic_bricks/runic_bricks_place_2",
+			"flyingfamiliars:runic_bricks/runic_bricks_place_3"
+		]
+	},
+	"runic_bricks_step": {
+		"subtitle": "sounds.flyingfamiliars.runic_bricks_step",
+		"sounds": [
+			"flyingfamiliars:runic_bricks/runic_bricks_step_1",
+			"flyingfamiliars:runic_bricks/runic_bricks_step_2",
+			"flyingfamiliars:runic_bricks/runic_bricks_step_3"
 		]
 	},
 	"cloud_ray_apply_doused": {
