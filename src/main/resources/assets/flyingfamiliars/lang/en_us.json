@@ -82,7 +82,13 @@
 	"message.flyingfamiliars.mode_tag.normal": "Normal",
 	"message.flyingfamiliars.mode_tag.attack": "Attack",
 	"message.flyingfamiliars.mode_tag.defense": "Defense",
-	
+
+	"sounds.flyingfamiliars.runic_bricks_break": "Block broken",
+	"sounds.flyingfamiliars.runic_bricks_step": "Footsteps",
+	"sounds.flyingfamiliars.runic_bricks_place": "Block placed",
+	"sounds.flyingfamiliars.runic_bricks_hit": "Block breaking",
+	"sounds.flyingfamiliars.runic_bricks_fall": "Block fallen on",
+
 	"sounds.flyingfamiliars.brazier_add_entity": "Soul added to brazier",
 	"sounds.flyingfamiliars.brazier_add_item": "Item added to brazier",
 	"sounds.flyingfamiliars.brazier_ambient": "Brazier burns",
@@ -90,6 +96,7 @@
 	"sounds.flyingfamiliars.brazier_remove_entity": "Soul removed from brazier",
 	"sounds.flyingfamiliars.brazier_remove_item": "Item removed from brazier",
 	"sounds.flyingfamiliars.brazier_result": "Brazier finished crafting",
+
 	"sounds.flyingfamiliars.cloud_ray_apply_doused": "Cloud Ray douses owner",
 	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
 	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
@@ -99,8 +106,10 @@
 	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
 	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
+
 	"sounds.flyingfamiliars.cormorant_squawk1": "Cormorant squawks",
 	"sounds.flyingfamiliars.cormorant_squawk2": "Cormorant squawks",
+
 	"sounds.flyingfamiliars.griffonfly_chitter1": "Griffonfly chitters",
 	"sounds.flyingfamiliars.griffonfly_chitter2": "Griffonfly chitters",
 	"sounds.flyingfamiliars.griffonfly_death": "Griffonfly dies",
@@ -110,6 +119,7 @@
 	"sounds.flyingfamiliars.griffonfly_grab": "Griffonfly grabs mob",
 	"sounds.flyingfamiliars.griffonfly_hurt": "Griffonfly hurts",
 	"sounds.flyingfamiliars.griffonfly_release": "Griffonfly releases mob",
+
 	"sounds.flyingfamiliars.soul_wand_swap": "Soul Wand mob selected",
 	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used"
 }

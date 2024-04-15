@@ -17,6 +17,12 @@ public class FFSounds
 	// Sound Events
 	public static final DeferredRegister<SoundEvent> SOUND_EVENT_REG = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, FlyingFamiliars.MOD_ID);
 
+	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_BREAK = registerSoundEvent("runic_bricks_break");
+	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_STEP = registerSoundEvent("runic_bricks_step");
+	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_PLACE = registerSoundEvent("runic_bricks_place");
+	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_HIT = registerSoundEvent("runic_bricks_hit");
+	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_FALL = registerSoundEvent("runic_bricks_fall");
+
 	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ENTITY = registerSoundEvent("brazier_add_entity");
 	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ITEM = registerSoundEvent("brazier_add_item");
 	public static final RegistryObject<SoundEvent> BRAZIER_AMBIENT = registerSoundEvent("brazier_ambient");
@@ -50,12 +56,6 @@ public class FFSounds
 	
 	public static final RegistryObject<SoundEvent> SOUL_WAND_SWAP = registerSoundEvent("soul_wand_swap");
 	public static final RegistryObject<SoundEvent> SOUL_WAND_THROW = registerSoundEvent("soul_wand_throw");
-
-	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_BREAK = registerSoundEvent("runic_bricks_break");
-	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_STEP = registerSoundEvent("runic_bricks_step");
-	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_PLACE = registerSoundEvent("runic_bricks_place");
-	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_HIT = registerSoundEvent("runic_bricks_hit");
-	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_FALL = registerSoundEvent("runic_bricks_fall");
 
 	// Sound Types
 	public static final ForgeSoundType RUNIC_BRICKS = new ForgeSoundType(2f, 1f,
