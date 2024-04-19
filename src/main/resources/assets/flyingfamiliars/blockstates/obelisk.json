@@ -1,5 +1,8 @@
 {
 	"variants": {
-		"": { "model": "flyingfamiliars:block/obelisk" }
+		"facing=north": { "model": "flyingfamiliars:block/obelisk" },
+		"facing=east": { "model": "flyingfamiliars:block/obelisk", "y": 90 },
+		"facing=south": { "model": "flyingfamiliars:block/obelisk", "y": 180 },
+		"facing=west": { "model": "flyingfamiliars:block/obelisk", "y": 270 }
 	}
 }

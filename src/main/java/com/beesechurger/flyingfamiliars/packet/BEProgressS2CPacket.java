@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.packet;
 
 import java.util.function.Supplier;
 
-import com.beesechurger.flyingfamiliars.block.entity.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ public class BEProgressS2CPacket
 	{
 		supplier.get().enqueueWork(() -> 
 		{
-			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BrazierBlockEntity blockEntity)
+			if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof BrazierBE blockEntity)
 			{
 				blockEntity.setProgress(progress);
 			}

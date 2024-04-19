@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.block.common;
 import javax.annotation.Nullable;
 
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.block.entity.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import net.minecraft.core.BlockPos;
@@ -31,14 +31,14 @@ public class BrazierBlock extends BaseEntityTagBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new BrazierBlockEntity(pos, state);
+		return new BrazierBE(pos, state);
 	}
 	
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity)
 	{
-		return createTickerHelper(blockEntity, FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierBlockEntity::tick);
+		return createTickerHelper(blockEntity, FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierBE::tick);
 	}
 	
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
@@ -70,16 +70,4 @@ public class BrazierBlock extends BaseEntityTagBlock
       										   (double) pos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
       										   0.0D, 0.005D, 0.0D);
     }
-
-	@Override
-	protected SoundEvent getPlaceEntitySound()
-	{
-		return FFSounds.BRAZIER_ADD_ENTITY.get();
-	}
-
-	@Override
-	protected SoundEvent getRemoveEntitySound()
-	{
-		return FFSounds.BRAZIER_REMOVE_ENTITY.get();
-	}
 }

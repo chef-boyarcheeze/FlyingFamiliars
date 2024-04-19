@@ -1,5 +1,8 @@
 {
 	"variants": {
-		"": { "model": "flyingfamiliars:block/brazier" }
+		"facing=north": { "model": "flyingfamiliars:block/brazier" },
+		"facing=east": { "model": "flyingfamiliars:block/brazier", "y": 90 },
+		"facing=south": { "model": "flyingfamiliars:block/brazier", "y": 180 },
+		"facing=west": { "model": "flyingfamiliars:block/brazier", "y": 270 }
 	}
 }

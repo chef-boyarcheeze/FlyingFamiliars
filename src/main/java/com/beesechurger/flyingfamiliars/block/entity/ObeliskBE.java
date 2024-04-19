@@ -1,28 +1,16 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
-
-public class ObeliskBlockEntity extends BaseEntityTagBE
+public class ObeliskBE extends BaseEntityTagBE
 {
     public boolean clicked = false;
 
-    public ObeliskBlockEntity(BlockPos pos, BlockState blockState)
+    public ObeliskBE(BlockPos pos, BlockState blockState)
     {
         super(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), pos, blockState);
 
@@ -57,7 +45,7 @@ public class ObeliskBlockEntity extends BaseEntityTagBE
 // Block Entity methods: //
 ///////////////////////////
 
-    public static void tick(Level level, BlockPos pos, BlockState state, ObeliskBlockEntity entity)
+    public static void tick(Level level, BlockPos pos, BlockState state, ObeliskBE entity)
     {
 
     }

@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.block.client.brazier;
 
-import com.beesechurger.flyingfamiliars.block.entity.BrazierBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 
-public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
+public class BrazierRenderer implements BlockEntityRenderer<BrazierBE>
 {	
 	public BrazierRenderer(BlockEntityRendererProvider.Context c)
 	{
@@ -25,7 +25,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity>
 	
 	@SuppressWarnings("resource")
 	@Override
-	public void render(BrazierBlockEntity brazierEntity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight)
+	public void render(BrazierBE brazierEntity, float partialTicks, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight)
 	{
 		if(Minecraft.getInstance().level == null)
 			return;

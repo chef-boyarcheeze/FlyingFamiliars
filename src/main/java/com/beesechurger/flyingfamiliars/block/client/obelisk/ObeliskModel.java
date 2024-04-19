@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.client.obelisk;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.block.entity.ObeliskBE;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
@@ -14,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 public class ObeliskModel extends Model
 {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(FlyingFamiliars.MOD_ID, "obelisk"), "main");
-    public static final ResourceLocation TEXTURE = new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/block/obelisk/obelisk_pillar.png");
     private final ModelPart body;
 
     public ObeliskModel(ModelPart root)
@@ -43,7 +43,7 @@ public class ObeliskModel extends Model
         PartDefinition cube_r7 = top.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, -26.0F, -5.0F, 5.0F, 26.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -4.0F, 6.55F, 0.1396F, 0.0F, 0.0F));
         PartDefinition cube_r8 = top.addOrReplaceChild("cube_r8", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -26.0F, -2.5F, 5.0F, 26.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.55F, -4.0F, 0.0F, 0.0F, 0.0F, 0.1396F));
 
-        return LayerDefinition.create(meshdefinition, 128, 128);
+        return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     public void render(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
@@ -55,5 +55,10 @@ public class ObeliskModel extends Model
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
         body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    public static ResourceLocation getTexture(ObeliskBE obeliskBlockEntity)
+    {
+        return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/block/obelisk/obelisk_pillar.png");
     }
 }

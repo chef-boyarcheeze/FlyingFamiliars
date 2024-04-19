@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "flyingfamiliars:block/vita_alembic" },
+		"facing=east": { "model": "flyingfamiliars:block/vita_alembic", "y": 90 },
+		"facing=south": { "model": "flyingfamiliars:block/vita_alembic", "y": 180 },
+		"facing=west": { "model": "flyingfamiliars:block/vita_alembic", "y": 270 }
+	}
+}

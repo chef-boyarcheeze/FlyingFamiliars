@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.block.entity;
 
 import java.util.Random;
 
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.packet.BEProgressS2CPacket;
@@ -23,14 +22,10 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.object.PlayState;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
-public class BrazierBlockEntity extends BaseEntityTagBE
+public class BrazierBE extends BaseEntityTagBE
 {
 	private BrazierRecipe currentRecipe;
 	
@@ -38,7 +33,7 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 	private int progress = 0;
 	private int maxProgress = 60;
 	
-	public BrazierBlockEntity(BlockPos position, BlockState state)
+	public BrazierBE(BlockPos position, BlockState state)
 	{
 		super(FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), position, state);
 
@@ -47,8 +42,8 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 			{
 				return switch(index)
 				{
-					case 0 -> BrazierBlockEntity.this.progress;
-					case 1 -> BrazierBlockEntity.this.maxProgress;
+					case 0 -> BrazierBE.this.progress;
+					case 1 -> BrazierBE.this.maxProgress;
 					default -> 0;
 				};
 			}
@@ -57,8 +52,8 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 			{
 				switch(index)
 				{
-					case 0 -> BrazierBlockEntity.this.progress = value;
-					case 1 -> BrazierBlockEntity.this.maxProgress = value;
+					case 0 -> BrazierBE.this.progress = value;
+					case 1 -> BrazierBE.this.maxProgress = value;
 				}
 			}
 			
@@ -201,7 +196,7 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 		if(!found) currentRecipe = null;
 	}
 
-	private static void craft(BlockPos pos, BrazierBlockEntity entity)
+	private static void craft(BlockPos pos, BrazierBE entity)
 	{
 		// Clear all fields
 		entity.clearContent();
@@ -239,7 +234,7 @@ public class BrazierBlockEntity extends BaseEntityTagBE
 // Block Entity methods: //
 ///////////////////////////
 
-	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity)
+	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBE entity)
 	{
 		if(level.isClientSide())
 		{

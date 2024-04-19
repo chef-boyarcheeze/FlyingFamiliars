@@ -1,11 +1,12 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
 import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
-import com.beesechurger.flyingfamiliars.block.entity.ObeliskBlockEntity;
+import com.beesechurger.flyingfamiliars.block.entity.ObeliskBE;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
-import com.beesechurger.flyingfamiliars.registries.FFPackets;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import net.minecraft.commands.arguments.blocks.BlockStateArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerChunkCache;
@@ -14,14 +15,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -29,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseEntityTagBlock extends BaseEntityBlock
 {
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     protected VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16,16);
 
     protected BaseEntityTagBlock(Properties properties)
@@ -88,9 +93,9 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
 
                 // if stack.getItem() == vita bottle
 
-                if(entity instanceof ObeliskBlockEntity)
+                if(entity instanceof ObeliskBE)
                 {
-                    ObeliskBlockEntity et = (ObeliskBlockEntity) entity;
+                    ObeliskBE et = (ObeliskBE) entity;
 
                     if(et.clicked == false)
                         et.clicked = true;
@@ -123,13 +128,40 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return null;
+    protected SoundEvent getPlaceEntitySound()
+    {
+        return FFSounds.BRAZIER_ADD_ENTITY.get();
     }
 
-    abstract SoundEvent getPlaceEntitySound();
+    protected SoundEvent getRemoveEntitySound()
+    {
+        return FFSounds.BRAZIER_REMOVE_ENTITY.get();
+    }
 
-    abstract SoundEvent getRemoveEntitySound();
+////////////////////////////
+// BlockState parameters: //
+////////////////////////////
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx)
+    {
+        return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+    }
+
+    @Override public BlockState rotate(BlockState state, Rotation rotation)
+    {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        builder.add(FACING);
+    }
 }

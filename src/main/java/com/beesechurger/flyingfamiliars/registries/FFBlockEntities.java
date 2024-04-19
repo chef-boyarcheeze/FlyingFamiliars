@@ -4,9 +4,10 @@ import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.block.client.brazier.BrazierRenderer;
 import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskRenderer;
 import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskModel;
-import com.beesechurger.flyingfamiliars.block.entity.BrazierBlockEntity;
-import com.beesechurger.flyingfamiliars.block.entity.ObeliskBlockEntity;
-import net.minecraft.world.entity.EntityType;
+import com.beesechurger.flyingfamiliars.block.client.vita_alembic.VitaAlembicRenderer;
+import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
+import com.beesechurger.flyingfamiliars.block.entity.ObeliskBE;
+import com.beesechurger.flyingfamiliars.block.entity.VitaAlembicBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,14 +21,16 @@ public class FFBlockEntities
 {
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REG = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, FlyingFamiliars.MOD_ID);
 	
-	public static final RegistryObject<BlockEntityType<BrazierBlockEntity>> BRAZIER_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("brazier_block_entity", () -> BlockEntityType.Builder.of(BrazierBlockEntity::new, FFBlocks.BRAZIER.get()).build(null));
-	public static final RegistryObject<BlockEntityType<ObeliskBlockEntity>> OBELISK_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("obelisk_block_entity", () -> BlockEntityType.Builder.of(ObeliskBlockEntity::new, FFBlocks.OBELISK.get()).build(null));
+	public static final RegistryObject<BlockEntityType<BrazierBE>> BRAZIER_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("brazier_block_entity", () -> BlockEntityType.Builder.of(BrazierBE::new, FFBlocks.BRAZIER.get()).build(null));
+	public static final RegistryObject<BlockEntityType<ObeliskBE>> OBELISK_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("obelisk_block_entity", () -> BlockEntityType.Builder.of(ObeliskBE::new, FFBlocks.OBELISK.get()).build(null));
+	public static final RegistryObject<BlockEntityType<VitaAlembicBE>> VITA_ALEMBIC_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("vita_alembic_block_entity", () -> BlockEntityType.Builder.of(VitaAlembicBE::new, FFBlocks.VITA_ALEMBIC.get()).build(null));
 
 	@SubscribeEvent
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
 	{
 		event.registerBlockEntityRenderer(FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierRenderer::new);
 		event.registerBlockEntityRenderer(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), ObeliskRenderer::new);
+		event.registerBlockEntityRenderer(FFBlockEntities.VITA_ALEMBIC_BLOCK_ENTITY.get(), VitaAlembicRenderer::new);
 	}
 
 	@SubscribeEvent
