@@ -23,12 +23,13 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_HIT = registerSoundEvent("runic_bricks_hit");
 	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_FALL = registerSoundEvent("runic_bricks_fall");
 
-	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ENTITY = registerSoundEvent("brazier_add_entity");
-	public static final RegistryObject<SoundEvent> BRAZIER_ADD_ITEM = registerSoundEvent("brazier_add_item");
+	public static final RegistryObject<SoundEvent> TAG_BLOCK_ADD_ENTITY = registerSoundEvent("tag_block_add_entity");
+	public static final RegistryObject<SoundEvent> TAG_BLOCK_ADD_ITEM = registerSoundEvent("tag_block_add_item");
+	public static final RegistryObject<SoundEvent> TAG_BLOCK_REMOVE_ENTITY = registerSoundEvent("tag_block_remove_entity");
+	public static final RegistryObject<SoundEvent> TAG_BLOCK_REMOVE_ITEM = registerSoundEvent("tag_block_remove_item");
+
 	public static final RegistryObject<SoundEvent> BRAZIER_AMBIENT = registerSoundEvent("brazier_ambient");
 	public static final RegistryObject<SoundEvent> BRAZIER_CRAFT = registerSoundEvent("brazier_craft");
-	public static final RegistryObject<SoundEvent> BRAZIER_REMOVE_ENTITY = registerSoundEvent("brazier_remove_entity");
-	public static final RegistryObject<SoundEvent> BRAZIER_REMOVE_ITEM = registerSoundEvent("brazier_remove_item");
 	public static final RegistryObject<SoundEvent> BRAZIER_RESULT = registerSoundEvent("brazier_result");
 
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_APPLY_DOUSED = registerSoundEvent("cloud_ray_apply_doused");

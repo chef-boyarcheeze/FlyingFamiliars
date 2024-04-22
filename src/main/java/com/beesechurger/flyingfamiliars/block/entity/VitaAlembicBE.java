@@ -1,12 +1,13 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
+import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class VitaAlembicBE extends BaseEntityTagBE
+public class VitaAlembicBE extends BaseEntityTagBE implements IRecipeBE
 {
     public VitaAlembicBE(BlockPos pos, BlockState blockState)
     {
@@ -19,5 +20,11 @@ public class VitaAlembicBE extends BaseEntityTagBE
         createItems();
         createEntities();
         createFluid();
+    }
+
+    @Override
+    public void findMatch()
+    {
+
     }
 }

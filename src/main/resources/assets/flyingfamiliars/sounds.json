@@ -1,14 +1,26 @@
 {
-	"brazier_add_entity": {
-		"subtitle": "sounds.flyingfamiliars.brazier_add_entity",
+	"tag_block_add_entity": {
+		"subtitle": "sounds.flyingfamiliars.tag_block_add_entity",
 		"sounds": [
-			"flyingfamiliars:brazier/brazier_add_entity"
+			"flyingfamiliars:brazier/tag_block_add_entity"
 		]
 	},
-	"brazier_add_item": {
-		"subtitle": "sounds.flyingfamiliars.brazier_add_item",
+	"tag_block_add_item": {
+		"subtitle": "sounds.flyingfamiliars.tag_block_add_item",
 		"sounds": [
-			"flyingfamiliars:brazier/brazier_add_item"
+			"flyingfamiliars:brazier/tag_block_add_item"
+		]
+	},
+	"tag_block_remove_entity": {
+		"subtitle": "sounds.flyingfamiliars.tag_block_remove_entity",
+		"sounds": [
+			"flyingfamiliars:brazier/tag_block_remove_entity"
+		]
+	},
+	"tag_block_remove_item": {
+		"subtitle": "sounds.flyingfamiliars.tag_block_remove_item",
+		"sounds": [
+			"flyingfamiliars:brazier/tag_block_remove_item"
 		]
 	},
 	"brazier_ambient": {
@@ -23,16 +35,10 @@
 			"flyingfamiliars:brazier/brazier_craft"
 		]
 	},
-	"brazier_remove_entity": {
-		"subtitle": "sounds.flyingfamiliars.brazier_remove_entity",
+	"brazier_result": {
+		"subtitle": "sounds.flyingfamiliars.brazier_craft",
 		"sounds": [
-			"flyingfamiliars:brazier/brazier_remove_entity"
-		]
-	},
-	"brazier_remove_item": {
-		"subtitle": "sounds.flyingfamiliars.brazier_remove_item",
-		"sounds": [
-			"flyingfamiliars:brazier/brazier_remove_item"
+			"flyingfamiliars:brazier/brazier_craft"
 		]
 	},
 	"runic_bricks_break": {

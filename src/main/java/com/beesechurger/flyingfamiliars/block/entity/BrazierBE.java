@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
-public class BrazierBE extends BaseEntityTagBE
+public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 {
 	private BrazierRecipe currentRecipe;
 	
@@ -86,70 +86,6 @@ public class BrazierBE extends BaseEntityTagBE
 	    progress = tag.getInt(BLOCK_PROGRESS_TAGNAME);
 	}
 
-///////////////////
-// Item methods: //
-///////////////////
-
-	@Override
-	public boolean placeItem(ItemStack stack)
-	{
-		if(super.placeItem(stack))
-		{
-			findMatch();
-			playSound(1);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public boolean removeItem(Level level, BlockPos pos)
-	{
-		if(super.removeItem(level, pos))
-		{
-			findMatch();
-			playSound(2);
-
-			return true;
-		}
-
-		return false;
-	}
-
-/////////////////////
-// Entity methods: //
-/////////////////////
-
-	@Override
-	public boolean placeEntity(Player player, InteractionHand hand)
-	{
-		if(super.placeEntity(player, hand))
-		{
-			findMatch();
-			playSound(3);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public boolean removeEntity(Player player, InteractionHand hand)
-	{
-		if(super.removeEntity(player, hand))
-		{
-			findMatch();
-			playSound(4);
-
-			return true;
-		}
-
-		return false;
-	}
-
 ////////////////
 // Accessors: //
 ////////////////
@@ -181,7 +117,8 @@ public class BrazierBE extends BaseEntityTagBE
 // Crafting methods: //
 ///////////////////////
 
-	private void findMatch()
+	@Override
+	public void findMatch()
 	{
 		boolean found = false;
 		for(BrazierRecipe entry : level.getRecipeManager().getAllRecipesFor(BrazierRecipe.Type.INSTANCE))
@@ -193,7 +130,8 @@ public class BrazierBE extends BaseEntityTagBE
 				break;
 			}
 		}
-		if(!found) currentRecipe = null;
+		if(!found)
+			currentRecipe = null;
 	}
 
 	private static void craft(BlockPos pos, BrazierBE entity)
@@ -203,7 +141,7 @@ public class BrazierBE extends BaseEntityTagBE
 		entity.resetProgress();
 
 		// Spawn result item drop
-		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, entity.currentRecipe.getOutputItem());
+		ItemEntity drop = new ItemEntity(entity.level, pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f, entity.currentRecipe.getOutputItem());
 		drop.setDefaultPickUpDelay();
 		entity.level.addFreshEntity(drop);
 
@@ -213,7 +151,8 @@ public class BrazierBE extends BaseEntityTagBE
 
 	public void addResultEntity(String resultEntity)
 	{
-		if(resultEntity == null) return;
+		if(resultEntity == null)
+			return;
 
 		EntityType<?> type = EntityType.byString(resultEntity).orElse(null);
 		if(type != null)
@@ -254,14 +193,15 @@ public class BrazierBE extends BaseEntityTagBE
 		{
 			if(entity.currentRecipe.itemsMatch(entity.items))
 			{
-				if(entity.progress == 0) entity.playSound(5);
+				if(entity.progress == 0)
+					level.playSound(null, entity.getBlockPos(), FFSounds.BRAZIER_CRAFT.get(), SoundSource.BLOCKS, 0.7f + entity.random.nextFloat(), 0.4f + 0.7f * entity.random.nextFloat());
 				
 				entity.progress++;
 				setChanged(level, pos, state);
 				
 				if(entity.progress > entity.maxProgress)
 				{
-					entity.level.playSound(null, pos, FFSounds.BRAZIER_RESULT.get(), SoundSource.BLOCKS, 0.8F, 0.5F);
+					level.playSound(null, pos, FFSounds.BRAZIER_RESULT.get(), SoundSource.BLOCKS, 0.7f + entity.random.nextFloat(), 0.4f + 0.7f * entity.random.nextFloat());
 					
 					craft(pos, entity);
 					entity.contentsChanged();
@@ -276,31 +216,6 @@ public class BrazierBE extends BaseEntityTagBE
 		}
 		
 		FFPackets.sendToClients(new BEProgressS2CPacket(entity.progress, entity.worldPosition));
-	}
-	
-	private void playSound(int source)
-	{
-		Random random = new Random();
-		switch (source)
-		{
-			case 1:
-				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_ADD_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
-				break;
-			case 2:
-				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
-				break;
-			case 3:
-				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
-				break;
-			case 4:
-				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
-				break;
-			case 5:
-				level.playSound(null, getBlockPos(), FFSounds.BRAZIER_CRAFT.get(), SoundSource.BLOCKS, 0.7F, 1.0F);
-				break;
-			default:
-				break;
-		}
 	}
 	
 	private void resetProgress()

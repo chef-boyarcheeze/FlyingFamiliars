@@ -79,36 +79,34 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
             {
                 EntityTagItemHelper.ensureTagPopulated(stack);
 
-                if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
+                if(!level.isClientSide() && !(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                 {
-                    Boolean success;
-
                     if(!EntityTagItemHelper.isSelectionEmpty(stack))
-                        success = baseEntity.placeEntity(player, hand);
+                        return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
                     else
-                        success = baseEntity.removeEntity(player, hand);
-
-                    if(success)
-                        return InteractionResult.SUCCESS;
+                        return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));
                 }
+                else if(level.isClientSide())
+                    return InteractionResult.CONSUME;
             }
-            else if(stack.getItem() == Items.APPLE)
+            else if(false) // vita bottle
             {
+                // if server
                 return InteractionResult.SUCCESS;
+
+                // consume if client
             }
             else
             {
-                Boolean success;
-
-                System.out.println(baseEntity.getMaxItems());
-
-                if(!player.isShiftKeyDown())
-                    success = baseEntity.placeItem(stack);
+                if(!level.isClientSide())
+                {
+                    if(!player.isShiftKeyDown())
+                        return InteractionResult.sidedSuccess(baseEntity.placeItem(stack));
+                    else
+                        return InteractionResult.sidedSuccess(baseEntity.removeItem(level, pos));
+                }
                 else
-                    success = baseEntity.removeItem(level, pos);
-
-                if(success)
-                    return InteractionResult.SUCCESS;
+                    return InteractionResult.CONSUME;
             }
         }
         else
@@ -121,12 +119,12 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
 
     protected SoundEvent getPlaceEntitySound()
     {
-        return FFSounds.BRAZIER_ADD_ENTITY.get();
+        return FFSounds.TAG_BLOCK_ADD_ENTITY.get();
     }
 
     protected SoundEvent getRemoveEntitySound()
     {
-        return FFSounds.BRAZIER_REMOVE_ENTITY.get();
+        return FFSounds.TAG_BLOCK_REMOVE_ENTITY.get();
     }
 
 ////////////////////////////

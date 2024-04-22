@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.block.entity;
 import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -12,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +26,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
+import java.util.Random;
+
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
 public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
@@ -35,6 +39,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     public NonNullList<ItemStack> items = null;
     public CompoundTag entities = null;
     public FluidTank fluid = null;
+
+    public Random random = new Random();
 
     public BaseEntityTagBE(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
@@ -74,6 +80,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
             items.set(getItemCount(), stack.split(1));
             contentsChanged();
 
+            level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_ADD_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+
             return true;
         }
 
@@ -92,6 +100,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
             items.set(getItemCount()-1, ItemStack.EMPTY);
             contentsChanged();
+
+            level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
 
             return true;
         }
@@ -120,6 +130,11 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     public int getMaxItems()
     {
         return EntityTagBlockHelper.MAX_ITEMS * itemCapacityMod;
+    }
+
+    public boolean itemsFull()
+    {
+        return getItemCount() == getMaxItems();
     }
 
 /////////////////////////////////
@@ -169,6 +184,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
                         player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
                                 .withStyle(ChatFormatting.WHITE)
                                 .append(": " + selectedEntity), true);
+
+                        level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
 
                         return true;
                     }
@@ -222,6 +239,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
                             .withStyle(ChatFormatting.WHITE)
                             .append(": " + selectedEntity), true);
 
+                    level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+
                     return true;
                 }
             }
@@ -258,6 +277,11 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     public int getMaxEntities()
     {
         return EntityTagBlockHelper.MAX_ENTITIES * entityCapacityMod;
+    }
+
+    public boolean entitiesFull()
+    {
+        return getEntityCount() == getMaxEntities();
     }
 
     public String getID(int listValue, ItemStack stack)
@@ -299,6 +323,11 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return EntityTagBlockHelper.MAX_FLUID * fluidCapacityMod;
     }
 
+    public boolean fluidFull()
+    {
+        return getFluidLevel() == getMaxFluid();
+    }
+
 //////////////////////
 // Storage methods: //
 //////////////////////
@@ -310,6 +339,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         if(!level.isClientSide())
         {
             EntityTagBlockHelper.ensureTagPopulated(this);
+
+            if(this instanceof IRecipeBE recipeBE)
+                recipeBE.findMatch();
 
             Packet<?> packet = getUpdatePacket();
             if (packet != null)

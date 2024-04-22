@@ -5,7 +5,6 @@ import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;

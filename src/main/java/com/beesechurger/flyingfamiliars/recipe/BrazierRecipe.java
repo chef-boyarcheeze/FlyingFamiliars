@@ -1,14 +1,8 @@
 package com.beesechurger.flyingfamiliars.recipe;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,12 +10,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
@@ -33,13 +26,13 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	private final NonNullList<Ingredient> inputItems;
 	private final NonNullList<String> inputEntities;
 	
-	public BrazierRecipe(ResourceLocation i, ItemStack oi, String oe, NonNullList<Ingredient> ri, NonNullList<String> re)
+	public BrazierRecipe(ResourceLocation id, ItemStack outputItem, String outputEntity, NonNullList<Ingredient> inputItems, NonNullList<String> inputEntities)
 	{
-		id = i;
-		outputItem = oi;
-		outputEntity = oe;
-		inputItems = ri;
-		inputEntities = re;
+		this.id = id;
+		this.outputItem = outputItem;
+		this.outputEntity = outputEntity;
+		this.inputItems = inputItems;
+		this.inputEntities = inputEntities;
 	}
 	
 	@Override
@@ -54,7 +47,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	 */	
 	public boolean itemsMatch(NonNullList<ItemStack> items)
 	{
-        if(items == null) return false;
+        if(items == null)
+			return false;
         
         List<ItemStack> handlerItems = new ArrayList<>();
         
@@ -62,7 +56,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
         {
             if(!items.get(i).isEmpty()) handlerItems.add(items.get(i).copy());
         }
-        
+
         for(int i = 0; i < inputItems.size(); i++)
         {
         	boolean found = false;
@@ -71,7 +65,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
                 int j = 0;
                 for (; j < handlerItems.size(); j++)
                 {
-                    if (handlerItems.get(j).equals(stack))
+                    if (handlerItems.get(j).getItem() == stack.getItem())
                     {
                         found = true;
                         break;
@@ -83,7 +77,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
                     break;
                 }
             }
-            if (!found) return false;
+            if (!found)
+				return false;
         }
         return handlerItems.size() == 0;
     }
@@ -94,7 +89,8 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	 */
 	public boolean entitiesMatch(NonNullList<String> entities)
 	{
-		if(entities == null) return false;
+		if(entities == null)
+			return false;
 		
 		List<String> handlerEntities = new ArrayList<>();
 		
@@ -117,8 +113,10 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
                 }
             }
             
-            if (found) handlerEntities.remove(j);
-            else return false;
+            if (found)
+				handlerEntities.remove(j);
+            else
+				return false;
 		}
 		
         return handlerEntities.isEmpty();
