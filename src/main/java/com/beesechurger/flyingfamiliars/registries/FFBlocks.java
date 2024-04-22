@@ -33,7 +33,7 @@ public class FFBlocks
 	// Block Entities
 	public static final RegistryObject<Block> BRAZIER = registerBlock("brazier", () -> new BrazierBlock(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK).lightLevel((state) -> 15)));
 	public static final RegistryObject<Block> OBELISK = registerBlock("obelisk", () -> new ObeliskBlock(BlockBehaviour.Properties.copy(FFBlocks.RUNIC_BRICKS.get())));
-	public static final RegistryObject<Block> VITA_ALEMBIC = registerBlock("vita_alembic", () -> new VitaAlembicBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_BRICKS)));
+	public static final RegistryObject<Block> VITA_ALEMBIC = registerBlock("vita_alembic", () -> new VitaAlembicBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_BRICKS).noOcclusion()));
 
 	private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block)
 	{

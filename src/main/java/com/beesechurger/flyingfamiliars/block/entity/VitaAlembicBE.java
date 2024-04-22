@@ -11,5 +11,13 @@ public class VitaAlembicBE extends BaseEntityTagBE
     public VitaAlembicBE(BlockPos pos, BlockState blockState)
     {
         super(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), pos, blockState);
+
+        this.itemCapacityMod = 0;
+        this.entityCapacityMod = 1;
+        this.fluidCapacityMod = 3;
+
+        createItems();
+        createEntities();
+        createFluid();
     }
 }

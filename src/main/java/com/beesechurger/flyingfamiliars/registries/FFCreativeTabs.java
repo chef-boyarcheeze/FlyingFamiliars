@@ -91,6 +91,7 @@ public class FFCreativeTabs
                 // Block entities
                 output.accept(FFBlocks.BRAZIER.get());
                 output.accept(FFBlocks.OBELISK.get());
+                output.accept(FFBlocks.VITA_ALEMBIC.get());
             })
             .build());
 }

@@ -76,6 +76,7 @@ public class FlyingFamiliars
 		EntityRenderers.register(FFEntityTypes.VOID_MOTH.get(), VoidMothRenderer::new);
 
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(FFBlocks.VITA_ALEMBIC.get(), RenderType.translucent());
 
 		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), PhylacteryRenderer::new);
 		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), PhylacteryRenderer::new);

@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
@@ -69,63 +70,53 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if(!level.isClientSide())
+        BlockEntity entity = level.getBlockEntity(pos);
+        if(entity instanceof BaseEntityTagBE baseEntity)
         {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof BaseEntityTagBE baseEntity)
+            ItemStack stack = player.getItemInHand(hand);
+
+            if(stack.getItem() instanceof BaseEntityTagItem item)
             {
-                ItemStack stack = player.getItemInHand(hand);
+                EntityTagItemHelper.ensureTagPopulated(stack);
 
-                if(stack.getItem() instanceof BaseEntityTagItem item)
+                if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                 {
-                    EntityTagItemHelper.ensureTagPopulated(stack);
+                    Boolean success;
 
-                    if(!(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
-                    {
-                        if(!EntityTagItemHelper.isSelectionEmpty(stack))
-                            baseEntity.placeEntity(player, hand);
-                        else
-                            baseEntity.removeEntity(player, hand);
-
-                        return InteractionResult.SUCCESS;
-                    }
-                }
-
-                // if stack.getItem() == vita bottle
-
-                if(entity instanceof ObeliskBE)
-                {
-                    ObeliskBE et = (ObeliskBE) entity;
-
-                    if(et.clicked == false)
-                        et.clicked = true;
+                    if(!EntityTagItemHelper.isSelectionEmpty(stack))
+                        success = baseEntity.placeEntity(player, hand);
                     else
-                        et.clicked = false;
+                        success = baseEntity.removeEntity(player, hand);
 
-                    Packet<?> packet = et.getUpdatePacket();
-                    if (packet != null)
-                    {
-                        BlockPos posn = et.getBlockPos();
-                        ((ServerChunkCache) level.getChunkSource()).chunkMap
-                                .getPlayers(new ChunkPos(posn), false)
-                                .forEach(e -> e.connection.send(packet));
-                    }
+                    if(success)
+                        return InteractionResult.SUCCESS;
                 }
-
-                if(!player.isShiftKeyDown())
-                    baseEntity.placeItem(stack);
-                else
-                    baseEntity.removeItem(level, pos);
-
+            }
+            else if(stack.getItem() == Items.APPLE)
+            {
                 return InteractionResult.SUCCESS;
             }
             else
             {
-                throw new IllegalStateException("Flying Familiars BaseEntityTagBE container provider missing");
+                Boolean success;
+
+                System.out.println(baseEntity.getMaxItems());
+
+                if(!player.isShiftKeyDown())
+                    success = baseEntity.placeItem(stack);
+                else
+                    success = baseEntity.removeItem(level, pos);
+
+                if(success)
+                    return InteractionResult.SUCCESS;
             }
         }
+        else
+        {
+            throw new IllegalStateException("Flying Familiars BaseEntityTagBE container provider missing");
+        }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.PASS;
     }
 
     protected SoundEvent getPlaceEntitySound()

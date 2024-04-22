@@ -24,7 +24,7 @@ public class BrazierBlock extends BaseEntityTagBlock
 	{
 		super(properties);
 		registerDefaultState(this.stateDefinition.any());
-		this.SHAPE = Block.box(1, 0, 1, 15, 14, 15);
+		this.SHAPE = Block.box(1, 0, 1, 15, 14, 15).optimize();
 	}
 
 	@Nullable
@@ -66,7 +66,7 @@ public class BrazierBlock extends BaseEntityTagBlock
       																			0.0D, 0.07D, 0.0D);
       	
       	level.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
-      										   (double) pos.getY() + 0.4D,
+      										   (double) pos.getY() + 0.8D,
       										   (double) pos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
       										   0.0D, 0.005D, 0.0D);
     }
