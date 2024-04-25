@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "flyingfamiliars:block/ceremonial_font" },
+		"facing=east": { "model": "flyingfamiliars:block/ceremonial_font", "y": 90 },
+		"facing=south": { "model": "flyingfamiliars:block/ceremonial_font", "y": 180 },
+		"facing=west": { "model": "flyingfamiliars:block/ceremonial_font", "y": 270 }
+	}
+}

@@ -25,11 +25,11 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBE>
 	
 	@SuppressWarnings("resource")
 	@Override
-	public void render(BrazierBE brazierBE, float partialTicks, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight)
+	public void render(BrazierBE brazierBE, float partialTick, PoseStack stack, MultiBufferSource buffer, int combinedOverlay, int packedLight)
 	{
 		if(Minecraft.getInstance().level != null)
 		{
-			float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
+			float time = Minecraft.getInstance().level.getGameTime() + partialTick;
 
 			for(int i = 0; i < brazierBE.getItemCount(); i++)
 			{
@@ -46,6 +46,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBE>
 				stack.mulPose(Axis.YP.rotationDegrees(angle + time));
 				stack.translate(0.6d, craftingShift, 0);
 				stack.mulPose(Axis.YP.rotationDegrees(time * 2));
+				stack.scale(0.75f, 0.75f, 0.75f);
 				Minecraft.getInstance().getItemRenderer().render(storedItem, ItemDisplayContext.GROUND, false, stack, buffer, 255, OverlayTexture.NO_OVERLAY, model);
 				stack.popPose();
 			}

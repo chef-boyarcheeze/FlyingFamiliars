@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.block.common.BrazierBlock;
+import com.beesechurger.flyingfamiliars.block.common.CeremonialFontBlock;
 import com.beesechurger.flyingfamiliars.block.common.ObeliskBlock;
 import com.beesechurger.flyingfamiliars.block.common.VitaAlembicBlock;
 import com.google.common.base.Supplier;
@@ -34,6 +35,7 @@ public class FFBlocks
 	public static final RegistryObject<Block> BRAZIER = registerBlock("brazier", () -> new BrazierBlock(BlockBehaviour.Properties.copy(Blocks.GOLD_BLOCK).lightLevel((state) -> 15)));
 	public static final RegistryObject<Block> OBELISK = registerBlock("obelisk", () -> new ObeliskBlock(BlockBehaviour.Properties.copy(FFBlocks.RUNIC_BRICKS.get())));
 	public static final RegistryObject<Block> VITA_ALEMBIC = registerBlock("vita_alembic", () -> new VitaAlembicBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_BRICKS).noOcclusion()));
+	public static final RegistryObject<Block> CEREMONIAL_FONT = registerBlock("ceremonial_font", () -> new CeremonialFontBlock(BlockBehaviour.Properties.copy(Blocks.CALCITE).noOcclusion()));
 
 	private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block)
 	{

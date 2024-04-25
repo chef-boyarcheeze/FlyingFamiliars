@@ -15,14 +15,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ObeliskRenderer implements BlockEntityRenderer<ObeliskBE>
 {
-    private final ObeliskModel obeliskModel;
+    private final ObeliskPillarModel obeliskPillarModel;
 
     private float startRotatingTime;
     private boolean rotating = false;
 
     public ObeliskRenderer(BlockEntityRendererProvider.Context ctx)
     {
-        this.obeliskModel = new ObeliskModel(ctx.bakeLayer(ObeliskModel.LAYER_LOCATION));
+        this.obeliskPillarModel = new ObeliskPillarModel(ctx.bakeLayer(ObeliskPillarModel.LAYER_LOCATION));
     }
 
     public void render(ObeliskBE obeliskBE, float partialTick, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay)
@@ -49,10 +49,10 @@ public class ObeliskRenderer implements BlockEntityRenderer<ObeliskBE>
             stack.mulPose(Axis.YP.rotationDegrees(time));
         }
 
-        RenderType layer = RenderType.entityTranslucent(ObeliskModel.getTexture(obeliskBE));
+        RenderType layer = RenderType.entityTranslucent(ObeliskPillarModel.getTexture(obeliskBE));
         VertexConsumer vex = buffer.getBuffer(layer);
 
-        obeliskModel.render(stack, vex, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
+        obeliskPillarModel.render(stack, vex, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
         stack.popPose();
     }
 }

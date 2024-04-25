@@ -12,12 +12,12 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class ObeliskModel extends Model
+public class ObeliskPillarModel extends Model
 {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(FlyingFamiliars.MOD_ID, "obelisk"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(FlyingFamiliars.MOD_ID, "obelisk_pillar"), "main");
     private final ModelPart body;
 
-    public ObeliskModel(ModelPart root)
+    public ObeliskPillarModel(ModelPart root)
     {
         super(RenderType::entitySolid);
         this.body = root.getChild("body");
