@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" C ",
+		"QPQ",
+		"SSS"
+	],
+	"key": {
+		"C": {
+			"item": "flyingfamiliars:ceremonial_font_basin"
+		},
+		"Q": {
+			"item": "flyingfamiliars:attuned_quartz"
+		},
+		"P": {
+			"tag": "minecraft:planks"
+		},
+		"S": {
+			"item": "minecraft:smooth_stone"
+		}
+	},
+	"result": {
+		"item": "flyingfamiliars:ceremonial_font"
+	}
+}

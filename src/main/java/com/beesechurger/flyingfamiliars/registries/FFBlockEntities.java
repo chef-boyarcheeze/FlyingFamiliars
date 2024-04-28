@@ -2,10 +2,10 @@ package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.block.client.brazier.BrazierRenderer;
-import com.beesechurger.flyingfamiliars.block.client.ceremonial_font.CeremonialFontCupModel;
+import com.beesechurger.flyingfamiliars.block.client.ceremonial_font.CeremonialFontBasinModel;
 import com.beesechurger.flyingfamiliars.block.client.ceremonial_font.CeremonialFontRenderer;
-import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskRenderer;
 import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskPillarModel;
+import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskRenderer;
 import com.beesechurger.flyingfamiliars.block.client.vita_alembic.VitaAlembicRenderer;
 import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
 import com.beesechurger.flyingfamiliars.block.entity.CeremonialFontBE;
@@ -42,6 +42,6 @@ public class FFBlockEntities
 	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
 	{
 		event.registerLayerDefinition(ObeliskPillarModel.LAYER_LOCATION, ObeliskPillarModel::createBodyLayer);
-		event.registerLayerDefinition(CeremonialFontCupModel.LAYER_LOCATION, CeremonialFontCupModel::createBodyLayer);
+		event.registerLayerDefinition(CeremonialFontBasinModel.LAYER_LOCATION, CeremonialFontBasinModel::createBodyLayer);
 	}
 }

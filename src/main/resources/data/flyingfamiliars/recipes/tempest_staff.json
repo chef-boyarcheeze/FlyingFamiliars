@@ -8,13 +8,13 @@
 			"item": "minecraft:copper_ingot"
 		},
 		{
-			"item": "flyingfamiliars:eye_of_the_storm"
+			"item": "minecraft:redstone"
 		},
 		{
 			"item": "minecraft:lightning_rod"
 		},
 		{
-			"item": "minecraft:redstone"
+			"item": "flyingfamiliars:eye_of_the_storm"
 		}
 	],
 	"inputEntities": [

@@ -1,0 +1,34 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"SES",
+		"LCG",
+		"PRP"
+	],
+	"key": {
+		"S": {
+			"item": "minecraft:smooth_stone"
+		},
+		"E": {
+			"item": "flyingfamiliars:attuned_emerald"
+		},
+		"L": {
+			"item": "flyingfamiliars:attuned_lapis"
+		},
+		"C": {
+			"item": "minecraft:cauldron"
+		},
+		"G": {
+			"item": "flyingfamiliars:attuned_gold"
+		},
+		"P": {
+			"tag": "minecraft:planks"
+		},
+		"R": {
+			"item": "flyingfamiliars:attuned_redstone"
+		}
+	},
+	"result": {
+		"item": "flyingfamiliars:ceremonial_font_basin"
+	}
+}

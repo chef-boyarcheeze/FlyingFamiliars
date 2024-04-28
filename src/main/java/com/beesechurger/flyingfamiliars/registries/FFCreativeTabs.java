@@ -66,6 +66,8 @@ public class FFCreativeTabs
                 output.accept(FFItems.HAND_OF_THE_HELLS.get());
                 output.accept(FFItems.PEARL_OF_THE_VOID.get());
                 output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
+
+                output.accept(FFItems.CEREMONIAL_FONT_BASIN.get());
             })
             .build());
 
@@ -92,6 +94,7 @@ public class FFCreativeTabs
                 output.accept(FFBlocks.BRAZIER.get());
                 output.accept(FFBlocks.OBELISK.get());
                 output.accept(FFBlocks.VITA_ALEMBIC.get());
+                output.accept(FFBlocks.CEREMONIAL_FONT.get());
             })
             .build());
 }

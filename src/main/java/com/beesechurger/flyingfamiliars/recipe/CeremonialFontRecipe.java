@@ -18,21 +18,21 @@ import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class BrazierRecipe implements Recipe<SimpleContainer>
+public class CeremonialFontRecipe implements Recipe<SimpleContainer>
 {
 	private final ResourceLocation id;
 	private final ItemStack outputItem;
-	private final String outputEntity;
 	private final NonNullList<Ingredient> inputItems;
 	private final NonNullList<String> inputEntities;
-	
-	public BrazierRecipe(ResourceLocation id, ItemStack outputItem, String outputEntity, NonNullList<Ingredient> inputItems, NonNullList<String> inputEntities)
+
+	public CeremonialFontRecipe(ResourceLocation id, ItemStack outputItem, NonNullList<Ingredient> inputItems, NonNullList<String> inputEntities)
 	{
 		this.id = id;
 		this.outputItem = outputItem;
-		this.outputEntity = outputEntity;
+		//this.outputFluid = outputFluid;
 		this.inputItems = inputItems;
 		this.inputEntities = inputEntities;
+		//this.inputFluid = inputFluid;
 	}
 	
 	@Override
@@ -40,18 +40,18 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	{
 		return false;
 	}
-
-	/*
+	
+	/*	
 	 * 	For every ingredient in a recipe, compare to block's stored items.
 	 * 	Allows for any order of stored ingredients to be used in crafting.
-	 */
+	 */	
 	public boolean itemsMatch(NonNullList<ItemStack> items)
 	{
         if(items == null)
 			return false;
-
+        
         List<ItemStack> handlerItems = new ArrayList<>();
-
+        
         for (int i = 0; i < items.size(); i++)
         {
             if(!items.get(i).isEmpty()) handlerItems.add(items.get(i).copy());
@@ -154,11 +154,6 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	{
 		return outputItem.copy();
 	}
-	
-	public String getOutputEntity()
-	{
-		return outputEntity;
-	}
 
 	@Override
 	public ResourceLocation getId()
@@ -178,17 +173,17 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		return Type.INSTANCE;
 	}
 	
-	public static class Type implements RecipeType<BrazierRecipe>
+	public static class Type implements RecipeType<CeremonialFontRecipe>
 	{
 		private Type() {}
 		public static final Type INSTANCE = new Type();
-		public static final String ID = "brazier";
+		public static final String ID = "ceremonial_font";
 	}
 	
-	public static class Serializer implements RecipeSerializer<BrazierRecipe>
+	public static class Serializer implements RecipeSerializer<CeremonialFontRecipe>
 	{
 		public static final Serializer INSTANCE = new Serializer();
-		public static final ResourceLocation ID = new ResourceLocation(FlyingFamiliars.MOD_ID, "brazier");
+		public static final ResourceLocation ID = new ResourceLocation(FlyingFamiliars.MOD_ID, "ceremonial_font");
 		
 		public String entityParse(String entity)
 		{
@@ -201,7 +196,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		}
 		
 		@Override
-		public BrazierRecipe fromJson(ResourceLocation id, JsonObject json)
+		public CeremonialFontRecipe fromJson(ResourceLocation id, JsonObject json)
 		{			
 			JsonArray ingredients = GsonHelper.getAsJsonArray(json, "inputItems");
             NonNullList<Ingredient> inputItems = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
@@ -220,13 +215,12 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             }
             
             ItemStack outputItem = GsonHelper.getAsJsonObject(json, "outputItem").size() != 0 ? ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "outputItem")) : ItemStack.EMPTY;
-            String outputEntity = entityParse(GsonHelper.getAsJsonObject(json, "outputEntity").toString());
             
-            return new BrazierRecipe(id, outputItem, outputEntity, inputItems, inputEntities);
+            return new CeremonialFontRecipe(id, outputItem, inputItems, inputEntities);
 		}
 		
 		@Override
-        public BrazierRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf)
+        public CeremonialFontRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf)
 		{
             NonNullList<Ingredient> inputItems = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
 
@@ -243,13 +237,12 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             }
             
             ItemStack outputItem = buf.readItem();
-            String outputEntity = buf.readUtf();
             
-            return new BrazierRecipe(id, outputItem, outputEntity, inputItems, inputEntities);
+            return new CeremonialFontRecipe(id, outputItem, inputItems, inputEntities);
         }
 		
 		@Override
-        public void toNetwork(FriendlyByteBuf buf, BrazierRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buf, CeremonialFontRecipe recipe)
 		{
             buf.writeInt(recipe.getInputItems().size());
             
@@ -266,7 +259,6 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
             }
             
             buf.writeItemStack(recipe.getOutputItem(), false);
-            buf.writeUtf(recipe.getOutputEntity());
         }
 
         @SuppressWarnings("unchecked")

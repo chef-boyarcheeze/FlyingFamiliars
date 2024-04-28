@@ -22,11 +22,11 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTIT
 
 public class CeremonialFontRenderer implements BlockEntityRenderer<CeremonialFontBE>
 {
-    private final CeremonialFontCupModel ceremonialFontCupModel;
+    private final CeremonialFontBasinModel ceremonialFontCupModel;
 
     public CeremonialFontRenderer(BlockEntityRendererProvider.Context ctx)
     {
-        this.ceremonialFontCupModel = new CeremonialFontCupModel(ctx.bakeLayer(CeremonialFontCupModel.LAYER_LOCATION));
+        this.ceremonialFontCupModel = new CeremonialFontBasinModel(ctx.bakeLayer(CeremonialFontBasinModel.LAYER_LOCATION));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CeremonialFontRenderer implements BlockEntityRenderer<CeremonialFon
             stack.translate(0, 0.1f * Math.sin(time / 10), 0);
             stack.mulPose(Axis.YN.rotationDegrees(time * 2));
 
-            RenderType layer = RenderType.entityTranslucent(CeremonialFontCupModel.getTexture(ceremonialFontBE));
+            RenderType layer = RenderType.entityTranslucent(CeremonialFontBasinModel.getTexture(ceremonialFontBE));
             VertexConsumer vex = buffer.getBuffer(layer);
 
             ceremonialFontCupModel.render(stack, vex, packedLight, packedOverlay, 1.0F, 1.0F, 1.0F, 1.0F);

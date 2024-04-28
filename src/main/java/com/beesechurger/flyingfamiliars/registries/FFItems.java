@@ -49,6 +49,16 @@ public class FFItems
 	public static final RegistryObject<Item> PHOENIX_FEATHER = register("phoenix_feather", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> RUNIC_CLAY = register("runic_clay", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 	public static final RegistryObject<Item> RUNIC_BRICK = register("runic_brick", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> CEREMONIAL_FONT_BASIN = register("ceremonial_font_basin", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+
+	public static final RegistryObject<Item> ATTUNED_QUARTZ = register("attuned_quartz", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_LAPIS = register("attuned_lapis", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_EMERALD = register("attuned_emerald", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_REDSTONE = register("attuned_redstone", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_GOLD = register("attuned_gold", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_COAL = register("attuned_coal", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_ENDER_PEARL = register("attuned_ender_pearl", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
+	public static final RegistryObject<Item> ATTUNED_DIAMOND = register("attuned_diamond", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 
 	// Spawn eggs:
 	public static final RegistryObject<ForgeSpawnEggItem> CLOUD_RAY_SPAWN_EGG = register("cloud_ray_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CLOUD_RAY, 0xDCDCDC, 0x88FFEB, new Item.Properties()));
