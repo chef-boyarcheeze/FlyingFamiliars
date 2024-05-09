@@ -20,14 +20,14 @@ public class FFValueConstants
     public static final int CHAT_YELLOW = 16777045;
     public static final int CHAT_WHITE = 16777215;
 
-    // Familiar "type" colors in decimal format:
-    public static final int FAMILIAR_TYPE_WATER = 0;
-    public static final int FAMILIAR_TYPE_PLANT = 0;
-    public static final int FAMILIAR_TYPE_AIR = 0;
-    public static final int FAMILIAR_TYPE_EARTH = 0;
-    public static final int FAMILIAR_TYPE_FIRE = 0;
-    public static final int FAMILIAR_TYPE_SHADOW = 0;
-    public static final int FAMILIAR_TYPE_LIGHT = 0;
+    // Familiar "type" colors in hexadecimal format:
+    public static final int FAMILIAR_TYPE_WATER = 0x000BAB;
+    public static final int FAMILIAR_TYPE_PLANT = 0x00A300;
+    public static final int FAMILIAR_TYPE_AIR = 0xFAF000;
+    public static final int FAMILIAR_TYPE_EARTH = 0xDEAA00;
+    public static final int FAMILIAR_TYPE_FIRE = 0xB02000;
+    public static final int FAMILIAR_TYPE_SHADOW = 0x202020;
+    public static final int FAMILIAR_TYPE_LIGHT = 0xF0F0F0;
 
     // Goal values:
     public static final int BUILDING_LIMIT_LOW = -64;
@@ -35,6 +35,6 @@ public class FFValueConstants
     public static final int RANDOM_MOVE_CHANCE = 50;
 
     // Familiar movement values:
-    public static final float FLYING_SPEED = 0.1f;
-    public static final float MOVEMENT_SPEED = 0.1f;
+    public static final float BASE_FLYING_SPEED = 0.1f;
+    public static final float BASE_MOVEMENT_SPEED = 0.1f;
 }

@@ -51,7 +51,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     public void saveAdditional(CompoundTag tag)
     {
         super.saveAdditional(tag);
-        ContainerHelper.saveAllItems(tag, this.items, true);
+        ContainerHelper.saveAllItems(tag, items, true);
         tag.put(BASE_ENTITY_TAGNAME, entities);
     }
 
@@ -59,8 +59,8 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     public void load(CompoundTag tag)
     {
         super.load(tag);
-        this.items.clear();
-        ContainerHelper.loadAllItems(tag, this.items);
+        items.clear();
+        ContainerHelper.loadAllItems(tag, items);
         entities = tag.getCompound(BASE_ENTITY_TAGNAME);
     }
 
@@ -357,7 +357,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     @Override
     public void clearContent()
     {
-        this.items.clear();
+        items.clear();
         EntityTagBlockHelper.populateTag(this);
         // clear fluid
     }
@@ -371,8 +371,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
-        entities = new CompoundTag();
-        // clear fluid
+        clearContent();
     }
 
 ///////////////////////////

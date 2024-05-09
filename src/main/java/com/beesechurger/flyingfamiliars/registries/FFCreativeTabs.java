@@ -95,6 +95,15 @@ public class FFCreativeTabs
                 output.accept(FFBlocks.OBELISK.get());
                 output.accept(FFBlocks.VITA_ALEMBIC.get());
                 output.accept(FFBlocks.CEREMONIAL_FONT.get());
+
+                // Buckets
+                output.accept(FFItems.BLUE_VITALITY_BUCKET.get());
+                output.accept(FFItems.GREEN_VITALITY_BUCKET.get());
+                output.accept(FFItems.YELLOW_VITALITY_BUCKET.get());
+                output.accept(FFItems.GOLD_VITALITY_BUCKET.get());
+                output.accept(FFItems.RED_VITALITY_BUCKET.get());
+                output.accept(FFItems.BLACK_VITALITY_BUCKET.get());
+                output.accept(FFItems.WHITE_VITALITY_BUCKET.get());
             })
             .build());
 }

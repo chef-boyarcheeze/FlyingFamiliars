@@ -4,7 +4,9 @@ import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand.*;
 import com.google.common.base.Supplier;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -32,6 +34,15 @@ public class FFItems
 	public static final RegistryObject<Item> PHYLACTERY_RED = register("phylactery_red", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 5));
 	public static final RegistryObject<Item> PHYLACTERY_BLACK = register("phylactery_black", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), 6));
 	public static final RegistryObject<Item> PHYLACTERY_WHITE = register("phylactery_white", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), 7));
+
+	// Buckets:
+	public static final RegistryObject<Item> BLUE_VITALITY_BUCKET = register("blue_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_BLUE_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	public static final RegistryObject<Item> GREEN_VITALITY_BUCKET = register("green_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_GREEN_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	public static final RegistryObject<Item> YELLOW_VITALITY_BUCKET = register("yellow_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_YELLOW_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	public static final RegistryObject<Item> GOLD_VITALITY_BUCKET = register("gold_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_GOLD_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	public static final RegistryObject<Item> RED_VITALITY_BUCKET = register("red_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_RED_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	public static final RegistryObject<Item> BLACK_VITALITY_BUCKET = register("black_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_BLACK_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
+	public static final RegistryObject<Item> WHITE_VITALITY_BUCKET = register("white_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_WHITE_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
 	// Other tools:
 	public static final RegistryObject<Item> CORMORANT_RING = register("cormorant_ring", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON)));

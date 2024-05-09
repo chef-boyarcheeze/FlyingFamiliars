@@ -37,6 +37,15 @@ public class FFBlocks
 	public static final RegistryObject<Block> VITA_ALEMBIC = registerBlock("vita_alembic", () -> new VitaAlembicBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_BRICKS).noOcclusion()));
 	public static final RegistryObject<Block> CEREMONIAL_FONT = registerBlock("ceremonial_font", () -> new CeremonialFontBlock(BlockBehaviour.Properties.copy(Blocks.SMOOTH_STONE).noOcclusion()));
 
+	// Fluids
+	public static final RegistryObject<LiquidBlock> BLUE_VITALITY_BLOCK = BLOCK_REG.register("blue_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_BLUE_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+	public static final RegistryObject<LiquidBlock> GREEN_VITALITY_BLOCK = BLOCK_REG.register("green_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_GREEN_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+	public static final RegistryObject<LiquidBlock> YELLOW_VITALITY_BLOCK = BLOCK_REG.register("yellow_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_YELLOW_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+	public static final RegistryObject<LiquidBlock> GOLD_VITALITY_BLOCK = BLOCK_REG.register("gold_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_GOLD_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+	public static final RegistryObject<LiquidBlock> RED_VITALITY_BLOCK = BLOCK_REG.register("red_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_RED_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+	public static final RegistryObject<LiquidBlock> BLACK_VITALITY_BLOCK = BLOCK_REG.register("black_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_BLACK_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+	public static final RegistryObject<LiquidBlock> WHITE_VITALITY_BLOCK = BLOCK_REG.register("white_vitality_block", () -> new LiquidBlock(FFFluids.SOURCE_WHITE_VITALITY, BlockBehaviour.Properties.copy(Blocks.WATER)));
+
 	private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block)
 	{
 		RegistryObject<T> object = BLOCK_REG.register(name, block);

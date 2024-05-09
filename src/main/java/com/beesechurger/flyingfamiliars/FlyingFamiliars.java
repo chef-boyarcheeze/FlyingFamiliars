@@ -38,12 +38,19 @@ public class FlyingFamiliars
 	public FlyingFamiliars()
 	{
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
 		FFItems.ITEM_REG.register(bus);
+
 		FFBlocks.BLOCK_REG.register(bus);
-		FFCreativeTabs.CREATIVE_TAB_REG.register(bus);
 		FFBlockEntities.BLOCK_ENTITY_REG.register(bus);
+
+		FFFluids.FLUIDS_REG.register(bus);
+		FFFluidTypes.FLUID_TYPES_REG.register(bus);
+
 		FFEffects.MOB_EFFECT_REG.register(bus);
 		FFEntityTypes.ENTITY_TYPE_REG.register(bus);
+
+		FFCreativeTabs.CREATIVE_TAB_REG.register(bus);
 		FFSounds.SOUND_EVENT_REG.register(bus);
 		FFRecipes.RECIPE_SERIALIZER_REG.register(bus);
 		
@@ -77,6 +84,21 @@ public class FlyingFamiliars
 
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FFBlocks.VITA_ALEMBIC.get(), RenderType.translucent());
+
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_BLUE_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_BLUE_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_GREEN_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_GREEN_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_YELLOW_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_YELLOW_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_GOLD_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_GOLD_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_RED_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_RED_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_BLACK_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_BLACK_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_WHITE_VITALITY.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_WHITE_VITALITY.get(), RenderType.translucent());
 
 		CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), PhylacteryRenderer::new);
 		CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), PhylacteryRenderer::new);

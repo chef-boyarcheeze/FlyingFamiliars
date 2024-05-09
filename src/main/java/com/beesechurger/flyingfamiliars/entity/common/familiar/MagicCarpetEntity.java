@@ -36,8 +36,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.FLYING_SPEED;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.MOVEMENT_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BASE_FLYING_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BASE_MOVEMENT_SPEED;
 
 public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntity, IAirEntity
 {
@@ -56,8 +56,8 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntit
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, MAX_HEALTH)
                 .add(Attributes.FOLLOW_RANGE, FOLLOW_RANGE)
-                .add(Attributes.FLYING_SPEED, FLYING_SPEED)
-                .add(Attributes.MOVEMENT_SPEED, MOVEMENT_SPEED).build();
+                .add(Attributes.FLYING_SPEED, BASE_FLYING_SPEED)
+                .add(Attributes.MOVEMENT_SPEED, BASE_MOVEMENT_SPEED).build();
     }
 
     @Override
