@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.item;
 
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
 
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.packet.SoulItemSelectC2SPacket;

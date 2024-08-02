@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems;
+package com.beesechurger.flyingfamiliars.item.common.soul_items;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.core.NonNullList;

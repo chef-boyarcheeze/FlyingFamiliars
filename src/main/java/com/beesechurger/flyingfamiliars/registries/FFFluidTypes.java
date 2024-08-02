@@ -18,12 +18,7 @@ public class FFFluidTypes {
             .canSwim(true)
             .canHydrate(true)
             .canPushEntity(true)
-/*            .density()
-            .lightLevel()
-            .viscosity()
-            .temperature()
-            .supportsBoating()
-            .motionScale()*/
+            .motionScale(1)
     ));
 
     // Plant:
@@ -44,7 +39,6 @@ public class FFFluidTypes {
             .canSwim(true)
             .canHydrate(false)
             .canPushEntity(true)
-            .density(0)
     ));
 
     // Earth:
@@ -55,6 +49,7 @@ public class FFFluidTypes {
             .canSwim(true)
             .canHydrate(false)
             .canPushEntity(true)
+            .supportsBoating(false)
     ));
 
     // Red:
@@ -65,6 +60,8 @@ public class FFFluidTypes {
             .canSwim(true)
             .canHydrate(false)
             .canPushEntity(true)
+            .lightLevel(15)
+            .supportsBoating(false)
     ));
 
     // Shadow:
@@ -75,6 +72,7 @@ public class FFFluidTypes {
             .canSwim(true)
             .canHydrate(false)
             .canPushEntity(true)
+            .supportsBoating(false)
     ));
 
     // Light:
@@ -85,5 +83,6 @@ public class FFFluidTypes {
             .canSwim(true)
             .canHydrate(false)
             .canPushEntity(true)
+            .lightLevel(15)
     ));
 }

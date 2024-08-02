@@ -1,0 +1,61 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"fireball.animation.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"core": {
+					"rotation": {
+						"vector": [0, 0, "180 * query.anim_time"]
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1, 1, 1.1],
+							"easing": "easeInOutSine"
+						},
+						"1.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"trail": {
+					"rotation": {
+						"vector": [0, 0, "-360 * query.anim_time"]
+					}
+				},
+				"middle_core": {
+					"rotation": {
+						"vector": [0, 0, "-360 * query.anim_time"]
+					}
+				},
+				"rear_core": {
+					"rotation": {
+						"vector": [0, 0, "360 * query.anim_time"]
+					}
+				}
+			}
+		},
+		"fireball.animation.death": {
+			"animation_length": 1,
+			"bones": {
+				"core": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"1.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutExpo"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

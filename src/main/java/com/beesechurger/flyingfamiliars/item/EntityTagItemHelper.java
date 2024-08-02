@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.item;
 
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;
@@ -10,16 +10,16 @@ import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.*;
 
-public class FieryCrook extends BaseSoulWand
+public class VoidShard extends BaseSoulWand
 {
-    public FieryCrook(Properties properties)
+    public VoidShard(Properties properties)
     {
         super(properties);
 
-        attackColorInt = CHAT_DARK_RED;
-        defenseColorInt = CHAT_GOLD;
-        attackColorChat = ChatFormatting.DARK_RED;
-        defenseColorChat = ChatFormatting.GOLD;
+        attackColorInt = CHAT_LIGHT_PURPLE;
+        defenseColorInt = CHAT_DARK_PURPLE;
+        attackColorChat = ChatFormatting.LIGHT_PURPLE;
+        defenseColorChat = ChatFormatting.DARK_PURPLE;
     }
 
     @Override
@@ -39,6 +39,4 @@ public class FieryCrook extends BaseSoulWand
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
-
-
 }

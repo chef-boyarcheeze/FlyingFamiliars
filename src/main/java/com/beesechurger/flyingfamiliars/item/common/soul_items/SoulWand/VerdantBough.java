@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;
@@ -10,16 +10,16 @@ import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.*;
 
-public class TempestStaff extends BaseSoulWand
+public class VerdantBough extends BaseSoulWand
 {
-    public TempestStaff(Properties properties)
+    public VerdantBough(Properties properties)
     {
         super(properties);
 
-        attackColorInt = CHAT_YELLOW;
-        defenseColorInt = CHAT_WHITE;
-        attackColorChat = ChatFormatting.YELLOW;
-        defenseColorChat = ChatFormatting.WHITE;
+        attackColorInt = CHAT_DARK_GREEN;
+        defenseColorInt = CHAT_LIGHT_PURPLE;
+        attackColorChat = ChatFormatting.DARK_GREEN;
+        defenseColorChat = ChatFormatting.LIGHT_PURPLE;
     }
 
     @Override

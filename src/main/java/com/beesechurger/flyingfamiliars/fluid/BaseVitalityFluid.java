@@ -94,7 +94,7 @@ public abstract class BaseVitalityFluid extends FluidType
                                         float nearDistance, float farDistance, FogShape shape)
             {
                 RenderSystem.setShaderFogStart(1f);
-                RenderSystem.setShaderFogEnd(6f);
+                RenderSystem.setShaderFogEnd(5f);
             }
         });
     }

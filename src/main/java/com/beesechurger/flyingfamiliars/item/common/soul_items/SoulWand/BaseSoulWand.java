@@ -1,9 +1,9 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.IModeCycleItem;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

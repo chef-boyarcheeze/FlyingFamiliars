@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.packet;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.IModeCycleItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

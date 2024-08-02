@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.common.wand_effect;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.util.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +35,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class CaptureProjectile extends BaseWandEffectEntity implements GeoEntity
+public class CaptureProjectile extends BaseWandEffectProjectile implements GeoEntity
 {
 	private NonNullList<ItemStack> stacks = NonNullList.create();
 	private boolean action = false;

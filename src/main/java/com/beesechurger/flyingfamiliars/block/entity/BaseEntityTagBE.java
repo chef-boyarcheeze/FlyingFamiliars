@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.block.entity;
 
 import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

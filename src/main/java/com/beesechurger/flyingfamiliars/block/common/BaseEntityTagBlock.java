@@ -1,24 +1,18 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
 import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
-import com.beesechurger.flyingfamiliars.block.entity.ObeliskBE;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.SoulItems.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import net.minecraft.commands.arguments.blocks.BlockStateArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class BaseEntityTagBlock extends BaseEntityBlock
 {

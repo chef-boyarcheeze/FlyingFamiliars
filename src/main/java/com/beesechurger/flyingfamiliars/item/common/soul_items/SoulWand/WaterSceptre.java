@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;

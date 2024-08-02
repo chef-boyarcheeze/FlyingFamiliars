@@ -28,7 +28,8 @@ public class FFFluids
     public static final ForgeFlowingFluid.Properties GREEN_VITALITY_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             FFFluidTypes.GREEN_VITALITY_FLUID_TYPE, SOURCE_GREEN_VITALITY, FLOWING_GREEN_VITALITY)
             .slopeFindDistance(2)
-            .levelDecreasePerBlock(1)
+            .levelDecreasePerBlock(2)
+            .tickRate(10)
             .block(FFBlocks.GREEN_VITALITY_BLOCK)
             .bucket(FFItems.GREEN_VITALITY_BUCKET);
 
@@ -48,7 +49,8 @@ public class FFFluids
     public static final ForgeFlowingFluid.Properties GOLD_VITALITY_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             FFFluidTypes.GOLD_VITALITY_FLUID_TYPE, SOURCE_GOLD_VITALITY, FLOWING_GOLD_VITALITY)
             .slopeFindDistance(2)
-            .levelDecreasePerBlock(1)
+            .levelDecreasePerBlock(3)
+            .tickRate(15)
             .block(FFBlocks.GOLD_VITALITY_BLOCK)
             .bucket(FFItems.GOLD_VITALITY_BUCKET);
 
@@ -58,7 +60,8 @@ public class FFFluids
     public static final ForgeFlowingFluid.Properties RED_VITALITY_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             FFFluidTypes.RED_VITALITY_FLUID_TYPE, SOURCE_RED_VITALITY, FLOWING_RED_VITALITY)
             .slopeFindDistance(2)
-            .levelDecreasePerBlock(1)
+            .levelDecreasePerBlock(2)
+            .tickRate(10)
             .block(FFBlocks.RED_VITALITY_BLOCK)
             .bucket(FFItems.RED_VITALITY_BUCKET);
 
@@ -68,7 +71,8 @@ public class FFFluids
     public static final ForgeFlowingFluid.Properties BLACK_VITALITY_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             FFFluidTypes.BLACK_VITALITY_FLUID_TYPE, SOURCE_BLACK_VITALITY, FLOWING_BLACK_VITALITY)
             .slopeFindDistance(2)
-            .levelDecreasePerBlock(1)
+            .levelDecreasePerBlock(2)
+            .tickRate(10)
             .block(FFBlocks.BLACK_VITALITY_BLOCK)
             .bucket(FFItems.BLACK_VITALITY_BUCKET);
 
@@ -78,7 +82,8 @@ public class FFFluids
     public static final ForgeFlowingFluid.Properties WHITE_VITALITY_FLUID_PROPERTIES = new ForgeFlowingFluid.Properties(
             FFFluidTypes.WHITE_VITALITY_FLUID_TYPE, SOURCE_WHITE_VITALITY, FLOWING_WHITE_VITALITY)
             .slopeFindDistance(2)
-            .levelDecreasePerBlock(1)
+            .levelDecreasePerBlock(3)
+            .tickRate(15)
             .block(FFBlocks.WHITE_VITALITY_BLOCK)
             .bucket(FFItems.WHITE_VITALITY_BUCKET);
 }

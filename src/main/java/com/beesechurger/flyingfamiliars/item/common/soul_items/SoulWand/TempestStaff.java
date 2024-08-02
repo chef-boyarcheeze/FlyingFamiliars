@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;
@@ -10,16 +10,16 @@ import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.*;
 
-public class FissureBaton extends BaseSoulWand
+public class TempestStaff extends BaseSoulWand
 {
-    public FissureBaton(Properties properties)
+    public TempestStaff(Properties properties)
     {
         super(properties);
 
-        attackColorInt = CHAT_GOLD;
-        defenseColorInt = CHAT_DARK_GREEN;
-        attackColorChat = ChatFormatting.GOLD;
-        defenseColorChat = ChatFormatting.DARK_GREEN;
+        attackColorInt = CHAT_YELLOW;
+        defenseColorInt = CHAT_WHITE;
+        attackColorChat = ChatFormatting.YELLOW;
+        defenseColorChat = ChatFormatting.WHITE;
     }
 
     @Override

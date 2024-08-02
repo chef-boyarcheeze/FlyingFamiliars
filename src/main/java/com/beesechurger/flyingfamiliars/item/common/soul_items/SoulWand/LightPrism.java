@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import net.minecraft.ChatFormatting;
@@ -10,16 +10,16 @@ import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.*;
 
-public class VerdantBough extends BaseSoulWand
+public class LightPrism extends BaseSoulWand
 {
-    public VerdantBough(Properties properties)
+    public LightPrism(Properties properties)
     {
         super(properties);
 
-        attackColorInt = CHAT_DARK_GREEN;
-        defenseColorInt = CHAT_LIGHT_PURPLE;
-        attackColorChat = ChatFormatting.DARK_GREEN;
-        defenseColorChat = ChatFormatting.LIGHT_PURPLE;
+        attackColorInt = CHAT_WHITE;
+        defenseColorInt = CHAT_AQUA;
+        attackColorChat = ChatFormatting.WHITE;
+        defenseColorChat = ChatFormatting.AQUA;
     }
 
     @Override

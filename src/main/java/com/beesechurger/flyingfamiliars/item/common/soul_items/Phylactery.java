@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.SoulItems;
+package com.beesechurger.flyingfamiliars.item.common.soul_items;
 
 public class Phylactery extends BaseEntityTagItem
 {
