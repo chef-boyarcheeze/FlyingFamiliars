@@ -56,6 +56,10 @@ public class CaptureProjectile extends BaseWandEffectProjectile implements GeoEn
 	    super(FFEntityTypes.CAPTURE_PROJECTILE.get(), x, y, z, level);
 	}
 
+/////////////////////////////////
+// GeckoLib animation control: //
+/////////////////////////////////
+
 	private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
 	{
 		FFAnimationController controller = (FFAnimationController) event.getController();

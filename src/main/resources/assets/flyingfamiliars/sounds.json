@@ -84,133 +84,111 @@
 	"cloud_ray_apply_doused": {
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_apply_doused",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_apply_doused"
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_apply_doused"
 		]
 	},
 	"cloud_ray_death": {
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_death",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_death"
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_death"
 		]
 	},
-	"cloud_ray_idle1": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle1",
+	"cloud_ray_idle": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_idle1"
-		]
-	},
-	"cloud_ray_idle2": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle2",
-		"sounds": [
-			"flyingfamiliars:cloud_ray_idle2"
-		]
-	},
-	"cloud_ray_idle3": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_idle3",
-		"sounds": [
-			"flyingfamiliars:cloud_ray_idle3"
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_idle1",
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_idle2",
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_idle3"
 		]
 	},
 	"cloud_ray_hurt": {
 		"subtitle": "sounds.flyingfamiliars.cloud_ray_hurt",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_hurt"
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_hurt"
 		]
 	},
-	"cloud_ray_step1": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_step1",
+	"cloud_ray_step": {
+		"subtitle": "sounds.flyingfamiliars.cloud_ray_step",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_step1"
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_step1",
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_step2",
+			"flyingfamiliars:familiars/cloud_ray/cloud_ray_step3"
 		]
 	},
-	"cloud_ray_step2": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_step2",
+	"cormorant_squawk": {
+		"subtitle": "sounds.flyingfamiliars.cormorant_squawk",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_step2"
+			"flyingfamiliars:familiars/cormorant/cormorant_squawk1",
+			"flyingfamiliars:familiars/cormorant/cormorant_squawk2"
 		]
 	},
-	"cloud_ray_step3": {
-		"subtitle": "sounds.flyingfamiliars.cloud_ray_step3",
+	"griffonfly_chitter": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter",
 		"sounds": [
-			"flyingfamiliars:cloud_ray_step3"
-		]
-	},
-	"cormorant_squawk1": {
-		"subtitle": "sounds.flyingfamiliars.cormorant_squawk1",
-		"sounds": [
-			"flyingfamiliars:cormorant_squawk1"
-		]
-	},
-	"cormorant_squawk2": {
-		"subtitle": "sounds.flyingfamiliars.cormorant_squawk2",
-		"sounds": [
-			"flyingfamiliars:cormorant_squawk2"
-		]
-	},
-	"griffonfly_chitter1": {
-		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter1",
-		"sounds": [
-			"flyingfamiliars:griffonfly_chitter1"
-		]
-	},
-	"griffonfly_chitter2": {
-		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter2",
-		"sounds": [
-			"flyingfamiliars:griffonfly_chitter2"
+			"flyingfamiliars:familiars/griffonfly/griffonfly_chitter1",
+			"flyingfamiliars:familiars/griffonfly/griffonfly_chitter2"
 		]
 	},
 	"griffonfly_death": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_death",
 		"sounds": [
-			"flyingfamiliars:griffonfly_death"
+			"flyingfamiliars:familiars/griffonfly/griffonfly_death"
 		]
 	},
-	"griffonfly_flap1": {
-		"subtitle": "sounds.flyingfamiliars.griffonfly_flap1",
+	"griffonfly_flap": {
+		"subtitle": "sounds.flyingfamiliars.griffonfly_flap",
 		"sounds": [
-			"flyingfamiliars:griffonfly_flap1"
-		]
-	},
-	"griffonfly_flap2": {
-		"subtitle": "sounds.flyingfamiliars.griffonfly_flap2",
-		"sounds": [
-			"flyingfamiliars:griffonfly_flap2"
-		]
-	},
-	"griffonfly_flap3": {
-		"subtitle": "sounds.flyingfamiliars.griffonfly_flap3",
-		"sounds": [
-			"flyingfamiliars:griffonfly_flap3"
+			"flyingfamiliars:familiars/griffonfly/griffonfly_flap1",
+			"flyingfamiliars:familiars/griffonfly/griffonfly_flap2",
+			"flyingfamiliars:familiars/griffonfly/griffonfly_flap3"
 		]
 	},
 	"griffonfly_grab": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_grab",
 		"sounds": [
-			"flyingfamiliars:griffonfly_grab"
+			"flyingfamiliars:familiars/griffonfly/griffonfly_grab"
 		]
 	},
 	"griffonfly_hurt": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_hurt",
 		"sounds": [
-			"flyingfamiliars:griffonfly_hurt"
+			"flyingfamiliars:familiars/griffonfly/griffonfly_hurt"
 		]
 	},
 	"griffonfly_release": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_release",
 		"sounds": [
-			"flyingfamiliars:griffonfly_release"
+			"flyingfamiliars:familiars/griffonfly/griffonfly_release"
+		]
+	},
+	"fireball_projectile_cast": {
+		"subtitle": "sounds.flyingfamiliars.fireball_projectile_cast",
+		"sounds": [
+			"flyingfamiliars:wand_effects/fireball_projectile/fireball_projectile_cast"
+		]
+	},
+	"fireball_projectile_explode": {
+		"subtitle": "sounds.flyingfamiliars.fireball_projectile_explode",
+		"sounds": [
+			"flyingfamiliars:wand_effects/fireball_projectile/fireball_projectile_explode"
+		]
+	},
+	"fireball_projectile_idle": {
+		"subtitle": "sounds.flyingfamiliars.fireball_projectile_idle",
+		"sounds": [
+			"flyingfamiliars:wand_effects/fireball_projectile/fireball_projectile_idle"
+		]
+	},
+	"capture_projectile_impact": {
+		"subtitle": "sounds.flyingfamiliars.capture_projectile_impact",
+		"sounds": [
+			"flyingfamiliars:wand_effects/capture_projectile/capture_projectile_impact"
 		]
 	},
 	"soul_wand_swap": {
 		"subtitle": "sounds.flyingfamiliars.soul_wand_swap",
 		"sounds": [
-			"flyingfamiliars:soul_wand_swap"
-		]
-	},
-	"soul_wand_throw": {
-		"subtitle": "sounds.flyingfamiliars.soul_wand_throw",
-		"sounds": [
-			"flyingfamiliars:soul_wand_throw"
+			"flyingfamiliars:wand_effects/soul_wand_swap"
 		]
 	}
 }

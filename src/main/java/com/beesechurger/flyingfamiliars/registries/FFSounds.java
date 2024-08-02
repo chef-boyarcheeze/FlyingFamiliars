@@ -34,23 +34,15 @@ public class FFSounds
 
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_APPLY_DOUSED = registerSoundEvent("cloud_ray_apply_doused");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE1 = registerSoundEvent("cloud_ray_idle1");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE2 = registerSoundEvent("cloud_ray_idle2");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE3 = registerSoundEvent("cloud_ray_idle3");
+	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE = registerSoundEvent("cloud_ray_idle");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_HURT = registerSoundEvent("cloud_ray_hurt");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP1 = registerSoundEvent("cloud_ray_step1");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP2 = registerSoundEvent("cloud_ray_step2");
-	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP3 = registerSoundEvent("cloud_ray_step3");
+	public static final RegistryObject<SoundEvent> CLOUD_RAY_STEP = registerSoundEvent("cloud_ray_step");
 
-	public static final RegistryObject<SoundEvent> CORMORANT_SQUAWK1 = registerSoundEvent("cormorant_squawk1");
-	public static final RegistryObject<SoundEvent> CORMORANT_SQUAWK2 = registerSoundEvent("cormorant_squawk2");
+	public static final RegistryObject<SoundEvent> CORMORANT_SQUAWK = registerSoundEvent("cormorant_squawk");
 	
-	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER1 = registerSoundEvent("griffonfly_chitter1");
-	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER2 = registerSoundEvent("griffonfly_chitter2");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_CHITTER = registerSoundEvent("griffonfly_chitter");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_DEATH = registerSoundEvent("griffonfly_death");
-	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP1 = registerSoundEvent("griffonfly_flap1");
-	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP2 = registerSoundEvent("griffonfly_flap2");
-	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP3 = registerSoundEvent("griffonfly_flap3");
+	public static final RegistryObject<SoundEvent> GRIFFONFLY_FLAP = registerSoundEvent("griffonfly_flap");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_GRAB = registerSoundEvent("griffonfly_grab");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_HURT = registerSoundEvent("griffonfly_hurt");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_RELEASE = registerSoundEvent("griffonfly_release");
