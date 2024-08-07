@@ -156,10 +156,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IWaterEntity, 
 
 	protected SoundEvent getStepSound()
 	{
-		int select = (int) Math.floor(Math.random() * 3);
-
-		return select == 0 ? FFSounds.CLOUD_RAY_STEP1.get()
-				: select == 1 ? FFSounds.CLOUD_RAY_STEP2.get() : FFSounds.CLOUD_RAY_STEP3.get();
+		return FFSounds.CLOUD_RAY_STEP.get();
 	}
 
 	@Override
@@ -171,12 +168,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IWaterEntity, 
 	@Override
 	protected SoundEvent getAmbientSound()
 	{
-		if(onGround())
-		{
-			return FFSounds.CLOUD_RAY_IDLE1.get();
-		}
-
-		return this.random.nextInt(4) == 0 ? FFSounds.CLOUD_RAY_IDLE2.get() : FFSounds.CLOUD_RAY_IDLE3.get();
+		return FFSounds.CLOUD_RAY_IDLE.get();
 	}
 
 	@Override

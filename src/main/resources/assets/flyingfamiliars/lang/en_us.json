@@ -98,31 +98,28 @@
 
 	"sounds.flyingfamiliars.brazier_ambient": "Brazier burns",
 	"sounds.flyingfamiliars.brazier_craft": "Brazier starts crafting",
-	"sounds.flyingfamiliars.brazier_result": "Brazier finished crafting",
+	"sounds.flyingfamiliars.brazier_result": "Brazier finishes crafting",
 
 	"sounds.flyingfamiliars.cloud_ray_apply_doused": "Cloud Ray douses owner",
 	"sounds.flyingfamiliars.cloud_ray_death": "Cloud Ray dies",
 	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
-	"sounds.flyingfamiliars.cloud_ray_idle1": "Cloud Ray drizzles",
-	"sounds.flyingfamiliars.cloud_ray_idle2": "Cloud Ray whistles",
-	"sounds.flyingfamiliars.cloud_ray_idle3": "Cloud Ray blows",
-	"sounds.flyingfamiliars.cloud_ray_step1": "Cloud Ray squelches",
-	"sounds.flyingfamiliars.cloud_ray_step2": "Cloud Ray squelches",
-	"sounds.flyingfamiliars.cloud_ray_step3": "Cloud Ray steps",
+	"sounds.flyingfamiliars.cloud_ray_idle": "Cloud Ray drizzles",
+	"sounds.flyingfamiliars.cloud_ray_step": "Cloud Ray squelches",
 
-	"sounds.flyingfamiliars.cormorant_squawk1": "Cormorant squawks",
-	"sounds.flyingfamiliars.cormorant_squawk2": "Cormorant squawks",
+	"sounds.flyingfamiliars.cormorant_squawk": "Cormorant squawks",
 
-	"sounds.flyingfamiliars.griffonfly_chitter1": "Griffonfly chitters",
-	"sounds.flyingfamiliars.griffonfly_chitter2": "Griffonfly chitters",
+	"sounds.flyingfamiliars.griffonfly_chitter": "Griffonfly chitters",
 	"sounds.flyingfamiliars.griffonfly_death": "Griffonfly dies",
-	"sounds.flyingfamiliars.griffonfly_flap1": "Griffonfly flaps",
-	"sounds.flyingfamiliars.griffonfly_flap2": "Griffonfly flaps",
-	"sounds.flyingfamiliars.griffonfly_flap3": "Griffonfly flaps",
+	"sounds.flyingfamiliars.griffonfly_flap": "Griffonfly flaps",
 	"sounds.flyingfamiliars.griffonfly_grab": "Griffonfly grabs mob",
 	"sounds.flyingfamiliars.griffonfly_hurt": "Griffonfly hurts",
 	"sounds.flyingfamiliars.griffonfly_release": "Griffonfly releases mob",
 
 	"sounds.flyingfamiliars.soul_wand_swap": "Soul Wand mob selected",
-	"sounds.flyingfamiliars.soul_wand_throw": "Soul Wand used"
+
+	"sounds.flyingfamiliars.capture_projectile_impact": "Capture Projectile hits something",
+
+	"sounds.flyingfamiliars.fireball_projectile_cast": "Fireball Projectile cast",
+	"sounds.flyingfamiliars.fireball_projectile_explode": "Fireball Projectile explodes",
+	"sounds.flyingfamiliars.fireball_projectile_idle": "Fireball Projectile flies"
 }

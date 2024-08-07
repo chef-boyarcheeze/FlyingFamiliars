@@ -223,17 +223,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntit
     @Override
     protected SoundEvent getAmbientSound()
     {
-        if (this.isFlying())
-        {
-            int select = (int) Math.floor(Math.random() * 3);
-
-            return select == 0 ? FFSounds.GRIFFONFLY_FLAP1.get()
-                    : select == 1 ? FFSounds.GRIFFONFLY_FLAP2.get() : FFSounds.GRIFFONFLY_FLAP3.get();
-        }
-
-        int select = (int) Math.floor(Math.random() * 2);
-
-        return select == 0 ? FFSounds.GRIFFONFLY_CHITTER1.get() : FFSounds.GRIFFONFLY_CHITTER2.get();
+        return FFSounds.CLOUD_RAY_IDLE.get();
     }
 
     @Override

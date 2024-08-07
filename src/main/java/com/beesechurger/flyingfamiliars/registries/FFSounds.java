@@ -17,6 +17,7 @@ public class FFSounds
 	// Sound Events
 	public static final DeferredRegister<SoundEvent> SOUND_EVENT_REG = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, FlyingFamiliars.MOD_ID);
 
+	// Block sounds:
 	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_BREAK = registerSoundEvent("runic_bricks_break");
 	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_STEP = registerSoundEvent("runic_bricks_step");
 	public static final RegistryObject<SoundEvent> RUNIC_BRICKS_PLACE = registerSoundEvent("runic_bricks_place");
@@ -32,6 +33,7 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> BRAZIER_CRAFT = registerSoundEvent("brazier_craft");
 	public static final RegistryObject<SoundEvent> BRAZIER_RESULT = registerSoundEvent("brazier_result");
 
+	// Familiar sounds:
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_APPLY_DOUSED = registerSoundEvent("cloud_ray_apply_doused");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_DEATH = registerSoundEvent("cloud_ray_death");
 	public static final RegistryObject<SoundEvent> CLOUD_RAY_IDLE = registerSoundEvent("cloud_ray_idle");
@@ -46,9 +48,15 @@ public class FFSounds
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_GRAB = registerSoundEvent("griffonfly_grab");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_HURT = registerSoundEvent("griffonfly_hurt");
 	public static final RegistryObject<SoundEvent> GRIFFONFLY_RELEASE = registerSoundEvent("griffonfly_release");
-	
+
+	// Wand effect sounds:
 	public static final RegistryObject<SoundEvent> SOUL_WAND_SWAP = registerSoundEvent("soul_wand_swap");
-	public static final RegistryObject<SoundEvent> SOUL_WAND_THROW = registerSoundEvent("soul_wand_throw");
+
+	public static final RegistryObject<SoundEvent> CAPTURE_PROJECTILE_IMPACT = registerSoundEvent("capture_projectile_impact");
+
+	public static final RegistryObject<SoundEvent> FIREBALL_PROJECTILE_CAST = registerSoundEvent("fireball_projectile_cast");
+	public static final RegistryObject<SoundEvent> FIREBALL_PROJECTILE_EXPLODE = registerSoundEvent("fireball_projectile_explode");
+	public static final RegistryObject<SoundEvent> FIREBALL_PROJECTILE_IDLE = registerSoundEvent("fireball_projectile_idle");
 
 	// Sound Types
 	public static final ForgeSoundType RUNIC_BRICKS = new ForgeSoundType(2f, 1f,

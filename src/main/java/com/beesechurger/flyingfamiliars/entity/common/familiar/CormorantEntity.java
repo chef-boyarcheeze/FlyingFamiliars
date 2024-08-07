@@ -185,7 +185,7 @@ public class CormorantEntity extends BaseFamiliarEntity implements IWaterEntity
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return random.nextInt(2) == 0 ? FFSounds.CORMORANT_SQUAWK1.get() : FFSounds.CORMORANT_SQUAWK2.get();
+        return FFSounds.CORMORANT_SQUAWK.get();
     }
 
     @Override

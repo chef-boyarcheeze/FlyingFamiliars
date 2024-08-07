@@ -20,6 +20,6 @@ public class CaptureProjectileRenderer extends GeoEntityRenderer<CaptureProjecti
 	@Override
 	public ResourceLocation getTextureLocation(CaptureProjectile animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/wand_effect/capture_projectile.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/wand_effect/capture_projectile/capture_projectile.png");
 	}
 }

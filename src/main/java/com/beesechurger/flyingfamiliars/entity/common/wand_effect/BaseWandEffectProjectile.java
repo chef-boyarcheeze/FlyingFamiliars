@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect;
 
 import com.beesechurger.flyingfamiliars.item.common.wand_effect.IWandEffect;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFAnimationController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -9,6 +10,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +54,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
 
         if(entity instanceof Player)
             player = (Player) entity;
+
+        setOwner(entity);
+        this.setPos(entity.getX(), entity.getY() + 1, entity.getZ());
     }
 
     public BaseWandEffectProjectile(EntityType<? extends BaseWandEffectProjectile> proj, double x, double y, double z, Level level)
@@ -103,10 +109,7 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
 
 // Floats:
 
-    public float getGravity()
-    {
-        return 0.3f;
-    }
+    protected abstract float getGravity();
 
 // Misc:
 
@@ -207,5 +210,15 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
     {
         if(isDead())
             ++deadTimer;
+    }
+
+/////////////
+// Sounds: //
+/////////////
+
+    protected void playLocalSound(SoundEvent event)
+    {
+        level().playSound((Player)null, getX(), getY(), getZ(),
+                event, SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
     }
 }

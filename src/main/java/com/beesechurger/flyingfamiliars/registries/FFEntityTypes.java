@@ -3,7 +3,9 @@ package com.beesechurger.flyingfamiliars.registries;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.*;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.CaptureProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.FireballProjectile;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -17,7 +19,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class FFEntityTypes 
 {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPE_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, FlyingFamiliars.MOD_ID);
-	
+
+	// Familiars:
 	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPE_REG.register("cloud_ray",
 			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
 					.sized(2.0f, 1.5f)
@@ -47,12 +50,19 @@ public class FFEntityTypes
 			() -> EntityType.Builder.of(VoidMothEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "void_moth").toString()));
-	
+
+	// Projectiles:
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPE_REG.register("capture_projectile",
 			() -> EntityType.Builder.<CaptureProjectile>of(CaptureProjectile::new, MobCategory.MISC)
 					.sized(0.5f, 0.5f)
 					.setShouldReceiveVelocityUpdates(true)
 					.build("capture_projectile"));
+
+	public static final RegistryObject<EntityType<FireballProjectile>> FIREBALL_PROJECTILE = ENTITY_TYPE_REG.register("fireball_projectile",
+			() -> EntityType.Builder.<FireballProjectile>of(FireballProjectile::new, MobCategory.MISC)
+					.sized(0.8f, 0.8f)
+					.setShouldReceiveVelocityUpdates(true)
+					.build("fireball_projectile"));
 
 	@SubscribeEvent
 	public static void entityAttributeEvent(EntityAttributeCreationEvent event)

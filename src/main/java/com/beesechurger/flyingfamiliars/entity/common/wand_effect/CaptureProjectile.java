@@ -102,6 +102,14 @@ public class CaptureProjectile extends BaseWandEffectProjectile implements GeoEn
 		return 10;
 	}
 
+// Floats:
+
+	@Override
+	protected float getGravity()
+	{
+		return 0.03f;
+	}
+
 ////////////////////////////////////
 // Player and entity interaction: //
 ////////////////////////////////////
@@ -116,8 +124,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile implements GeoEn
 				if(capture(result.getEntity()))
 				{
 					level().broadcastEntityEvent(this, (byte) 3);
-					level().playSound((Player)null, getX(), getY(), getZ(),
-							FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+					playLocalSound(FFSounds.CAPTURE_PROJECTILE_IMPACT.get());
 				}
 			}
 
@@ -218,8 +225,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile implements GeoEn
 				if(release(result))
 				{
 					level().broadcastEntityEvent(this, (byte) 3);
-					level().playSound((Player)null, getX(), getY(), getZ(),
-							FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+					playLocalSound(FFSounds.CAPTURE_PROJECTILE_IMPACT.get());
 				}
 			}
 

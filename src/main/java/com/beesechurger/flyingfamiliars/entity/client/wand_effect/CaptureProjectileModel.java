@@ -25,6 +25,6 @@ public class CaptureProjectileModel extends GeoModel<CaptureProjectile>
 	@Override
 	public ResourceLocation getTextureResource(CaptureProjectile animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/wand_effect/capture_projectile.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/wand_effect/capture_projectile/capture_projectile.png");
 	}
 }

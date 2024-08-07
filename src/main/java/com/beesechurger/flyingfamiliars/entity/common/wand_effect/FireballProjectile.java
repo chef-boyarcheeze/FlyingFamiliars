@@ -36,19 +36,19 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMP
 
 public class FireballProjectile extends BaseWandEffectProjectile
 {
-    public FireballProjectile(EntityType<? extends CaptureProjectile> proj, Level level)
+    public FireballProjectile(EntityType<? extends FireballProjectile> proj, Level level)
     {
         super(proj, level);
     }
 
     public FireballProjectile(Level level, LivingEntity entity)
     {
-        super(FFEntityTypes.CAPTURE_PROJECTILE.get(), entity, level);
+        super(FFEntityTypes.FIREBALL_PROJECTILE.get(), entity, level);
     }
 
     public FireballProjectile(Level level, double x, double y, double z)
     {
-        super(FFEntityTypes.CAPTURE_PROJECTILE.get(), x, y, z, level);
+        super(FFEntityTypes.FIREBALL_PROJECTILE.get(), x, y, z, level);
     }
 
 /////////////////////////////////
@@ -62,14 +62,14 @@ public class FireballProjectile extends BaseWandEffectProjectile
         if(!isDead())
         {
             controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.capture_projectile.idle"));
+                    .thenLoop("animation.fireball_projectile.idle"));
 
             controller.setAnimationSpeed(1.0f);
         }
         else
         {
             controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.capture_projectile.death"));
+                    .thenLoop("animation.fireball_projectile.death"));
 
             controller.setAnimationSpeed(1.0f);
         }
@@ -97,6 +97,14 @@ public class FireballProjectile extends BaseWandEffectProjectile
         return 10;
     }
 
+// Floats:
+
+    @Override
+    protected float getGravity()
+    {
+        return 0.03f;
+    }
+
 ////////////////////////////////////
 // Player and entity interaction: //
 ////////////////////////////////////
@@ -111,8 +119,7 @@ public class FireballProjectile extends BaseWandEffectProjectile
                 if(explode())
                 {
                     level().broadcastEntityEvent(this, (byte) 3);
-                    level().playSound((Player)null, getX(), getY(), getZ(),
-                            FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+                    playLocalSound(FFSounds.FIREBALL_PROJECTILE_EXPLODE.get());
                 }
             }
 
@@ -130,8 +137,7 @@ public class FireballProjectile extends BaseWandEffectProjectile
                 if(explode())
                 {
                     level().broadcastEntityEvent(this, (byte) 3);
-                    level().playSound((Player)null, getX(), getY(), getZ(),
-                            FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+                    playLocalSound(FFSounds.FIREBALL_PROJECTILE_EXPLODE.get());
                 }
             }
 
@@ -173,7 +179,7 @@ public class FireballProjectile extends BaseWandEffectProjectile
             for (int i = 0; i < 360; i++)
             {
                 // capture
-                if(i % 5 == 0) level().addParticle(ParticleTypes.CLOUD, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 9) * Math.sin(i * 9)), 0.1 * Math.sin(i));
+                if(i % 5 == 0) level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 9) * Math.sin(i * 9)), 0.1 * Math.sin(i));
             }
         }
     }

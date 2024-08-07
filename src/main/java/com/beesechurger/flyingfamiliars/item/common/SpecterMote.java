@@ -84,12 +84,6 @@ public class SpecterMote extends Item
     
     public void doEffects(Level level, Player player, Entity entity)
 	{
-		level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_THROW.get(), SoundSource.PLAYERS, 1.0f, FFSounds.getPitch());
-		
-		for(int i = 0; i < 360; i++)
-	    {
-	    	level.addParticle(ParticleTypes.END_ROD, entity.getX(), entity.getY(), entity.getZ(), 0.1 * Math.cos(i * Math.PI), 0.1, 0.1 * Math.sin(i));
-	    	level.addParticle(ParticleTypes.END_ROD, entity.getX(), entity.getY(), entity.getZ(), 0.1 * Math.sin(i), 0.1, 0.1 * Math.cos(i * Math.PI));
-	    }
+
 	}
 }

@@ -204,16 +204,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity
 	protected SoundEvent getAmbientSound()
 	{
 		if (this.isFlying())
-		{
-			int select = (int) Math.floor(Math.random() * 3);
-
-			return select == 0 ? FFSounds.GRIFFONFLY_FLAP1.get()
-					: select == 1 ? FFSounds.GRIFFONFLY_FLAP2.get() : FFSounds.GRIFFONFLY_FLAP3.get();
-		}
-
-		int select = (int) Math.floor(Math.random() * 2);
-
-		return select == 0 ? FFSounds.GRIFFONFLY_CHITTER1.get() : FFSounds.GRIFFONFLY_CHITTER2.get();
+			return FFSounds.GRIFFONFLY_FLAP.get();
+		else
+			return FFSounds.GRIFFONFLY_CHITTER.get();
 	}
 
 	@Override
