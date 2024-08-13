@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"fireball.animation.idle": {
+		"animation.fireball_projectile.idle": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -40,7 +40,7 @@
 				}
 			}
 		},
-		"fireball.animation.death": {
+		"animation.fireball_projectile.death": {
 			"animation_length": 1,
 			"bones": {
 				"core": {
