@@ -14,7 +14,7 @@ public class FireballProjectileRenderer extends GeoEntityRenderer<FireballProjec
 	public FireballProjectileRenderer(Context renderManager)
 	{
 		super(renderManager, new FireballProjectileModel());
-		this.withScale(1.5f);
+		this.withScale(1.0f);
 	}
 
 	@Override
