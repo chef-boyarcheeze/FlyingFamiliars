@@ -60,16 +60,4 @@ public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_white.png");
 		};
 	}
-	
-	@Override
-    protected void applyRotations(MagicCarpetEntity magicCarpetEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
-	{
-        super.applyRotations(magicCarpetEntity, stack, ageInTicks, rotationYaw, partialTicks);
-        
-        float renderPitch = (float) magicCarpetEntity.getPitch(partialTicks);
-    	float renderRoll = (float) magicCarpetEntity.getRoll(partialTicks);
-
-        stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
-        stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
-	}
 }

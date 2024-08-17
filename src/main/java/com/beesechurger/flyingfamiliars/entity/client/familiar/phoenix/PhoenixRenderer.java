@@ -33,16 +33,4 @@ public class PhoenixRenderer extends GeoEntityRenderer<PhoenixEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 		};
 	}
-
-	@Override
-	protected void applyRotations(PhoenixEntity phoenixEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
-	{
-		super.applyRotations(phoenixEntity, stack, ageInTicks, rotationYaw, partialTicks);
-
-		float renderPitch = (float) phoenixEntity.getPitch(partialTicks);
-		float renderRoll = (float) phoenixEntity.getRoll(partialTicks);
-
-		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
-		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
-	}
 }

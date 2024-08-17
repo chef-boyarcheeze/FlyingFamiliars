@@ -36,16 +36,4 @@ public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
 		};
 	}
-
-	@Override
-	protected void applyRotations(CloudRayEntity cloudRayEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
-	{
-		super.applyRotations(cloudRayEntity, stack, ageInTicks, rotationYaw, partialTicks);
-
-		float renderPitch = (float) cloudRayEntity.getPitch(partialTicks);
-		float renderRoll = (float) cloudRayEntity.getRoll(partialTicks);
-
-		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
-		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
-	}
 }

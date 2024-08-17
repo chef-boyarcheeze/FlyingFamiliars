@@ -1,6 +1,8 @@
-package com.beesechurger.flyingfamiliars.entity.client.wand_effect;
+package com.beesechurger.flyingfamiliars.entity.client.wand_effect.fireball_projectile;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.BaseWandEffectProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.BaseWandEffectProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.FireballProjectile;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class FireballProjectileRenderer extends GeoEntityRenderer<FireballProjectile>
+public class FireballProjectileRenderer extends BaseWandEffectProjectileRenderer<FireballProjectile>
 {
 	public FireballProjectileRenderer(Context renderManager)
 	{

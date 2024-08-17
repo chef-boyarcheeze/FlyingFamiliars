@@ -35,16 +35,4 @@ public class CormorantRenderer extends GeoEntityRenderer<CormorantEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cormorant/great_cormorant.png");
 		};
 	}
-
-	@Override
-	protected void applyRotations(CormorantEntity cormorantEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
-	{
-		super.applyRotations(cormorantEntity, stack, ageInTicks, rotationYaw, partialTicks);
-
-		float renderPitch = (float) cormorantEntity.getPitch(partialTicks);
-		float renderRoll = (float) cormorantEntity.getRoll(partialTicks);
-
-		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
-		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
-	}
 }

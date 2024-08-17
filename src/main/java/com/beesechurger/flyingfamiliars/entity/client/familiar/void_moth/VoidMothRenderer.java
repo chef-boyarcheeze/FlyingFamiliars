@@ -26,16 +26,4 @@ public class VoidMothRenderer extends GeoEntityRenderer<VoidMothEntity>
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/void_moth/void_moth.png");
 	}
-
-	@Override
-	protected void applyRotations(VoidMothEntity voidMothEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
-	{
-		super.applyRotations(voidMothEntity, stack, ageInTicks, rotationYaw, partialTicks);
-
-		float renderPitch = (float) voidMothEntity.getPitch(partialTicks);
-		float renderRoll = (float) voidMothEntity.getRoll(partialTicks);
-
-		stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
-		stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
-	}
 }

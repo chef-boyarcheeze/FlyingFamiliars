@@ -40,16 +40,4 @@ public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_yellow.png");
         };
 	}
-	
-	@Override
-    protected void applyRotations(GriffonflyEntity griffonflyEntity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
-	{
-        super.applyRotations(griffonflyEntity, stack, ageInTicks, rotationYaw, partialTicks);
-        
-        float renderPitch = (float) griffonflyEntity.getPitch(partialTicks);
-    	float renderRoll = (float) griffonflyEntity.getRoll(partialTicks);
-
-        stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
-        stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));
-	}
 }

@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -110,6 +111,24 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
 // Floats:
 
     protected abstract float getGravity();
+
+// Doubles:
+
+    public double getPitch(double partialTicks)
+    {
+        if(xRotO == getXRot())
+            return getXRot();
+
+        return partialTicks == 1.0 ? getXRot() : Mth.lerp(partialTicks, xRotO, getXRot());
+    }
+
+    public double getYaw(double partialTicks)
+    {
+        if(yRotO == getYRot())
+            return getYRot();
+
+        return partialTicks == 1.0 ? getYRot() : Mth.lerp(partialTicks, yRotO, getYRot());
+    }
 
 // Misc:
 

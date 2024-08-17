@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.entity.client.wand_effect;
+package com.beesechurger.flyingfamiliars.entity.client.wand_effect.fireball_projectile;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.FireballProjectile;
