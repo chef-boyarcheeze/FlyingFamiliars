@@ -28,7 +28,7 @@ public class BaseWandEffectProjectileRenderer<T extends BaseWandEffectProjectile
         float renderPitch = (float) animatable.getPitch(partialTicks);
         float renderYaw = (float) animatable.getYaw(partialTicks);
 
-        stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
         stack.mulPose(Axis.YP.rotationDegrees(renderYaw));
+        stack.mulPose(Axis.XP.rotationDegrees(renderPitch));
     }
 }

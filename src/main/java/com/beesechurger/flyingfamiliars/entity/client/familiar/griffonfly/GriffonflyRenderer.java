@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar.griffonfly;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.GriffonflyEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -12,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class GriffonflyRenderer extends GeoEntityRenderer<GriffonflyEntity>
+public class GriffonflyRenderer extends BaseFamiliarRenderer<GriffonflyEntity>
 {
 	public GriffonflyRenderer(Context renderManager)
 	{

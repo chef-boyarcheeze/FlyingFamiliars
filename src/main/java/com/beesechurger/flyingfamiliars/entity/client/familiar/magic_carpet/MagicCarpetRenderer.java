@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.MagicCarpetEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -11,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class MagicCarpetRenderer extends GeoEntityRenderer<MagicCarpetEntity>
+public class MagicCarpetRenderer extends BaseFamiliarRenderer<MagicCarpetEntity>
 {
 	public MagicCarpetRenderer(Context renderManager)
 	{

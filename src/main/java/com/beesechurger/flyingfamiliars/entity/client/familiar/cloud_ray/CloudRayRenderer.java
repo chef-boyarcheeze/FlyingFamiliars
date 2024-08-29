@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar.cloud_ray;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.CloudRayEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -12,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class CloudRayRenderer extends GeoEntityRenderer<CloudRayEntity>
+public class CloudRayRenderer extends BaseFamiliarRenderer<CloudRayEntity>
 {
 	public CloudRayRenderer(Context renderManager)
 	{
