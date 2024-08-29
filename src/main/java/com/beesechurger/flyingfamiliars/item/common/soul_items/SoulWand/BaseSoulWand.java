@@ -45,13 +45,9 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
 
         if(!level.isClientSide())
         {
-            /*CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
-            capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
-            level.addFreshEntity(capture);*/
-
-            FireballProjectile fire = new FireballProjectile(level, player);
-            fire.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.2F, 1.0F);
-            level.addFreshEntity(fire);
+            CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
+            capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);
+            level.addFreshEntity(capture);
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));

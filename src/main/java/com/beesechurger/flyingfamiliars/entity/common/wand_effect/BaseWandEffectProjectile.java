@@ -187,7 +187,10 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
         double d2 = this.getX() + vec3.x;
         double d0 = this.getY() + vec3.y;
         double d1 = this.getZ() + vec3.z;
-        this.updateRotation();
+
+        if(!isDead())
+            this.updateRotation();
+
         float f;
         if (this.isInWater()) {
             for(int i = 0; i < 4; ++i) {
