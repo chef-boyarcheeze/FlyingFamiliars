@@ -1,14 +1,9 @@
-package com.beesechurger.flyingfamiliars.entity.client.wand_effect;
+package com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile;
 
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.BaseWandEffectProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.BaseWandEffectProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.util.Mth;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;

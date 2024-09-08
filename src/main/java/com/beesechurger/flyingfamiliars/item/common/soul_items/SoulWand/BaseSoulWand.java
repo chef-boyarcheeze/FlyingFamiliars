@@ -1,11 +1,13 @@
 package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.CaptureProjectile;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.FireballProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.item.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.soul_items.IModeCycleItem;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.IWandEffectItem;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
+import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -22,16 +24,8 @@ import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_GRAY;
 
-public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
+public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
 {
-    protected int normalColorInt = CHAT_GRAY;
-    protected int attackColorInt = CHAT_GRAY;
-    protected int defenseColorInt = CHAT_GRAY;
-
-    protected ChatFormatting normalColorChat = ChatFormatting.GRAY;
-    protected ChatFormatting attackColorChat = ChatFormatting.GRAY;
-    protected ChatFormatting defenseColorChat = ChatFormatting.GRAY;
-
     public BaseSoulWand(Properties properties)
     {
         super(properties);
@@ -45,13 +39,14 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
 
         if(!level.isClientSide())
         {
-            CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
-            capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);
-            level.addFreshEntity(capture);
-        }
+            // Get selected wand effect
+            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-        player.awardStat(Stats.ITEM_USED.get(this));
-        player.getCooldowns().addCooldown(this, 5);
+            // determine if there is enough 'fuel' for action
+
+            player.awardStat(Stats.ITEM_USED.get(this));
+            player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+        }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
@@ -61,21 +56,12 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     {
         if(stack.hasTag())
         {
-            int mode = this.getMode(stack);
-            MutableComponent base = Component.translatable(super.getDescriptionId(stack));
+            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-            return switch(mode)
-            {
-                case 1 -> base.append(" (")
-                        .append(Component.translatable("message.flyingfamiliars.mode_tag.attack"))
-                        .append(")");
-                case 2 -> base.append(" (")
-                        .append(Component.translatable("message.flyingfamiliars.mode_tag.defense"))
-                        .append(")");
-                default -> base.append(" (")
-                        .append(Component.translatable("message.flyingfamiliars.mode_tag.normal"))
-                        .append(")");
-            };
+            return Component.translatable(super.getDescriptionId(stack))
+                    .append(" (")
+                    .append(Component.translatable(selectedWandEffect.getTranslatableName()))
+                    .append(")");
         }
         else
             return Component.translatable(super.getDescriptionId(stack));
@@ -86,17 +72,12 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     {
         if(stack.hasTag())
         {
-            int mode = this.getMode(stack);
+            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-            return switch(mode)
-            {
-                case 1 -> attackColorInt;
-                case 2 -> defenseColorInt;
-                default -> normalColorInt;
-            };
+            return selectedWandEffect.getBarColor();
         }
         else
-            return normalColorInt;
+            return CHAT_GRAY;
     }
 
     @Override
@@ -104,21 +85,11 @@ public class BaseSoulWand extends BaseEntityTagItem implements IModeCycleItem
     {
         if(stack.hasTag())
         {
-            int mode = this.getMode(stack);
+            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-            switch(mode)
-            {
-                case 1 -> tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.attack")
-                        .withStyle(attackColorChat));
-                case 2 -> tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.defense")
-                        .withStyle(defenseColorChat));
-                default -> tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.normal")
-                        .withStyle(normalColorChat));
-            };
+            tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
+                    .withStyle(ChatFormatting.GRAY));
         }
-        else
-            tooltip.add(Component.translatable("tooltip.flyingfamiliars.mode_tag.normal")
-                    .withStyle(normalColorChat));
 
         super.appendHoverText(stack, level, tooltip, tipFlag);
     }

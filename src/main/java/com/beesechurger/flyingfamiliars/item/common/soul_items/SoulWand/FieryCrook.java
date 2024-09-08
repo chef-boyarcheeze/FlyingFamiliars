@@ -15,30 +15,5 @@ public class FieryCrook extends BaseSoulWand
     public FieryCrook(Properties properties)
     {
         super(properties);
-
-        attackColorInt = CHAT_DARK_RED;
-        defenseColorInt = CHAT_GOLD;
-        attackColorChat = ChatFormatting.DARK_RED;
-        defenseColorChat = ChatFormatting.GOLD;
     }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-    {
-        ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
-
-        int mode = this.getMode(stack);
-
-        switch(mode)
-        {
-            //case 1 -> ;
-            //case 2 -> ;
-            default -> super.use(level, player, hand);
-        }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-    }
-
-
 }

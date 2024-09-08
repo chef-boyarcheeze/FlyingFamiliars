@@ -71,9 +71,9 @@
 	"tooltip.flyingfamiliars.entity_tag.stored_1": "1 stored mob",
 	"tooltip.flyingfamiliars.entity_tag.stored_2": "2 stored mobs",
 	"tooltip.flyingfamiliars.entity_tag.stored_3": "3 stored mobs",
-	"tooltip.flyingfamiliars.mode_tag.normal": "Mode: Normal",
-	"tooltip.flyingfamiliars.mode_tag.attack": "Mode: Attack",
-	"tooltip.flyingfamiliars.mode_tag.defense": "Mode: Defense",
+
+	"tooltip.flyingfamiliars.wand_effect.capture_projectile": "Capture Projectile",
+	"tooltip.flyingfamiliars.wand_effect.fireball_projectile": "Fireball Projectile",
 
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",

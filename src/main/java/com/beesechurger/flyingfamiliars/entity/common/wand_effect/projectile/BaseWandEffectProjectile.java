@@ -1,6 +1,5 @@
-package com.beesechurger.flyingfamiliars.entity.common.wand_effect;
+package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
-import com.beesechurger.flyingfamiliars.item.common.wand_effect.IWandEffect;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFAnimationController;
 import net.minecraft.core.BlockPos;
@@ -18,9 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,7 +30,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class BaseWandEffectProjectile extends Projectile implements IWandEffect, GeoEntity
+public abstract class BaseWandEffectProjectile extends Projectile implements GeoEntity
 {
     private static final EntityDataAccessor<Boolean> DEAD = SynchedEntityData.defineId(BaseWandEffectProjectile.class, EntityDataSerializers.BOOLEAN);
 
@@ -90,9 +86,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
         entityData.define(DEAD, false);
     }
 
-///////////////////////
-// Entity accessors: //
-///////////////////////
+////////////////
+// Accessors: //
+////////////////
 
 // Booleans:
 
@@ -138,9 +134,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
         return cache;
     }
 
-//////////////////////
-// Entity mutators: //
-//////////////////////
+///////////////
+// Mutators: //
+///////////////
 
 // Booleans:
 
@@ -149,9 +145,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements IWa
         entityData.set(DEAD, dead);
     }
 
-////////////////
-// Entity AI: //
-////////////////
+/////////
+// AI: //
+/////////
 
     @Override
     public void tick()

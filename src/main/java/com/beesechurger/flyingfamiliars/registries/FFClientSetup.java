@@ -6,8 +6,8 @@ import com.beesechurger.flyingfamiliars.entity.client.familiar.griffonfly.Griffo
 import com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet.MagicCarpetRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.phoenix.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth.VoidMothRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.wand_effect.capture_projectile.CaptureProjectileRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.wand_effect.fireball_projectile.FireballProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.CaptureProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fireball_projectile.FireballProjectileRenderer;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;

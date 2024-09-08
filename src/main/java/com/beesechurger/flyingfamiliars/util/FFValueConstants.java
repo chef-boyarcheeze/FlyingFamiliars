@@ -29,7 +29,7 @@ public class FFValueConstants
     public static final int FAMILIAR_TYPE_SHADOW = 0x202020;
     public static final int FAMILIAR_TYPE_LIGHT = 0xF0F0F0;
 
-    // Goal values:
+    // Familiar goal values:
     public static final int BUILDING_LIMIT_LOW = -64;
     public static final int BUILDING_LIMIT_HIGH = 320;
     public static final int RANDOM_MOVE_CHANCE = 50;

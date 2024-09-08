@@ -2,10 +2,9 @@ package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.*;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.CaptureProjectile;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.FireballProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;

@@ -15,28 +15,5 @@ public class TempestStaff extends BaseSoulWand
     public TempestStaff(Properties properties)
     {
         super(properties);
-
-        attackColorInt = CHAT_YELLOW;
-        defenseColorInt = CHAT_WHITE;
-        attackColorChat = ChatFormatting.YELLOW;
-        defenseColorChat = ChatFormatting.WHITE;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-    {
-        ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
-
-        int mode = this.getMode(stack);
-
-        switch(mode)
-        {
-            //case 1 -> ;
-            //case 2 -> ;
-            default -> super.use(level, player, hand);
-        }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }

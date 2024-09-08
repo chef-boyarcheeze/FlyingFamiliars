@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.item;
 
 import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.IModeCycleItem;
 import com.beesechurger.flyingfamiliars.item.common.soul_items.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.soul_items.IWandEffectItem;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,27 +21,28 @@ public class EntityTagItemHelper
 
     public static void populateTag(ItemStack stack)
     {
-        if(stack.getItem() instanceof BaseEntityTagItem item)
+        if(stack.getItem() instanceof BaseEntityTagItem tagItem)
         {
             CompoundTag stackTag = new CompoundTag();
 
-            CompoundTag entityNBT = new CompoundTag();
-            ListTag tagList = entityNBT.getList(BASE_ENTITY_TAGNAME, 10);
-            entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
+            CompoundTag entityTag = new CompoundTag();
+            ListTag tagList = entityTag.getList(BASE_ENTITY_TAGNAME, 10);
+            entityTag.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
 
-            for(int i = 0; i < item.getMaxEntities(); i++)
+            for(int i = 0; i < tagItem.getMaxEntities(); i++)
             {
-                tagList.addTag(i, entityNBT);
+                tagList.addTag(i, entityTag);
             }
 
             stackTag.put(BASE_ENTITY_TAGNAME, tagList);
 
-            if(stack.getItem() instanceof IModeCycleItem)
+            if(stack.getItem() instanceof IWandEffectItem effectItem)
             {
-                CompoundTag modeTag = new CompoundTag();
-                modeTag.putInt(ITEM_MODE_TAGNAME, 0);
+                // set default wand effect selection as capture projectile
+                CompoundTag selectionTag = new CompoundTag();
+                selectionTag.putString(ITEM_WAND_EFFECT_SELECTION_TAGNAME, "capture_projectile");
 
-                stackTag.put(ITEM_MODE_TAGNAME, modeTag);
+                stackTag.put(ITEM_WAND_EFFECT_SELECTION_TAGNAME, selectionTag);
             }
 
             stack.setTag(stackTag);
@@ -50,13 +51,13 @@ public class EntityTagItemHelper
 
     public static void ensureTagPopulated(ItemStack stack)
     {
-        if(stack.getItem() instanceof BaseEntityTagItem item && stack.hasTag())
+        if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            if(stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).size() != item.getMaxEntities())
+            if(!stack.hasTag())
+                EntityTagItemHelper.populateTag(stack);
+            else if(stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).size() != item.getMaxEntities())
                 EntityTagItemHelper.populateTag(stack);
         }
-        else if(!stack.hasTag())
-            EntityTagItemHelper.populateTag(stack);
     }
 
     public static String getSelectedEntity(ItemStack stack)

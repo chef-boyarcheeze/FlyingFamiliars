@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.entity.common.wand_effect;
+package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.util.FFAnimationController;
@@ -12,7 +12,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,7 +24,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -35,7 +33,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class CaptureProjectile extends BaseWandEffectProjectile implements GeoEntity
+public class CaptureProjectile extends BaseWandEffectProjectile
 {
 	private NonNullList<ItemStack> stacks = NonNullList.create();
 	private boolean action = false;

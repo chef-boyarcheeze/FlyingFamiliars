@@ -626,9 +626,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return new Vec3(xMove, yMove, zMove);
 	}
 
-////////////////
-// Entity AI: //
-////////////////
+/////////
+// AI: //
+/////////
 
 	@Override
 	public void tick()

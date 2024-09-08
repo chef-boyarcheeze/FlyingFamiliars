@@ -524,7 +524,7 @@
 		},
 		"animation.phoenix.body_gliding": {
 			"loop": true,
-			"animation_length": 3.95833,
+			"animation_length": 4,
 			"bones": {
 				"body": {
 					"rotation": {

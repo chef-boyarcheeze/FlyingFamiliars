@@ -15,28 +15,5 @@ public class VerdantBough extends BaseSoulWand
     public VerdantBough(Properties properties)
     {
         super(properties);
-
-        attackColorInt = CHAT_DARK_GREEN;
-        defenseColorInt = CHAT_LIGHT_PURPLE;
-        attackColorChat = ChatFormatting.DARK_GREEN;
-        defenseColorChat = ChatFormatting.LIGHT_PURPLE;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-    {
-        ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
-
-        int mode = this.getMode(stack);
-
-        switch(mode)
-        {
-            //case 1 -> ;
-            //case 2 -> ;
-            default -> super.use(level, player, hand);
-        }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }

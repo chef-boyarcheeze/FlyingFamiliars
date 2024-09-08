@@ -15,28 +15,5 @@ public class FissureBaton extends BaseSoulWand
     public FissureBaton(Properties properties)
     {
         super(properties);
-
-        attackColorInt = CHAT_GOLD;
-        defenseColorInt = CHAT_DARK_GREEN;
-        attackColorChat = ChatFormatting.GOLD;
-        defenseColorChat = ChatFormatting.DARK_GREEN;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-    {
-        ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
-
-        int mode = this.getMode(stack);
-
-        switch(mode)
-        {
-            //case 1 -> ;
-            //case 2 -> ;
-            default -> super.use(level, player, hand);
-        }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }
