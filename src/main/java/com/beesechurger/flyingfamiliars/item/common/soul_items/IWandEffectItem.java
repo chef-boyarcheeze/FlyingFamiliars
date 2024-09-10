@@ -12,6 +12,7 @@ public interface IWandEffectItem
         if(!stack.hasTag())
             return WAND_EFFECT_EMPTY;
 
-        return stack.getTag().getString(ITEM_WAND_EFFECT_SELECTION_TAGNAME);
+        // getAsString() returns selection name without quotes, which is the correct key for WandEffectItemHelper map
+        return stack.getTag().getCompound(ITEM_WAND_EFFECT_SELECTION_TAGNAME).get(ITEM_WAND_EFFECT_SELECTION_TAGNAME).getAsString();
     }
 }

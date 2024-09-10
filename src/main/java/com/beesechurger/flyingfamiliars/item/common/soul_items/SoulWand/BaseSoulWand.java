@@ -42,10 +42,15 @@ public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
             // Get selected wand effect
             BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-            // determine if there is enough 'fuel' for action
+            if(selectedWandEffect != null)
+            {
+                // determine if there is enough 'fuel' for action
 
-            player.awardStat(Stats.ITEM_USED.get(this));
-            player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                selectedWandEffect.action(level, player);
+
+                player.awardStat(Stats.ITEM_USED.get(this));
+                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+            }
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
@@ -54,10 +59,10 @@ public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
     @Override
     public Component getName(ItemStack stack)
     {
-        if(stack.hasTag())
-        {
-            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
+        if(stack.hasTag() && selectedWandEffect != null)
+        {
             return Component.translatable(super.getDescriptionId(stack))
                     .append(" (")
                     .append(Component.translatable(selectedWandEffect.getTranslatableName()))
@@ -70,10 +75,10 @@ public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
     @Override
     public int getBarColor(ItemStack stack)
     {
-        if(stack.hasTag())
-        {
-            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
+        if(stack.hasTag() && selectedWandEffect != null)
+        {
             return selectedWandEffect.getBarColor();
         }
         else
@@ -83,10 +88,10 @@ public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        if(stack.hasTag())
-        {
-            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
+        if(stack.hasTag() && selectedWandEffect != null)
+        {
             tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
                     .withStyle(ChatFormatting.GRAY));
         }
