@@ -14,6 +14,7 @@ import java.util.Map;
 public class WandEffectItemHelper
 {
     // Charm wand effects:
+    //private static final ObsidianSpikeWandEffect OBSIDIAN_SPIKE = new ObsidianSpikeWandEffect();
 
     // Projectile wand effects:
     private static final CaptureWandEffect CAPTURE = new CaptureWandEffect();
