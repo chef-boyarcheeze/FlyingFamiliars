@@ -2,9 +2,9 @@ package com.beesechurger.flyingfamiliars.item.common;
 
 import net.minecraft.world.item.Item;
 
-public class Spellbook extends Item
+public class Multiphial extends Item
 {
-    Spellbook(Properties properties)
+    public Multiphial(Properties properties)
     {
         super(properties);
     }

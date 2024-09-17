@@ -1,16 +1,12 @@
 package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
 
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
 import com.beesechurger.flyingfamiliars.item.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.IModeCycleItem;
 import com.beesechurger.flyingfamiliars.item.common.soul_items.IWandEffectItem;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

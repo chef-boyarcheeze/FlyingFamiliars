@@ -1,12 +1,14 @@
 package com.beesechurger.flyingfamiliars.wand_effect;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public abstract class BaseWandEffect
 {
+
+
+
 ////////////////
 // Accessors: //
 ////////////////

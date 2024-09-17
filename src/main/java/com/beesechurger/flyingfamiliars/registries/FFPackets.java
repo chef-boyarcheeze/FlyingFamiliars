@@ -43,12 +43,6 @@ public class FFPackets
 				.encoder(SoulItemSelectC2SPacket::toBytes)
 				.consumerMainThread(SoulItemSelectC2SPacket::handle)
 				.add();
-
-		net.messageBuilder(ModeChangeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-				.decoder(ModeChangeC2SPacket::new)
-				.encoder(ModeChangeC2SPacket::toBytes)
-				.consumerMainThread(ModeChangeC2SPacket::handle)
-				.add();
 	}
 	
 	public static <MSG> void sendToServer(MSG message)

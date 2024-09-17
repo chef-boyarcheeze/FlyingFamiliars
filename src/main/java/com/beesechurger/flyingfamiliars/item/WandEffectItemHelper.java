@@ -5,10 +5,7 @@ import com.beesechurger.flyingfamiliars.wand_effect.projectile.CaptureWandEffect
 import com.beesechurger.flyingfamiliars.wand_effect.projectile.FireballWandEffect;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityType;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class WandEffectItemHelper

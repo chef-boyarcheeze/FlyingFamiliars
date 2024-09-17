@@ -19,6 +19,9 @@
 	"item.flyingfamiliars.phylactery_black": "Black Phylactery",
 	"item.flyingfamiliars.phylactery_white": "White Phylactery",
 
+	"item.flyingfamiliars.spellbook": "Spellbook",
+	"item.flyingfamiliars.multiphial": "Multiphial",
+
 	"item.flyingfamiliars.soul_wand_rod": "Soul Wand Rod",
 	"item.flyingfamiliars.pelt_of_the_forest": "Pelt of the Forest",
 	"item.flyingfamiliars.eye_of_the_storm": "Eye of the Storm",
@@ -73,6 +76,18 @@
 	"tooltip.flyingfamiliars.entity_tag.stored_2": "2 stored mobs",
 	"tooltip.flyingfamiliars.entity_tag.stored_3": "3 stored mobs",
 
+	"tooltip.flyingfamiliars.fluid_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored fluids",
+	"tooltip.flyingfamiliars.fluid_tag.blue_vitality": "Blue Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.green_vitality": "Green Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.yellow_vitality": "Yellow Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.gold_vitality": "Gold Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.red_vitality": "Red Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.black_vitality": "Black Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.white_vitality": "White Vitality",
+	"tooltip.flyingfamiliars.fluid_tag.empty": "Empty",
+
+	"tooltip.flyingfamiliars.wand_effect.boreal_gust_charm": "Boreal Gust Charm",
+	"tooltip.flyingfamiliars.wand_effect.crystal_spike_charm": "Crystal Spike Charm",
 	"tooltip.flyingfamiliars.wand_effect.capture_projectile": "Capture Projectile",
 	"tooltip.flyingfamiliars.wand_effect.fireball_projectile": "Fireball Projectile",
 
@@ -82,9 +97,6 @@
 	"message.flyingfamiliars.entity_tag.place_entity": "Placed Entity",
 	"message.flyingfamiliars.entity_tag.remove_entity": "Removed Entity",
 	"message.flyingfamiliars.entity_tag.tamed_entity": "Can't place tamed entity",
-	"message.flyingfamiliars.mode_tag.normal": "Normal",
-	"message.flyingfamiliars.mode_tag.attack": "Attack",
-	"message.flyingfamiliars.mode_tag.defense": "Defense",
 
 	"sounds.flyingfamiliars.runic_bricks_break": "Block broken",
 	"sounds.flyingfamiliars.runic_bricks_step": "Footsteps",

@@ -1,13 +1,10 @@
 package com.beesechurger.flyingfamiliars.wand_effect.charm;
 
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_GRAY;
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_YELLOW;
 
 public class BorealGustWandEffect extends BaseWandEffect

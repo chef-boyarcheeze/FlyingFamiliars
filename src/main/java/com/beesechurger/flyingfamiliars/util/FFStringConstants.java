@@ -4,7 +4,6 @@ public class FFStringConstants
 {
     // Tag IDs:
     public static final String BASE_ENTITY_TAGNAME = "ff.base.entity";
-    public static final String ITEM_MODE_TAGNAME = "ff.item.mode";
     public static final String ITEM_WAND_EFFECT_LIST_TAGNAME = "ff.item.wand_effect.list";
     public static final String ITEM_WAND_EFFECT_SELECTION_TAGNAME = "ff.item.wand_effect.selection";
     public static final String BLOCK_PROGRESS_TAGNAME = "ff.block.progress";
