@@ -20,12 +20,69 @@ import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_GRAY;
 
-public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
+public abstract class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
 {
     public BaseSoulWand(Properties properties)
     {
         super(properties);
     }
+
+////////////////
+// Accessors: //
+////////////////
+
+    // Ints:
+    @Override
+    public int getBarColor(ItemStack stack)
+    {
+        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+
+        if(stack.hasTag() && selectedWandEffect != null)
+        {
+            return selectedWandEffect.getBarColor();
+        }
+        else
+            return CHAT_GRAY;
+    }
+
+    // Misc:
+    @Override
+    public Component getName(ItemStack stack)
+    {
+        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+
+        if(stack.hasTag() && selectedWandEffect != null)
+        {
+            return Component.translatable(super.getDescriptionId(stack))
+                    .append(" (")
+                    .append(Component.translatable(selectedWandEffect.getTranslatableName()))
+                    .append(")");
+        }
+        else
+            return Component.translatable(super.getDescriptionId(stack));
+    }
+
+///////////////
+// Cosmetic: //
+///////////////
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
+    {
+        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+
+        if(stack.hasTag() && selectedWandEffect != null)
+        {
+            tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
+                    .withStyle(ChatFormatting.GRAY));
+        }
+
+        super.appendHoverText(stack, level, tooltip, tipFlag);
+    }
+
+///////////////////////
+// Soul wand action: //
+///////////////////////
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
@@ -50,48 +107,5 @@ public class BaseSoulWand extends BaseEntityTagItem implements IWandEffectItem
         }
 
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-    }
-
-    @Override
-    public Component getName(ItemStack stack)
-    {
-        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
-
-        if(stack.hasTag() && selectedWandEffect != null)
-        {
-            return Component.translatable(super.getDescriptionId(stack))
-                    .append(" (")
-                    .append(Component.translatable(selectedWandEffect.getTranslatableName()))
-                    .append(")");
-        }
-        else
-            return Component.translatable(super.getDescriptionId(stack));
-    }
-
-    @Override
-    public int getBarColor(ItemStack stack)
-    {
-        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
-
-        if(stack.hasTag() && selectedWandEffect != null)
-        {
-            return selectedWandEffect.getBarColor();
-        }
-        else
-            return CHAT_GRAY;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
-    {
-        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
-
-        if(stack.hasTag() && selectedWandEffect != null)
-        {
-            tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
-                    .withStyle(ChatFormatting.GRAY));
-        }
-
-        super.appendHoverText(stack, level, tooltip, tipFlag);
     }
 }
