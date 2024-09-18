@@ -6,7 +6,7 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.common.type.IAirEntity;
 import com.beesechurger.flyingfamiliars.entity.common.type.IEarthEntity;
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;

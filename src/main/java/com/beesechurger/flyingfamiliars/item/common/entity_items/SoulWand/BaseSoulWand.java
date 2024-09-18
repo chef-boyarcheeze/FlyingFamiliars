@@ -1,10 +1,9 @@
-package com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
 
-import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.WandEffectItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.IWandEffectItem;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.IWandEffectItem;
 import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.WandEffectItemHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
@@ -31,7 +30,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem implements IWandEff
 // Accessors: //
 ////////////////
 
-    // Ints:
+// Integers:
     @Override
     public int getBarColor(ItemStack stack)
     {
@@ -45,7 +44,13 @@ public abstract class BaseSoulWand extends BaseEntityTagItem implements IWandEff
             return CHAT_GRAY;
     }
 
-    // Misc:
+    @Override
+    public int getMaxEntities()
+    {
+        return MAX_ENTITIES;
+    }
+
+// Misc:
     @Override
     public Component getName(ItemStack stack)
     {
@@ -62,9 +67,9 @@ public abstract class BaseSoulWand extends BaseEntityTagItem implements IWandEff
             return Component.translatable(super.getDescriptionId(stack));
     }
 
-///////////////
-// Cosmetic: //
-///////////////
+////////////////
+// Cosmetics: //
+////////////////
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
@@ -80,29 +85,33 @@ public abstract class BaseSoulWand extends BaseEntityTagItem implements IWandEff
         super.appendHoverText(stack, level, tooltip, tipFlag);
     }
 
-///////////////////////
-// Soul wand action: //
-///////////////////////
+///////////////////
+// Item actions: //
+///////////////////
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
 
-        if(!level.isClientSide())
+        if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            // Get selected wand effect
-            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+            item.ensureTagPopulated(stack);
 
-            if(selectedWandEffect != null)
+            if(!level.isClientSide())
             {
-                // determine if there is enough 'fuel' for action
+                // Get selected wand effect
+                BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-                selectedWandEffect.action(level, player);
+                if(selectedWandEffect != null)
+                {
+                    // determine if there is enough 'fuel' for action
 
-                player.awardStat(Stats.ITEM_USED.get(this));
-                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                    selectedWandEffect.action(level, player);
+
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                }
             }
         }
 

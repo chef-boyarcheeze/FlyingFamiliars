@@ -1,9 +1,8 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import com.beesechurger.flyingfamiliars.block.EntityTagBlockHelper;
-import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.tags.EntityTagBlockHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -28,9 +27,10 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import java.util.Random;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
+public abstract class BaseExtraTagBE extends BlockEntity implements Clearable
 {
     protected int itemCapacityMod = 1;
     protected int entityCapacityMod = 1;
@@ -42,7 +42,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
     public Random random = new Random();
 
-    public BaseEntityTagBE(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
+    public BaseExtraTagBE(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
         super(type, pos, blockState);
     }
@@ -148,18 +148,17 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
     public boolean placeEntity(Player player, InteractionHand hand)
     {
-        EntityTagBlockHelper.ensureTagPopulated(this);
-
         ItemStack stack = player.getItemInHand(hand);
-        String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            EntityTagItemHelper.ensureTagPopulated(stack);
+            item.ensureTagPopulated(stack);
             CompoundTag stackTag = stack.getTag();
 
             ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
             ListTag blockList = entities.getList(BASE_ENTITY_TAGNAME, 10);
+
+            String selectedEntity = item.getSelectedEntity(stack);
 
             for(int i = 0; i < getMaxEntities(); i++)
             {
@@ -204,13 +203,13 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
     public boolean removeEntity(Player player, InteractionHand hand)
     {
-        EntityTagBlockHelper.ensureTagPopulated(this);
+        EntityTagBlockHelper.INSTANCE.ensureTagPopulated(this);
 
         ItemStack stack = player.getItemInHand(hand);
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            EntityTagItemHelper.ensureTagPopulated(stack);
+            item.ensureTagPopulated(stack);
             CompoundTag stackTag = stack.getTag();
 
             ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
@@ -233,7 +232,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
                     stack.setTag(stackTag);
                     contentsChanged();
 
-                    String selectedEntity = EntityTagItemHelper.getSelectedEntity(stack);
+                    String selectedEntity = item.getSelectedEntity(stack);
 
                     player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
                             .withStyle(ChatFormatting.WHITE)
@@ -256,7 +255,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
     public int getEntityCount()
     {
-        EntityTagBlockHelper.ensureTagPopulated(this);
+        EntityTagBlockHelper.INSTANCE.ensureTagPopulated(this);
 
         int entityCount = 0;
 
@@ -291,7 +290,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
     public NonNullList<String> getEntitiesStrings()
     {
-        EntityTagBlockHelper.ensureTagPopulated(this);
+        EntityTagBlockHelper.INSTANCE.ensureTagPopulated(this);
 
         ListTag blockList = entities.getList(BASE_ENTITY_TAGNAME, 10);
         NonNullList<String> entityStrings = NonNullList.withSize(getMaxEntities(), "");
@@ -338,7 +337,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
         if(!level.isClientSide())
         {
-            EntityTagBlockHelper.ensureTagPopulated(this);
+            EntityTagBlockHelper.INSTANCE.ensureTagPopulated(this);
 
             if(this instanceof IRecipeBE recipeBE)
                 recipeBE.findMatch();
@@ -358,7 +357,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     public void clearContent()
     {
         items.clear();
-        EntityTagBlockHelper.populateTag(this);
+        EntityTagBlockHelper.INSTANCE.populateTag(this);
         // clear fluid
     }
 

@@ -1,9 +1,8 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
-import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
-import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.Phylactery;
+import com.beesechurger.flyingfamiliars.block.entity.BaseExtraTagBE;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -24,13 +23,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class BaseEntityTagBlock extends BaseEntityBlock
+public abstract class BaseExtraTagBlock extends BaseEntityBlock
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     protected VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16,16);
 
-    protected BaseEntityTagBlock(Properties properties)
+    protected BaseExtraTagBlock(Properties properties)
     {
         super(properties);
     }
@@ -53,9 +52,9 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
         if(state.getBlock() != newState.getBlock())
         {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof BaseEntityTagBE)
+            if(entity instanceof BaseExtraTagBE)
             {
-                ((BaseEntityTagBE) entity).drops();
+                ((BaseExtraTagBE) entity).drops();
             }
         }
     }
@@ -64,17 +63,17 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         BlockEntity entity = level.getBlockEntity(pos);
-        if(entity instanceof BaseEntityTagBE baseEntity)
+        if(entity instanceof BaseExtraTagBE baseEntity)
         {
             ItemStack stack = player.getItemInHand(hand);
 
             if(stack.getItem() instanceof BaseEntityTagItem item)
             {
-                EntityTagItemHelper.ensureTagPopulated(stack);
+                item.ensureTagPopulated(stack);
 
                 if(!level.isClientSide() && !(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                 {
-                    if(!EntityTagItemHelper.isSelectionEmpty(stack))
+                    if(!item.isSelectionEmpty(stack))
                         return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));

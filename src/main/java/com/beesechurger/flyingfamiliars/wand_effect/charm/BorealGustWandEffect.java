@@ -13,8 +13,19 @@ public class BorealGustWandEffect extends BaseWandEffect
 // Accessors: //
 ////////////////
 
-// Integers:
+// Strings:
 
+    public String getName()
+    {
+        return "boreal_gust_charm";
+    }
+
+    public String getTranslatableName()
+    {
+        return "tooltip.flyingfamiliars.wand_effect.boreal_gust_charm";
+    }
+
+// Integers:
     public int getCost()
     {
         return 0;
@@ -28,18 +39,6 @@ public class BorealGustWandEffect extends BaseWandEffect
     public int getBarColor()
     {
         return CHAT_YELLOW;
-    }
-
-// Strings:
-
-    public String getName()
-    {
-        return "boreal_gust_charm";
-    }
-
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.boreal_gust_charm";
     }
 
 // Misc:

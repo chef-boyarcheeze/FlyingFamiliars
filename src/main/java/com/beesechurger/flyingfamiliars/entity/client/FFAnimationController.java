@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.util;
+package com.beesechurger.flyingfamiliars.entity.client;
 
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimationController;

@@ -15,6 +15,18 @@ public class CaptureWandEffect extends BaseWandEffect
 // Accessors: //
 ////////////////
 
+// Strings:
+
+    public String getName()
+    {
+        return "capture_projectile";
+    }
+
+    public String getTranslatableName()
+    {
+        return "tooltip.flyingfamiliars.wand_effect.capture_projectile";
+    }
+
 // Integers:
 
     public int getCost()
@@ -30,18 +42,6 @@ public class CaptureWandEffect extends BaseWandEffect
     public int getBarColor()
     {
         return CHAT_GRAY;
-    }
-
-// Strings:
-
-    public String getName()
-    {
-        return "capture_projectile";
-    }
-
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.capture_projectile";
     }
 
 // Misc:

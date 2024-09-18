@@ -6,12 +6,17 @@ import net.minecraft.world.level.Level;
 
 public abstract class BaseWandEffect
 {
-
-
-
 ////////////////
 // Accessors: //
 ////////////////
+
+// Strings:
+
+    // nbt tag name of wand effect
+    public abstract String getName();
+
+    // translatable name of wand effect for UI
+    public abstract String getTranslatableName();
 
 // Integers:
 
@@ -23,14 +28,6 @@ public abstract class BaseWandEffect
 
     // soul wand durability bar color, in minecraft colors
     public abstract int getBarColor();
-
-// Strings:
-
-    // nbt tag name of wand effect
-    public abstract String getName();
-
-    // translatable name of wand effect for UI
-    public abstract String getTranslatableName();
 
 // Misc:
 

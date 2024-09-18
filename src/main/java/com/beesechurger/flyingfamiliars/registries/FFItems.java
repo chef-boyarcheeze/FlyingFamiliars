@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.Phylactery;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.SoulWand.*;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.*;
 import com.google.common.base.Supplier;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;

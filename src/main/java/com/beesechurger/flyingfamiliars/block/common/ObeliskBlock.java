@@ -2,9 +2,7 @@ package com.beesechurger.flyingfamiliars.block.common;
 
 import com.beesechurger.flyingfamiliars.block.entity.ObeliskBE;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,7 +13,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.jetbrains.annotations.Nullable;
 
-public class ObeliskBlock extends BaseEntityTagBlock
+public class ObeliskBlock extends BaseExtraTagBlock
 {
     public ObeliskBlock(Properties properties)
     {

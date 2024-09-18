@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;

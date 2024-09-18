@@ -1,9 +1,9 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
-import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
-import com.beesechurger.flyingfamiliars.item.common.soul_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -135,8 +135,8 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
 		ItemStack mainHand = player.getMainHandItem();
-		ItemStack offHand = EntityTagItemHelper.getOffHandTagItem(player);
-		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmTagItem(player);
+		ItemStack offHand = FFItemHandler.getOffHandTagItem(player);
+		ItemStack curioCharm = FFItemHandler.getCurioCharmTagItem(player);
 
 		if(mainHand != null)
 			stacks.add(mainHand);
@@ -152,7 +152,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		{
 			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
-				EntityTagItemHelper.ensureTagPopulated(stack);
+				item.ensureTagPopulated(stack);
 				CompoundTag stackTag = stack.getTag();
 				ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
@@ -234,80 +234,17 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	private boolean release(BlockHitResult result)
 	{
 		ItemStack mainHand = player.getMainHandItem();
-		EntityTagItemHelper.ensureTagPopulated(mainHand);
-		String selectedEntity = EntityTagItemHelper.getSelectedEntity(mainHand);
 
-		if(selectedEntity != ENTITY_EMPTY)
+		if(mainHand.getItem() instanceof BaseEntityTagItem mainItem)
 		{
-			CompoundTag stackTag = mainHand.getTag();
-			ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-			CompoundTag entityNBT = stackList.getCompound(stackList.size()-1);
+			mainItem.ensureTagPopulated(mainHand);
+			String selectedEntity = mainItem.getSelectedEntity(mainHand);
 
-			EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
-			if (type != null)
+			if(selectedEntity != ENTITY_EMPTY)
 			{
-				BlockPos pos = result.getBlockPos();
-				Direction dir = result.getDirection();
-
-				double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
-				double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
-				double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
-
-				Entity entity = type.create(level());
-				entity.load(entityNBT);
-
-				entity.absMoveTo(x, y, z, 0, 0);
-				level().addFreshEntity(entity);
-
-				CompoundTag emptyNBT = new CompoundTag();
-				emptyNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-				stackList.set(stackList.size()-1, emptyNBT);
-
-				stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-				mainHand.setTag(stackTag);
-
-				return true;
-			}
-		}
-
-		NonNullList<ItemStack> stacks = NonNullList.create();
-
-		ItemStack offHand = EntityTagItemHelper.getOffHandTagItem(player);
-		ItemStack curioCharm = EntityTagItemHelper.getCurioCharmTagItem(player);
-
-		if(mainHand != null)
-			stacks.add(mainHand);
-		if(offHand != null)
-			stacks.add(offHand);
-		if(curioCharm != null)
-			stacks.add(curioCharm);
-
-		ListTag totalList = new ListTag();
-
-		// Add all item tags into one ListTag
-		for(ItemStack stack : stacks)
-		{
-			if(stack.getItem() instanceof BaseEntityTagItem item)
-			{
-				EntityTagItemHelper.ensureTagPopulated(stack);
-				CompoundTag stackTag = stack.getTag();
-				ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-
-				for(Tag tag : tempItem)
-				{
-					totalList.add(tag);
-				}
-			}
-		}
-
-		boolean passFlag = false;
-
-		for(int i = totalList.size(); i > 0; i--)
-		{
-			// Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
-			if(!totalList.get(i-1).toString().contains(ENTITY_EMPTY))
-			{
-				CompoundTag entityNBT = totalList.getCompound(i-1);
+				CompoundTag stackTag = mainHand.getTag();
+				ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
+				CompoundTag entityNBT = stackList.getCompound(stackList.size()-1);
 
 				EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
 				if (type != null)
@@ -325,36 +262,105 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 					entity.absMoveTo(x, y, z, 0, 0);
 					level().addFreshEntity(entity);
 
-					entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-					totalList.set(i-1, entityNBT);
+					CompoundTag emptyNBT = new CompoundTag();
+					emptyNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
+					stackList.set(stackList.size()-1, emptyNBT);
 
-					passFlag = true;
-					break;
+					stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+					mainHand.setTag(stackTag);
+
+					return true;
 				}
 			}
-		}
 
-		if(passFlag)
-		{
+			NonNullList<ItemStack> stacks = NonNullList.create();
+
+			ItemStack offHand = FFItemHandler.getOffHandTagItem(player);
+			ItemStack curioCharm = FFItemHandler.getCurioCharmTagItem(player);
+
+			if(mainHand != null)
+				stacks.add(mainHand);
+			if(offHand != null)
+				stacks.add(offHand);
+			if(curioCharm != null)
+				stacks.add(curioCharm);
+
+			ListTag totalList = new ListTag();
+
+			// Add all item tags into one ListTag
 			for(ItemStack stack : stacks)
 			{
 				if(stack.getItem() instanceof BaseEntityTagItem item)
 				{
+					item.ensureTagPopulated(stack);
 					CompoundTag stackTag = stack.getTag();
-					ListTag stackList = new ListTag();
+					ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
-					for(int i = 0; i < item.getMaxEntities(); i++)
+					for(Tag tag : tempItem)
 					{
-						stackList.add(totalList.get(0));
-						totalList.remove(0);
+						totalList.add(tag);
 					}
-
-					stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-					stack.setTag(stackTag);
 				}
 			}
 
-			return true;
+			boolean passFlag = false;
+
+			for(int i = totalList.size(); i > 0; i--)
+			{
+				// Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
+				if(!totalList.get(i-1).toString().contains(ENTITY_EMPTY))
+				{
+					CompoundTag entityNBT = totalList.getCompound(i-1);
+
+					EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
+					if (type != null)
+					{
+						BlockPos pos = result.getBlockPos();
+						Direction dir = result.getDirection();
+
+						double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
+						double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
+						double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
+
+						Entity entity = type.create(level());
+						entity.load(entityNBT);
+
+						entity.absMoveTo(x, y, z, 0, 0);
+						level().addFreshEntity(entity);
+
+						entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
+						totalList.set(i-1, entityNBT);
+
+						passFlag = true;
+						break;
+					}
+				}
+			}
+
+			if(passFlag)
+			{
+				for(ItemStack stack : stacks)
+				{
+					if(stack.getItem() instanceof BaseEntityTagItem item)
+					{
+						CompoundTag stackTag = stack.getTag();
+						ListTag stackList = new ListTag();
+
+						for(int i = 0; i < item.getMaxEntities(); i++)
+						{
+							stackList.add(totalList.get(0));
+							totalList.remove(0);
+						}
+
+						stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+						stack.setTag(stackTag);
+					}
+				}
+
+				return true;
+			}
+
+			return false;
 		}
 
 		return false;

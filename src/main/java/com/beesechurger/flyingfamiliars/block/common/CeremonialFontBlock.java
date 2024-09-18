@@ -9,7 +9,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.jetbrains.annotations.Nullable;
 
-public class CeremonialFontBlock extends BaseEntityTagBlock
+public class CeremonialFontBlock extends BaseExtraTagBlock
 {
     public CeremonialFontBlock(Properties properties)
     {

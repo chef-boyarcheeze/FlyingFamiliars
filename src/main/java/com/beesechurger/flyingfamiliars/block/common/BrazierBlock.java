@@ -8,7 +8,6 @@ import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BrazierBlock extends BaseEntityTagBlock
+public class BrazierBlock extends BaseExtraTagBlock
 {
 	public BrazierBlock(Properties properties)
 	{

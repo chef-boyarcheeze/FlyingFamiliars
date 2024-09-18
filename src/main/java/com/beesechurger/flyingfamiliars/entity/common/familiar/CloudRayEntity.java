@@ -6,7 +6,7 @@ import com.beesechurger.flyingfamiliars.registries.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;

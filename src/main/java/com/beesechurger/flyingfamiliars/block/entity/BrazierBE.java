@@ -1,7 +1,5 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import java.util.Random;
-
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.packet.BEProgressS2CPacket;
@@ -13,19 +11,16 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
-public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
+public class BrazierBE extends BaseExtraTagBE implements IRecipeBE
 {
 	private BrazierRecipe currentRecipe;
 	
@@ -90,7 +85,7 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 // Accessors: //
 ////////////////
 
-// Ints:
+// Integers:
 
 	public int getProgress()
 	{
@@ -106,7 +101,7 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 // Mutators: //
 ///////////////
 
-// Ints:
+// Integers:
 
 	public void setProgress(int pr)
 	{

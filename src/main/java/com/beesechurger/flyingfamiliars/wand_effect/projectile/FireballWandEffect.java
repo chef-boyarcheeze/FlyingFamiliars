@@ -16,6 +16,18 @@ public class FireballWandEffect extends BaseWandEffect
 // Accessors: //
 ////////////////
 
+// Strings:
+
+    public String getName()
+    {
+        return "fireball_projectile";
+    }
+
+    public String getTranslatableName()
+    {
+        return "tooltip.flyingfamiliars.wand_effect.fireball_projectile";
+    }
+
 // Integers:
 
     public int getCost()
@@ -31,18 +43,6 @@ public class FireballWandEffect extends BaseWandEffect
     public int getBarColor()
     {
         return CHAT_DARK_RED;
-    }
-
-// Strings:
-
-    public String getName()
-    {
-        return "fireball_projectile";
-    }
-
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.fireball_projectile";
     }
 
 // Misc:

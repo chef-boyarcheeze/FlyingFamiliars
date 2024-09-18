@@ -1,6 +1,6 @@
-package com.beesechurger.flyingfamiliars.item.common.soul_items;
+package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
-import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,8 +18,8 @@ public interface ISoulCycleItem
         NonNullList<ItemStack> stacks = NonNullList.create();
 
         ItemStack mainHand = player.getMainHandItem();
-        ItemStack offHand = EntityTagItemHelper.getOffHandTagItem(player);
-        ItemStack curioCharm = EntityTagItemHelper.getCurioCharmTagItem(player);
+        ItemStack offHand = FFItemHandler.getOffHandTagItem(player);
+        ItemStack curioCharm = FFItemHandler.getCurioCharmTagItem(player);
 
         if(mainHand != null)
             stacks.add(mainHand);
@@ -36,7 +36,7 @@ public interface ISoulCycleItem
         {
             if(stack.getItem() instanceof BaseEntityTagItem item)
             {
-                EntityTagItemHelper.ensureTagPopulated(stack);
+                item.ensureTagPopulated(stack);
                 CompoundTag stackTag = stack.getTag();
                 ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 

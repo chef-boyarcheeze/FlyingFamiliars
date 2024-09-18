@@ -1,19 +1,21 @@
-package com.beesechurger.flyingfamiliars.block;
+package com.beesechurger.flyingfamiliars.tags;
 
-import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
+import com.beesechurger.flyingfamiliars.block.entity.BaseExtraTagBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
 
-public class EntityTagBlockHelper
+public class EntityTagBlockHelper implements IExtraTagHelper<BaseExtraTagBE>
 {
+    public final static EntityTagBlockHelper INSTANCE = new EntityTagBlockHelper();
+
     public final static int MAX_ITEMS = 1;
     public final static int MAX_ENTITIES = 1;
     public final static int MAX_FLUID = 250;
 
-    public static void populateTag(BaseEntityTagBE entity)
+    public void populateTag(BaseExtraTagBE entity)
     {
         entity.entities = new CompoundTag();
 
@@ -29,9 +31,9 @@ public class EntityTagBlockHelper
         entity.entities.put(BASE_ENTITY_TAGNAME, tagList);
     }
 
-    public static void ensureTagPopulated(BaseEntityTagBE entity)
+    public void ensureTagPopulated(BaseExtraTagBE entity)
     {
         if(entity.entities.getList(BASE_ENTITY_TAGNAME, 10).size() != entity.getMaxEntities())
-            EntityTagBlockHelper.populateTag(entity);
+            EntityTagBlockHelper.INSTANCE.populateTag(entity);
     }
 }

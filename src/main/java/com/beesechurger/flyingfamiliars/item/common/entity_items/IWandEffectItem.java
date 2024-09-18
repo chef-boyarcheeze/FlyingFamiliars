@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.soul_items;
+package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
 import net.minecraft.world.item.ItemStack;
 

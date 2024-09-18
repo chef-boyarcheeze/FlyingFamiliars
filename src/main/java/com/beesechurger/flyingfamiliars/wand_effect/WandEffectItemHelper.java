@@ -1,6 +1,5 @@
-package com.beesechurger.flyingfamiliars.item;
+package com.beesechurger.flyingfamiliars.wand_effect;
 
-import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.projectile.CaptureWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.projectile.FireballWandEffect;
 import com.google.common.collect.Maps;
@@ -11,7 +10,7 @@ import java.util.Map;
 public class WandEffectItemHelper
 {
     // Charm wand effects:
-    //private static final ObsidianSpikeWandEffect OBSIDIAN_SPIKE = new ObsidianSpikeWandEffect();
+    //private static final CrystalSpikeWandEffect CRYSTAL_SPIKE = new CrystalSpikeWandEffect();
 
     // Projectile wand effects:
     private static final CaptureWandEffect CAPTURE = new CaptureWandEffect();

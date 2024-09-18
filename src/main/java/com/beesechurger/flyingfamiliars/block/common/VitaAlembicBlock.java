@@ -1,9 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
-import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
 import com.beesechurger.flyingfamiliars.block.entity.VitaAlembicBE;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,7 +10,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 
 import javax.annotation.Nullable;
 
-public class VitaAlembicBlock extends BaseEntityTagBlock
+public class VitaAlembicBlock extends BaseExtraTagBlock
 {
     public VitaAlembicBlock(Properties properties)
     {

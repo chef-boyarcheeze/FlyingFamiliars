@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.common.familiar;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarFlyingPathNavigation;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarMoveControl;
-import com.beesechurger.flyingfamiliars.util.FFAnimationController;
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;

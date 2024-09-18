@@ -1,77 +1,33 @@
-package com.beesechurger.flyingfamiliars.item.common.soul_items;
+package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
-import com.beesechurger.flyingfamiliars.item.EntityTagItemHelper;
+import com.beesechurger.flyingfamiliars.item.BaseExtraTagItem;
 import com.beesechurger.flyingfamiliars.util.FFValueConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
-
-public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
+public abstract class BaseEntityTagItem extends BaseExtraTagItem implements IEntityTagItem, ISoulCycleItem
 {
-    protected int capacityMod = 1;
-
     public BaseEntityTagItem(Properties properties)
     {
         super(properties);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-    {
-        ItemStack stack = player.getItemInHand(hand);
-        EntityTagItemHelper.ensureTagPopulated(stack);
+////////////////
+// Accessors: //
+////////////////
 
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-    }
-
-    public int getEntityCount(ItemStack stack)
-    {
-        EntityTagItemHelper.ensureTagPopulated(stack);
-
-        int entityCount = 0;
-
-        if(stack.hasTag())
-        {
-            CompoundTag stackTag = stack.getTag();
-            ListTag tagList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-
-            for(int i = 0; i < getMaxEntities(); i++)
-            {
-                // Need to use regular Tag object here, not CompoundTag
-                if(!tagList.get(i).toString().contains(ENTITY_EMPTY)) entityCount++;
-            }
-        }
-
-        return entityCount;
-    }
-
-    public int getMaxEntities()
-    {
-        return EntityTagItemHelper.MAX_ENTITIES * capacityMod;
-    }
-
-    @Override
-    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player)
-    {
-        return !player.isCreative();
-    }
-
+// Booleans:
     @Override
     public boolean isFoil(ItemStack stack)
     {
@@ -84,6 +40,7 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
         return stack.hasTag() && getEntityCount(stack) > 0;
     }
 
+// Integers:
     @Override
     public int getBarWidth(ItemStack stack)
     {
@@ -98,6 +55,10 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
     {
         return FFValueConstants.CHAT_GRAY;
     }
+
+////////////////
+// Cosmetics: //
+////////////////
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
@@ -148,5 +109,17 @@ public abstract class BaseEntityTagItem extends Item implements ISoulCycleItem
         {
             tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.empty").withStyle(ChatFormatting.GRAY));
         }
+    }
+
+///////////////////
+// Item actions: //
+///////////////////
+
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+    {
+        ItemStack stack = player.getItemInHand(hand);
+        ensureTagPopulated(stack);
+
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 }

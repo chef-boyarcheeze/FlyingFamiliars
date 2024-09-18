@@ -15,6 +15,18 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
 
     // summon single spike at target nearest to player look location, which both sets the victim to ride the spike (impaling), but also damages it, and persists for a short time before retracting
 
+// Strings:
+
+    public String getName()
+    {
+        return "crystal_spike_charm";
+    }
+
+    public String getTranslatableName()
+    {
+        return "tooltip.flyingfamiliars.wand_effect.crystal_spike_charm";
+    }
+
 // Integers:
 
     public int getCost()
@@ -30,18 +42,6 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
     public int getBarColor()
     {
         return CHAT_GOLD;
-    }
-
-// Strings:
-
-    public String getName()
-    {
-        return "crystal_spike_charm";
-    }
-
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.crystal_spike_charm";
     }
 
 // Misc:
