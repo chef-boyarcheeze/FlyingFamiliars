@@ -10,7 +10,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 
 import javax.annotation.Nullable;
 
-public class VitaAlembicBlock extends BaseExtraTagBlock
+public class VitaAlembicBlock extends BaseEntityTagBlock
 {
     public VitaAlembicBlock(Properties properties)
     {

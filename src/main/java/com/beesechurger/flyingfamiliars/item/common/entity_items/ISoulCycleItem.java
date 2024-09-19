@@ -36,8 +36,7 @@ public interface ISoulCycleItem
         {
             if(stack.getItem() instanceof BaseEntityTagItem item)
             {
-                item.ensureTagPopulated(stack);
-                CompoundTag stackTag = stack.getTag();
+                CompoundTag stackTag = item.getOrCreateTag(stack);
                 ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
 
                 for(Tag tag : tempItem)

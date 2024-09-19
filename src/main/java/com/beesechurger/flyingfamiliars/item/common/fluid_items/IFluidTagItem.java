@@ -9,6 +9,10 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
 public interface IFluidTagItem
 {
+///////////////////
+// Item actions: //
+///////////////////
+
     default void populateTag(ItemStack stack)
     {
         if(stack.getItem() instanceof BaseFluidTagItem tagItem)

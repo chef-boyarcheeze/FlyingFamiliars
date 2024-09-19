@@ -4,7 +4,7 @@ import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CeremonialFontBE extends BaseExtraTagBE implements IRecipeBE
+public class CeremonialFontBE extends BaseEntityTagBE implements IRecipeBE
 {
     public CeremonialFontBE(BlockPos pos, BlockState blockState)
     {

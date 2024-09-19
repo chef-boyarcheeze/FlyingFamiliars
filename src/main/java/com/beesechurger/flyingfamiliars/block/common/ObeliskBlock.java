@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.jetbrains.annotations.Nullable;
 
-public class ObeliskBlock extends BaseExtraTagBlock
+public class ObeliskBlock extends BaseEntityTagBlock
 {
     public ObeliskBlock(Properties properties)
     {

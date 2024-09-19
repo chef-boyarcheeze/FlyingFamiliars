@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
-public class BrazierBE extends BaseExtraTagBE implements IRecipeBE
+public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 {
 	private BrazierRecipe currentRecipe;
 	

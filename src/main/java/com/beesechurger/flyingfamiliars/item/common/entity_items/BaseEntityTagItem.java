@@ -65,44 +65,37 @@ public abstract class BaseEntityTagItem extends BaseExtraTagItem implements IEnt
     {
         int entityCount = getEntityCount(stack);
 
-        if (stack.hasTag())
+        CompoundTag stackTag = getOrCreateTag(stack);
+
+        if (entityCount != 0)
         {
-            CompoundTag stackTag = stack.getTag();
-
-            if (entityCount != 0)
+            if (Screen.hasShiftDown())
             {
-                if (Screen.hasShiftDown())
+                for (int i = 0; i < getMaxEntities(); i++)
                 {
-                    for (int i = 0; i < getMaxEntities(); i++)
-                    {
-                        CompoundTag tag = getEntityTag(stack, i);
-                        ChatFormatting format = isEntityTamed(tag) && !isEntityEmpty(tag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+                    CompoundTag tag = getEntityTag(stack, i);
+                    ChatFormatting format = isEntityTamed(tag) && !isEntityEmpty(tag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
-                        if (!isEntityEmpty(tag))
-                            tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.slot")
-                                    .withStyle(format).append(" " + (i+1) + ": " + getEntityID(tag)));
-                    }
-                }
-                else
-                {
-                    switch (entityCount)
-                    {
-                        case 1: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_1").withStyle(ChatFormatting.GRAY));
-                            break;
-
-                        case 2: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_2").withStyle(ChatFormatting.GRAY));
-                            break;
-
-                        case 3: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_3").withStyle(ChatFormatting.GRAY));
-                            break;
-                    }
-
-                    tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
+                    if (!isEntityEmpty(tag))
+                        tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.slot")
+                                .withStyle(format).append(" " + (i+1) + ": " + getEntityID(tag)));
                 }
             }
             else
             {
-                tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.empty").withStyle(ChatFormatting.GRAY));
+                switch (entityCount)
+                {
+                    case 1: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_1").withStyle(ChatFormatting.GRAY));
+                        break;
+
+                    case 2: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_2").withStyle(ChatFormatting.GRAY));
+                        break;
+
+                    case 3: tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_3").withStyle(ChatFormatting.GRAY));
+                        break;
+                }
+
+                tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
             }
         }
         else

@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
-import com.beesechurger.flyingfamiliars.block.entity.BaseExtraTagBE;
+import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
@@ -23,13 +23,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class BaseExtraTagBlock extends BaseEntityBlock
+public abstract class BaseEntityTagBlock extends BaseEntityBlock
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     protected VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16,16);
 
-    protected BaseExtraTagBlock(Properties properties)
+    protected BaseEntityTagBlock(Properties properties)
     {
         super(properties);
     }
@@ -52,9 +52,9 @@ public abstract class BaseExtraTagBlock extends BaseEntityBlock
         if(state.getBlock() != newState.getBlock())
         {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof BaseExtraTagBE)
+            if(entity instanceof BaseEntityTagBE)
             {
-                ((BaseExtraTagBE) entity).drops();
+                ((BaseEntityTagBE) entity).drops();
             }
         }
     }
@@ -63,25 +63,25 @@ public abstract class BaseExtraTagBlock extends BaseEntityBlock
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         BlockEntity entity = level.getBlockEntity(pos);
-        if(entity instanceof BaseExtraTagBE baseEntity)
+        if (entity instanceof BaseEntityTagBE baseEntity)
         {
             ItemStack stack = player.getItemInHand(hand);
 
-            if(stack.getItem() instanceof BaseEntityTagItem item)
+            if (stack.getItem() instanceof BaseEntityTagItem item)
             {
                 item.ensureTagPopulated(stack);
 
-                if(!level.isClientSide() && !(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
+                if (!level.isClientSide() && !(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                 {
-                    if(!item.isSelectionEmpty(stack))
+                    if (!item.isSelectionEmpty(stack))
                         return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));
                 }
-                else if(level.isClientSide())
+                else if (level.isClientSide())
                     return InteractionResult.CONSUME;
             }
-            else if(false) // vita bottle
+            else if (false) // fluid item
             {
                 // if server
                 return InteractionResult.SUCCESS;
@@ -90,9 +90,9 @@ public abstract class BaseExtraTagBlock extends BaseEntityBlock
             }
             else
             {
-                if(!level.isClientSide())
+                if (!level.isClientSide())
                 {
-                    if(!player.isShiftKeyDown())
+                    if (!player.isShiftKeyDown())
                         return InteractionResult.sidedSuccess(baseEntity.placeItem(stack));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeItem(level, pos));

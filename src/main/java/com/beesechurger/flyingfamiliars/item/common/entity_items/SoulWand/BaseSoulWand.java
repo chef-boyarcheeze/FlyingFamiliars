@@ -93,25 +93,21 @@ public abstract class BaseSoulWand extends BaseEntityTagItem implements IWandEff
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
+        ensureTagPopulated(stack);
 
-        if(stack.getItem() instanceof BaseEntityTagItem item)
+        if(!level.isClientSide())
         {
-            item.ensureTagPopulated(stack);
+            // Get selected wand effect
+            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
 
-            if(!level.isClientSide())
+            if(selectedWandEffect != null)
             {
-                // Get selected wand effect
-                BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(getSelection(stack));
+                // determine if there is enough 'fuel' for action
 
-                if(selectedWandEffect != null)
-                {
-                    // determine if there is enough 'fuel' for action
+                selectedWandEffect.action(level, player);
 
-                    selectedWandEffect.action(level, player);
-
-                    player.awardStat(Stats.ITEM_USED.get(this));
-                    player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
-                }
+                player.awardStat(Stats.ITEM_USED.get(this));
+                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
             }
         }
 

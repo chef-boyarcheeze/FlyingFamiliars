@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BrazierBlock extends BaseExtraTagBlock
+public class BrazierBlock extends BaseEntityTagBlock
 {
 	public BrazierBlock(Properties properties)
 	{

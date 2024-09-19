@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ObeliskBE extends BaseExtraTagBE
+public class ObeliskBE extends BaseEntityTagBE
 {
     public boolean clicked = false;
 
