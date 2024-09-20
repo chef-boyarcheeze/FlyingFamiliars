@@ -18,6 +18,8 @@ import java.util.List;
 
 public abstract class BaseEntityTagItem extends BaseExtraTagItem implements IEntityTagItem, ISoulCycleItem
 {
+    public final static int MAX_ENTITIES = 3;
+
     public BaseEntityTagItem(Properties properties)
     {
         super(properties);

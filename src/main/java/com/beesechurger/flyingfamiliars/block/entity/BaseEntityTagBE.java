@@ -31,6 +31,10 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMP
 
 public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, IEntityTagBE
 {
+    public final static int MAX_ITEMS = 1;
+    public final static int MAX_ENTITIES = 1;
+    public final static int MAX_FLUID = 250;
+
     protected int itemCapacityMod = 1;
     protected int entityCapacityMod = 1;
     protected int fluidCapacityMod = 4;

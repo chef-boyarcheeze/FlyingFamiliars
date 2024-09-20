@@ -8,10 +8,6 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMP
 
 public interface IEntityTagBE
 {
-    public final static int MAX_ITEMS = 1;
-    public final static int MAX_ENTITIES = 1;
-    public final static int MAX_FLUID = 250;
-
 /////////////////
 // BE actions: //
 /////////////////

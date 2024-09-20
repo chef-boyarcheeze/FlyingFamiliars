@@ -8,8 +8,6 @@ import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
 
 public interface IEntityTagItem
 {
-    public final static int MAX_ENTITIES = 3;
-
 ////////////////
 // Accessors: //
 ////////////////
