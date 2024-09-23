@@ -7,7 +7,6 @@ import com.beesechurger.flyingfamiliars.entity.common.type.IEarthEntity;
 import com.beesechurger.flyingfamiliars.entity.common.type.IPlantEntity;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -234,9 +233,9 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity
 // Enums:
 
 	@Override
-	public FFEnumValues.FamiliarMoveTypes getMoveControlType()
+	public FamiliarMoveTypes getMoveControlType()
 	{
-		return FFEnumValues.FamiliarMoveTypes.HOVER;
+		return FamiliarMoveTypes.HOVER;
 	}
 
 // Booleans:

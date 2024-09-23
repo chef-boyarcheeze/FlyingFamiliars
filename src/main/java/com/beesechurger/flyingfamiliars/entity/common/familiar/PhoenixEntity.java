@@ -5,7 +5,6 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.common.type.IFireEntity;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -197,9 +196,9 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
 // Enums:
 
     @Override
-    public FFEnumValues.FamiliarMoveTypes getMoveControlType()
+    public FamiliarMoveTypes getMoveControlType()
     {
-        return FFEnumValues.FamiliarMoveTypes.NONE;
+        return FamiliarMoveTypes.NONE;
     }
 
 // Booleans:

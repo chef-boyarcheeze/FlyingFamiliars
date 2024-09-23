@@ -5,7 +5,6 @@ import com.beesechurger.flyingfamiliars.entity.ai.FamiliarFlyingPathNavigation;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarMoveControl;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -62,6 +61,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		lookControl = new LookControl(this);
 	}
 
+	// Familiar body rotation control move types:
+	public static enum FamiliarMoveTypes
+	{
+		HOVER,
+		FORWARD,
+		NONE;
+	}
+
 	@Override
 	protected BodyRotationControl createBodyControl()
 	{
@@ -108,7 +115,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return entityData.get(VARIANT);
 	}
 
-	abstract FFEnumValues.FamiliarMoveTypes getMoveControlType();
+	abstract FamiliarMoveTypes getMoveControlType();
 
 // Booleans:
 

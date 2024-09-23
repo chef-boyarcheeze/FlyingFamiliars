@@ -8,7 +8,6 @@ import com.beesechurger.flyingfamiliars.entity.common.type.IAirEntity;
 import com.beesechurger.flyingfamiliars.entity.common.type.IEarthEntity;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -251,9 +250,9 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntit
 // Enums:
 
     @Override
-    public FFEnumValues.FamiliarMoveTypes getMoveControlType()
+    public FamiliarMoveTypes getMoveControlType()
     {
-        return FFEnumValues.FamiliarMoveTypes.FORWARD;
+        return FamiliarMoveTypes.FORWARD;
     }
 
 // Booleans:

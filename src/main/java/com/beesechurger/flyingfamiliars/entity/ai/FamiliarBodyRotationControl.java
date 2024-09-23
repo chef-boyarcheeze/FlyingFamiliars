@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.ai;
 
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -11,13 +10,13 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
 {
     private final BaseFamiliarEntity familiar;
 
-    private final FFEnumValues.FamiliarMoveTypes rotationType;
+    private final BaseFamiliarEntity.FamiliarMoveTypes rotationType;
     private final double angleLimit;
     private final double angleInterval;
     private int headStableTime;
     private float lastStableYHeadRot;
 
-    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, FFEnumValues.FamiliarMoveTypes rotationType, double angleLimit, double angleInterval)
+    public FamiliarBodyRotationControl(BaseFamiliarEntity familiar, BaseFamiliarEntity.FamiliarMoveTypes rotationType, double angleLimit, double angleInterval)
     {
         super(familiar);
         this.familiar = familiar;

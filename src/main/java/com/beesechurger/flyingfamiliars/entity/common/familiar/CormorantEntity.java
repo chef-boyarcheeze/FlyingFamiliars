@@ -7,7 +7,6 @@ import com.beesechurger.flyingfamiliars.entity.common.type.IWaterEntity;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -207,9 +206,9 @@ public class CormorantEntity extends BaseFamiliarEntity implements IWaterEntity
 // Enums:
 
     @Override
-    public FFEnumValues.FamiliarMoveTypes getMoveControlType()
+    public FamiliarMoveTypes getMoveControlType()
     {
-        return FFEnumValues.FamiliarMoveTypes.NONE;
+        return FamiliarMoveTypes.NONE;
     }
 
 // Booleans:

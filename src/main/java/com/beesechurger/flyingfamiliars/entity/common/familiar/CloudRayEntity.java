@@ -8,7 +8,6 @@ import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.util.FFEnumValues;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -196,9 +195,9 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IWaterEntity, 
 // Strings:
 
 	@Override
-	public FFEnumValues.FamiliarMoveTypes getMoveControlType()
+	public FamiliarMoveTypes getMoveControlType()
 	{
-		return FFEnumValues.FamiliarMoveTypes.FORWARD;
+		return FamiliarMoveTypes.FORWARD;
 	}
 
 // Booleans:
