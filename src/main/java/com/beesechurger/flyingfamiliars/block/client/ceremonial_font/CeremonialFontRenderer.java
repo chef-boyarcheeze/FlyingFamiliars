@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.block.client.ceremonial_font;
 
-import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskPillarModel;
 import com.beesechurger.flyingfamiliars.block.entity.CeremonialFontBE;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

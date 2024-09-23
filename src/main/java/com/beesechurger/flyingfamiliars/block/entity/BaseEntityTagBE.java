@@ -279,11 +279,6 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
         return MAX_ENTITIES * entityCapacityMod;
     }
 
-    public boolean entitiesFull()
-    {
-        return getEntityCount() == getMaxEntities();
-    }
-
     public String getID(int listValue, ItemStack stack)
     {
         return stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).getCompound(listValue).getString(BASE_ENTITY_TAGNAME);

@@ -69,8 +69,6 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
 
             if (stack.getItem() instanceof BaseEntityTagItem item)
             {
-                item.ensureTagPopulated(stack);
-
                 if (!level.isClientSide() && !(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
                 {
                     if (!item.isSelectionEmpty(stack))
