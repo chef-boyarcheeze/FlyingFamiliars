@@ -13,7 +13,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib.GeckoLib;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.CURIOS_MODNAME;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.CURIOS_MODNAME;
 
 @Mod("flyingfamiliars")
 public class FlyingFamiliars

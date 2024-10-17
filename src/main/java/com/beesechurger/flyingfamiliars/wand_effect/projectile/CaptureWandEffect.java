@@ -7,7 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_GRAY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
 
 public class CaptureWandEffect extends BaseWandEffect
 {

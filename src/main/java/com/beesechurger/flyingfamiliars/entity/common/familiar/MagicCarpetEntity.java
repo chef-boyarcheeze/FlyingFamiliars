@@ -34,9 +34,9 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BASE_FLYING_SPEED;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BASE_MOVEMENT_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.ANIMATION_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_FLYING_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_MOVEMENT_SPEED;
 
 public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntity, IAirEntity
 {

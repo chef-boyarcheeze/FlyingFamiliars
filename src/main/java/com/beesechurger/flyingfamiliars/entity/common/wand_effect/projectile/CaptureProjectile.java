@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
-import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
@@ -10,8 +9,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,8 +27,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
 public class CaptureProjectile extends BaseWandEffectProjectile
 {
@@ -88,9 +84,15 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		data.add(bodyController);
 	}
 
-///////////////////////
-// Entity accessors: //
-///////////////////////
+////////////////
+// Accessors: //
+////////////////
+
+// Booleans:
+	public boolean isCapturable(Entity entity)
+	{
+		return !(entity instanceof Player) && entity.canChangeDimensions() && entity.isAlive() && entity instanceof Mob && !level().isClientSide();
+	}
 
 // Integers:
 
@@ -130,83 +132,29 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		}
     }
 	
-	private boolean capture(Entity target)
+	private boolean capture(Entity entity)
 	{
-		NonNullList<ItemStack> stacks = NonNullList.create();
+		ItemStack stack = player.getMainHandItem();
 
-		ItemStack mainHand = player.getMainHandItem();
-		ItemStack offHand = FFItemHandler.getOffHandTagItem(player);
-		ItemStack curioCharm = FFItemHandler.getCurioCharmTagItem(player);
-
-		if(mainHand != null)
-			stacks.add(mainHand);
-		if(offHand != null)
-			stacks.add(offHand);
-		if(curioCharm != null)
-			stacks.add(curioCharm);
-
-		ListTag totalList = new ListTag();
-
-		// Add all item tags into one ListTag
-		for(ItemStack stack : stacks)
+		if (stack.getItem() instanceof BaseEntityTagItem item && isCapturable(entity))
 		{
-			if(stack.getItem() instanceof BaseEntityTagItem item)
+			CompoundTag stackTag = stack.getOrCreateTag();
+
+			// get entity type as string and save to entry - then save entity NBT onto whole entry tag
+			CompoundTag entryTag = new CompoundTag();
+			entryTag.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
+			entity.saveWithoutId(entryTag);
+
+			// if entry tag is successfully added into internal item list tag
+			if (item.entities.pushEntry(stackTag, entryTag))
 			{
-				CompoundTag stackTag = item.getOrCreateTag(stack);
-				ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
+				// save updated entity tag list to stack
+				stack.setTag(stackTag);
 
-				for(Tag tag : tempItem)
-				{
-					totalList.add(tag);
-				}
+				// remove successfully captured entity from level
+				entity.remove(Entity.RemovalReason.KILLED);
+				return true;
 			}
-		}
-
-		boolean passFlag = false;
-
-		if(!(target instanceof Player) && target.canChangeDimensions() && target.isAlive() && target instanceof Mob && !level().isClientSide())
-		{
-			// Default fill soul wand:
-			for(int i = 0; i < totalList.size(); i++)
-			{
-				// Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
-				if(totalList.get(i).toString().contains(ENTITY_EMPTY))
-				{
-					CompoundTag entityNBT = new CompoundTag();
-
-					entityNBT.putString(BASE_ENTITY_TAGNAME, EntityType.getKey(target.getType()).toString());
-					target.saveWithoutId(entityNBT);
-					totalList.set(i, entityNBT);
-
-					target.remove(RemovalReason.KILLED);
-
-					passFlag = true;
-					break;
-				}
-			}
-		}
-
-		if(passFlag)
-		{
-			for(ItemStack stack : stacks)
-			{
-				if(stack.getItem() instanceof BaseEntityTagItem item)
-				{
-					CompoundTag stackTag = stack.getTag();
-					ListTag stackList = new ListTag();
-
-					for(int i = 0; i < item.getMaxEntities(); i++)
-					{
-						stackList.add(totalList.get(0));
-						totalList.remove(0);
-					}
-
-					stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-					stack.setTag(stackTag);
-				}
-			}
-
-			return true;
 		}
 
 		return false;
@@ -232,22 +180,23 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	
 	private boolean release(BlockHitResult result)
 	{
-		ItemStack mainHand = player.getMainHandItem();
+		ItemStack stack = player.getMainHandItem();
 
-		if(mainHand.getItem() instanceof BaseEntityTagItem mainItem)
+		if(stack.getItem() instanceof BaseEntityTagItem item)
 		{
-			mainItem.ensureTagPopulated(mainHand);
-			String selectedEntity = mainItem.getSelectedEntity(mainHand);
+			CompoundTag stackTag = stack.getOrCreateTag();
 
-			if(selectedEntity != ENTITY_EMPTY)
+			// get selected entity's entry tag and confirm tag is real
+			CompoundTag entryTag = item.entities.popEntry(stackTag);
+
+			if(entryTag.contains(STORAGE_ENTITY_TYPE))
 			{
-				CompoundTag stackTag = mainHand.getTag();
-				ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-				CompoundTag entityNBT = stackList.getCompound(stackList.size()-1);
-
-				EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
+				EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
 				if (type != null)
 				{
+					// save updated entity tag list to stack
+					stack.setTag(stackTag);
+
 					BlockPos pos = result.getBlockPos();
 					Direction dir = result.getDirection();
 
@@ -256,109 +205,13 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 					double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
 
 					Entity entity = type.create(level());
-					entity.load(entityNBT);
+					entity.load(entryTag);
 
 					entity.absMoveTo(x, y, z, 0, 0);
 					level().addFreshEntity(entity);
-
-					CompoundTag emptyNBT = new CompoundTag();
-					emptyNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-					stackList.set(stackList.size()-1, emptyNBT);
-
-					stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-					mainHand.setTag(stackTag);
-
 					return true;
 				}
 			}
-
-			NonNullList<ItemStack> stacks = NonNullList.create();
-
-			ItemStack offHand = FFItemHandler.getOffHandTagItem(player);
-			ItemStack curioCharm = FFItemHandler.getCurioCharmTagItem(player);
-
-			if(mainHand != null)
-				stacks.add(mainHand);
-			if(offHand != null)
-				stacks.add(offHand);
-			if(curioCharm != null)
-				stacks.add(curioCharm);
-
-			ListTag totalList = new ListTag();
-
-			// Add all item tags into one ListTag
-			for(ItemStack stack : stacks)
-			{
-				if(stack.getItem() instanceof BaseEntityTagItem item)
-				{
-					CompoundTag stackTag = item.getOrCreateTag(stack);
-					ListTag tempItem = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-
-					for(Tag tag : tempItem)
-					{
-						totalList.add(tag);
-					}
-				}
-			}
-
-			boolean passFlag = false;
-
-			for(int i = totalList.size(); i > 0; i--)
-			{
-				// Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
-				if(!totalList.get(i-1).toString().contains(ENTITY_EMPTY))
-				{
-					CompoundTag entityNBT = totalList.getCompound(i-1);
-
-					EntityType<?> type = EntityType.byString(entityNBT.getString(BASE_ENTITY_TAGNAME)).orElse(null);
-					if (type != null)
-					{
-						BlockPos pos = result.getBlockPos();
-						Direction dir = result.getDirection();
-
-						double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
-						double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
-						double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
-
-						Entity entity = type.create(level());
-						entity.load(entityNBT);
-
-						entity.absMoveTo(x, y, z, 0, 0);
-						level().addFreshEntity(entity);
-
-						entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-						totalList.set(i-1, entityNBT);
-
-						passFlag = true;
-						break;
-					}
-				}
-			}
-
-			if(passFlag)
-			{
-				for(ItemStack stack : stacks)
-				{
-					if(stack.getItem() instanceof BaseEntityTagItem item)
-					{
-						CompoundTag stackTag = stack.getTag();
-						ListTag stackList = new ListTag();
-
-						for(int i = 0; i < item.getMaxEntities(); i++)
-						{
-							stackList.add(totalList.get(0));
-							totalList.remove(0);
-						}
-
-						stackTag.put(BASE_ENTITY_TAGNAME, stackList);
-						stack.setTag(stackTag);
-					}
-				}
-
-				return true;
-			}
-
-			return false;
 		}
 
 		return false;

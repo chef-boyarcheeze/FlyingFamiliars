@@ -2,11 +2,13 @@ package com.beesechurger.flyingfamiliars.block.entity;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -24,23 +26,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
+import java.util.List;
 import java.util.Random;
+import java.util.Vector;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TAGNAME;
 
-public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, IEntityTagBE
+public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 {
-    public final static int MAX_ITEMS = 1;
-    public final static int MAX_ENTITIES = 1;
     public final static int MAX_FLUID = 250;
 
-    protected int itemCapacityMod = 1;
-    protected int entityCapacityMod = 1;
-    protected int fluidCapacityMod = 4;
+    public EntityTagRef entities;
 
     public NonNullList<ItemStack> items = null;
-    public CompoundTag entities = null;
+    public CompoundTag entityStorageTag = new CompoundTag();
     public FluidTank fluid = null;
 
     public Random random = new Random();
@@ -48,6 +47,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
     public BaseEntityTagBE(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
         super(type, pos, blockState);
+
+        entities = new EntityTagRef(getMaxEntities());
+        entityStorageTag = entities.getOrCreateTag(entityStorageTag);
     }
 
     @Override
@@ -55,7 +57,11 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
     {
         super.saveAdditional(tag);
         ContainerHelper.saveAllItems(tag, items, true);
-        tag.put(BASE_ENTITY_TAGNAME, entities);
+
+        if (entityStorageTag.contains(STORAGE_ENTITY_TAGNAME))
+        {
+            tag.put(STORAGE_ENTITY_TAGNAME, entityStorageTag);
+        }
     }
 
     @Override
@@ -64,8 +70,33 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
         super.load(tag);
         items.clear();
         ContainerHelper.loadAllItems(tag, items);
-        entities = tag.getCompound(BASE_ENTITY_TAGNAME);
+        entityStorageTag = tag.getCompound(STORAGE_ENTITY_TAGNAME);
     }
+
+////////////////
+// Accessors: //
+////////////////
+
+// Booleans:
+    public boolean itemsFull()
+    {
+        return getItemCount() == getMaxItems();
+    }
+
+// Integers:
+    public int getItemCount()
+    {
+        for(int i = 0; i < getMaxItems(); i++)
+        {
+            if(items.get(i).isEmpty()) return i;
+        }
+
+        return getMaxItems();
+    }
+
+    public abstract int getMaxItems();
+
+    public abstract int getMaxEntities();
 
 ///////////////////////////
 // Item related methods: //
@@ -95,7 +126,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
     {
         if(getItemCount() > 0)
         {
-            ItemStack stack = items.get(getItemCount()-1);
+            ItemStack stack = items.get(getItemCount() - 1);
 
             ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack);
             drop.setDefaultPickUpDelay();
@@ -120,34 +151,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
         }
     }
 
-    public int getItemCount()
-    {
-        for(int i = 0; i < getMaxItems(); i++)
-        {
-            if(items.get(i).isEmpty()) return i;
-        }
-
-        return getMaxItems();
-    }
-
-    public int getMaxItems()
-    {
-        return MAX_ITEMS * itemCapacityMod;
-    }
-
-    public boolean itemsFull()
-    {
-        return getItemCount() == getMaxItems();
-    }
-
 /////////////////////////////////
 // Entity tag related methods: //
 /////////////////////////////////
-
-    protected void createEntities()
-    {
-        entities = new CompoundTag();
-    }
 
     public boolean placeEntity(Player player, InteractionHand hand)
     {
@@ -155,31 +161,25 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            CompoundTag stackTag = item.getOrCreateTag(stack);
+            CompoundTag stackTag = stack.getOrCreateTag();
 
-            ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-            ListTag blockList = entities.getList(BASE_ENTITY_TAGNAME, 10);
+            ListTag stackList = item.entities.getEntryList(stackTag);
+            ListTag blockList = entities.getEntryList(entityStorageTag);
 
-            String selectedEntity = item.getSelectedEntity(stack);
-
-            for(int i = 0; i < getMaxEntities(); i++)
+            if (!entities.isFull(entityStorageTag))
             {
-                // Need to use regular Tag object for ENTITY_EMPTY compare here, not CompoundTag
-                if(blockList.get(i).toString().contains(ENTITY_EMPTY))
+                CompoundTag entryTag = item.entities.popEntry(stackTag);
+
+                String selectedEntity = EntityTagRef.getEntityID(entryTag);
+
+                if (!EntityTagRef.isEntityTamed(entryTag))
                 {
-                    CompoundTag entityNBT = stackList.getCompound(item.getMaxEntities()-1);
-
-                    if(!entityNBT.contains("Owner"))
+                    if (entities.pushEntry(entityStorageTag, entryTag))
                     {
-                        blockList.set(i, entityNBT);
-                        entities.put(BASE_ENTITY_TAGNAME, blockList);
-
-                        CompoundTag empty = new CompoundTag();
-                        empty.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-                        stackList.set(item.getMaxEntities()-1, empty);
-
-                        stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+                        // save updated entity tag list to stack
                         stack.setTag(stackTag);
+
+                        // send packet to update client version of BE
                         contentsChanged();
 
                         player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
@@ -190,12 +190,12 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
 
                         return true;
                     }
-                    else
-                    {
-                        player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.tamed_entity")
-                                .withStyle(ChatFormatting.WHITE)
-                                .append(": " + selectedEntity), true);
-                    }
+                }
+                else
+                {
+                    player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.tamed_entity")
+                            .withStyle(ChatFormatting.WHITE)
+                            .append(": " + selectedEntity), true);
                 }
             }
         }
@@ -205,35 +205,28 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
 
     public boolean removeEntity(Player player, InteractionHand hand)
     {
-        ensureTagPopulated(this);
-
         ItemStack stack = player.getItemInHand(hand);
 
         if(stack.getItem() instanceof BaseEntityTagItem item)
         {
-            CompoundTag stackTag = item.getOrCreateTag(stack);
+            CompoundTag stackTag = stack.getOrCreateTag();
 
-            ListTag stackList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-            ListTag blockList = entities.getList(BASE_ENTITY_TAGNAME, 10);
+            ListTag stackList = item.entities.getEntryList(stackTag);
+            ListTag blockList = entities.getEntryList(entityStorageTag);
 
-            for(int i = getMaxEntities(); i > 0; i--)
+            if (!item.entities.isFull(stackTag))
             {
-                if(!blockList.get(i-1).toString().contains(ENTITY_EMPTY))
+                CompoundTag entryTag = entities.popEntry(entityStorageTag);
+
+                String selectedEntity = EntityTagRef.getEntityID(entryTag);
+
+                if (item.entities.pushEntry(stackTag, entryTag))
                 {
-                    CompoundTag entityNBT = blockList.getCompound(i-1);
-
-                    CompoundTag empty = new CompoundTag();
-                    empty.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-                    blockList.set(i-1, empty);
-                    entities.put(BASE_ENTITY_TAGNAME, blockList);
-
-                    stackList.set(item.getMaxEntities()-1, entityNBT);
-
-                    stackTag.put(BASE_ENTITY_TAGNAME, stackList);
+                    // save updated entity tag list to stack
                     stack.setTag(stackTag);
-                    contentsChanged();
 
-                    String selectedEntity = item.getSelectedEntity(stack);
+                    // send packet to update client version of BE
+                    contentsChanged();
 
                     player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
                             .withStyle(ChatFormatting.WHITE)
@@ -249,51 +242,18 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
         return false;
     }
 
-    public void setClientEntities(CompoundTag list)
+    public void setClientEntities(CompoundTag tag)
     {
-        entities = list;
+        entityStorageTag = tag;
     }
 
-    public int getEntityCount()
+    public List<String> getEntitiesStrings()
     {
-        ensureTagPopulated(this);
+        Vector<String> entityStrings = new Vector<String>();
 
-        int entityCount = 0;
-
-        if(entities != null)
+        for(Tag entry : entities.getEntryList(entityStorageTag))
         {
-            ListTag tagList = entities.getList(BASE_ENTITY_TAGNAME, 10);
-
-            for(int i = 0; i < getMaxEntities(); i++)
-            {
-                // Need to use regular Tag object here, not CompoundTag
-                if(!tagList.get(i).toString().contains(ENTITY_EMPTY)) entityCount++;
-            }
-        }
-
-        return entityCount;
-    }
-
-    public int getMaxEntities()
-    {
-        return MAX_ENTITIES * entityCapacityMod;
-    }
-
-    public String getID(int listValue, ItemStack stack)
-    {
-        return stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).getCompound(listValue).getString(BASE_ENTITY_TAGNAME);
-    }
-
-    public NonNullList<String> getEntitiesStrings()
-    {
-        ensureTagPopulated(this);
-
-        ListTag blockList = entities.getList(BASE_ENTITY_TAGNAME, 10);
-        NonNullList<String> entityStrings = NonNullList.withSize(getMaxEntities(), "");
-
-        for(int i = 0; i < getMaxEntities(); i++)
-        {
-            entityStrings.set(i, blockList.getCompound(i).getString(BASE_ENTITY_TAGNAME));
+            entityStrings.add(EntityTagRef.getEntityID((CompoundTag) entry));
         }
 
         return entityStrings;
@@ -315,7 +275,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
 
     public int getMaxFluid()
     {
-        return MAX_FLUID * fluidCapacityMod;
+        return MAX_FLUID;
     }
 
     public boolean fluidFull()
@@ -333,8 +293,6 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
 
         if(!level.isClientSide())
         {
-            ensureTagPopulated(this);
-
             if(this instanceof IRecipeBE recipeBE)
                 recipeBE.findMatch();
 
@@ -353,7 +311,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable, 
     public void clearContent()
     {
         items.clear();
-        populateTag(this);
+        entityStorageTag = new CompoundTag();
         // clear fluid
     }
 

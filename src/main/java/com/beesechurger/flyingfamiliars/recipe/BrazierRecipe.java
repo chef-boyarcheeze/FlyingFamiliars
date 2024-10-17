@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_EMPTY;
 
 public class BrazierRecipe implements Recipe<SimpleContainer>
 {
@@ -87,7 +87,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 	 * 	For every required entity, compare to block's stored entities.
 	 * 	Allows for any order of stored entities to be used in crafting.
 	 */
-	public boolean entitiesMatch(NonNullList<String> entities)
+	public boolean entitiesMatch(List<String> entities)
 	{
 		if(entities == null)
 			return false;
@@ -96,7 +96,7 @@ public class BrazierRecipe implements Recipe<SimpleContainer>
 		
 		for(int i = 0; i < entities.size(); i++)
 		{
-			if(entities.get(i) != ENTITY_EMPTY) handlerEntities.add(entities.get(i));
+			if(entities.get(i) != STORAGE_EMPTY) handlerEntities.add(entities.get(i));
 		}
 		
 		for(int i = 0; i < inputEntities.size(); i++)

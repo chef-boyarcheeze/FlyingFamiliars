@@ -14,12 +14,7 @@ public class ObeliskBE extends BaseEntityTagBE
     {
         super(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), pos, blockState);
 
-        this.itemCapacityMod = 0;
-        this.entityCapacityMod = 0;
-        this.fluidCapacityMod = 4;
-
         createItems();
-        createEntities();
         createFluid();
     }
 
@@ -39,6 +34,18 @@ public class ObeliskBE extends BaseEntityTagBE
     {
         super.load(tag);
         //progress = tag.getInt(BLOCK_PROGRESS_TAGNAME);
+    }
+
+    @Override
+    public int getMaxItems()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getMaxEntities()
+    {
+        return 0;
     }
 
 ///////////////////////////

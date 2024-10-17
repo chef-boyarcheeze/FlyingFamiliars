@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-
 public class VitaAlembicRenderer implements BlockEntityRenderer<VitaAlembicBE>
 {
     public VitaAlembicRenderer(BlockEntityRendererProvider.Context ctx)
@@ -26,13 +24,13 @@ public class VitaAlembicRenderer implements BlockEntityRenderer<VitaAlembicBE>
         {
             float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
 
-            for(int i = 0; i < vitaAlembicBE.getEntityCount(); i++)
+            for(int i = 0; i < vitaAlembicBE.entities.getEntryCount(vitaAlembicBE.entityStorageTag); i++)
             {
                 EntityType<?> type = EntityType.byString(vitaAlembicBE.getEntitiesStrings().get(i)).orElse(null);
                 if(type != null)
                 {
                     Entity storedEntity = type.create(vitaAlembicBE.getLevel());
-                    storedEntity.load(vitaAlembicBE.entities.getList(BASE_ENTITY_TAGNAME, 10).getCompound(i));
+                    storedEntity.load(vitaAlembicBE.entities.getEntryList(vitaAlembicBE.entityStorageTag).getCompound(i));
 
                     stack.pushPose();
                     stack.translate(0.5d, 1.6d, 0.5d); //.6875

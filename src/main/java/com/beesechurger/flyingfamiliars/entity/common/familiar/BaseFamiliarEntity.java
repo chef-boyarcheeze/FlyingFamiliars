@@ -36,7 +36,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BUILDING_LIMIT_LOW;
 
 public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEntity
 {

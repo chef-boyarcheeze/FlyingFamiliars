@@ -1,36 +1,33 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ENTITY_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public interface IEntityTagBE
+public interface IEntityTagBE extends IStorageTagBE
 {
-/////////////////
-// BE actions: //
-/////////////////
+////////////////
+// Accessors: //
+////////////////
 
-    default void populateTag(BaseEntityTagBE entity)
+// Strings:
+    @Override
+    default String getEntryListName()
     {
-        entity.entities = new CompoundTag();
-
-        CompoundTag entityNBT = new CompoundTag();
-        ListTag tagList = entityNBT.getList(BASE_ENTITY_TAGNAME, 10);
-        entityNBT.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
-
-        for(int i = 0; i < entity.getMaxEntities(); i++)
-        {
-            tagList.addTag(i, entityNBT);
-        }
-
-        entity.entities.put(BASE_ENTITY_TAGNAME, tagList);
+        return STORAGE_ENTITY_TAGNAME;
     }
 
-    default void ensureTagPopulated(BaseEntityTagBE entity)
+    default String getEntityID(CompoundTag tag)
     {
-        if(entity.entities.getList(BASE_ENTITY_TAGNAME, 10).size() != entity.getMaxEntities())
-            populateTag(entity);
+        if (tag != null && tag.contains(getEntryListName()))
+            return tag.getString(getEntryListName());
+
+        return STORAGE_EMPTY;
+    }
+
+// Booleans:
+    default Boolean isEntityTamed(CompoundTag tag)
+    {
+        return tag != null && tag.contains("Owner");
     }
 }

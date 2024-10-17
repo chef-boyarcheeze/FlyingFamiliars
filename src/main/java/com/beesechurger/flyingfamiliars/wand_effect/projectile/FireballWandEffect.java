@@ -1,14 +1,12 @@
 package com.beesechurger.flyingfamiliars.wand_effect.projectile;
 
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_DARK_RED;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_RED;
 
 public class FireballWandEffect extends BaseWandEffect
 {

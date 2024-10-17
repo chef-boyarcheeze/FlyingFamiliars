@@ -1,99 +1,84 @@
+/*
 package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
+import com.beesechurger.flyingfamiliars.item.common.IStorageTagItem;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
+import java.util.List;
 
-public interface IEntityTagItem
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_ENTITY_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_ENTITY_TAGNAME;
+
+*/
+/*
+ *  Default interface to hide all entity tag-related code from implementers
+ *//*
+
+public interface IEntityTagItem extends IStorageTagItem
 {
 ////////////////
 // Accessors: //
 ////////////////
 
 // Strings:
-    default String getSelectedEntity(ItemStack stack)
+    @Override
+    default String getEntryListName()
     {
-        CompoundTag stackTag = getOrCreateTag(stack);
-        ListTag entityList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
+        return BASE_ENTITY_TAGNAME;
+    }
 
-        return entityList.getCompound(getMaxEntities()-1).getString(BASE_ENTITY_TAGNAME);
+    default String getEntityID(CompoundTag tag)
+    {
+        if (tag != null && tag.contains(getEntryListName()))
+            return tag.getString(getEntryListName());
+
+        return BASE_ENTITY_EMPTY;
     }
 
 // Booleans:
-    default boolean isSelectionEmpty(ItemStack stack)
+    default Boolean isEntityTamed(CompoundTag tag)
     {
-        return getSelectedEntity(stack) == ENTITY_EMPTY;
+        return tag != null && tag.contains("Owner");
     }
-
-    default boolean isEmpty(ItemStack stack)
-    {
-        return getEntityCount(stack) == 0;
-    }
-
-// Integers:
-    default int getEntityCount(ItemStack stack)
-    {
-        int entityCount = 0;
-
-        CompoundTag stackTag = getOrCreateTag(stack);
-        ListTag entityList = stackTag.getList(BASE_ENTITY_TAGNAME, 10);
-
-        for(int i = 0; i < getMaxEntities(); i++)
-        {
-            // Need to use regular Tag object here, not CompoundTag
-            if(!entityList.get(i).toString().contains(ENTITY_EMPTY)) entityCount++;
-        }
-
-        return entityCount;
-    }
-
-    public abstract int getMaxEntities();
 
 // Misc:
-
-    default CompoundTag getOrCreateTag(ItemStack stack)
+    @Override
+    default List<ItemStack> getStackList(Player player)
     {
-        ensureTagPopulated(stack);
+        NonNullList<ItemStack> stacks = NonNullList.create();
 
-        return stack.getTag();
+        ItemStack mainHand = player.getMainHandItem();
+        ItemStack offHand = FFItemHandler.getOffHandTagItem(player);
+        ItemStack curioCharm = FFItemHandler.getCurioCharmTagItem(player);
+
+        if (mainHand != null)
+            stacks.add(mainHand);
+        if (offHand != null)
+            stacks.add(offHand);
+        if (curioCharm != null)
+            stacks.add(curioCharm);
+
+        return stacks;
     }
 
 ///////////////////
-// Item actions: //
+// Tag actions: //
 ///////////////////
 
-    default void populateTag(ItemStack stack)
+// For Wand Effects:
+
+*/
+/*if(stack.getItem() instanceof IWandEffectItem)
     {
-        CompoundTag stackTag = new CompoundTag();
+        // set default wand effect selection as capture projectile
+        CompoundTag selectionTag = new CompoundTag();
+        selectionTag.putString(ITEM_WAND_EFFECT_SELECTION_TAGNAME, "capture_projectile");
 
-        CompoundTag entityTag = new CompoundTag();
-        ListTag tagList = entityTag.getList(BASE_ENTITY_TAGNAME, 10);
-        entityTag.putString(BASE_ENTITY_TAGNAME, ENTITY_EMPTY);
+        stackTag.put(ITEM_WAND_EFFECT_SELECTION_TAGNAME, selectionTag);
+    }*//*
 
-        for(int i = 0; i < getMaxEntities(); i++)
-        {
-            tagList.addTag(i, entityTag);
-        }
-
-        stackTag.put(BASE_ENTITY_TAGNAME, tagList);
-
-        if(stack.getItem() instanceof IWandEffectItem)
-        {
-            // set default wand effect selection as capture projectile
-            CompoundTag selectionTag = new CompoundTag();
-            selectionTag.putString(ITEM_WAND_EFFECT_SELECTION_TAGNAME, "capture_projectile");
-
-            stackTag.put(ITEM_WAND_EFFECT_SELECTION_TAGNAME, selectionTag);
-        }
-
-        stack.setTag(stackTag);
-    }
-
-    default void ensureTagPopulated(ItemStack stack)
-    {
-        if(!stack.hasTag() || stack.getTag().getList(BASE_ENTITY_TAGNAME, 10).size() != getMaxEntities())
-            populateTag(stack);
-    }
-}
+}*/

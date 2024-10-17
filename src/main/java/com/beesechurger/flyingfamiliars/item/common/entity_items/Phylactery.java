@@ -1,10 +1,15 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
-public class Phylactery extends BaseEntityTagItem
+import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
+
+public class Phylactery extends BaseEntityTagItem implements ITieredItem
 {
-    public Phylactery(Properties properties, int capacityMod)
+    protected final ItemTier TIER;
+
+    public Phylactery(Properties properties, ItemTier tier)
     {
-        super(properties);
-        this.capacityMod = capacityMod;
+        super(properties, tier.VALUE);
+
+        this.TIER = tier;
     }
 }

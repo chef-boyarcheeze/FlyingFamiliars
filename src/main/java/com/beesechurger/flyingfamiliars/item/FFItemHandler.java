@@ -7,10 +7,12 @@ import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.packet.SoulItemSelectC2SPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
@@ -19,6 +21,9 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
+
+import java.util.List;
+import java.util.Vector;
 
 @OnlyIn(Dist.CLIENT)
 public class FFItemHandler
@@ -41,12 +46,27 @@ public class FFItemHandler
 		if(player != null && player.isShiftKeyDown())
 		{
 			ItemStack stack = player.getMainHandItem();
-			if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem)
+
+			if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem item && item.canCycle(stack))
 			{
 				FFPackets.sendToServer(new SoulItemSelectC2SPacket((int) event.getScrollDelta()));
 				event.setCanceled(true);
 			}
 		}
+	}
+
+	public static List<ItemStack> getEntityStackList(Player player)
+	{
+		Vector<ItemStack> stacks = new Vector<ItemStack>();
+
+		if (player.getMainHandItem() != null)
+			stacks.add(player.getMainHandItem());
+		if (getOffHandTagItem(player) != null)
+			stacks.add(getOffHandTagItem(player));
+		if (getCurioCharmTagItem(player) != null)
+			stacks.add(getCurioCharmTagItem(player));
+
+		return stacks;
 	}
 
 	public static ItemStack getOffHandTagItem(Player player)

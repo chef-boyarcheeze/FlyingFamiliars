@@ -30,8 +30,8 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BASE_FLYING_SPEED;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BASE_MOVEMENT_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_FLYING_SPEED;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_MOVEMENT_SPEED;
 
 public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity, IEarthEntity
 {

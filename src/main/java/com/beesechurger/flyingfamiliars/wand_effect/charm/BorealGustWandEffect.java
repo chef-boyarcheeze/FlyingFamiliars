@@ -5,7 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_YELLOW;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_YELLOW;
 
 public class BorealGustWandEffect extends BaseWandEffect
 {

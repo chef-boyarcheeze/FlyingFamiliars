@@ -5,7 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.CHAT_GOLD;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
 
 public class CrystalSpikeWandEffect extends BaseWandEffect
 {

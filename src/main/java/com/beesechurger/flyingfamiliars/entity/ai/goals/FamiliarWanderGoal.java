@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.BUILDING_LIMIT_LOW;
-import static com.beesechurger.flyingfamiliars.util.FFValueConstants.RANDOM_MOVE_CHANCE;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BUILDING_LIMIT_LOW;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.RANDOM_MOVE_CHANCE;
 
 public class FamiliarWanderGoal extends Goal
 {

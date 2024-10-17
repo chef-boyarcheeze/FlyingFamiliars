@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.client;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimationController;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.ANIMATION_EMPTY;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.ANIMATION_EMPTY;
 
 public class FFAnimationController<T extends GeoAnimatable> extends AnimationController<T>
 {

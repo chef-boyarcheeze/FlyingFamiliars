@@ -15,8 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.BASE_ENTITY_TAGNAME;
-
 public class BrazierRenderer implements BlockEntityRenderer<BrazierBE>
 {	
 	public BrazierRenderer(BlockEntityRendererProvider.Context c)
@@ -51,19 +49,19 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBE>
 				stack.popPose();
 			}
 
-			for(int i = 0; i < brazierBE.getEntityCount(); i++)
+			for(int i = 0; i < brazierBE.entities.getEntryCount(brazierBE.entityStorageTag); i++)
 			{
-				float angle = ((i+1) * 360f / brazierBE.getEntityCount());
+				float angle = ((i+1) * 360f / brazierBE.entities.getEntryCount(brazierBE.entityStorageTag));
 
 				EntityType<?> type = EntityType.byString(brazierBE.getEntitiesStrings().get(i)).orElse(null);
 				if(type != null)
 				{
 					Entity storedEntity = type.create(brazierBE.getLevel());
-					storedEntity.load(brazierBE.entities.getList(BASE_ENTITY_TAGNAME, 10).getCompound(i));
+					storedEntity.load(brazierBE.entities.getEntryList(brazierBE.entityStorageTag).getCompound(i));
 
 					double craftingOffset = 0.25d * ((double) brazierBE.getProgress() / (double) brazierBE.getMaxProgress());
 					double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
-					double centerShift = 0.6d * (brazierBE.getEntityCount() - 1);
+					double centerShift = 0.6d * (brazierBE.entities.getEntryCount(brazierBE.entityStorageTag) - 1);
 
 					stack.pushPose();
 					stack.translate(0.5d, 1.6d, 0.5d);

@@ -3,9 +3,10 @@ package com.beesechurger.flyingfamiliars.packet;
 import java.util.function.Supplier;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.ISoulCycleItem;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.IEntityCycleItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -43,20 +44,20 @@ public class SoulItemSelectC2SPacket
 			Level level = player.level();
 			ItemStack stack = player.getMainHandItem();
 
-			if(!stack.isEmpty()
-					&& stack.getItem() instanceof ISoulCycleItem cycle
-					&& stack.getItem() instanceof BaseEntityTagItem base)
+			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
-				cycle.cycleSoul(player, direction);
+				CompoundTag stackTag = stack.getOrCreateTag();
 
-				CompoundTag tag = cycle.getEntityTag(stack, base.getMaxEntities()-1);
-				ChatFormatting format = cycle.isEntityTamed(tag) && !cycle.isEntityEmpty(tag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
+				item.cycle(player, direction);
 
-				if(player.getRandom().nextInt(10) == 0)
+				CompoundTag entryTag = item.entities.getSelectedEntry(stackTag);
+				ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
+
+				if(player.getRandom().nextInt(15) == 0)
 					level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
 
 				player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
-						.append(": " + cycle.getEntityID(tag))
+						.append(": " + EntityTagRef.getEntityID(entryTag))
 						.withStyle(format), true);
 			}
 		});

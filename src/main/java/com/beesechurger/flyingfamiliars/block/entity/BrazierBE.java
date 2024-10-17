@@ -1,15 +1,13 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.packet.BEProgressS2CPacket;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
+import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,7 +16,8 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static com.beesechurger.flyingfamiliars.util.FFStringConstants.*;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.BLOCK_PROGRESS_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TYPE;
 
 public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 {
@@ -58,12 +57,7 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 			}
 		};
 
-		this.itemCapacityMod = 5;
-		this.entityCapacityMod = 3;
-		this.fluidCapacityMod = 1;
-
 		createItems();
-		createEntities();
 		createFluid();
 	}
 	
@@ -86,6 +80,18 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 ////////////////
 
 // Integers:
+
+	@Override
+	public int getMaxItems()
+	{
+		return 5;
+	}
+
+	@Override
+	public int getMaxEntities()
+	{
+		return 3;
+	}
 
 	public int getProgress()
 	{
@@ -146,21 +152,19 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 
 	public void addResultEntity(String resultEntity)
 	{
-		if(resultEntity == null)
+		if (resultEntity == null)
 			return;
 
 		EntityType<?> type = EntityType.byString(resultEntity).orElse(null);
-		if(type != null)
+		if (type != null)
 		{
-			CompoundTag entityNBT = new CompoundTag();
-			ListTag tagList = entities.getList(BASE_ENTITY_TAGNAME, 10);
+			CompoundTag result = new CompoundTag();
 			Entity entity = type.create(level);
 
-			entityNBT.putString(BASE_ENTITY_TAGNAME, EntityType.getKey(entity.getType()).toString());
-			entity.saveWithoutId(entityNBT);
+			result.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
+			entity.saveWithoutId(result);
 
-			tagList.set(0, entityNBT);
-			entities.put(BASE_ENTITY_TAGNAME, tagList);
+			entities.pushEntry(entityStorageTag, result);
 		}
 	}
 

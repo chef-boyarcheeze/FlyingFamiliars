@@ -18,7 +18,7 @@ public class WandEffectItemHelper
 
     // Sentry wand effects:
 
-    private static Map<String, BaseWandEffect> WAND_EFFECT_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
+    private static final Map<String, BaseWandEffect> WAND_EFFECT_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
         // Charm wand effects:
 
 

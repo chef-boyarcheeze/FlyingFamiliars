@@ -10,12 +10,7 @@ public class VitaAlembicBE extends BaseEntityTagBE implements IRecipeBE
     {
         super(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), pos, blockState);
 
-        this.itemCapacityMod = 0;
-        this.entityCapacityMod = 1;
-        this.fluidCapacityMod = 3;
-
         createItems();
-        createEntities();
         createFluid();
     }
 
@@ -23,5 +18,17 @@ public class VitaAlembicBE extends BaseEntityTagBE implements IRecipeBE
     public void findMatch()
     {
 
+    }
+
+    @Override
+    public int getMaxItems()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getMaxEntities()
+    {
+        return 1;
     }
 }

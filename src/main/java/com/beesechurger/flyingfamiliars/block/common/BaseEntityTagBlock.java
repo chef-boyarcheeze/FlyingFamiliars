@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.block.common;
 import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.fluid_items.BaseVitalityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -65,46 +66,39 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
         BlockEntity entity = level.getBlockEntity(pos);
         if (entity instanceof BaseEntityTagBE baseEntity)
         {
-            ItemStack stack = player.getItemInHand(hand);
-
-            if (stack.getItem() instanceof BaseEntityTagItem item)
+            if (!level.isClientSide())
             {
-                if (!level.isClientSide() && !(stack.getItem() instanceof Phylactery && item.getEntityCount(stack) == 0))
+                ItemStack stack = player.getItemInHand(hand);
+
+                if (stack.getItem() instanceof BaseEntityTagItem)
                 {
-                    if (!item.isSelectionEmpty(stack))
+                    if (!player.isShiftKeyDown())
                         return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));
                 }
-                else if (level.isClientSide())
-                    return InteractionResult.CONSUME;
-            }
-            else if (false) // fluid item
-            {
-                // if server
-                return InteractionResult.SUCCESS;
+                else if (stack.getItem() instanceof BaseVitalityTagItem) // fluid item
+                {
+                    // if server
+                    return InteractionResult.SUCCESS;
 
-                // consume if client
-            }
-            else
-            {
-                if (!level.isClientSide())
+                    // consume if client
+                }
+                else
                 {
                     if (!player.isShiftKeyDown())
                         return InteractionResult.sidedSuccess(baseEntity.placeItem(stack));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeItem(level, pos));
                 }
-                else
-                    return InteractionResult.CONSUME;
             }
+
+            return InteractionResult.SUCCESS;
         }
         else
         {
             throw new IllegalStateException("Flying Familiars BaseEntityTagBE container provider missing");
         }
-
-        return InteractionResult.PASS;
     }
 
     protected SoundEvent getPlaceEntitySound()

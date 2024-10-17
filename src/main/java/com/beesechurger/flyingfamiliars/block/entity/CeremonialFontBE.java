@@ -10,17 +10,24 @@ public class CeremonialFontBE extends BaseEntityTagBE implements IRecipeBE
     {
         super(FFBlockEntities.CEREMONIAL_FONT_BLOCK_ENTITY.get(), pos, blockState);
 
-        this.itemCapacityMod = 3;
-        this.entityCapacityMod = 1;
-        this.fluidCapacityMod = 4;
-
         createItems();
-        createEntities();
         createFluid();
     }
 
     @Override
     public void findMatch()
     {
+    }
+
+    @Override
+    public int getMaxItems()
+    {
+        return 3;
+    }
+
+    @Override
+    public int getMaxEntities()
+    {
+        return 1;
     }
 }
