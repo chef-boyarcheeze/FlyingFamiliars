@@ -38,10 +38,10 @@ public class FFPackets
 				.consumerMainThread(BEProgressS2CPacket::handle)
 				.add();
 		
-		net.messageBuilder(SoulItemSelectC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-				.decoder(SoulItemSelectC2SPacket::new)
-				.encoder(SoulItemSelectC2SPacket::toBytes)
-				.consumerMainThread(SoulItemSelectC2SPacket::handle)
+		net.messageBuilder(EntityCycleC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+				.decoder(EntityCycleC2SPacket::new)
+				.encoder(EntityCycleC2SPacket::toBytes)
+				.consumerMainThread(EntityCycleC2SPacket::handle)
 				.add();
 	}
 	

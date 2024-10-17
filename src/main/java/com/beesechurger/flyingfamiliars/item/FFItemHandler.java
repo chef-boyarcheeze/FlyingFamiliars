@@ -5,14 +5,12 @@ import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagIt
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.packet.SoulItemSelectC2SPacket;
+import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
@@ -49,7 +47,7 @@ public class FFItemHandler
 
 			if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem item && item.canCycle(stack))
 			{
-				FFPackets.sendToServer(new SoulItemSelectC2SPacket((int) event.getScrollDelta()));
+				FFPackets.sendToServer(new EntityCycleC2SPacket((int) event.getScrollDelta()));
 				event.setCanceled(true);
 			}
 		}

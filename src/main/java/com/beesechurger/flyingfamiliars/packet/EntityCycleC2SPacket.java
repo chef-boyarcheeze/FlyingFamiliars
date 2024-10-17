@@ -3,7 +3,6 @@ package com.beesechurger.flyingfamiliars.packet;
 import java.util.function.Supplier;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.IEntityCycleItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
@@ -17,16 +16,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
-public class SoulItemSelectC2SPacket
+public class EntityCycleC2SPacket
 {
 	private final int direction;
 
-	public SoulItemSelectC2SPacket(int di)
+	public EntityCycleC2SPacket(int di)
 	{
 		direction = di;
 	}
 	
-	public SoulItemSelectC2SPacket(FriendlyByteBuf buf)
+	public EntityCycleC2SPacket(FriendlyByteBuf buf)
 	{
 		direction = buf.readInt();
 	}
