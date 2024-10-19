@@ -1,8 +1,10 @@
 package com.beesechurger.flyingfamiliars.item;
 
+import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
+import com.beesechurger.flyingfamiliars.packet.EntryManipModeC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
@@ -26,14 +28,17 @@ import java.util.Vector;
 @OnlyIn(Dist.CLIENT)
 public class FFItemHandler
 {
-	public static final FFItemHandler INSTANCE = new FFItemHandler();
-	
+	public final static FFItemHandler INSTANCE = new FFItemHandler();
+
 	@SubscribeEvent
 	public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event)
 	{
-		/*ItemStack stack = event.getItemStack();
-		if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem)
-			FFMessages.sendToServer(new SoulWandSelectC2SPacket());*/
+		ItemStack stack = event.getItemStack();
+
+		if (!stack.isEmpty() && stack.getItem() instanceof BaseStorageTagItem)
+		{
+			FFPackets.sendToServer(new EntryManipModeC2SPacket());
+		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

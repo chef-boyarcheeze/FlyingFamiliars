@@ -164,7 +164,7 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 			result.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
 			entity.saveWithoutId(result);
 
-			entities.pushEntry(entityStorageTag, result);
+			entities.addEntry(entityStorageTag, result);
 		}
 	}
 

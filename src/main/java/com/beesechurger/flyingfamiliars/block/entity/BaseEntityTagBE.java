@@ -166,37 +166,33 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
             ListTag stackList = item.entities.getEntryList(stackTag);
             ListTag blockList = entities.getEntryList(entityStorageTag);
 
-            if (!entities.isFull(entityStorageTag))
+            String selectedEntity = EntityTagRef.getEntityID(item.entities.getSelectedEntry(stackTag));
+
+            if (!EntityTagRef.isEntityTamed(item.entities.getSelectedEntry(stackTag)))
             {
-                CompoundTag entryTag = item.entities.popEntry(stackTag);
-
-                String selectedEntity = EntityTagRef.getEntityID(entryTag);
-
-                if (!EntityTagRef.isEntityTamed(entryTag))
+                // use BE entityTagRef since it has the correct max entry size for entityStorageTag
+                if (entities.moveEntry(stackTag, entityStorageTag))
                 {
-                    if (entities.pushEntry(entityStorageTag, entryTag))
-                    {
-                        // save updated entity tag list to stack
-                        stack.setTag(stackTag);
+                    // save updated entity tag list to stack
+                    stack.setTag(stackTag);
 
-                        // send packet to update client version of BE
-                        contentsChanged();
+                    // send packet to update client version of BE
+                    contentsChanged();
 
-                        player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
-                                .withStyle(ChatFormatting.WHITE)
-                                .append(": " + selectedEntity), true);
-
-                        level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
-
-                        return true;
-                    }
-                }
-                else
-                {
-                    player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.tamed_entity")
+                    player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.place_entity")
                             .withStyle(ChatFormatting.WHITE)
                             .append(": " + selectedEntity), true);
+
+                    level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_ADD_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
+
+                    return true;
                 }
+            }
+            else
+            {
+                player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.tamed_entity")
+                        .withStyle(ChatFormatting.WHITE)
+                        .append(": " + selectedEntity), true);
             }
         }
 
@@ -214,28 +210,24 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
             ListTag stackList = item.entities.getEntryList(stackTag);
             ListTag blockList = entities.getEntryList(entityStorageTag);
 
-            if (!item.entities.isFull(stackTag))
+            String selectedEntity = EntityTagRef.getEntityID(entities.getSelectedEntry(entityStorageTag));
+
+            // use item entityTagRef since it has the correct max entry size for stackTag
+            if (item.entities.moveEntry(entityStorageTag, stackTag))
             {
-                CompoundTag entryTag = entities.popEntry(entityStorageTag);
+                // save updated entity tag list to stack
+                stack.setTag(stackTag);
 
-                String selectedEntity = EntityTagRef.getEntityID(entryTag);
+                // send packet to update client version of BE
+                contentsChanged();
 
-                if (item.entities.pushEntry(stackTag, entryTag))
-                {
-                    // save updated entity tag list to stack
-                    stack.setTag(stackTag);
+                player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
+                        .withStyle(ChatFormatting.WHITE)
+                        .append(": " + selectedEntity), true);
 
-                    // send packet to update client version of BE
-                    contentsChanged();
+                level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
 
-                    player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.remove_entity")
-                            .withStyle(ChatFormatting.WHITE)
-                            .append(": " + selectedEntity), true);
-
-                    level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_REMOVE_ENTITY.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
-
-                    return true;
-                }
+                return true;
             }
         }
 

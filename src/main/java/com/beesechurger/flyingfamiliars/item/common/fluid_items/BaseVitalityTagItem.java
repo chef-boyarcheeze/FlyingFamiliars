@@ -53,6 +53,23 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
         return false;
     }
 
+    @Override
+    public boolean getManipMode(ItemStack stack)
+    {
+        return false;
+    }
+
+///////////////
+// Mutators: //
+///////////////
+
+// Booleans:
+    @Override
+    public void toggleManipMode(ItemStack stack)
+    {
+
+    }
+
 ////////////////
 // Cosmetics: //
 ////////////////

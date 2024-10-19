@@ -19,6 +19,10 @@ public class FFConstants
     public static final String STORAGE_FLUID_TYPE = "FluidType";
     public static final String STORAGE_FLUID_STORAGE = "FluidStorage";
 
+    public static final String STORAGE_ITEM_INFO_TAGNAME = "ff.item.item_info";
+    public static final String STORAGE_ITEM_INFO_ENTITY_MANIP_MODE = "EntityManipMode";
+    public static final String STORAGE_ITEM_INFO_ENTRY_STORAGE_MAX = "EntryStorageMax";
+
     public static final String STORAGE_WAND_EFFECT_TAGNAME = "ff.item.wand_effect";
     public static final String STORAGE_WAND_EFFECT_TYPE = "WandEffectType";
 

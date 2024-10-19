@@ -98,6 +98,8 @@
 	"message.flyingfamiliars.entity_tag.place_entity": "Placed Entity",
 	"message.flyingfamiliars.entity_tag.remove_entity": "Removed Entity",
 	"message.flyingfamiliars.entity_tag.tamed_entity": "Can't place tamed entity",
+	"message.flyingfamiliars.item_info_tag.toggle_manip_mode.place": "Current Mode: Place",
+	"message.flyingfamiliars.item_info_tag.toggle_manip_mode.remove": "Current Mode: Remove",
 
 	"sounds.flyingfamiliars.runic_bricks_break": "Block broken",
 	"sounds.flyingfamiliars.runic_bricks_step": "Footsteps",

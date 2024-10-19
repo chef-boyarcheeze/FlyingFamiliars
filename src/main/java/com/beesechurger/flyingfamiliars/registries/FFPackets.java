@@ -43,6 +43,12 @@ public class FFPackets
 				.encoder(EntityCycleC2SPacket::toBytes)
 				.consumerMainThread(EntityCycleC2SPacket::handle)
 				.add();
+
+		net.messageBuilder(EntryManipModeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+				.decoder(EntryManipModeC2SPacket::new)
+				.encoder(EntryManipModeC2SPacket::toBytes)
+				.consumerMainThread(EntryManipModeC2SPacket::handle)
+				.add();
 	}
 	
 	public static <MSG> void sendToServer(MSG message)

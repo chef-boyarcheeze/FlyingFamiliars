@@ -25,7 +25,7 @@ public interface IStorageTagRef
 
     default boolean isFull(CompoundTag storageTag)
     {
-        return getEntryList(storageTag).size() == getMaxEntries();
+        return getEntryList(storageTag).size() == getMaxEntries() && getMaxEntries() > 0;
     }
 
 // Integers:
@@ -79,7 +79,7 @@ public interface IStorageTagRef
 // Tag actions: //
 //////////////////
 
-    default boolean pushEntry(CompoundTag storageTag, CompoundTag entryTag)
+    default boolean addEntry(CompoundTag storageTag, CompoundTag entryTag)
     {
         if (!isFull(storageTag) && hasTag(entryTag))
         {
@@ -87,7 +87,6 @@ public interface IStorageTagRef
             ListTag entryList = getEntryList(storageTag);
             entryList.add(entryTag);
 
-            // hopefully actually saves to 'storageTag'
             storageTag.put(getEntryListName(), entryList);
 
             return true;
@@ -96,20 +95,34 @@ public interface IStorageTagRef
         return false;
     }
 
-    default CompoundTag popEntry(CompoundTag storageTag)
+    default boolean moveEntry(CompoundTag sourceTag, CompoundTag targetTag)
     {
-        if (!isEmpty(storageTag))
+        if (!isEmpty(sourceTag) && !isFull(targetTag))
+        {
+            CompoundTag entryTag = getSelectedEntry(sourceTag);
+
+            if (hasTag(entryTag))
+            {
+                return removeEntry(sourceTag, entryTag) && addEntry(targetTag, entryTag);
+            }
+        }
+
+        return false;
+    }
+
+    default boolean removeEntry(CompoundTag storageTag, CompoundTag entryTag)
+    {
+        if (!isEmpty(storageTag) && hasTag(entryTag))
         {
             // get current entry list, remove selected entry tag, and update storedTag
             ListTag entryList = getEntryList(storageTag);
-            CompoundTag entryTag = (CompoundTag) entryList.remove(getEntryCount(storageTag) - 1);
+            entryList.remove(entryTag);
 
-            // hopefully actually saves to 'storageTag'
             storageTag.put(getEntryListName(), entryList);
 
-            return entryTag;
+            return true;
         }
 
-        return new CompoundTag();
+        return false;
     }
 }

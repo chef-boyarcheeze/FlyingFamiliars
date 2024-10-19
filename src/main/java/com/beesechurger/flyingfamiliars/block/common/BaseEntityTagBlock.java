@@ -70,9 +70,9 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
             {
                 ItemStack stack = player.getItemInHand(hand);
 
-                if (stack.getItem() instanceof BaseEntityTagItem)
+                if (stack.getItem() instanceof BaseEntityTagItem item)
                 {
-                    if (!player.isShiftKeyDown())
+                    if (item.getManipMode(stack))
                         return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));

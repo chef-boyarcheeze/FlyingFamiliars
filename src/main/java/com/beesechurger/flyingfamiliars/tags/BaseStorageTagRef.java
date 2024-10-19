@@ -6,16 +6,17 @@ import net.minecraft.nbt.ListTag;
 
 public abstract class BaseStorageTagRef implements IStorageTagRef
 {
-    protected final int maxEntries;
+    protected int maxEntries;
 
     public BaseStorageTagRef()
     {
-        this.maxEntries = 1;
+        // by default infinite storage space
+        setMaxEntries(0);
     }
 
     public BaseStorageTagRef(int maxEntries)
     {
-        this.maxEntries = maxEntries;
+        setMaxEntries(maxEntries);
     }
 
 ////////////////
@@ -27,5 +28,15 @@ public abstract class BaseStorageTagRef implements IStorageTagRef
     public int getMaxEntries()
     {
         return maxEntries;
+    }
+
+///////////////
+// Mutators: //
+///////////////
+
+// Integers:
+    public void setMaxEntries(int maxEntries)
+    {
+        this.maxEntries = maxEntries;
     }
 }

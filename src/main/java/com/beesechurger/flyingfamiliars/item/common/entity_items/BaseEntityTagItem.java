@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.ItemInfoTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -22,12 +23,14 @@ import static net.minecraft.network.chat.Component.translatable;
 public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IEntityCycleItem
 {
     public EntityTagRef entities;
+    public ItemInfoTagRef itemInfo;
 
     public BaseEntityTagItem(Properties properties)
     {
         super(properties);
 
         entities = new EntityTagRef(3);
+        itemInfo = new ItemInfoTagRef();
     }
 
     public BaseEntityTagItem(Properties properties, int entryModifier)
@@ -35,6 +38,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         super(properties);
 
         entities = new EntityTagRef(3 * entryModifier);
+        itemInfo = new ItemInfoTagRef();
     }
 
 ////////////////
@@ -60,6 +64,12 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         return entities.getEntryCount(stack.getOrCreateTag()) > 1;
     }
 
+    @Override
+    public boolean getManipMode(ItemStack stack)
+    {
+        return itemInfo.getManipMode(stack.getOrCreateTag());
+    }
+
 // Integers:
     @Override
     public int getBarWidth(ItemStack stack)
@@ -71,6 +81,17 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     public int getBarColor(ItemStack stack)
     {
         return CHAT_GRAY;
+    }
+
+///////////////
+// Mutators: //
+///////////////
+
+// Booleans:
+    @Override
+    public void toggleManipMode(ItemStack stack)
+    {
+        itemInfo.toggleManipMode(stack.getOrCreateTag());
     }
 
 ////////////////

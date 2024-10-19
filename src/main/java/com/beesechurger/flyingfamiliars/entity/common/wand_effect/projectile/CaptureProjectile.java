@@ -146,7 +146,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 			entity.saveWithoutId(entryTag);
 
 			// if entry tag is successfully added into internal item list tag
-			if (item.entities.pushEntry(stackTag, entryTag))
+			if (item.entities.addEntry(stackTag, entryTag))
 			{
 				// save updated entity tag list to stack
 				stack.setTag(stackTag);
@@ -187,12 +187,12 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 			CompoundTag stackTag = stack.getOrCreateTag();
 
 			// get selected entity's entry tag and confirm tag is real
-			CompoundTag entryTag = item.entities.popEntry(stackTag);
+			CompoundTag entryTag = item.entities.getSelectedEntry(stackTag);
 
 			if(entryTag.contains(STORAGE_ENTITY_TYPE))
 			{
 				EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
-				if (type != null)
+				if (type != null && item.entities.removeEntry(stackTag, entryTag))
 				{
 					// save updated entity tag list to stack
 					stack.setTag(stackTag);
