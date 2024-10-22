@@ -7,6 +7,8 @@ import com.beesechurger.flyingfamiliars.tags.VitalityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 import static net.minecraft.network.chat.Component.literal;
@@ -83,31 +86,38 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
     {
         CompoundTag stackTag = stack.getOrCreateTag();
 
-        List<Integer> entryList = fluids.getStoredVitality(stackTag);
-        int entryCount = fluids.getEntryCount(stackTag);
+        Map<String, Integer> entryMap = fluids.getStoredVitality(stackTag);
+
+        ListTag entryList = fluids.getEntryList(stackTag);
 
         if (Screen.hasShiftDown())
         {
-            for (int i = 0; i < entryCount; i++)
+            for (String type : VITALITY_TYPES)
             {
-                ChatFormatting format = switch (i)
+                ChatFormatting format = switch (type)
                 {
-                    case 0 -> ChatFormatting.BLUE;
-                    case 1 -> ChatFormatting.GREEN;
-                    case 2 -> ChatFormatting.YELLOW;
-                    case 3 -> ChatFormatting.GOLD;
-                    case 4 -> ChatFormatting.RED;
-                    case 5 -> ChatFormatting.DARK_PURPLE;
-                    case 6 -> ChatFormatting.LIGHT_PURPLE;
-                    default -> ChatFormatting.DARK_GRAY;
+                    case VITALITY_BLUE -> ChatFormatting.BLUE;
+                    case VITALITY_GREEN -> ChatFormatting.GREEN;
+                    case VITALITY_YELLOW -> ChatFormatting.YELLOW;
+                    case VITALITY_GOLD -> ChatFormatting.GOLD;
+                    case VITALITY_RED -> ChatFormatting.RED;
+                    case VITALITY_BLACK -> ChatFormatting.DARK_PURPLE;
+                    case VITALITY_WHITE -> ChatFormatting.LIGHT_PURPLE;
+                    default -> ChatFormatting.GRAY;
                 };
 
-                tooltip.add(translatable("tooltip.flyingfamiliars.fluid_tag.vitality_" + VITALITY_TYPES.get(i)).withStyle(format));
+                Integer volume = entryMap.get(type);
+
+                if (volume != null && volume > 0)
+                {
+                    tooltip.add(translatable("tooltip.flyingfamiliars.fluid_tag.vitality_" + type)
+                            .withStyle(format).append(literal(String.valueOf(volume))));
+                }
             }
         }
         else
         {
-            switch (entryCount)
+            switch (entryMap.size())
             {
                 case 0: tooltip.add(translatable("tooltip.flyingfamiliars.fluid_tag.empty")
                         .withStyle(ChatFormatting.GRAY));
@@ -117,7 +127,7 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
                         .withStyle(ChatFormatting.GRAY));
                     break;
 
-                default : tooltip.add(literal(String.valueOf(entryCount)).append(translatable("tooltip.flyingfamiliars.fluid_tag.stored_multiple")
+                default : tooltip.add(literal(String.valueOf(entryMap.size())).withStyle(ChatFormatting.GRAY).append(translatable("tooltip.flyingfamiliars.fluid_tag.stored_multiple")
                         .withStyle(ChatFormatting.GRAY)));
                     break;
             }

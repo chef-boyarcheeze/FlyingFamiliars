@@ -1,11 +1,15 @@
 package com.beesechurger.flyingfamiliars.tags;
 
+import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
+import com.google.common.collect.Maps;
+import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
@@ -66,26 +70,23 @@ public class VitalityTagRef extends BaseStorageTagRef
     }
 
 // Misc:
-    public List<Integer> getStoredVitality(CompoundTag storageTag)
+    public Map<String, Integer> getStoredVitality(CompoundTag storageTag)
     {
         ListTag entryList = getEntryList(storageTag);
 
-        NonNullList<Integer> storage = NonNullList.withSize(getMaxEntries(), 0);
-
-        for(Tag tag : entryList)
-        {
-            switch (((CompoundTag) tag).getString(STORAGE_FLUID_TYPE))
+        Map<String, Integer> entryMap = (Map) Util.make(Maps.newHashMap(), (map) -> {
+            for(Tag tag : entryList)
             {
-                case VITALITY_BLUE -> storage.set(0, ((CompoundTag) tag).getInt(VITALITY_BLUE));
-                case VITALITY_GREEN -> storage.set(1, ((CompoundTag) tag).getInt(VITALITY_GREEN));
-                case VITALITY_YELLOW -> storage.set(2, ((CompoundTag) tag).getInt(VITALITY_YELLOW));
-                case VITALITY_GOLD -> storage.set(3, ((CompoundTag) tag).getInt(VITALITY_GOLD));
-                case VITALITY_RED -> storage.set(4, ((CompoundTag) tag).getInt(VITALITY_RED));
-                case VITALITY_BLACK -> storage.set(5, ((CompoundTag) tag).getInt(VITALITY_BLACK));
-                case VITALITY_WHITE -> storage.set(6, ((CompoundTag) tag).getInt(VITALITY_WHITE));
-            }
-        }
+                String type = ((CompoundTag) tag).getString(STORAGE_FLUID_TYPE);
+                Integer volume = ((CompoundTag) tag).getInt(type);
 
-        return storage;
+                if (volume > 0)
+                {
+                    map.put(type, volume);
+                }
+            }
+        });
+
+        return entryMap;
     }
 }

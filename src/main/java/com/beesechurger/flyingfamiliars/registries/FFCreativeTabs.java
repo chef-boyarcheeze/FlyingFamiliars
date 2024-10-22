@@ -18,8 +18,7 @@ public class FFCreativeTabs
             .icon(() -> new ItemStack(FFItems.PHOENIX_FEATHER.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
-
-                // Familiar spawn eggs
+                // Familiar spawn eggs:
                 output.accept(FFItems.CLOUD_RAY_SPAWN_EGG.get());
                 output.accept(FFItems.CORMORANT_SPAWN_EGG.get());
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
@@ -27,7 +26,7 @@ public class FFCreativeTabs
                 output.accept(FFItems.PHOENIX_SPAWN_EGG.get());
                 output.accept(FFItems.VOID_MOTH_SPAWN_EGG.get());
 
-                // Familiar items
+                // Familiar items:
                 output.accept(FFItems.PHOENIX_FEATHER.get());
                 output.accept(FFItems.CORMORANT_RING.get());
             })
@@ -39,8 +38,7 @@ public class FFCreativeTabs
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .withTabsBefore(FAMILIARS.getKey())
             .displayItems((enabledFeatures, output) -> {
-
-                // Wands
+                // Wands:
                 output.accept(FFItems.WATER_SCEPTRE.get());
                 output.accept(FFItems.VERDANT_BOUGH.get());
                 output.accept(FFItems.TEMPEST_STAFF.get());
@@ -49,7 +47,7 @@ public class FFCreativeTabs
                 output.accept(FFItems.VOID_SHARD.get());
                 output.accept(FFItems.LIGHT_PRISM.get());
 
-                // Phylacteries
+                // Phylacteries:
                 output.accept(FFItems.PHYLACTERY_BLUE.get());
                 output.accept(FFItems.PHYLACTERY_GREEN.get());
                 output.accept(FFItems.PHYLACTERY_YELLOW.get());
@@ -58,7 +56,16 @@ public class FFCreativeTabs
                 output.accept(FFItems.PHYLACTERY_BLACK.get());
                 output.accept(FFItems.PHYLACTERY_WHITE.get());
 
-                // Misc items
+                // Multiphials:
+                output.accept(FFItems.MULTIPHIAL_BLUE.get());
+                output.accept(FFItems.MULTIPHIAL_GREEN.get());
+                output.accept(FFItems.MULTIPHIAL_YELLOW.get());
+                output.accept(FFItems.MULTIPHIAL_GOLD.get());
+                output.accept(FFItems.MULTIPHIAL_RED.get());
+                output.accept(FFItems.MULTIPHIAL_BLACK.get());
+                output.accept(FFItems.MULTIPHIAL_WHITE.get());
+
+                // Type items:
                 output.accept(FFItems.SOUL_WAND_ROD.get());
                 output.accept(FFItems.PELT_OF_THE_FOREST.get());
                 output.accept(FFItems.EYE_OF_THE_STORM.get());
@@ -67,6 +74,7 @@ public class FFCreativeTabs
                 output.accept(FFItems.PEARL_OF_THE_VOID.get());
                 output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
 
+                // Crafting items:
                 output.accept(FFItems.CEREMONIAL_FONT_BASIN.get());
             })
             .build());
@@ -78,8 +86,7 @@ public class FFCreativeTabs
             .withTabsBefore(FAMILIARS.getKey())
             .withTabsBefore(WANDS_AND_TOOLS.getKey())
             .displayItems((enabledFeatures, output) -> {
-
-                // Normal blocks
+                // Normal blocks:
                 output.accept(FFBlocks.RUNIC_BRICKS.get());
                 output.accept(FFBlocks.RUNIC_BRICK_SLAB.get());
                 output.accept(FFBlocks.RUNIC_BRICK_STAIRS.get());
@@ -90,13 +97,13 @@ public class FFCreativeTabs
                 output.accept(FFBlocks.INSCRIBED_RUNIC_BRICK_STAIRS.get());
                 output.accept(FFBlocks.INSCRIBED_RUNIC_BRICK_WALL.get());
 
-                // Block entities
+                // Block entities:
                 output.accept(FFBlocks.BRAZIER.get());
                 output.accept(FFBlocks.OBELISK.get());
                 output.accept(FFBlocks.VITA_ALEMBIC.get());
                 output.accept(FFBlocks.CEREMONIAL_FONT.get());
 
-                // Buckets
+                // Buckets:
                 output.accept(FFItems.BLUE_VITALITY_BUCKET.get());
                 output.accept(FFItems.GREEN_VITALITY_BUCKET.get());
                 output.accept(FFItems.YELLOW_VITALITY_BUCKET.get());
