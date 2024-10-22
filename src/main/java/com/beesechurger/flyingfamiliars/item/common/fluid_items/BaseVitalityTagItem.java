@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.item.common.fluid_items;
 
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
+import com.beesechurger.flyingfamiliars.tags.ItemInfoTagRef;
 import com.beesechurger.flyingfamiliars.tags.VitalityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -21,12 +22,14 @@ import static net.minecraft.network.chat.Component.translatable;
 public abstract class BaseVitalityTagItem extends BaseStorageTagItem
 {
     public VitalityTagRef fluids;
+    public ItemInfoTagRef itemInfo;
 
     public BaseVitalityTagItem(Properties properties)
     {
         super(properties);
 
         fluids = new VitalityTagRef(1, 1000);
+        itemInfo = new ItemInfoTagRef();
     }
 
     public BaseVitalityTagItem(Properties properties, int entryModifer, int volume)
@@ -34,6 +37,7 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
         super(properties);
 
         fluids = new VitalityTagRef(entryModifer, volume);
+        itemInfo = new ItemInfoTagRef();
     }
 
 ////////////////
@@ -56,7 +60,7 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
     @Override
     public boolean getManipMode(ItemStack stack)
     {
-        return false;
+        return itemInfo.getManipMode(stack.getOrCreateTag());
     }
 
 ///////////////
@@ -67,7 +71,7 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
     @Override
     public void toggleManipMode(ItemStack stack)
     {
-
+        itemInfo.toggleManipMode(stack.getOrCreateTag());
     }
 
 ////////////////
