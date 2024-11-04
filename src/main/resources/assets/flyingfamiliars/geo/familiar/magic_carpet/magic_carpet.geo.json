@@ -13,7 +13,7 @@
 			"bones": [
 				{
 					"name": "body",
-					"pivot": [0, 2.5, 18]
+					"pivot": [0, 3.25, 0]
 				},
 				{
 					"name": "fold9",
