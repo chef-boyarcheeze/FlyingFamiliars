@@ -104,38 +104,43 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         ListTag entryList = entities.getEntryList(stack.getOrCreateTag());
         int entryCount = entities.getEntryCount(stack.getOrCreateTag());
 
-        if (Screen.hasShiftDown())
+        if (entryCount == 0)
         {
-            int count = 0;
-
-            for (Tag entry : entryList)
-            {
-                ChatFormatting format = entities.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
-
-                tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
-                        .withStyle(format).append(" " + (count+1) + ": " + entities.getEntityID((CompoundTag) entry)));
-
-                count++;
-            }
+            tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.empty")
+                    .withStyle(ChatFormatting.GRAY));
         }
         else
         {
-            switch (entryCount)
+            if (Screen.hasShiftDown())
             {
-                case 0: tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.empty")
-                        .withStyle(ChatFormatting.GRAY));
-                    break;
+                int count = 0;
 
-                case 1: tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.stored_1")
-                        .withStyle(ChatFormatting.GRAY));
-                    break;
+                for (Tag entry : entryList)
+                {
+                    ChatFormatting format = entities.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
-                default : tooltip.add(literal(String.valueOf(entryCount)).append(translatable("tooltip.flyingfamiliars.entity_tag.stored_multiple")
-                        .withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.GRAY));
-                    break;
+                    tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
+                            .withStyle(format).append(" " + (count+1) + ": " + entities.getEntityID((CompoundTag) entry)));
+
+                    count++;
+                }
             }
+            else
+            {
+                if (entryCount > 1)
+                {
+                    tooltip.add(literal(String.valueOf(entryCount)).append(translatable("tooltip.flyingfamiliars.entity_tag.stored_multiple")
+                            .withStyle(ChatFormatting.GRAY))
+                            .withStyle(ChatFormatting.GRAY));
+                }
+                else
+                {
+                    tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.stored_1")
+                            .withStyle(ChatFormatting.GRAY));
+                }
 
-            tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
+                tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
+            }
         }
     }
 }

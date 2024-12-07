@@ -2,8 +2,8 @@ package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
-import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
-import com.beesechurger.flyingfamiliars.wand_effect.WandEffectItemHelper;
+import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
