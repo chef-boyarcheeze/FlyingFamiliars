@@ -1,7 +1,8 @@
-package com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth;
+package com.beesechurger.flyingfamiliars.entity.client.familiar.zephyr_fish;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.VoidMothEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.ZephyrFishEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -9,28 +10,28 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 
 @OnlyIn(Dist.CLIENT)
-public class VoidMothModel extends GeoModel<VoidMothEntity>
+public class ZephyrFishModel extends GeoModel<ZephyrFishEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(VoidMothEntity animatable)
+	public ResourceLocation getModelResource(ZephyrFishEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/void_moth/void_moth.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/zephyr_fish/zephyr_fish.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(VoidMothEntity animatable)
+	public ResourceLocation getTextureResource(ZephyrFishEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/void_moth/void_moth.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/zephyr_fish/zephyr_fish.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(VoidMothEntity animatable)
+	public ResourceLocation getAnimationResource(ZephyrFishEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/void_moth.animation.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/zephyr_fish.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(VoidMothEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(ZephyrFishEntity animatable, long instanceId, AnimationState customPredicate)
 	{
 		super.setCustomAnimations(animatable, instanceId, customPredicate);
 
