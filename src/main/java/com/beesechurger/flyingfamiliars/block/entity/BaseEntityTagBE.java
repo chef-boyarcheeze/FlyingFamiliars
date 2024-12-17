@@ -36,8 +36,6 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 {
     public final static int MAX_FLUID = 250;
 
-    public EntityTagRef entities;
-
     public NonNullList<ItemStack> items = null;
     public CompoundTag entityStorageTag = new CompoundTag();
     public FluidTank fluid = null;
@@ -48,8 +46,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     {
         super(type, pos, blockState);
 
-        entities = new EntityTagRef(getMaxEntities());
-        entityStorageTag = entities.getOrCreateTag(entityStorageTag);
+        entityStorageTag = EntityTagRef.INSTANCE.getOrCreateTag(entityStorageTag);
     }
 
     @Override
@@ -163,15 +160,15 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         {
             CompoundTag stackTag = stack.getOrCreateTag();
 
-            ListTag stackList = item.entities.getEntryList(stackTag);
-            ListTag blockList = entities.getEntryList(entityStorageTag);
+            ListTag stackList = EntityTagRef.INSTANCE.getEntryList(stackTag);
+            ListTag blockList = EntityTagRef.INSTANCE.getEntryList(entityStorageTag);
 
-            String selectedEntity = EntityTagRef.getEntityID(item.entities.getSelectedEntry(stackTag));
+            String selectedEntity = EntityTagRef.getEntityID(EntityTagRef.INSTANCE.getSelectedEntry(stackTag));
 
-            if (!EntityTagRef.isEntityTamed(item.entities.getSelectedEntry(stackTag)))
+            if (!EntityTagRef.isEntityTamed(EntityTagRef.INSTANCE.getSelectedEntry(stackTag)))
             {
                 // use BE entityTagRef since it has the correct max entry size for entityStorageTag
-                if (entities.moveEntry(stackTag, entityStorageTag))
+                if (EntityTagRef.INSTANCE.moveEntry(stackTag, entityStorageTag))
                 {
                     // save updated entity tag list to stack
                     stack.setTag(stackTag);
@@ -207,13 +204,13 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         {
             CompoundTag stackTag = stack.getOrCreateTag();
 
-            ListTag stackList = item.entities.getEntryList(stackTag);
-            ListTag blockList = entities.getEntryList(entityStorageTag);
+            ListTag stackList = EntityTagRef.INSTANCE.getEntryList(stackTag);
+            ListTag blockList = EntityTagRef.INSTANCE.getEntryList(entityStorageTag);
 
-            String selectedEntity = EntityTagRef.getEntityID(entities.getSelectedEntry(entityStorageTag));
+            String selectedEntity = EntityTagRef.getEntityID(EntityTagRef.INSTANCE.getSelectedEntry(entityStorageTag));
 
             // use item entityTagRef since it has the correct max entry size for stackTag
-            if (item.entities.moveEntry(entityStorageTag, stackTag))
+            if (EntityTagRef.INSTANCE.moveEntry(entityStorageTag, stackTag))
             {
                 // save updated entity tag list to stack
                 stack.setTag(stackTag);
@@ -243,7 +240,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     {
         Vector<String> entityStrings = new Vector<String>();
 
-        for(Tag entry : entities.getEntryList(entityStorageTag))
+        for(Tag entry : EntityTagRef.INSTANCE.getEntryList(entityStorageTag))
         {
             entityStrings.add(EntityTagRef.getEntityID((CompoundTag) entry));
         }
