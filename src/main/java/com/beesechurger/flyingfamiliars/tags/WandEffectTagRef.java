@@ -1,23 +1,13 @@
 package com.beesechurger.flyingfamiliars.tags;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.item.ItemStack;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public class WandEffectTagRef extends BaseStorageTagRef
+public class WandEffectTagRef implements IStorageTagRef
 {
-    public WandEffectTagRef()
-    {
-        super();
-    }
-
-    public WandEffectTagRef(int maxEntries)
-    {
-        super(maxEntries);
-    }
+    public static final WandEffectTagRef INSTANCE = new WandEffectTagRef();
 
 ////////////////
 // Accessors: //
@@ -41,7 +31,7 @@ public class WandEffectTagRef extends BaseStorageTagRef
 
 // Tags:
     @Override
-    public ListTag getInitialTagList()
+    public ListTag getInitialEntryList(CompoundTag storageTag)
     {
         CompoundTag tag = new CompoundTag();
 
@@ -56,5 +46,14 @@ public class WandEffectTagRef extends BaseStorageTagRef
         tagList.add(captureTag);
 
         return tagList;
+    }
+
+    @Override
+    public CompoundTag getInitialSettingsTag(CompoundTag storageTag)
+    {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt(STORAGE_ENTRY_STORAGE_MAX, 5);
+
+        return tag;
     }
 }

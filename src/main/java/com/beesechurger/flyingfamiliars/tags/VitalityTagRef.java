@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.tags;
 
-import com.beesechurger.flyingfamiliars.wand_effect.BaseWandEffect;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
@@ -8,28 +7,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public class VitalityTagRef extends BaseStorageTagRef
+public class VitalityTagRef implements IStorageTagRef
 {
-    protected final int maxVolume;
-
-    public VitalityTagRef()
-    {
-        super();
-
-        maxVolume = 250;
-    }
-
-    public VitalityTagRef(int maxEntries, int maxVolume)
-    {
-        super(maxEntries);
-
-        this.maxVolume = maxVolume;
-    }
+    public static final VitalityTagRef INSTANCE = new VitalityTagRef();
 
 ////////////////
 // Accessors: //
@@ -42,23 +26,42 @@ public class VitalityTagRef extends BaseStorageTagRef
         return STORAGE_FLUID_TAGNAME;
     }
 
+// Booleans:
+    public boolean getManipMode(CompoundTag storageTag)
+    {
+        CompoundTag settingsTag = getSettingsTag(storageTag);
+
+        if (settingsTag.contains(STORAGE_ENTRY_MANIP_MODE))
+        {
+            return (settingsTag.getBoolean(STORAGE_ENTRY_MANIP_MODE));
+        }
+
+        return false;
+    }
+
 // Integers:
+    @Override
+    public int getMaxEntries(CompoundTag storageTag)
+    {
+        return 0;
+    }
+
     public int getMaxVolume()
     {
-        return maxVolume;
+        return 100;
     }
 
 // Tags:
     @Override
-    public ListTag getInitialTagList()
+    public ListTag getInitialEntryList(CompoundTag storageTag)
     {
         CompoundTag tag = new CompoundTag();
 
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
-        NonNullList<CompoundTag> fluidTags = NonNullList.withSize(getMaxEntries(), new CompoundTag());
+        NonNullList<CompoundTag> fluidTags = NonNullList.withSize(getMaxEntries(storageTag), new CompoundTag());
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
 
-        for (int i = 0; i < getMaxEntries(); i++)
+        for (int i = 0; i < getMaxEntries(storageTag); i++)
         {
             fluidTags.get(i).putString(STORAGE_FLUID_TYPE, VITALITY_TYPES.get(i));
             fluidTags.get(i).putInt(STORAGE_FLUID_STORAGE, 0);
@@ -67,6 +70,15 @@ public class VitalityTagRef extends BaseStorageTagRef
         }
 
         return tagList;
+    }
+
+    @Override
+    public CompoundTag getInitialSettingsTag(CompoundTag storageTag)
+    {
+        CompoundTag tag = new CompoundTag();
+        tag.putInt(STORAGE_ENTRY_STORAGE_MAX, 1);
+
+        return tag;
     }
 
 // Misc:
@@ -88,5 +100,18 @@ public class VitalityTagRef extends BaseStorageTagRef
         });
 
         return entryMap;
+    }
+
+///////////////
+// Mutators: //
+///////////////
+
+// Booleans:
+    public void toggleManipMode(CompoundTag storageTag)
+    {
+        CompoundTag settingsTag = getSettingsTag(storageTag);
+        settingsTag.putBoolean(STORAGE_ENTRY_MANIP_MODE, !getManipMode(storageTag));
+
+        storageTag.put(STORAGE_SETTINGS, settingsTag);
     }
 }

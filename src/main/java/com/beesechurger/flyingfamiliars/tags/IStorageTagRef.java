@@ -2,6 +2,9 @@ package com.beesechurger.flyingfamiliars.tags;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+
+import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
 public interface IStorageTagRef
 {
@@ -25,11 +28,14 @@ public interface IStorageTagRef
 
     default boolean isFull(CompoundTag storageTag)
     {
-        return getEntryList(storageTag).size() == getMaxEntries() && getMaxEntries() > 0;
+        return getEntryList(storageTag).size() == getMaxEntries(storageTag) && getMaxEntries(storageTag) > 0;
     }
 
 // Integers:
-    public int getMaxEntries();
+    default int getMaxEntries(CompoundTag storageTag)
+    {
+        return getSettingsTag(storageTag).getInt(STORAGE_ENTRY_STORAGE_MAX);
+    }
 
     default int getEntryCount(CompoundTag storageTag)
     {
@@ -37,32 +43,43 @@ public interface IStorageTagRef
     }
 
 // Tags:
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Initial tag setup functions:
     default CompoundTag getOrCreateTag(CompoundTag storageTag)
     {
         if(!hasTag(storageTag) || !storageTag.contains(getEntryListName()))
         {
             storageTag = storageTag != null ? storageTag : new CompoundTag();
-            storageTag.put(getEntryListName(), getInitialTagList());
+
+            CompoundTag tag = new CompoundTag();
+            tag.put(STORAGE_ENTRY_LIST, getInitialEntryList(storageTag));
+            tag.put(STORAGE_SETTINGS, getInitialSettingsTag(storageTag));
+
+            storageTag.put(getEntryListName(), tag);
         }
 
         return storageTag;
     }
 
-    default ListTag getInitialTagList()
+    default ListTag getInitialEntryList(CompoundTag storageTag)
     {
-        CompoundTag tag = new CompoundTag();
-
-        // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
-        ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
-
-        return tagList;
+        return storageTag.getCompound(getEntryListName()).getList(STORAGE_ENTRY_LIST, ListTag.TAG_COMPOUND);
     }
+
+    public CompoundTag getInitialSettingsTag(CompoundTag storageTag);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     default ListTag getEntryList(CompoundTag storageTag)
     {
-        CompoundTag tag = getOrCreateTag(storageTag);
+        return getOrCreateTag(storageTag).getCompound(getEntryListName()).getList(STORAGE_ENTRY_LIST, ListTag.TAG_COMPOUND);
+    }
 
-        return tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
+    default CompoundTag getSettingsTag(CompoundTag storageTag)
+    {
+        return getOrCreateTag(storageTag).getCompound(getEntryListName()).getCompound(STORAGE_SETTINGS);
     }
 
     default CompoundTag getSelectedEntry(CompoundTag storageTag)
@@ -73,6 +90,19 @@ public interface IStorageTagRef
             return entryList.getCompound(getEntryCount(storageTag) - 1);
 
         return new CompoundTag();
+    }
+
+///////////////
+// Mutators: //
+///////////////
+
+// Integers:
+    default void setMaxEntries(CompoundTag storageTag, int newSize)
+    {
+        CompoundTag settingsTag = getSettingsTag(storageTag);
+        settingsTag.putInt(STORAGE_ENTRY_STORAGE_MAX, newSize);
+
+        getOrCreateTag(storageTag).getCompound(getEntryListName()).put(STORAGE_SETTINGS, settingsTag);
     }
 
 //////////////////
@@ -87,7 +117,7 @@ public interface IStorageTagRef
             ListTag entryList = getEntryList(storageTag);
             entryList.add(entryTag);
 
-            storageTag.put(getEntryListName(), entryList);
+            storageTag.getCompound(getEntryListName()).put(STORAGE_ENTRY_LIST, entryList);
 
             return true;
         }
@@ -118,7 +148,7 @@ public interface IStorageTagRef
             ListTag entryList = getEntryList(storageTag);
             entryList.remove(entryTag);
 
-            storageTag.put(getEntryListName(), entryList);
+            storageTag.getCompound(getEntryListName()).put(STORAGE_ENTRY_LIST, entryList);
 
             return true;
         }
