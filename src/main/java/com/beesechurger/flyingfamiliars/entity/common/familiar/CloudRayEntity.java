@@ -205,7 +205,7 @@ public class CloudRayEntity extends BaseFamiliarEntity implements IWaterEntity, 
 	@Override
 	public boolean dismountsUnderwater()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

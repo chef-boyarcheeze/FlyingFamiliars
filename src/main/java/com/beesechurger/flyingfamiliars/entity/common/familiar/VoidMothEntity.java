@@ -64,12 +64,6 @@ public class VoidMothEntity extends BaseFamiliarEntity implements IShadowEntity
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
     }
 
-    @Override
-    public MobType getMobType()
-    {
-        return MobType.ARTHROPOD;
-    }
-
 ///////////////////////////
 // Additional save data: //
 ///////////////////////////
@@ -174,7 +168,6 @@ public class VoidMothEntity extends BaseFamiliarEntity implements IShadowEntity
 ///////////////////////
 
 // Enums:
-
     @Override
     public FamiliarMoveTypes getMoveControlType()
     {
@@ -182,7 +175,6 @@ public class VoidMothEntity extends BaseFamiliarEntity implements IShadowEntity
     }
 
 // Booleans:
-
     @Override
     public boolean canOwnerRide()
     {
@@ -202,7 +194,6 @@ public class VoidMothEntity extends BaseFamiliarEntity implements IShadowEntity
     }
 
 // Doubles:
-
     @Override
     public double getFlySpeedMod()
     {
@@ -213,6 +204,13 @@ public class VoidMothEntity extends BaseFamiliarEntity implements IShadowEntity
     public double getWalkSpeedMod()
     {
         return 2d;
+    }
+
+// Misc:
+    @Override
+    public MobType getMobType()
+    {
+        return MobType.ARTHROPOD;
     }
 
 //////////////////////
