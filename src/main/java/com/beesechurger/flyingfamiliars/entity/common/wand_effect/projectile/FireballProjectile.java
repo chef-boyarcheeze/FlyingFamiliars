@@ -74,6 +74,11 @@ public class FireballProjectile extends BaseWandEffectProjectile
 ///////////////////////
 
 // Integers:
+    @Override
+    public int getSpawnTimerMax()
+    {
+        return 10;
+    }
 
     @Override
     public int getDeadTimerMax()
@@ -82,7 +87,6 @@ public class FireballProjectile extends BaseWandEffectProjectile
     }
 
 // Floats:
-
     @Override
     protected float getGravity()
     {
@@ -98,7 +102,7 @@ public class FireballProjectile extends BaseWandEffectProjectile
     {
         if(!isDead())
         {
-            if(!level().isClientSide() && player != null)
+            if(!level().isClientSide() && getOwner() != null)
             {
                 if(explode())
                 {
@@ -116,7 +120,7 @@ public class FireballProjectile extends BaseWandEffectProjectile
     {
         if(!isDead())
         {
-            if(!level().isClientSide() && player != null)
+            if(!level().isClientSide() && getOwner() != null)
             {
                 if(explode())
                 {

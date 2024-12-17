@@ -1,14 +1,18 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -95,6 +99,11 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	}
 
 // Integers:
+	@Override
+	public int getSpawnTimerMax()
+	{
+		return 10;
+	}
 
 	@Override
 	public int getDeadTimerMax()
@@ -119,7 +128,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	{
 		if(!isDead())
 		{
-			if(!action && !level().isClientSide() && player != null)
+			if(!action && !level().isClientSide() && getOwner() != null)
 			{
 				if(capture(result.getEntity()))
 				{
@@ -134,26 +143,29 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	
 	private boolean capture(Entity entity)
 	{
-		ItemStack stack = player.getMainHandItem();
-
-		if (stack.getItem() instanceof BaseEntityTagItem item && isCapturable(entity))
+		for (ItemStack stack : FFItemHandler.getEntityStackList((Player) getOwner()))
 		{
-			CompoundTag stackTag = stack.getOrCreateTag();
-
-			// get entity type as string and save to entry - then save entity NBT onto whole entry tag
-			CompoundTag entryTag = new CompoundTag();
-			entryTag.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
-			entity.saveWithoutId(entryTag);
-
-			// if entry tag is successfully added into internal item list tag
-			if (item.entities.addEntry(stackTag, entryTag))
+			if (stack.getItem() instanceof BaseEntityTagItem item && isCapturable(entity))
 			{
-				// save updated entity tag list to stack
-				stack.setTag(stackTag);
+				CompoundTag stackTag = stack.getOrCreateTag();
 
-				// remove successfully captured entity from level
-				entity.remove(Entity.RemovalReason.KILLED);
-				return true;
+				// get entity type as string and save to entry - then save entity NBT onto whole entry tag
+				CompoundTag entryTag = new CompoundTag();
+				entryTag.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
+				entity.saveWithoutId(entryTag);
+
+				if (EntityTagRef.INSTANCE.addEntry(stackTag, entryTag))
+				{
+					// save updated entity tag list to stack
+					stack.setTag(stackTag);
+
+					// remove successfully captured entity from level
+					entity.remove(Entity.RemovalReason.KILLED);
+
+					displaySelectionMessage(stack);
+
+					return true;
+				}
 			}
 		}
 
@@ -165,7 +177,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
     {
 		if(!isDead())
 		{
-			if(action && !level().isClientSide() && player != null)
+			if(action && !level().isClientSide() && getOwner() != null)
 			{
 				if(release(result))
 				{
@@ -180,41 +192,60 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	
 	private boolean release(BlockHitResult result)
 	{
-		ItemStack stack = player.getMainHandItem();
-
-		if(stack.getItem() instanceof BaseEntityTagItem item)
+		for (ItemStack stack : FFItemHandler.getEntityStackList((Player) getOwner()))
 		{
-			CompoundTag stackTag = stack.getOrCreateTag();
-
-			// get selected entity's entry tag and confirm tag is real
-			CompoundTag entryTag = item.entities.getSelectedEntry(stackTag);
-
-			if(entryTag.contains(STORAGE_ENTITY_TYPE))
+			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
-				EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
-				if (type != null && item.entities.removeEntry(stackTag, entryTag))
+				CompoundTag stackTag = stack.getOrCreateTag();
+
+				// get selected entity's entry tag and confirm tag is real
+				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
+
+				if(entryTag.contains(STORAGE_ENTITY_TYPE))
 				{
-					// save updated entity tag list to stack
-					stack.setTag(stackTag);
+					EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
+					if (type != null && EntityTagRef.INSTANCE.removeEntry(stackTag, entryTag))
+					{
+						// save updated entity tag list to stack
+						stack.setTag(stackTag);
 
-					BlockPos pos = result.getBlockPos();
-					Direction dir = result.getDirection();
+						BlockPos pos = result.getBlockPos();
+						Direction dir = result.getDirection();
 
-					double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
-					double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
-					double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
+						double x = pos.getX() + 0.5 + (dir == Direction.EAST ? Math.ceil(type.getWidth()) : dir == Direction.WEST ? -1 * Math.ceil(type.getWidth()) : 0);
+						double y = pos.getY() + (dir == Direction.UP ? 1 : dir == Direction.DOWN ? -1 * Math.ceil(type.getHeight()) : 0);
+						double z = pos.getZ() + 0.5 + (dir == Direction.SOUTH ? Math.ceil(type.getWidth()) : dir == Direction.NORTH ? -1 * Math.ceil(type.getWidth()) : 0);
 
-					Entity entity = type.create(level());
-					entity.load(entryTag);
+						Entity entity = type.create(level());
+						entity.load(entryTag);
 
-					entity.absMoveTo(x, y, z, 0, 0);
-					level().addFreshEntity(entity);
-					return true;
+						entity.absMoveTo(x, y, z, 0, 0);
+						level().addFreshEntity(entity);
+
+						displaySelectionMessage(stack);
+
+						return true;
+					}
 				}
 			}
 		}
 
 		return false;
+	}
+
+	protected void displaySelectionMessage(ItemStack stack)
+	{
+		// display new entity selection
+		CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+
+		if (entryTag.contains(STORAGE_ENTITY_TYPE))
+		{
+			ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
+
+			((Player) getOwner()).displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
+					.append(": " + EntityTagRef.getEntityID(entryTag))
+					.withStyle(format), true);
+		}
 	}
 
 ////////////////

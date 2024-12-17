@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,7 +14,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -32,9 +31,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public abstract class BaseWandEffectProjectile extends Projectile implements GeoEntity
 {
+    private static final EntityDataAccessor<Boolean> SPAWNING = SynchedEntityData.defineId(BaseWandEffectProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DEAD = SynchedEntityData.defineId(BaseWandEffectProjectile.class, EntityDataSerializers.BOOLEAN);
 
-    protected Player player = null;
+    private int spawnTimer = 0;
     private int deadTimer = 0;
 
     protected NonNullList<FFAnimationController> animationControllers = NonNullList.create();
@@ -48,9 +48,6 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
     public BaseWandEffectProjectile(EntityType<? extends BaseWandEffectProjectile> proj, LivingEntity entity, Level level)
     {
         super(proj, level);
-
-        if(entity instanceof Player)
-            player = (Player) entity;
 
         setOwner(entity);
         this.setPos(entity.getX(), entity.getY() + 1, entity.getZ());
@@ -70,6 +67,7 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
+        setSpawning(tag.getBoolean("isSpawning"));
         setDead(tag.getBoolean("isDead"));
     }
 
@@ -77,12 +75,14 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
     public void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
+        tag.putBoolean("isSpawning", isSpawning());
         tag.putBoolean("isDead", isDead());
     }
 
     @Override
     protected void defineSynchedData()
     {
+        entityData.define(SPAWNING, true);
         entityData.define(DEAD, false);
     }
 
@@ -91,6 +91,10 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
 ////////////////
 
 // Booleans:
+    public boolean isSpawning()
+    {
+        return entityData.get(SPAWNING);
+    }
 
     public boolean isDead()
     {
@@ -98,18 +102,14 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
     }
 
 // Integers:
+    public abstract int getSpawnTimerMax();
 
-    public int getDeadTimerMax()
-    {
-        return 20;
-    }
+    public abstract int getDeadTimerMax();
 
 // Floats:
-
     protected abstract float getGravity();
 
 // Doubles:
-
     public double getPitch(double partialTicks)
     {
         if(xRotO == getXRot())
@@ -127,7 +127,6 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
     }
 
 // Misc:
-
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache()
     {
@@ -139,6 +138,10 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
 ///////////////
 
 // Booleans:
+    public void setSpawning(boolean spawning)
+    {
+        entityData.set(SPAWNING, spawning);
+    }
 
     public void setDead(boolean dead)
     {
@@ -209,16 +212,7 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
 
         /////////////////////
 
-        if(isDead())
-        {
-            setDeltaMovement(Vec3.ZERO);
-            setNoGravity(true);
-
-            deadTimer++;
-
-            if(deadTimer >= getDeadTimerMax())
-                remove(RemovalReason.KILLED);
-        }
+        updateTimers();
 
         for(FFAnimationController controller : animationControllers)
             controller.updateProgress();
@@ -226,8 +220,21 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
 
     protected void updateTimers()
     {
-        if(isDead())
-            ++deadTimer;
+        if (isSpawning() && spawnTimer++ >= getSpawnTimerMax())
+        {
+            setSpawning(false);
+        }
+
+        if (isDead())
+        {
+            setDeltaMovement(Vec3.ZERO);
+            setNoGravity(true);
+
+            if (deadTimer++ >= getDeadTimerMax())
+            {
+                remove(RemovalReason.KILLED);
+            }
+        }
     }
 
 /////////////
@@ -236,7 +243,7 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
 
     protected void playLocalSound(SoundEvent event)
     {
-        level().playSound((Player)null, getX(), getY(), getZ(),
+        level().playSound(null, getX(), getY(), getZ(),
                 event, SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
     }
 }
