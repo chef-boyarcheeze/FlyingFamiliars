@@ -1,7 +1,7 @@
-package com.beesechurger.flyingfamiliars.wand_effect;
+package com.beesechurger.flyingfamiliars.wand_effect.common;
 
-import com.beesechurger.flyingfamiliars.wand_effect.projectile.CaptureWandEffect;
-import com.beesechurger.flyingfamiliars.wand_effect.projectile.FireballWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FireballWandEffect;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 

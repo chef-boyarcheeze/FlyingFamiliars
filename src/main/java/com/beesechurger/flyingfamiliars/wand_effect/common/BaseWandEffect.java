@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.wand_effect;
+package com.beesechurger.flyingfamiliars.wand_effect.common;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
