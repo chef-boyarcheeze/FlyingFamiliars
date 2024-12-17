@@ -1,40 +1,36 @@
-package com.beesechurger.flyingfamiliars.entity.client.familiar.cloud_ray;
+package com.beesechurger.flyingfamiliars.entity.client.familiar.shadewyrm;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
-import com.beesechurger.flyingfamiliars.entity.common.familiar.CloudRayEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import com.mojang.math.Axis;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.ShadewyrmEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
-public class CloudRayRenderer extends BaseFamiliarRenderer<CloudRayEntity>
+public class ShadewyrmRenderer extends BaseFamiliarRenderer<ShadewyrmEntity>
 {
-	public CloudRayRenderer(Context renderManager)
+	public ShadewyrmRenderer(Context renderManager)
 	{
-		super(renderManager, new CloudRayModel());
+		super(renderManager, new ShadewyrmModel());
 		this.shadowRadius = 1.5f;
 		this.withScale(1.0f);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CloudRayEntity cloudRayEntity)
+	public ResourceLocation getTextureLocation(ShadewyrmEntity animatable)
 	{
-		return switch (cloudRayEntity.getVariant())
+		return switch (animatable.getVariant())
 		{
-			case "white" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
-			case "light_gray" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_light_gray.png");
-			case "dark_gray" ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_dark_gray.png");
+			case "onyx" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shadewyrm/shadewyrm_onyx.png");
+			case "alabaster" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shadewyrm/shadewyrm_alabaster.png");
+			case "olivine" ->
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shadewyrm/shadewyrm_olivine.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shadewyrm/shadewyrm_onyx.png");
 		};
 	}
 }
