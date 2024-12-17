@@ -46,10 +46,9 @@ public class EntityCycleC2SPacket
 			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
 				CompoundTag stackTag = stack.getOrCreateTag();
-
 				item.cycle(player, direction);
 
-				CompoundTag entryTag = item.entities.getSelectedEntry(stackTag);
+				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
 				ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
 
 				if(player.getRandom().nextInt(15) == 0)

@@ -18,13 +18,15 @@ public class FFConstants
     public static final String STORAGE_FLUID_TAGNAME = "ff.item.fluid";
     public static final String STORAGE_FLUID_TYPE = "FluidType";
     public static final String STORAGE_FLUID_STORAGE = "FluidStorage";
-
-    public static final String STORAGE_ITEM_INFO_TAGNAME = "ff.item.item_info";
-    public static final String STORAGE_ITEM_INFO_ENTITY_MANIP_MODE = "EntityManipMode";
-    public static final String STORAGE_ITEM_INFO_ENTRY_STORAGE_MAX = "EntryStorageMax";
+    public static final String STORAGE_FLUID_STORAGE_MAX = "FluidStorageMax";
 
     public static final String STORAGE_WAND_EFFECT_TAGNAME = "ff.item.wand_effect";
     public static final String STORAGE_WAND_EFFECT_TYPE = "WandEffectType";
+
+    public static final String STORAGE_SETTINGS = "Settings";
+    public static final String STORAGE_ENTRY_LIST = "EntryList";
+    public static final String STORAGE_ENTRY_STORAGE_MAX = "EntryStorageMax";
+    public static final String STORAGE_ENTRY_MANIP_MODE = "EntryManipMode";
 
     public static final String BLOCK_PROGRESS_TAGNAME = "ff.block.progress";
 
