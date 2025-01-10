@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.*;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.charm.CrystalSpikeCharm;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
 import net.minecraft.resources.ResourceLocation;
@@ -19,26 +20,49 @@ public class FFEntityTypes
 {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPE_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, FlyingFamiliars.MOD_ID);
 
-	// Familiars:
+	////////////////
+	// Familiars: //
+	////////////////
+
 	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPE_REG.register("cloud_ray",
 			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
-					.sized(2.0f, 1.5f)
+					.sized(4.0f, 2.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
 
-	public static final RegistryObject<EntityType<CormorantEntity>> CORMORANT = ENTITY_TYPE_REG.register("cormorant",
-			() -> EntityType.Builder.of(CormorantEntity::new, MobCategory.CREATURE)
-					.sized(0.4f, 1.4f)
-					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cormorant").toString()));
-	
 	public static final RegistryObject<EntityType<GriffonflyEntity>> GRIFFONFLY = ENTITY_TYPE_REG.register("griffonfly",
 			() -> EntityType.Builder.of(GriffonflyEntity::new, MobCategory.CREATURE)
 					.sized(1.5f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "griffonfly").toString()));
 
+	// Thunderbird
+
 	public static final RegistryObject<EntityType<MagicCarpetEntity>> MAGIC_CARPET = ENTITY_TYPE_REG.register("magic_carpet",
 			() -> EntityType.Builder.of(MagicCarpetEntity::new, MobCategory.CREATURE)
 					.sized(1.8f, 0.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "magic_carpet").toString()));
+
+	// Dragon
+
+	public static final RegistryObject<EntityType<ShadewyrmEntity>> SHADEWYRM = ENTITY_TYPE_REG.register("shadewyrm",
+			() -> EntityType.Builder.of(ShadewyrmEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "shadewyrm").toString()));
+
+	// Sundog
+
+	public static final RegistryObject<EntityType<CormorantEntity>> CORMORANT = ENTITY_TYPE_REG.register("cormorant",
+			() -> EntityType.Builder.of(CormorantEntity::new, MobCategory.CREATURE)
+					.sized(0.4f, 1.4f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cormorant").toString()));
+
+	// Plant thing
+
+	public static final RegistryObject<EntityType<ZephyrFishEntity>> ZEPHYR_FISH = ENTITY_TYPE_REG.register("zephyr_fish",
+			() -> EntityType.Builder.of(ZephyrFishEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "zephyr_fish").toString()));
+
+	// Crystal Tressym
 
 	public static final RegistryObject<EntityType<PhoenixEntity>> PHOENIX = ENTITY_TYPE_REG.register("phoenix",
 			() -> EntityType.Builder.of(PhoenixEntity::new, MobCategory.CREATURE)
@@ -49,6 +73,18 @@ public class FFEntityTypes
 			() -> EntityType.Builder.of(VoidMothEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "void_moth").toString()));
+
+	// Mirror shield
+
+	///////////////////
+	// Wand Effects: //
+	///////////////////
+
+	// Charms:
+	public static final RegistryObject<EntityType<CrystalSpikeCharm>> CRYSTAL_SPIKE_CHARM = ENTITY_TYPE_REG.register("crystal_spike_charm",
+			() -> EntityType.Builder.<CrystalSpikeCharm>of(CrystalSpikeCharm::new, MobCategory.MISC)
+					.sized(1.0f, 1.0f)
+					.build("crystal_spike_charm"));
 
 	// Projectiles:
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPE_REG.register("capture_projectile",
@@ -63,14 +99,25 @@ public class FFEntityTypes
 					.setShouldReceiveVelocityUpdates(true)
 					.build("fireball_projectile"));
 
+	// Sentries:
+
 	@SubscribeEvent
 	public static void entityAttributeEvent(EntityAttributeCreationEvent event)
 	{
 		event.put(FFEntityTypes.CLOUD_RAY.get(), CloudRayEntity.setAttributes());
-		event.put(FFEntityTypes.CORMORANT.get(), GriffonflyEntity.setAttributes());
 		event.put(FFEntityTypes.GRIFFONFLY.get(), GriffonflyEntity.setAttributes());
+
 		event.put(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetEntity.setAttributes());
+
+		event.put(FFEntityTypes.SHADEWYRM.get(), ShadewyrmEntity.setAttributes());
+
+
+		event.put(FFEntityTypes.CORMORANT.get(), CormorantEntity.setAttributes());
+
+		event.put(FFEntityTypes.ZEPHYR_FISH.get(), ZephyrFishEntity.setAttributes());
+
 		event.put(FFEntityTypes.PHOENIX.get(), PhoenixEntity.setAttributes());
 		event.put(FFEntityTypes.VOID_MOTH.get(), VoidMothEntity.setAttributes());
+
 	}
 }

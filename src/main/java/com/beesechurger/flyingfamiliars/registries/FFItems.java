@@ -84,12 +84,21 @@ public class FFItems
 
 	// Spawn eggs:
 	public static final RegistryObject<ForgeSpawnEggItem> CLOUD_RAY_SPAWN_EGG = register("cloud_ray_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CLOUD_RAY, 0xDCDCDC, 0x88FFEB, new Item.Properties()));
-	public static final RegistryObject<ForgeSpawnEggItem> CORMORANT_SPAWN_EGG = register("cormorant_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CORMORANT, 0x070F1C, 0x1B3B6E, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> GRIFFONFLY_SPAWN_EGG = register("griffonfly_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.GRIFFONFLY, 0xCE9800, 0x7C1096, new Item.Properties()));
+	// thunderbird
 	public static final RegistryObject<ForgeSpawnEggItem> MAGIC_CARPET_SPAWN_EGG = register("magic_carpet_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.MAGIC_CARPET, 0xFCFCFC, 0xFFD93E, new Item.Properties()));
+	// dragon
+	public static final RegistryObject<ForgeSpawnEggItem> SHADEWYRM_SPAWN_EGG = register("shadewyrm_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.SHADEWYRM, 0x252525, 0x8A02D4, new Item.Properties()));
+	// sundog
+
+	public static final RegistryObject<ForgeSpawnEggItem> CORMORANT_SPAWN_EGG = register("cormorant_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CORMORANT, 0x070F1C, 0x1B3B6E, new Item.Properties()));
+	// plant thing
+	public static final RegistryObject<ForgeSpawnEggItem> ZEPHYR_FISH_SPAWN_EGG = register("zephyr_fish_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.ZEPHYR_FISH, 0x1D38BA, 0xE5812E, new Item.Properties()));
+	// crystal tressym
 	public static final RegistryObject<ForgeSpawnEggItem> PHOENIX_SPAWN_EGG = register("phoenix_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.PHOENIX, 0xC00C00, 0xFDD000, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> VOID_MOTH_SPAWN_EGG = register("void_moth_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.VOID_MOTH, 0x221750, 0x131220, new Item.Properties()));
-	
+	// mirror shield
+
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> item)
 	{
 		return ITEM_REG.register(name,item);

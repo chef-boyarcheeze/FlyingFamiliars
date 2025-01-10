@@ -5,7 +5,10 @@ import com.beesechurger.flyingfamiliars.entity.client.familiar.cormorant.Cormora
 import com.beesechurger.flyingfamiliars.entity.client.familiar.griffonfly.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet.MagicCarpetRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.phoenix.PhoenixRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.shadewyrm.ShadewyrmRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth.VoidMothRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.zephyr_fish.ZephyrFishRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.charm.crystal_spike_charm.CrystalSpikeCharmRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.CaptureProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fireball_projectile.FireballProjectileRenderer;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
@@ -18,19 +21,36 @@ public class FFClientSetup
 {
     public static void registerRenderers()
     {
+        // Familiars:
         EntityRenderers.register(FFEntityTypes.CLOUD_RAY.get(), CloudRayRenderer::new);
-        EntityRenderers.register(FFEntityTypes.CORMORANT.get(), CormorantRenderer::new);
         EntityRenderers.register(FFEntityTypes.GRIFFONFLY.get(), GriffonflyRenderer::new);
+        //EntityRenderers.register(FFEntityTypes.THUNDERBIRD.get(), ThunderBirdRenderer::new);
         EntityRenderers.register(FFEntityTypes.MAGIC_CARPET.get(), MagicCarpetRenderer::new);
+        //EntityRenderers.register(FFEntityTypes.DRAGON.get(), DragonRenderer::new);
+        EntityRenderers.register(FFEntityTypes.SHADEWYRM.get(), ShadewyrmRenderer::new);
+        //EntityRenderers.register(FFEntityTypes.SUNDOG.get(), SundogRenderer::new);
+
+        EntityRenderers.register(FFEntityTypes.CORMORANT.get(), CormorantRenderer::new);
+        // plant
+        EntityRenderers.register(FFEntityTypes.ZEPHYR_FISH.get(), ZephyrFishRenderer::new);
+        //EntityRenderers.register(FFEntityTypes.CRYSTAL_TRESSYM.get(), CrystalTressymRenderer::new);
         EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
         EntityRenderers.register(FFEntityTypes.VOID_MOTH.get(), VoidMothRenderer::new);
+        // mirror shield
 
+        // Wand effects:
+        // Charms:
+        EntityRenderers.register(FFEntityTypes.CRYSTAL_SPIKE_CHARM.get(), CrystalSpikeCharmRenderer::new);
+
+        // Projectiles:
         EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), CaptureProjectileRenderer::new);
         EntityRenderers.register(FFEntityTypes.FIREBALL_PROJECTILE.get(), FireballProjectileRenderer::new);
 
+        // Block entities:
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.VITA_ALEMBIC.get(), RenderType.translucent());
 
+        // Fluids:
         ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_BLUE_VITALITY.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_BLUE_VITALITY.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_GREEN_VITALITY.get(), RenderType.translucent());
@@ -46,6 +66,7 @@ public class FFClientSetup
         ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_WHITE_VITALITY.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_WHITE_VITALITY.get(), RenderType.translucent());
 
+        // Curio items:
         CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), PhylacteryRenderer::new);
         CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), PhylacteryRenderer::new);
         CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), PhylacteryRenderer::new);

@@ -19,12 +19,33 @@ public class FFCreativeTabs
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
                 // Familiar spawn eggs:
+                // Water:
                 output.accept(FFItems.CLOUD_RAY_SPAWN_EGG.get());
                 output.accept(FFItems.CORMORANT_SPAWN_EGG.get());
+
+                // Plant:
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
+                // plant thing
+
+                // Air:
+                // thunderbird
+                output.accept(FFItems.ZEPHYR_FISH_SPAWN_EGG.get());
+
+                // Earth:
                 output.accept(FFItems.MAGIC_CARPET_SPAWN_EGG.get());
+                // crystal tressym
+
+                // Fire:
+                // dragon
                 output.accept(FFItems.PHOENIX_SPAWN_EGG.get());
+
+                // Void:
+                output.accept(FFItems.SHADEWYRM_SPAWN_EGG.get());
                 output.accept(FFItems.VOID_MOTH_SPAWN_EGG.get());
+
+                // Light:
+                // sundog
+                // mirror shield
 
                 // Familiar items:
                 output.accept(FFItems.PHOENIX_FEATHER.get());

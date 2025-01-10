@@ -23,6 +23,6 @@ public class ZephyrFishRenderer extends BaseFamiliarRenderer<ZephyrFishEntity>
 	@Override
 	public ResourceLocation getTextureLocation(ZephyrFishEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/void_moth/void_moth.png");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/zephyr_fish/zephyr_fish.png");
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.model.body_biting": {
+		"animation.shadewyrm.body_biting": {
 			"animation_length": 1.5,
 			"bones": {
 				"front1": {
@@ -106,7 +106,7 @@
 				}
 			}
 		},
-		"animation.model.body_flying": {
+		"animation.shadewyrm.body_flying": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -172,7 +172,7 @@
 				}
 			}
 		},
-		"animation.model.body_idle": {
+		"animation.shadewyrm.body_idle": {
 			"loop": true,
 			"bones": {
 				"front1": {
@@ -202,7 +202,7 @@
 				}
 			}
 		},
-		"animation.model.body_walking": {
+		"animation.shadewyrm.body_walking": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -268,7 +268,7 @@
 				}
 			}
 		},
-		"animation.model.mouth_biting": {
+		"animation.shadewyrm.mouth_biting": {
 			"animation_length": 1.5,
 			"bones": {
 				"top": {
@@ -337,7 +337,7 @@
 				}
 			}
 		},
-		"animation.model.mouth_idle": {
+		"animation.shadewyrm.mouth_idle": {
 			"loop": true,
 			"animation_length": 2.5,
 			"bones": {
@@ -394,7 +394,7 @@
 				}
 			}
 		},
-		"animation.model.mouth_yawning": {
+		"animation.shadewyrm.mouth_yawning": {
 			"animation_length": 2,
 			"bones": {
 				"top": {
