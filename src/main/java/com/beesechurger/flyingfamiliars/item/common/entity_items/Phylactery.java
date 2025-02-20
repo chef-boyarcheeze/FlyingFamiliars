@@ -8,7 +8,7 @@ public class Phylactery extends BaseEntityTagItem implements ITieredItem
 
     public Phylactery(Properties properties, ItemTier tier)
     {
-        super(properties, tier.VALUE);
+        super(properties);
 
         this.TIER = tier;
     }

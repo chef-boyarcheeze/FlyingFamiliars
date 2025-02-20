@@ -1,14 +1,11 @@
 package com.beesechurger.flyingfamiliars.item.common.fluid_items;
 
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
-import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
-import com.beesechurger.flyingfamiliars.tags.ItemInfoTagRef;
 import com.beesechurger.flyingfamiliars.tags.VitalityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -24,23 +21,9 @@ import static net.minecraft.network.chat.Component.translatable;
 
 public abstract class BaseVitalityTagItem extends BaseStorageTagItem
 {
-    public VitalityTagRef fluids;
-    public ItemInfoTagRef itemInfo;
-
     public BaseVitalityTagItem(Properties properties)
     {
         super(properties);
-
-        fluids = new VitalityTagRef(1, 1000);
-        itemInfo = new ItemInfoTagRef();
-    }
-
-    public BaseVitalityTagItem(Properties properties, int entryModifer, int volume)
-    {
-        super(properties);
-
-        fluids = new VitalityTagRef(entryModifer, volume);
-        itemInfo = new ItemInfoTagRef();
     }
 
 ////////////////
@@ -63,7 +46,7 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
     @Override
     public boolean getManipMode(ItemStack stack)
     {
-        return itemInfo.getManipMode(stack.getOrCreateTag());
+        return VitalityTagRef.INSTANCE.getManipMode(stack.getOrCreateTag());
     }
 
 ///////////////
@@ -74,7 +57,7 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
     @Override
     public void toggleManipMode(ItemStack stack)
     {
-        itemInfo.toggleManipMode(stack.getOrCreateTag());
+        VitalityTagRef.INSTANCE.toggleManipMode(stack.getOrCreateTag());
     }
 
 ////////////////
@@ -86,9 +69,9 @@ public abstract class BaseVitalityTagItem extends BaseStorageTagItem
     {
         CompoundTag stackTag = stack.getOrCreateTag();
 
-        Map<String, Integer> entryMap = fluids.getStoredVitality(stackTag);
+        Map<String, Integer> entryMap = VitalityTagRef.INSTANCE.getStoredVitality(stackTag);
 
-        ListTag entryList = fluids.getEntryList(stackTag);
+        ListTag entryList = VitalityTagRef.INSTANCE.getEntryList(stackTag);
 
         if (Screen.hasShiftDown())
         {

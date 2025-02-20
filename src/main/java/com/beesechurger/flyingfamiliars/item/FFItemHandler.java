@@ -1,31 +1,39 @@
 package com.beesechurger.flyingfamiliars.item;
 
+import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
-
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
 import com.beesechurger.flyingfamiliars.packet.EntryManipModeC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
+import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
+import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
+import com.google.common.collect.Iterables;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
-@OnlyIn(Dist.CLIENT)
+import static com.beesechurger.flyingfamiliars.registries.FFKeys.*;
+
+@Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class FFItemHandler
 {
 	public final static FFItemHandler INSTANCE = new FFItemHandler();
@@ -50,7 +58,7 @@ public class FFItemHandler
 		{
 			ItemStack stack = player.getMainHandItem();
 
-			if (!stack.isEmpty() && stack.getItem() instanceof BaseEntityTagItem item && item.canCycle(stack))
+			if (stack.getItem() instanceof BaseEntityTagItem item && item.canCycle(player, stack))
 			{
 				FFPackets.sendToServer(new EntityCycleC2SPacket((int) event.getScrollDelta()));
 				event.setCanceled(true);
@@ -58,28 +66,63 @@ public class FFItemHandler
 		}
 	}
 
+	@SubscribeEvent
+	public static void onKeyInput(InputEvent.Key event)
+	{
+		Minecraft mc = Minecraft.getInstance();
+		Player player = mc.player;
+
+		if (player == null)
+			return;
+
+		ItemStack stack = player.getMainHandItem();
+
+		if (mc.screen == null && stack.getItem() instanceof BaseSoulWand)
+		{
+			if (WAND_EFFECT_SELECT_STATE.wasPressed())
+			{
+				WandEffectSelectionScreen.INSTANCE.open(stack);
+			}
+			else if (WAND_EFFECT_SELECT_STATE.wasReleased() && WandEffectSelectionScreen.INSTANCE.isActive())
+			{
+				WandEffectSelectionScreen.INSTANCE.close();
+			}
+		}
+
+		update();
+	}
+
 	public static List<ItemStack> getEntityStackList(Player player)
 	{
-		Vector<ItemStack> stacks = new Vector<ItemStack>();
+		if (player == null)
+		{
+			return Collections.emptyList();
+		}
 
-		if (player.getMainHandItem() != null)
-			stacks.add(player.getMainHandItem());
-		if (getOffHandTagItem(player) != null)
-			stacks.add(getOffHandTagItem(player));
+		List<ItemStack> stacks = new ArrayList<>();
+
+		ItemStack mainHand = player.getMainHandItem();
+
+		// soul wand in main hand
+		if (mainHand != null && mainHand.getItem() instanceof BaseSoulWand)
+		{
+			stacks.add(mainHand);
+		}
+
+		// phylacteries anywhere in inventory
+		for (ItemStack stack : Iterables.concat(player.getInventory().offhand, player.getInventory().items))
+		{
+			if (!stack.isEmpty() && stack.getItem() instanceof Phylactery)
+			{
+				stacks.add(stack);
+			}
+		}
+
+		// phylactery in curio slot
 		if (getCurioCharmTagItem(player) != null)
 			stacks.add(getCurioCharmTagItem(player));
 
 		return stacks;
-	}
-
-	public static ItemStack getOffHandTagItem(Player player)
-	{
-		ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-
-		if(offHand != null && offHand.getItem() instanceof Phylactery item)
-			return offHand;
-
-		return null;
 	}
 
 	public static ItemStack getCurioCharmTagItem(Player player)

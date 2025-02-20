@@ -1,14 +1,15 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
-import com.beesechurger.flyingfamiliars.tags.ItemInfoTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -16,29 +17,16 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.beesechurger.flyingfamiliars.item.FFItemHandler.getEntityStackList;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
 import static net.minecraft.network.chat.Component.literal;
 import static net.minecraft.network.chat.Component.translatable;
 
 public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IEntityCycleItem
 {
-    public EntityTagRef entities;
-    public ItemInfoTagRef itemInfo;
-
     public BaseEntityTagItem(Properties properties)
     {
         super(properties);
-
-        entities = new EntityTagRef(3);
-        itemInfo = new ItemInfoTagRef();
-    }
-
-    public BaseEntityTagItem(Properties properties, int entryModifier)
-    {
-        super(properties);
-
-        entities = new EntityTagRef(3 * entryModifier);
-        itemInfo = new ItemInfoTagRef();
     }
 
 ////////////////
@@ -49,7 +37,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public boolean isFoil(ItemStack stack)
     {
-        return entities.isFull(stack.getOrCreateTag());
+        return EntityTagRef.INSTANCE.isFull(stack.getOrCreateTag());
     }
 
     @Override
@@ -59,22 +47,32 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     }
 
     @Override
-    public boolean canCycle(ItemStack stack)
+    public boolean canCycle(Player player, ItemStack stack)
     {
-        return entities.getEntryCount(stack.getOrCreateTag()) > 1;
+        int count = 0;
+
+        for (ItemStack entityStack : getEntityStackList(player))
+        {
+            if (entityStack != player.getMainHandItem())
+            {
+                count += EntityTagRef.INSTANCE.getEntryCount(entityStack.getOrCreateTag());
+            }
+        }
+
+        return EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag()) > 1 || count > 0;
     }
 
     @Override
     public boolean getManipMode(ItemStack stack)
     {
-        return itemInfo.getManipMode(stack.getOrCreateTag());
+        return EntityTagRef.INSTANCE.getManipMode(stack.getOrCreateTag());
     }
 
 // Integers:
     @Override
     public int getBarWidth(ItemStack stack)
     {
-        return Math.round((float) entities.getEntryCount(stack.getOrCreateTag()) * 13.0f / (float) entities.getMaxEntries());
+        return Math.round((float) EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag()) * 13.0f / (float) EntityTagRef.INSTANCE.getMaxEntries(stack.getOrCreateTag()));
     }
 
     @Override
@@ -91,7 +89,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public void toggleManipMode(ItemStack stack)
     {
-        itemInfo.toggleManipMode(stack.getOrCreateTag());
+        EntityTagRef.INSTANCE.toggleManipMode(stack.getOrCreateTag());
     }
 
 ////////////////
@@ -101,8 +99,8 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        ListTag entryList = entities.getEntryList(stack.getOrCreateTag());
-        int entryCount = entities.getEntryCount(stack.getOrCreateTag());
+        ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+        int entryCount = EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag());
 
         if (entryCount == 0)
         {
@@ -117,10 +115,10 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 
                 for (Tag entry : entryList)
                 {
-                    ChatFormatting format = entities.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+                    ChatFormatting format = EntityTagRef.INSTANCE.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
                     tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
-                            .withStyle(format).append(" " + (count+1) + ": " + entities.getEntityID((CompoundTag) entry)));
+                            .withStyle(format).append(" " + (count+1) + ": " + EntityTagRef.INSTANCE.getEntityID((CompoundTag) entry)));
 
                     count++;
                 }

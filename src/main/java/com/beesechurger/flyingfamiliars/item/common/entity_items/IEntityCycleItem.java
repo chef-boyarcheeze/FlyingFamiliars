@@ -1,15 +1,19 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TAGNAME;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTRY_LIST;
 
 public interface IEntityCycleItem
 {
@@ -18,60 +22,83 @@ public interface IEntityCycleItem
 ////////////////
 
 // Booleans:
-    public boolean canCycle(ItemStack stack);
+    public boolean canCycle(Player player, ItemStack stack);
 
     default void cycle(Player player, int direction)
     {
-        List<ItemStack> stacks = FFItemHandler.getEntityStackList(player);
-
-        ListTag tagList = new ListTag();
-        ListTag tempTotal = new ListTag();
-
-        // Add all item tags into one ListTag
-        for (ItemStack stack : stacks)
+        if (player != null)
         {
-            if (stack.getItem() instanceof BaseEntityTagItem item)
+            List<ItemStack> stacks = FFItemHandler.getEntityStackList(player);
+            List<ListTag> entryLists = new ArrayList<>();
+
+
+            for (int i = 0; i < stacks.size(); )
             {
-                for (Tag tag : item.entities.getEntryList(stack.getOrCreateTag()))
+                if (stacks.get(i).getItem() instanceof BaseEntityTagItem item)
                 {
-                    tempTotal.add(tag);
+                    if (EntityTagRef.INSTANCE.isEmpty(stacks.get(i).getOrCreateTag()) && !(stacks.get(i).getItem() instanceof BaseSoulWand))
+                    {
+                        stacks.remove(i);
+                    } else
+                    {
+                        entryLists.add(EntityTagRef.INSTANCE.getEntryList(stacks.get(i).getOrCreateTag()));
+
+                        i++;
+                    }
                 }
             }
-        }
 
-        if (direction < 0)
-        {
-            for (int i = 1; i < tempTotal.size(); i++)
+            if (direction > 0)
             {
-                tagList.add(tempTotal.get(i));
-            }
-
-            tagList.add(tempTotal.get(0));
-        }
-        else
-        {
-            tagList.add(tempTotal.get(tempTotal.size() - 1));
-
-            for (int i = 0; i < tempTotal.size() - 1; i++)
-            {
-                tagList.add(tempTotal.get(i));
-            }
-        }
-
-        for (ItemStack stack : stacks)
-        {
-            if (stack.getItem() instanceof BaseEntityTagItem item)
-            {
-                CompoundTag stackTag = stack.getOrCreateTag();
-                ListTag tempList = new ListTag();
-
-                for (int i = 0; i < item.entities.getEntryCount(stackTag); i++)
+                for (int i = 0; i < entryLists.size() - 1; i++)
                 {
-                    tempList.add(tagList.remove(0));
+                    ListTag currList = entryLists.get(i);
+                    ListTag nextList = entryLists.get(i + 1);
+
+                    if (currList.size() > 0)
+                    {
+                        nextList.add((CompoundTag) currList.remove(0));
+                    }
                 }
 
-                stackTag.put(STORAGE_ENTITY_TAGNAME, tempList);
-                stack.setTag(stackTag);
+                ListTag firstList = entryLists.get(0);
+                ListTag lastList = entryLists.get(entryLists.size() - 1);
+
+                if (lastList.size() > 0)
+                {
+                    firstList.add((CompoundTag) lastList.remove(0));
+                }
+            } else
+            {
+                for (int i = entryLists.size() - 1; i > 0; i--)
+                {
+                    ListTag currList = entryLists.get(i);
+                    ListTag nextList = entryLists.get(i - 1);
+
+                    if (currList.size() > 0)
+                    {
+                        nextList.add((CompoundTag) currList.remove(0));
+                    }
+                }
+
+                ListTag firstList = entryLists.get(0);
+                ListTag lastList = entryLists.get(entryLists.size() - 1);
+
+                if (firstList.size() > 0)
+                {
+                    lastList.add((CompoundTag) firstList.remove(0));
+                }
+            }
+
+            for (ItemStack stack : stacks)
+            {
+                if (stack.getItem() instanceof BaseEntityTagItem item)
+                {
+                    CompoundTag stackTag = stack.getOrCreateTag();
+
+                    stackTag.getCompound(STORAGE_ENTITY_TAGNAME).put(STORAGE_ENTRY_LIST, entryLists.remove(0));
+                    stack.setTag(stackTag);
+                }
             }
         }
     }

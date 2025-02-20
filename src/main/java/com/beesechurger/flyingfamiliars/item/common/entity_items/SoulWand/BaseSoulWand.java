@@ -1,9 +1,11 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
+import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
@@ -21,24 +23,27 @@ import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
 
 public abstract class BaseSoulWand extends BaseEntityTagItem
 {
-    public WandEffectTagRef wandEffects;
-
     public BaseSoulWand(Properties properties)
     {
         super(properties);
-
-        wandEffects = new WandEffectTagRef(5);
     }
 
 ////////////////
 // Accessors: //
 ////////////////
 
+// Booleans:
+    @Override
+    public boolean canCycle(Player player, ItemStack stack)
+    {
+        return super.canCycle(player, stack) && getSelectedWandEffect(stack) instanceof CaptureWandEffect;
+    }
+
 // Integers:
     @Override
     public int getBarColor(ItemStack stack)
     {
-        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(wandEffects.getSelectedWandEffect(stack.getOrCreateTag()));
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
         if(selectedWandEffect != null)
         {
@@ -54,7 +59,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     @Override
     public Component getName(ItemStack stack)
     {
-        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(wandEffects.getSelectedWandEffect(stack.getOrCreateTag()));
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
         if(selectedWandEffect != null)
         {
@@ -69,6 +74,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         }
     }
 
+    public BaseWandEffect getSelectedWandEffect(ItemStack stack)
+    {
+        return WandEffectItemHelper.getSelectedWandEffect(WandEffectTagRef.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
+    }
+
 ////////////////
 // Cosmetics: //
 ////////////////
@@ -76,7 +86,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(wandEffects.getSelectedWandEffect(stack.getOrCreateTag()));
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
         if(stack.hasTag() && selectedWandEffect != null)
         {
@@ -99,7 +109,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         if(!level.isClientSide())
         {
             // Get selected wand effect
-            BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(wandEffects.getSelectedWandEffect(stack.getOrCreateTag()));
+            BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
             if(selectedWandEffect != null)
             {

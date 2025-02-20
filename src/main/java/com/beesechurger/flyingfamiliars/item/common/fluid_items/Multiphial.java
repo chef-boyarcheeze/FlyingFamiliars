@@ -8,7 +8,7 @@ public class Multiphial extends BaseVitalityTagItem implements ITieredItem
 
     public Multiphial(Properties properties, ItemTier tier)
     {
-        super(properties, tier.VALUE, getMaxVolume(tier));
+        super(properties);
 
         this.TIER = tier;
     }
