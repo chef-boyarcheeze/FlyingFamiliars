@@ -2,10 +2,12 @@ package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.entity.client.familiar.cloud_ray.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.cormorant.CormorantRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.crystal_tressym.CrystalTressymRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.griffonfly.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet.MagicCarpetRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.phoenix.PhoenixRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.shadewyrm.ShadewyrmRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.shrubling.ShrublingRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth.VoidMothRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.zephyr_fish.ZephyrFishRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.charm.crystal_spike_charm.CrystalSpikeCharmRenderer;
@@ -31,9 +33,9 @@ public class FFClientSetup
         //EntityRenderers.register(FFEntityTypes.SUNDOG.get(), SundogRenderer::new);
 
         EntityRenderers.register(FFEntityTypes.CORMORANT.get(), CormorantRenderer::new);
-        // plant
+        EntityRenderers.register(FFEntityTypes.SHRUBLING.get(), ShrublingRenderer::new);
         EntityRenderers.register(FFEntityTypes.ZEPHYR_FISH.get(), ZephyrFishRenderer::new);
-        //EntityRenderers.register(FFEntityTypes.CRYSTAL_TRESSYM.get(), CrystalTressymRenderer::new);
+        EntityRenderers.register(FFEntityTypes.CRYSTAL_TRESSYM.get(), CrystalTressymRenderer::new);
         EntityRenderers.register(FFEntityTypes.PHOENIX.get(), PhoenixRenderer::new);
         EntityRenderers.register(FFEntityTypes.VOID_MOTH.get(), VoidMothRenderer::new);
         // mirror shield

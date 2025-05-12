@@ -1,28 +1,12 @@
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.0.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-/*buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven {
-            url = 'https://repo.spongepowered.org/repository/maven-public/'
-            content { includeGroup "org.spongepowered" }
-        }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'org.spongepowered.mixin'*/
+apply plugin: 'org.spongepowered.mixin'
 
 version = "${mc_version}-${mod_version}"
 group = "${group_name}"
@@ -139,12 +123,6 @@ dependencies {
 
     // GeckoLib
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}")
-
-    // MultiHitboxLib
-    implementation fg.deobf("dertoaster98:multihitboxlib:${mc_version}-${multihitboxlib_version}@jar")
-
-    // Mixin Booster (for MultiHitboxLib)
-    runtimeOnly fg.deobf("curse.maven:mixinbooster-980731:${mixinbooster_file}")
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 

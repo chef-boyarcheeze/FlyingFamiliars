@@ -24,11 +24,13 @@ public class FFEntityTypes
 	// Familiars: //
 	////////////////
 
+	// Cloud Ray
 	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPE_REG.register("cloud_ray",
 			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
 					.sized(4.0f, 2.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
 
+	// Griffonfly
 	public static final RegistryObject<EntityType<GriffonflyEntity>> GRIFFONFLY = ENTITY_TYPE_REG.register("griffonfly",
 			() -> EntityType.Builder.of(GriffonflyEntity::new, MobCategory.CREATURE)
 					.sized(1.5f, 1.5f)
@@ -36,6 +38,7 @@ public class FFEntityTypes
 
 	// Thunderbird
 
+	// Magic Carpet
 	public static final RegistryObject<EntityType<MagicCarpetEntity>> MAGIC_CARPET = ENTITY_TYPE_REG.register("magic_carpet",
 			() -> EntityType.Builder.of(MagicCarpetEntity::new, MobCategory.CREATURE)
 					.sized(1.8f, 0.5f)
@@ -43,6 +46,7 @@ public class FFEntityTypes
 
 	// Dragon
 
+	// Shadewyrm
 	public static final RegistryObject<EntityType<ShadewyrmEntity>> SHADEWYRM = ENTITY_TYPE_REG.register("shadewyrm",
 			() -> EntityType.Builder.of(ShadewyrmEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
@@ -50,25 +54,37 @@ public class FFEntityTypes
 
 	// Sundog
 
+	// Cormorant
 	public static final RegistryObject<EntityType<CormorantEntity>> CORMORANT = ENTITY_TYPE_REG.register("cormorant",
 			() -> EntityType.Builder.of(CormorantEntity::new, MobCategory.CREATURE)
 					.sized(0.4f, 1.4f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cormorant").toString()));
 
-	// Plant thing
+	// Shrubling
+	public static final RegistryObject<EntityType<ShrublingEntity>> SHRUBLING = ENTITY_TYPE_REG.register("shrubling",
+			() -> EntityType.Builder.of(ShrublingEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "shrubling").toString()));
 
+	// Zephyr Fish
 	public static final RegistryObject<EntityType<ZephyrFishEntity>> ZEPHYR_FISH = ENTITY_TYPE_REG.register("zephyr_fish",
 			() -> EntityType.Builder.of(ZephyrFishEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "zephyr_fish").toString()));
 
 	// Crystal Tressym
+	public static final RegistryObject<EntityType<CrystalTressymEntity>> CRYSTAL_TRESSYM = ENTITY_TYPE_REG.register("crystal_tressym",
+			() -> EntityType.Builder.of(CrystalTressymEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "crystal_tressym").toString()));
 
+	// Phoenix
 	public static final RegistryObject<EntityType<PhoenixEntity>> PHOENIX = ENTITY_TYPE_REG.register("phoenix",
 			() -> EntityType.Builder.of(PhoenixEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "phoenix").toString()));
 
+	// Void Moth
 	public static final RegistryObject<EntityType<VoidMothEntity>> VOID_MOTH = ENTITY_TYPE_REG.register("void_moth",
 			() -> EntityType.Builder.of(VoidMothEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
@@ -113,9 +129,9 @@ public class FFEntityTypes
 
 
 		event.put(FFEntityTypes.CORMORANT.get(), CormorantEntity.setAttributes());
-
+		event.put(FFEntityTypes.SHRUBLING.get(), ShrublingEntity.setAttributes());
 		event.put(FFEntityTypes.ZEPHYR_FISH.get(), ZephyrFishEntity.setAttributes());
-
+		event.put(FFEntityTypes.CRYSTAL_TRESSYM.get(), CrystalTressymEntity.setAttributes());
 		event.put(FFEntityTypes.PHOENIX.get(), PhoenixEntity.setAttributes());
 		event.put(FFEntityTypes.VOID_MOTH.get(), VoidMothEntity.setAttributes());
 

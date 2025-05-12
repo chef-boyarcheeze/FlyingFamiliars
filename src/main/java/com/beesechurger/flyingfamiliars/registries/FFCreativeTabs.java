@@ -25,7 +25,7 @@ public class FFCreativeTabs
 
                 // Plant:
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
-                // plant thing
+                output.accept(FFItems.SHRUBLING_SPAWN_EGG.get());
 
                 // Air:
                 // thunderbird
@@ -33,7 +33,7 @@ public class FFCreativeTabs
 
                 // Earth:
                 output.accept(FFItems.MAGIC_CARPET_SPAWN_EGG.get());
-                // crystal tressym
+                output.accept(FFItems.CRYSTAL_TRESSYM_SPAWN_EGG.get());
 
                 // Fire:
                 // dragon

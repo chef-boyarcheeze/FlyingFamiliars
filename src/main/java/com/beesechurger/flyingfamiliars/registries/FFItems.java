@@ -92,9 +92,9 @@ public class FFItems
 	// sundog
 
 	public static final RegistryObject<ForgeSpawnEggItem> CORMORANT_SPAWN_EGG = register("cormorant_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CORMORANT, 0x070F1C, 0x1B3B6E, new Item.Properties()));
-	// plant thing
+	public static final RegistryObject<ForgeSpawnEggItem> SHRUBLING_SPAWN_EGG = register("shrubling_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.SHRUBLING, 0x339728, 0x342715, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> ZEPHYR_FISH_SPAWN_EGG = register("zephyr_fish_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.ZEPHYR_FISH, 0x1D38BA, 0xE5812E, new Item.Properties()));
-	// crystal tressym
+	public static final RegistryObject<ForgeSpawnEggItem> CRYSTAL_TRESSYM_SPAWN_EGG = register("crystal_tressym_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.CRYSTAL_TRESSYM, 0x00CC00, 0xBFFBBF, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> PHOENIX_SPAWN_EGG = register("phoenix_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.PHOENIX, 0xC00C00, 0xFDD000, new Item.Properties()));
 	public static final RegistryObject<ForgeSpawnEggItem> VOID_MOTH_SPAWN_EGG = register("void_moth_spawn_egg", () -> new ForgeSpawnEggItem(FFEntityTypes.VOID_MOTH, 0x221750, 0x131220, new Item.Properties()));
 	// mirror shield
