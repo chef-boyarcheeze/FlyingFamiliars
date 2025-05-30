@@ -43,6 +43,7 @@
 
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
 	"item.flyingfamiliars.cormorant_spawn_egg": "Cormorant Spawn Egg",
+	"item.flyingfamiliars.deep_jellyfish_spawn_egg": "Deep Jellyfish Spawn Egg",
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
 	"item.flyingfamiliars.shrubling_spawn_egg": "Shrubling Spawn Egg",
 	"item.flyingfamiliars.zephyr_fish_spawn_egg": "Zephyr Fish Spawn Egg",
@@ -54,6 +55,7 @@
 
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
 	"entity.flyingfamiliars.cormorant": "Cormorant",
+	"entity.flyingfamiliars.deep_jellyfish": "Deep Jellyfish",
 	"entity.flyingfamiliars.griffonfly": "Griffonfly",
 	"entity.flyingfamiliars.shrubling": "Shrubling",
 	"entity.flyingfamiliars.zephyr_fish": "Zephyr Fish",

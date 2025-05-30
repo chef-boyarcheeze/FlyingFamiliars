@@ -21,7 +21,8 @@ public class FFCreativeTabs
                 // Familiar spawn eggs:
                 // Water:
                 output.accept(FFItems.CLOUD_RAY_SPAWN_EGG.get());
-                output.accept(FFItems.CORMORANT_SPAWN_EGG.get());
+                output.accept(FFItems.DEEP_JELLYFISH_SPAWN_EGG.get());
+                //output.accept(FFItems.CORMORANT_SPAWN_EGG.get());
 
                 // Plant:
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
@@ -49,7 +50,7 @@ public class FFCreativeTabs
 
                 // Familiar items:
                 output.accept(FFItems.PHOENIX_FEATHER.get());
-                output.accept(FFItems.CORMORANT_RING.get());
+                //output.accept(FFItems.CORMORANT_RING.get());
             })
             .build());
 
