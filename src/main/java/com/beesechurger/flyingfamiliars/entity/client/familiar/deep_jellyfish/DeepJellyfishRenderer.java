@@ -33,6 +33,4 @@ public class DeepJellyfishRenderer extends BaseFamiliarRenderer<DeepJellyfishEnt
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/deep_jellyfish/deep_jellyfish_blue.png");
 		};
 	}
-
-
 }
