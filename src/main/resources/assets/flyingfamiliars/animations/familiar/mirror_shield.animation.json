@@ -1,0 +1,63 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.mirror_shield.new": {
+			"loop": true
+		},
+		"animation.mirror_shield.body_idle": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, 0, "Math.sin(query.anim_time * 120)"]
+					},
+					"position": {
+						"vector": [0, "Math.sin(query.anim_time * 180)", 0]
+					}
+				},
+				"outer": {
+					"rotation": {
+						"vector": [0, 0, "60 * query.anim_time"]
+					}
+				}
+			}
+		},
+		"animation.mirror_shield.body_flying": {
+			"loop": true,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": ["2 - 2 * Math.sin(query.anim_time * 300)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "1.5 * Math.sin(query.anim_time * 300)", 0]
+					}
+				},
+				"outer": {
+					"rotation": {
+						"vector": [0, 0, "120 * query.anim_time"]
+					}
+				}
+			}
+		},
+		"animation.mirror_shield.body_cast_lightbeam": {
+			"animation_length": 2.5,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, "0.5 * Math.sin(query.anim_time * (60 + 385 * Math.sin(query.anim_time * 30)))", 0]
+					}
+				},
+				"outer": {
+					"rotation": {
+						"vector": [0, 0, "(60 + 385 * Math.sin(query.anim_time * 30)) * query.anim_time"]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
