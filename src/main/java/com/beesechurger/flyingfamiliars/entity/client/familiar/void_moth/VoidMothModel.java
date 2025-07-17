@@ -14,7 +14,7 @@ public class VoidMothModel extends GeoModel<VoidMothEntity>
 	@Override
 	public ResourceLocation getModelResource(VoidMothEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/void_moth/void_moth.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/void_moth.geo.json");
 	}
 
 	@Override

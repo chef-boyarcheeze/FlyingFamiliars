@@ -8,18 +8,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib.model.GeoModel;
 
 @OnlyIn(Dist.CLIENT)
-public class MagicCarpetModel extends GeoModel<MagicCarpetEntity> {
-
-	@Override
-	public ResourceLocation getAnimationResource(MagicCarpetEntity animatable)
-	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/magic_carpet.animation.json");
-	}
-
+public class MagicCarpetModel extends GeoModel<MagicCarpetEntity>
+{
 	@Override
 	public ResourceLocation getModelResource(MagicCarpetEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/magic_carpet/magic_carpet.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/magic_carpet.geo.json");
 	}
 
 	@Override
@@ -61,5 +55,11 @@ public class MagicCarpetModel extends GeoModel<MagicCarpetEntity> {
             default ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_white.png");
         };
+	}
+
+	@Override
+	public ResourceLocation getAnimationResource(MagicCarpetEntity animatable)
+	{
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/magic_carpet.animation.json");
 	}
 }

@@ -17,15 +17,9 @@ import software.bernie.geckolib.model.data.EntityModelData;
 public class GriffonflyModel extends GeoModel<GriffonflyEntity>
 {
 	@Override
-	public ResourceLocation getAnimationResource(GriffonflyEntity griffonflyEntity)
-	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/griffonfly.animation.json");
-	}
-
-	@Override
 	public ResourceLocation getModelResource(GriffonflyEntity griffonflyEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/griffonfly/griffonfly.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/griffonfly.geo.json");
 	}
 
 	@Override
@@ -45,6 +39,12 @@ public class GriffonflyModel extends GeoModel<GriffonflyEntity>
             default ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_yellow.png");
         };
+	}
+
+	@Override
+	public ResourceLocation getAnimationResource(GriffonflyEntity griffonflyEntity)
+	{
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/griffonfly.animation.json");
 	}
 
 	@Override

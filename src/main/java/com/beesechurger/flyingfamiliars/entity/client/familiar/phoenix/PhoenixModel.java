@@ -14,7 +14,7 @@ public class PhoenixModel extends GeoModel<PhoenixEntity>
 	@Override
 	public ResourceLocation getModelResource(PhoenixEntity phoenixEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/phoenix/phoenix.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/phoenix.geo.json");
 	}
 
 	@Override

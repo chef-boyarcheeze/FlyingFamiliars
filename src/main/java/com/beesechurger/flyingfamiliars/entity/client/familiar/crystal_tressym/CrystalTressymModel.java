@@ -18,7 +18,7 @@ public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 	@Override
 	public ResourceLocation getModelResource(CrystalTressymEntity CrystalTressymEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/crystal_tressym/crystal_tressym.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/crystal_tressym.geo.json");
 	}
 
 	@Override

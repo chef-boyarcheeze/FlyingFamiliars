@@ -18,7 +18,7 @@ public class CloudRayModel extends GeoModel<CloudRayEntity>
 	@Override
 	public ResourceLocation getModelResource(CloudRayEntity cloudRayEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/cloud_ray/cloud_ray.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/cloud_ray.geo.json");
 	}
 
 	@Override

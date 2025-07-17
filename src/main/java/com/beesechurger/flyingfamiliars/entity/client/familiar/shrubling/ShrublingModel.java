@@ -14,7 +14,7 @@ public class ShrublingModel extends GeoModel<ShrublingEntity>
 	@Override
 	public ResourceLocation getModelResource(ShrublingEntity ShrublingEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/shrubling/shrubling.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/shrubling.geo.json");
 	}
 
 	@Override

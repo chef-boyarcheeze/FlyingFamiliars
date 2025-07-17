@@ -15,7 +15,7 @@ public class ZephyrFishModel extends GeoModel<ZephyrFishEntity>
 	@Override
 	public ResourceLocation getModelResource(ZephyrFishEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/zephyr_fish/zephyr_fish.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/zephyr_fish.geo.json");
 	}
 
 	@Override

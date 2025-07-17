@@ -15,7 +15,7 @@ public class DeepJellyfishModel extends GeoModel<DeepJellyfishEntity>
 	@Override
 	public ResourceLocation getModelResource(DeepJellyfishEntity DeepJellyfishEntity)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/deep_jellyfish/deep_jellyfish.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/deep_jellyfish.geo.json");
 	}
 
 	@Override

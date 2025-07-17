@@ -18,7 +18,7 @@ public class ShadewyrmModel extends GeoModel<ShadewyrmEntity>
 	@Override
 	public ResourceLocation getModelResource(ShadewyrmEntity animatable)
 	{
-		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/shadewyrm/shadewyrm.geo.json");
+		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/shadewyrm.geo.json");
 	}
 
 	@Override
