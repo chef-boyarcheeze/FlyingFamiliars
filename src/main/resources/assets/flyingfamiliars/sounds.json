@@ -115,13 +115,6 @@
 			"flyingfamiliars:familiars/cloud_ray/cloud_ray_step3"
 		]
 	},
-	"cormorant_squawk": {
-		"subtitle": "sounds.flyingfamiliars.cormorant_squawk",
-		"sounds": [
-			"flyingfamiliars:familiars/cormorant/cormorant_squawk1",
-			"flyingfamiliars:familiars/cormorant/cormorant_squawk2"
-		]
-	},
 	"griffonfly_chitter": {
 		"subtitle": "sounds.flyingfamiliars.griffonfly_chitter",
 		"sounds": [

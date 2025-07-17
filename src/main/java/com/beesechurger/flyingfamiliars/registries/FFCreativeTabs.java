@@ -22,7 +22,6 @@ public class FFCreativeTabs
                 // Water:
                 output.accept(FFItems.CLOUD_RAY_SPAWN_EGG.get());
                 output.accept(FFItems.DEEP_JELLYFISH_SPAWN_EGG.get());
-                //output.accept(FFItems.CORMORANT_SPAWN_EGG.get());
 
                 // Plant:
                 output.accept(FFItems.GRIFFONFLY_SPAWN_EGG.get());
@@ -46,11 +45,10 @@ public class FFCreativeTabs
 
                 // Light:
                 // sundog
-                // mirror shield
+                output.accept(FFItems.MIRROR_SHIELD_SPAWN_EGG.get());
 
                 // Familiar items:
                 output.accept(FFItems.PHOENIX_FEATHER.get());
-                //output.accept(FFItems.CORMORANT_RING.get());
             })
             .build());
 

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -63,12 +64,6 @@ public class FFEntityTypes
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "deep_jellyfish").toString()));
 
-	// Cormorant
-	/*public static final RegistryObject<EntityType<CormorantEntity>> CORMORANT = ENTITY_TYPE_REG.register("cormorant",
-			() -> EntityType.Builder.of(CormorantEntity::new, MobCategory.CREATURE)
-					.sized(0.4f, 1.4f)
-					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cormorant").toString()));*/
-
 	// Shrubling
 	public static final RegistryObject<EntityType<ShrublingEntity>> SHRUBLING = ENTITY_TYPE_REG.register("shrubling",
 			() -> EntityType.Builder.of(ShrublingEntity::new, MobCategory.CREATURE)
@@ -100,6 +95,10 @@ public class FFEntityTypes
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "void_moth").toString()));
 
 	// Mirror shield
+	public static final RegistryObject<EntityType<MirrorShieldEntity>> MIRROR_SHIELD = ENTITY_TYPE_REG.register("mirror_shield",
+			() -> EntityType.Builder.of(MirrorShieldEntity::new, MobCategory.CREATURE)
+					.sized(1.0f, 1.0f)
+					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "mirror_shield").toString()));
 
 	///////////////////
 	// Wand Effects: //
@@ -138,12 +137,11 @@ public class FFEntityTypes
 
 
 		event.put(FFEntityTypes.DEEP_JELLYFISH.get(), DeepJellyfishEntity.setAttributes());
-		//event.put(FFEntityTypes.CORMORANT.get(), CormorantEntity.setAttributes());
 		event.put(FFEntityTypes.SHRUBLING.get(), ShrublingEntity.setAttributes());
 		event.put(FFEntityTypes.ZEPHYR_FISH.get(), ZephyrFishEntity.setAttributes());
 		event.put(FFEntityTypes.CRYSTAL_TRESSYM.get(), CrystalTressymEntity.setAttributes());
 		event.put(FFEntityTypes.PHOENIX.get(), PhoenixEntity.setAttributes());
 		event.put(FFEntityTypes.VOID_MOTH.get(), VoidMothEntity.setAttributes());
-
+		event.put(FFEntityTypes.MIRROR_SHIELD.get(), MirrorShieldEntity.setAttributes());
 	}
 }

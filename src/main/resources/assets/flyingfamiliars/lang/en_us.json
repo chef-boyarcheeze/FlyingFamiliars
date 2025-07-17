@@ -42,7 +42,6 @@
 	"item.flyingfamiliars.ceremonial_font_basin": "Ceremonial Font Basin",
 
 	"item.flyingfamiliars.cloud_ray_spawn_egg": "Cloud Ray Spawn Egg",
-	"item.flyingfamiliars.cormorant_spawn_egg": "Cormorant Spawn Egg",
 	"item.flyingfamiliars.deep_jellyfish_spawn_egg": "Deep Jellyfish Spawn Egg",
 	"item.flyingfamiliars.griffonfly_spawn_egg": "Griffonfly Spawn Egg",
 	"item.flyingfamiliars.shrubling_spawn_egg": "Shrubling Spawn Egg",
@@ -52,9 +51,9 @@
 	"item.flyingfamiliars.phoenix_spawn_egg": "Phoenix Spawn Egg",
 	"item.flyingfamiliars.shadewyrm_spawn_egg": "Shadewyrm Spawn Egg",
 	"item.flyingfamiliars.void_moth_spawn_egg": "Void Moth Spawn Egg",
+	"item.flyingfamiliars.mirror_shield_spawn_egg": "Mirror Shield Spawn Egg",
 
 	"entity.flyingfamiliars.cloud_ray": "Cloud Ray",
-	"entity.flyingfamiliars.cormorant": "Cormorant",
 	"entity.flyingfamiliars.deep_jellyfish": "Deep Jellyfish",
 	"entity.flyingfamiliars.griffonfly": "Griffonfly",
 	"entity.flyingfamiliars.shrubling": "Shrubling",
@@ -64,6 +63,7 @@
 	"entity.flyingfamiliars.phoenix": "Phoenix",
 	"entity.flyingfamiliars.shadewyrm": "Shadewyrm",
 	"entity.flyingfamiliars.void_moth": "Void Moth",
+	"entity.flyingfamiliars.mirror_shield": "Mirror Shield",
 
 	"effect.flyingfamiliars.doused": "Doused",
 
@@ -139,8 +139,6 @@
 	"sounds.flyingfamiliars.cloud_ray_hurt": "Cloud Ray hurts",
 	"sounds.flyingfamiliars.cloud_ray_idle": "Cloud Ray drizzles",
 	"sounds.flyingfamiliars.cloud_ray_step": "Cloud Ray squelches",
-
-	"sounds.flyingfamiliars.cormorant_squawk": "Cormorant squawks",
 
 	"sounds.flyingfamiliars.griffonfly_chitter": "Griffonfly chitters",
 	"sounds.flyingfamiliars.griffonfly_death": "Griffonfly dies",
