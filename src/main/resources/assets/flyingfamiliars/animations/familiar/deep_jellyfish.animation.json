@@ -154,7 +154,7 @@
 				},
 				"body": {
 					"rotation": {
-						"vector": [15, "3 * Math.sin(query.anim_time * 120)", 0]
+						"vector": [10, "3 * Math.sin(query.anim_time * 120)", 0]
 					},
 					"position": {
 						"vector": [0, "Math.sin(query.anim_time * 90 + 30)", 0]
