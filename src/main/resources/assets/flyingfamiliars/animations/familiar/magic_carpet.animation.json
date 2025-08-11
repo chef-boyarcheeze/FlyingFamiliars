@@ -588,6 +588,142 @@
 				}
 			}
 		},
+		"animation.magic_carpet.body_rolled": {
+			"animation_length": 1,
+			"bones": {
+				"fold1": {
+					"rotation": {
+						"vector": [-120, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold9": {
+					"position": {
+						"vector": [0, -2, -16],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold8": {
+					"rotation": {
+						"vector": [-72, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold7": {
+					"rotation": {
+						"vector": [-72, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold6": {
+					"rotation": {
+						"vector": [-72, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold5": {
+					"rotation": {
+						"vector": [-72, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold4": {
+					"rotation": {
+						"vector": [-95, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold3": {
+					"rotation": {
+						"vector": [-85, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"fold2": {
+					"rotation": {
+						"vector": [-110, 0, 0],
+						"easing": "easeOutSine"
+					}
+				},
+				"body9": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body8": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body7": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body6": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body5": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body4": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body3": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body2": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body1": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"body": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
 		"animation.magic_carpet.body_floating": {
 			"loop": true,
 			"animation_length": 1,
