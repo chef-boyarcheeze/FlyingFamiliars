@@ -6,6 +6,7 @@
 		},
 		"animation.mirror_shield.body_idle": {
 			"loop": true,
+			"animation_length": 6,
 			"bones": {
 				"body": {
 					"rotation": {
@@ -13,11 +14,6 @@
 					},
 					"position": {
 						"vector": [0, "Math.sin(query.anim_time * 180)", 0]
-					}
-				},
-				"outer": {
-					"rotation": {
-						"vector": [0, 0, "60 * query.anim_time"]
 					}
 				}
 			}
@@ -32,11 +28,6 @@
 					"position": {
 						"vector": [0, "1.5 * Math.sin(query.anim_time * 300)", 0]
 					}
-				},
-				"outer": {
-					"rotation": {
-						"vector": [0, 0, "120 * query.anim_time"]
-					}
 				}
 			}
 		},
@@ -50,10 +41,22 @@
 					"position": {
 						"vector": [0, "0.5 * Math.sin(query.anim_time * (60 + 385 * Math.sin(query.anim_time * 30)))", 0]
 					}
-				},
+				}
+			}
+		},
+		"animation.mirror_shield.ring_revolve": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
 				"outer": {
 					"rotation": {
-						"vector": [0, 0, "(60 + 385 * Math.sin(query.anim_time * 30)) * query.anim_time"]
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"1.0": {
+							"vector": [0, 0, 360],
+							"easing": "linear"
+						}
 					}
 				}
 			}
