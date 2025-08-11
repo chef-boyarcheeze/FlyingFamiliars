@@ -7,6 +7,7 @@ import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -85,14 +86,30 @@ public class MirrorShieldEntity extends BaseFamiliarEntity
         return PlayState.CONTINUE;
     }
 
+    private <E extends GeoAnimatable> PlayState ringController(AnimationState<E> event)
+    {
+        FFAnimationController controller = (FFAnimationController) event.getController();
+
+        controller.setAnimation(RawAnimation.begin()
+                .thenLoop("animation.mirror_shield.ring_revolve"));
+
+        var targetSpeed = isMoving() ? 1.0 : 0.3;
+        controller.setAnimationSpeed(Mth.lerp(0.005, controller.getAnimationSpeed(), targetSpeed));
+
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
         FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 6, 0, this::bodyController);
+        FFAnimationController ringController = new FFAnimationController<>(this, "ringController", 0, 0, this::ringController);
 
         data.add(bodyController);
+        data.add(ringController);
 
         animationControllers.add(bodyController);
+        animationControllers.add(ringController);
     }
 
 ////////////////////////////////
