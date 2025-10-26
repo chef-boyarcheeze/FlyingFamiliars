@@ -2,14 +2,14 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.BaseFamiliarRiderLayer;
+import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.MagicCarpetRiderLayer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.MagicCarpetEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class MagicCarpetRenderer extends BaseFamiliarRenderer<MagicCarpetEntity>
@@ -18,7 +18,8 @@ public class MagicCarpetRenderer extends BaseFamiliarRenderer<MagicCarpetEntity>
 	{
 		super(renderManager, new MagicCarpetModel());
 		this.shadowRadius = 0.6f;
-		this.withScale(1.5f);
+		this.withScale(FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(FFEntityTypes.MAGIC_CARPET.get().toShortString()));
+        this.addRenderLayer(new MagicCarpetRiderLayer(this));
 	}
 	
 	@Override

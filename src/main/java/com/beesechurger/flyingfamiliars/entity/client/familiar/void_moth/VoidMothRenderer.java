@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.VoidMothEntity;
+import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
@@ -19,7 +20,7 @@ public class VoidMothRenderer extends BaseFamiliarRenderer<VoidMothEntity>
 	{
 		super(renderManager, new VoidMothModel());
 		this.shadowRadius = 0.35f;
-		this.withScale(1.0f);
+		this.withScale(FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(FFEntityTypes.VOID_MOTH.get().toShortString()));
 	}
 
 	@Override

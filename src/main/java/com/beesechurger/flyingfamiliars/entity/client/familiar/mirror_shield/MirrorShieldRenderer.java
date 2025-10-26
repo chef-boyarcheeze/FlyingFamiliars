@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.mirror_shield;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.MirrorShieldEntity;
+import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,7 +16,7 @@ public class MirrorShieldRenderer extends BaseFamiliarRenderer<MirrorShieldEntit
 	{
 		super(renderManager, new MirrorShieldModel());
 		this.shadowRadius = 0.8f;
-		this.withScale(1.2f);
+		this.withScale(FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(FFEntityTypes.MIRROR_SHIELD.get().toShortString()));
 	}
 
 	@Override
