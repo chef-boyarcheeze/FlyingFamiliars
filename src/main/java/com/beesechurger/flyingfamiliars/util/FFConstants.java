@@ -55,6 +55,12 @@ public class FFConstants
     // Mod IDs:
     public static final String CURIOS_MODNAME = "curios";
 
+    // Entity layer renderer bones:
+    public static final String LAYER_RIDER_BONE_CLOUD_RAY = "torso";
+    public static final String LAYER_RIDER_BONE_GRIFFONFLY = "thorax";
+    public static final String LAYER_RIDER_BONE_MAGIC_CARPET = "thorax";
+    public static final String LAYER_RIDER_BONE_SHADEWYRM = "thorax";
+
 /////////////////////
 // Integer values: //
 /////////////////////

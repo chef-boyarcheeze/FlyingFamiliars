@@ -142,7 +142,7 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntit
             controller.updatePreviousAnimation();
         }
 
-        boolean shouldRoll = isSitting() && !isFlying() && notCarryingPassengers() && !isOwnerNear(5);
+        boolean shouldRoll = isSitting() && !isFlying() && !isVehicle() && !isOwnerNear(5);
 
         if(bodyAnimation == MagicCarpetBodyAnimation.UNROLLING)
         {

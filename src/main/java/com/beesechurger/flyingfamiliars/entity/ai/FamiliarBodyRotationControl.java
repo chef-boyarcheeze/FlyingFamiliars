@@ -28,7 +28,7 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
     @Override
     public void clientTick()
     {
-        if(familiar.notCarryingPassengers())
+        if(!familiar.isVehicle())
             rotationAI();
         else
             switch(rotationType)
@@ -47,7 +47,7 @@ public class FamiliarBodyRotationControl extends BodyRotationControl
         }
         else
         {
-            if(familiar.notCarryingPassengers())
+            if(!familiar.isVehicle())
             {
                 if(Math.abs(familiar.yHeadRot - lastStableYHeadRot) > 15.0F)
                 {

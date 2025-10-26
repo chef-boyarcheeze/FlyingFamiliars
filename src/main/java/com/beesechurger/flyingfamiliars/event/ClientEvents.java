@@ -5,18 +5,25 @@ import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents
 {
+    public static List<UUID> blockRenderList = new ArrayList<>();
+
     @SubscribeEvent
     public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event)
     {
@@ -45,5 +52,23 @@ public class ClientEvents
     			event.getCamera().move(-event.getCamera().getMaxZoom(cameraZoom), 0, 0);
             }
     	}
+    }
+
+    @SubscribeEvent
+    public static void cancelRenderLiving(RenderLivingEvent event)
+    {
+        Entity passenger = event.getEntity();
+        Entity vehicle = passenger.getVehicle();
+
+        //System.out.println(passenger == Minecraft.getInstance().player);
+
+        if (vehicle instanceof BaseFamiliarEntity familiar)
+        {
+            if (passenger == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()
+                || blockRenderList.contains(passenger.getUUID()))
+            {
+                event.setCanceled(true);
+            }
+        }
     }
 }

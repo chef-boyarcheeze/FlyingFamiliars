@@ -45,6 +45,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 
 	public float pitchO = 0, pitch = 0;
+    public float yawO = 0, yaw = 0;
 	public float rollO = 0, roll = 0;
 
 	protected int actionCooldown = 0;
@@ -182,11 +183,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return getControllingPassenger() instanceof Player;
 	}
 
-	public boolean notCarryingPassengers()
-	{
-		return getPassengers().size() == 0;
-	}
-
 	@Override
 	public boolean canBeLeashed(Player player)
 	{
@@ -252,6 +248,14 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 
 		return partialTicks == 1.0 ? pitch : Mth.lerp(partialTicks, pitchO, pitch);
 	}
+
+    public double getYaw(double partialTicks)
+    {
+        if(yBodyRotO == yBodyRot)
+            return yBodyRot;
+
+        return partialTicks == 1.0 ? yBodyRot : Mth.lerp(partialTicks, yBodyRotO, yBodyRot);
+    }
 
 	public double getRoll(double partialTicks)
 	{
