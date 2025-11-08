@@ -276,31 +276,11 @@ public class ShadewyrmEntity extends BaseFamiliarEntity
     }
 
     @Override
-    public void positionRider(Entity rider, MoveFunction function)
-    {
-        if(this.hasPassenger(rider))
-        {
-            rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
-
-            rider.xRotO = rider.getXRot();
-            rider.yRotO = rider.getYRot();
-            rider.setYBodyRot(yBodyRot);
-        }
-    }
-
     public Vec3 getRiderPosition(Entity rider)
     {
         double x = 0;
-        double y = getPassengersRidingOffset() + rider.getMyRidingOffset();
+        double y = 0;
         double z = getScale() - 1;
-
-        if(getPassengers().size() > 1)
-        {
-            if(rider == getControllingPassenger())
-                x = 0.5f;
-            else
-                x = -0.5f;
-        }
 
         return new Vec3(x, y, z);
     }

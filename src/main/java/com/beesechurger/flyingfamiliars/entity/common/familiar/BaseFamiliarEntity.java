@@ -273,17 +273,6 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return getY() - pos.getY();
 	}
 
-	@Override
-	public double getPassengersRidingOffset()
-	{
-		if(this instanceof GriffonflyEntity)
-			return (getDimensions(getPose()).height * 0.8);
-		else if(this instanceof CloudRayEntity)
-			return (getDimensions(getPose()).height * 0.6);
-		else
-			return getDimensions(getPose()).height;
-	}
-
 	public abstract double getFlySpeedMod();
 
 	public abstract double getWalkSpeedMod();
@@ -637,9 +626,9 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		return new Vec3(xMove, yMove, zMove);
 	}
 
-/////////
-// AI: //
-/////////
+/////////////
+// Mob AI: //
+/////////////
 
 	@Override
 	public void tick()
@@ -675,6 +664,28 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		else
 			flyingTime = 0;
 	}
+
+    @Override
+    public void positionRider(Entity rider, MoveFunction function)
+    {
+        if(this.hasPassenger(rider))
+        {
+            rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
+
+            rider.xRotO = rider.getXRot();
+            rider.yRotO = rider.getYRot();
+            rider.setYBodyRot(yBodyRot);
+
+            // Set griffonfly carried mob's look direction to griffonfly's look direction
+            if(!(rider instanceof Player))
+                rider.setYHeadRot(yHeadRot);
+        }
+    }
+
+    public Vec3 getRiderPosition(Entity entity)
+    {
+        return new Vec3(0, 0, 0);
+    }
 
 	@Override
 	protected PathNavigation createNavigation(Level level)

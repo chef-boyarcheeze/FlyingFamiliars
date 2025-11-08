@@ -127,7 +127,7 @@ public class FFEntityTypes
 
     public static final Map<String, Float> ENTITY_RENDER_SIZE_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
         map.put("cloud_ray", 1.0f);
-        map.put("griffonfly", 1.5f);
+        map.put("griffonfly", 1.6f);
         //map.put("thunderbird", 1.0f);
         map.put("magic_carpet", 1.5f);
         //map.put("dragon", 1.0f);

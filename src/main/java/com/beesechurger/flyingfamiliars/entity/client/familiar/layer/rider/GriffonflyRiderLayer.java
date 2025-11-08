@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider;
 
 import com.beesechurger.flyingfamiliars.entity.client.familiar.griffonfly.GriffonflyRenderer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.entity.common.familiar.CloudRayEntity;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.GriffonflyEntity;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.MagicCarpetEntity;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -28,8 +30,15 @@ public class GriffonflyRiderLayer extends BaseFamiliarRiderLayer<GriffonflyEntit
         super(renderIn);
     }
 
-    protected String getBone()
+    @Override
+    protected String getSeatBone()
     {
         return LAYER_RIDER_BONE_GRIFFONFLY;
+    }
+
+    @Override
+    protected Vec3 getRenderOffset(GriffonflyEntity animatable, Entity passenger)
+    {
+        return new Vec3(0, 0.75,0);
     }
 }

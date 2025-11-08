@@ -447,29 +447,4 @@ public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntit
             }
         }
     }
-
-    @Override
-    public void positionRider(Entity rider, MoveFunction function)
-    {
-        if(this.hasPassenger(rider))
-        {
-            rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
-
-            rider.xRotO = rider.getXRot();
-            rider.yRotO = rider.getYRot();
-            rider.setYBodyRot(yBodyRot);
-
-            if(!(rider instanceof Player))
-                rider.setYHeadRot(yHeadRot);
-        }
-    }
-
-    public Vec3 getRiderPosition(Entity rider)
-    {
-        double x = 0;
-        double y = getPassengersRidingOffset() + rider.getMyRidingOffset() - 0.4;
-        double z = getScale() - 1;
-
-        return new Vec3(x, y, z);
-    }
 }

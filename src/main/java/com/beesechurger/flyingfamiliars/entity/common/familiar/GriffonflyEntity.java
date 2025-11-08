@@ -350,30 +350,24 @@ public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity
 	@Override
 	public void positionRider(Entity rider, MoveFunction function)
 	{
-		if(this.hasPassenger(rider))
-		{
-			rider.setPos(getRiderPosition(rider).yRot((float) Math.toRadians(-yBodyRot)).add(position()));
-
-			rider.xRotO = rider.getXRot();
-			rider.yRotO = rider.getYRot();
-			rider.setYBodyRot(yBodyRot);
-
-			// Set griffonfly carried mob's look direction to griffonfly's look direction
-			if(!(rider instanceof Player))
-				rider.setYHeadRot(yHeadRot);
-		}
+        super.positionRider(rider, function);
+		if(hasPassenger(rider) && !(rider instanceof Player))
+        {
+            rider.setYHeadRot(yHeadRot);
+        }
 	}
 
+    @Override
 	public Vec3 getRiderPosition(Entity rider)
 	{
 		double x = 0;
 		double y;
-		double z = getScale() - 1;
+		double z = 0;
 
 		if(rider == getControllingPassenger())
-			y = getPassengersRidingOffset() + rider.getMyRidingOffset();
+			y = 0.8;
 		else
-			y = -0.5 * (getPassengersRidingOffset() + rider.getMyRidingOffset() + rider.getBbHeight());
+			y = -rider.getBbHeight();
 
 		return new Vec3(x, y, z);
 	}

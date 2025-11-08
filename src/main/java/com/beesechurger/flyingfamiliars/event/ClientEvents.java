@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.event;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -13,6 +12,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,22 +27,22 @@ public class ClientEvents
     @SubscribeEvent
     public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event)
     {
-    	Minecraft mc = Minecraft.getInstance();
-    	Player player = mc.player;
+    	CameraType camera = Minecraft.getInstance().options.getCameraType();
+    	Player player = Minecraft.getInstance().player;
         
     	if(player.getVehicle() != null)
     	{
     		if(player.getVehicle() instanceof BaseFamiliarEntity familiar)
             {
-    			double cameraZoom = mc.options.getCameraType() == CameraType.FIRST_PERSON ? 0.5 : 1.25;
+    			double cameraZoom = camera == CameraType.FIRST_PERSON ? 0.5 : 1.25;
     			double cameraRotMod = 0.5f;
     			
     			float renderPitch = (float) (cameraRotMod * familiar.getPitch(event.getPartialTick()) +
-    					(mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ?
+    					(camera == CameraType.THIRD_PERSON_FRONT ?
     							-player.getViewXRot((float) event.getPartialTick()) :
     								player.getViewXRot((float) event.getPartialTick())));
     			
-    			float renderRoll = (float) (cameraRotMod * (mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT ?
+    			float renderRoll = (float) (cameraRotMod * (camera == CameraType.THIRD_PERSON_FRONT ?
     					familiar.getRoll(event.getPartialTick()) :
     						-familiar.getRoll(event.getPartialTick())));
     			
@@ -60,15 +60,21 @@ public class ClientEvents
         Entity passenger = event.getEntity();
         Entity vehicle = passenger.getVehicle();
 
-        //System.out.println(passenger == Minecraft.getInstance().player);
-
-        if (vehicle instanceof BaseFamiliarEntity familiar)
+        if (vehicle instanceof BaseFamiliarEntity familiar && blockRenderList.contains(passenger.getUUID()))
         {
-            if (passenger == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()
-                || blockRenderList.contains(passenger.getUUID()))
-            {
-                event.setCanceled(true);
-            }
+            event.setCanceled(true);
         }
+    }
+
+    /*@SubscribeEvent
+    public static void cancelRenderGeckoLiving(GeoRenderEvent event)
+    {
+
+    }*/
+
+    @SubscribeEvent
+    public static void preLivingRender(RenderLivingEvent.Pre event)
+    {
+        cancelRenderLiving(event);
     }
 }

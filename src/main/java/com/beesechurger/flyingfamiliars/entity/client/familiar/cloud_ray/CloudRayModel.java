@@ -53,10 +53,10 @@ public class CloudRayModel extends GeoModel<CloudRayEntity>
 		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
 		CoreGeoBone head = this.getAnimationProcessor().getBone("head");
 
+        float xRot = Mth.clamp(-extraDataOfType.headPitch() + 15, 5.0f, 35.0f);
 		float yRot = Mth.clamp(extraDataOfType.netHeadYaw(), -3.0f, 3.0f);
-		float zRot = Mth.clamp(extraDataOfType.headPitch() + 20, 5.0f, 35.0f);
 
+        head.setRotX((float) Math.toRadians(-xRot));
 		head.setRotY((float) Math.toRadians(yRot));
-		head.setRotZ((float) Math.toRadians(zRot));
 	}
 }

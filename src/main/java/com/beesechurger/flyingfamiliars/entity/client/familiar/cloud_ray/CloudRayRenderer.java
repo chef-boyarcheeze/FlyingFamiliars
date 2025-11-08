@@ -18,7 +18,7 @@ public class CloudRayRenderer extends BaseFamiliarRenderer<CloudRayEntity>
 	public CloudRayRenderer(Context renderManager)
 	{
 		super(renderManager, new CloudRayModel());
-		this.shadowRadius = 1.5f;
+		this.shadowRadius = 1.8f;
 		this.withScale(FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(FFEntityTypes.CLOUD_RAY.get().toShortString()));
         this.addRenderLayer(new CloudRayRiderLayer(this));
 	}
@@ -35,7 +35,7 @@ public class CloudRayRenderer extends BaseFamiliarRenderer<CloudRayEntity>
 			case "dark_gray" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_dark_gray.png");
 			default ->
-					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
+					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_dark_gray.png");
 		};
 	}
 }
