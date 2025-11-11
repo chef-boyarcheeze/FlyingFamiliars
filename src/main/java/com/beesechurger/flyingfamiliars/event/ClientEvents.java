@@ -66,12 +66,6 @@ public class ClientEvents
         }
     }
 
-    /*@SubscribeEvent
-    public static void cancelRenderGeckoLiving(GeoRenderEvent event)
-    {
-
-    }*/
-
     @SubscribeEvent
     public static void preLivingRender(RenderLivingEvent.Pre event)
     {
