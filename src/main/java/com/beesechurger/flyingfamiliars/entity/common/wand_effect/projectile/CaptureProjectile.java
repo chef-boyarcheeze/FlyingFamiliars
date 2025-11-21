@@ -38,6 +38,8 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	private NonNullList<ItemStack> stacks = NonNullList.create();
 	private boolean action = false;
 
+    private CompoundTag selectedEntry = null;
+
 	public CaptureProjectile(EntityType<? extends CaptureProjectile> proj, Level level)
 	{
 		super(proj, level);
@@ -47,6 +49,31 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	{
 		super(FFEntityTypes.CAPTURE_PROJECTILE.get(), entity, level);
 	    this.action = action;
+
+        // get initially selected entity tag:
+        if (action)
+        {
+            for (ItemStack stack : FFItemHandler.getEntityStackList((Player) getOwner()))
+            {
+                if(stack.getItem() instanceof BaseEntityTagItem item)
+                {
+                    CompoundTag stackTag = stack.getOrCreateTag();
+
+                    // get selected entity's entry tag and confirm tag is real
+                    CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
+
+                    if(entryTag.contains(STORAGE_ENTITY_TYPE))
+                    {
+                        EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
+
+                        if (type != null)
+                        {
+                            selectedEntry = entryTag;
+                        }
+                    }
+                }
+            }
+        }
 	}
 
 	public CaptureProjectile(Level level, double x, double y, double z)
@@ -201,9 +228,16 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 				// get selected entity's entry tag and confirm tag is real
 				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
 
+                // use entry selected at time of cast
+                if (selectedEntry != null)
+                {
+                    entryTag = selectedEntry;
+                }
+
 				if(entryTag.contains(STORAGE_ENTITY_TYPE))
 				{
 					EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
+
 					if (type != null && EntityTagRef.INSTANCE.removeEntry(stackTag, entryTag))
 					{
 						// save updated entity tag list to stack
