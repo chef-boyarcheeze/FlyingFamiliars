@@ -15,7 +15,7 @@ public class CrystalTressymRenderer extends BaseFamiliarRenderer<CrystalTressymE
 	public CrystalTressymRenderer(Context renderManager)
 	{
 		super(renderManager, new CrystalTressymModel());
-		this.shadowRadius = 0.8f;
+		this.shadowRadius = 0.7f;
 		this.withScale(FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(FFEntityTypes.CRYSTAL_TRESSYM.get().toShortString()));
 	}
 

@@ -12,6 +12,8 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
+import javax.swing.*;
+
 @OnlyIn(Dist.CLIENT)
 public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 {
@@ -50,13 +52,16 @@ public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 		if(customPredicate == null)
 			return;
 
-		/*EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
+		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
 		CoreGeoBone head = this.getAnimationProcessor().getBone("head");
 
-		float yRot = Mth.clamp(extraDataOfType.netHeadYaw(), -3.0f, 3.0f);
-		float zRot = Mth.clamp(extraDataOfType.headPitch() + 20, 5.0f, 35.0f);
+        float pitchOffset = animatable.isSitting() ? 40 : 30;
 
-		head.setRotY((float) Math.toRadians(yRot));
-		head.setRotZ((float) Math.toRadians(zRot));*/
+        float pitch = Mth.clamp(extraDataOfType.headPitch() - pitchOffset, -60, -15);
+		float yaw = Mth.clamp(extraDataOfType.netHeadYaw(), -20.0f, 20.0f);
+
+        head.setRotX((float) Math.toRadians(pitch));
+		head.setRotY((float) Math.toRadians(yaw));
+        head.setRotZ((float) -Math.toRadians(yaw) * 0.8f);
 	}
 }

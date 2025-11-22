@@ -85,21 +85,38 @@ public class CrystalTressymEntity extends BaseFamiliarEntity
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
 
-        if(isFlying())
+        if (isFlying())
         {
-            controller.setAnimationSpeed(1.5d);
-            controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.crystal_tressym.body_flying"));
+            if (isMoving())
+            {
+                controller.setAnimation(RawAnimation.begin()
+                        .thenLoop("animation.crystal_tressym.body_flying"));
+            }
+            else
+            {
+                // hover eventually
+                controller.setAnimation(RawAnimation.begin()
+                        .thenLoop("animation.crystal_tressym.body_flying"));
+            }
         }
-        else if(!isFlying() && isMoving())
-            controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.crystal_tressym.body_walking"));
-        else if(isSitting())
+        else if (isSitting())
+        {
             controller.setAnimation(RawAnimation.begin()
                     .thenLoop("animation.crystal_tressym.body_sitting"));
+        }
         else
-            controller.setAnimation(RawAnimation.begin()
-                    .thenLoop("animation.crystal_tressym.body_idle"));
+        {
+            if (isMoving())
+            {
+                controller.setAnimation(RawAnimation.begin()
+                        .thenLoop("animation.crystal_tressym.body_walking"));
+            }
+            else
+            {
+                controller.setAnimation(RawAnimation.begin()
+                        .thenLoop("animation.crystal_tressym.body_idle"));
+            }
+        }
 
         if(!isFlying())
             controller.setAnimationSpeed(1.0d);
