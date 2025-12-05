@@ -94,9 +94,8 @@ public class CrystalTressymEntity extends BaseFamiliarEntity
             }
             else
             {
-                // hover eventually
                 controller.setAnimation(RawAnimation.begin()
-                        .thenLoop("animation.crystal_tressym.body_flying"));
+                        .thenLoop("animation.crystal_tressym.body_hovering"));
             }
         }
         else if (isSitting())
@@ -117,9 +116,6 @@ public class CrystalTressymEntity extends BaseFamiliarEntity
                         .thenLoop("animation.crystal_tressym.body_idle"));
             }
         }
-
-        if(!isFlying())
-            controller.setAnimationSpeed(1.0d);
 
         return PlayState.CONTINUE;
     }

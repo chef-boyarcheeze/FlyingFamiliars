@@ -97,6 +97,26 @@ public class ShadewyrmEntity extends BaseFamiliarEntity
         return PlayState.CONTINUE;
     }
 
+    private <E extends GeoAnimatable> PlayState tailController(AnimationState<E> event)
+    {
+        FFAnimationController controller = (FFAnimationController) event.getController();
+
+        if (yHeadRot < yHeadRotO)
+        {
+            controller.setAnimation(RawAnimation.begin().thenLoop("animation.shadewyrm.tail_turning_left"));
+        }
+        else if (yHeadRot > yHeadRotO)
+        {
+            controller.setAnimation(RawAnimation.begin().thenLoop("animation.shadewyrm.tail_turning_right"));
+        }
+        else
+        {
+            controller.setAnimation(RawAnimation.begin().thenLoop("animation.shadewyrm.tail_idle"));
+        }
+
+        return PlayState.CONTINUE;
+    }
+
     private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
     {
         FFAnimationController controller = (FFAnimationController) event.getController();
@@ -120,12 +140,15 @@ public class ShadewyrmEntity extends BaseFamiliarEntity
     public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
         FFAnimationController mouthController = new FFAnimationController<>(this, "mouthController", 0, 0, this::mouthController);
+        FFAnimationController tailController = new FFAnimationController<>(this, "tailController", 5, 0, this::tailController);
         FFAnimationController bodyController = new FFAnimationController<>(this, "bodyController", 5, 0, this::bodyController);
 
         data.add(mouthController);
+        data.add(tailController);
         data.add(bodyController);
 
         animationControllers.add(mouthController);
+        animationControllers.add(tailController);
         animationControllers.add(bodyController);
     }
 
@@ -197,7 +220,7 @@ public class ShadewyrmEntity extends BaseFamiliarEntity
     @Override
     public boolean canBreatheUnderwater()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -279,7 +302,7 @@ public class ShadewyrmEntity extends BaseFamiliarEntity
     public Vec3 getRiderPosition(Entity rider)
     {
         double x = 0;
-        double y = 0;
+        double y = 1.1;
         double z = getScale() - 1;
 
         return new Vec3(x, y, z);

@@ -53,7 +53,7 @@ public class FFEntityTypes
 	// Shadewyrm
 	public static final RegistryObject<EntityType<ShadewyrmEntity>> SHADEWYRM = ENTITY_TYPE_REG.register("shadewyrm",
 			() -> EntityType.Builder.of(ShadewyrmEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(3.0f, 2.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "shadewyrm").toString()));
 
 	// Sundog

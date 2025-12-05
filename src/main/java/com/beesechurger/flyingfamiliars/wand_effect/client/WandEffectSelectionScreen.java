@@ -45,6 +45,8 @@ public class WandEffectSelectionScreen implements IGuiOverlay
             wandEffectList = WandEffectTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
 
             Minecraft.getInstance().mouseHandler.releaseMouse();
+
+            System.out.println("open");
         }
     }
 
@@ -61,6 +63,8 @@ public class WandEffectSelectionScreen implements IGuiOverlay
         wandEffectList = new ListTag();
 
         Minecraft.getInstance().mouseHandler.grabMouse();
+
+        System.out.println("close");
     }
 
     public Boolean isActive()
@@ -71,6 +75,7 @@ public class WandEffectSelectionScreen implements IGuiOverlay
     @Override
     public void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight)
     {
+        System.out.println("not yety rendereing");
         if (!active)
             return;
 
@@ -81,6 +86,8 @@ public class WandEffectSelectionScreen implements IGuiOverlay
             close();
             return;
         }
+
+        System.out.println("rendereing");
 
         PoseStack poseStack = graphics.pose();
         poseStack.pushPose();

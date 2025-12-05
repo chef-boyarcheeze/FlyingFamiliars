@@ -30,6 +30,9 @@ public class FFConstants
 
     public static final String BLOCK_PROGRESS_TAGNAME = "ff.block.progress";
 
+    // Client event constants:
+    public static final String WAND_EFFECT_WHEEL = "wand_effect_list";
+
     // Fluid tag constants:
     public static final String VITALITY_BLUE = "blue";
     public static final String VITALITY_GREEN = "green";
@@ -59,7 +62,7 @@ public class FFConstants
     public static final String LAYER_RIDER_BONE_CLOUD_RAY = "torso";
     public static final String LAYER_RIDER_BONE_GRIFFONFLY = "center_thorax";
     public static final String LAYER_RIDER_BONE_MAGIC_CARPET = "body5";
-    public static final String LAYER_RIDER_BONE_SHADEWYRM = "thorax";
+    public static final String LAYER_RIDER_BONE_SHADEWYRM = "center";
 
 /////////////////////
 // Integer values: //

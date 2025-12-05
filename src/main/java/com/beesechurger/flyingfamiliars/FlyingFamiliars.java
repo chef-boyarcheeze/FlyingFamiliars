@@ -41,6 +41,7 @@ public class FlyingFamiliars
 		
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
+        bus.addListener(ClientEvents::onRegisterOverlays);
 		
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(FFItemHandler.INSTANCE);
