@@ -464,6 +464,79 @@
 					}
 				}
 			}
+		},
+		"animation.shadewyrm.tail_turning_left": {
+			"loop": true,
+			"bones": {
+				"back1": {
+					"rotation": {
+						"vector": [0, 5, 0]
+					}
+				},
+				"back2": {
+					"rotation": {
+						"vector": [0, 5, 0]
+					}
+				},
+				"back3": {
+					"rotation": {
+						"vector": [0, 5, 0]
+					}
+				},
+				"back4": {
+					"rotation": {
+						"vector": [0, 5, 0]
+					}
+				},
+				"back5": {
+					"rotation": {
+						"vector": [0, 5, 0]
+					}
+				},
+				"back6": {
+					"rotation": {
+						"vector": [0, 5, 0]
+					}
+				}
+			}
+		},
+		"animation.shadewyrm.tail_turning_right": {
+			"loop": true,
+			"bones": {
+				"back1": {
+					"rotation": {
+						"vector": [0, -5, 0]
+					}
+				},
+				"back2": {
+					"rotation": {
+						"vector": [0, -5, 0]
+					}
+				},
+				"back3": {
+					"rotation": {
+						"vector": [0, -5, 0]
+					}
+				},
+				"back4": {
+					"rotation": {
+						"vector": [0, -5, 0]
+					}
+				},
+				"back5": {
+					"rotation": {
+						"vector": [0, -5, 0]
+					}
+				},
+				"back6": {
+					"rotation": {
+						"vector": [0, -5, 0]
+					}
+				}
+			}
+		},
+		"animation.shadewyrm.tail_idle": {
+			"loop": true
 		}
 	},
 	"geckolib_format_version": 2

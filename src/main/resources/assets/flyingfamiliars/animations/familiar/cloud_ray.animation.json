@@ -7,12 +7,12 @@
 			"bones": {
 				"front_tail": {
 					"rotation": {
-						"vector": ["2 * Math.sin(360 * query.anim_time + 90)", 0, 0]
+						"vector": ["-5 * Math.sin(360 * query.anim_time - 120)", 0, 0]
 					}
 				},
 				"back_tail": {
 					"rotation": {
-						"vector": ["2 * Math.sin(360 * query.anim_time)", 0, 0]
+						"vector": ["-5 * Math.sin(360 * query.anim_time - 180)", 0, 0]
 					}
 				},
 				"left_front_a": {
@@ -77,12 +77,15 @@
 				},
 				"torso": {
 					"rotation": {
-						"vector": ["0.5 * Math.sin(360 * query.anim_time)", 0, 0]
+						"vector": ["-2 * math.sin(360 * query.anim_time + 15)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "2 - 2 * math.cos(360 * query.anim_time + 30)", 0]
 					}
 				},
 				"abdomen": {
 					"rotation": {
-						"vector": ["Math.sin(360 * query.anim_time + 180)", 0, 0]
+						"vector": ["-3 * Math.sin(360 * query.anim_time - 60)", 0, 0]
 					}
 				}
 			}
