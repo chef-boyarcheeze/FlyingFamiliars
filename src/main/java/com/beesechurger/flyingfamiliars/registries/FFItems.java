@@ -6,10 +6,7 @@ import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.*;
 import com.beesechurger.flyingfamiliars.item.common.fluid_items.Multiphial;
 import com.google.common.base.Supplier;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,6 +24,15 @@ public class FFItems
 	public static final RegistryObject<Item> FIERY_CROOK = register("fiery_crook", () -> new FieryCrook(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> VOID_SHARD = register("void_shard", () -> new VoidShard(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> LIGHT_PRISM = register("light_prism", () -> new LightPrism(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
+    // Spirit remnents:
+    public static final RegistryObject<Item> WET_SPIRIT_FRAGMENT = register("wet_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> LUSH_SPIRIT_FRAGMENT = register("lush_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> GUSTING_SPIRIT_FRAGMENT = register("gusting_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> STONY_SPIRIT_FRAGMENT = register("stony_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> BURNING_SPIRIT_FRAGMENT = register("burning_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> VACUOUS_SPIRIT_FRAGMENT = register("vacuous_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
+    public static final RegistryObject<Item> LUMINOUS_SPIRIT_FRAGMENT = register("luminous_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
 
 	// Phylacteries:
 	public static final RegistryObject<Item> PHYLACTERY_BLUE = register("phylactery_blue", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.BLUE));

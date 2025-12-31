@@ -15,36 +15,39 @@ public class FireballWandEffect extends BaseWandEffect
 ////////////////
 
 // Strings:
-
+    @Override
     public String getName()
     {
         return "fireball_projectile";
     }
 
+    @Override
     public String getTranslatableName()
     {
         return "tooltip.flyingfamiliars.wand_effect.fireball_projectile";
     }
 
 // Integers:
-
+    @Override
     public int getCost()
     {
         return 0;
     }
 
+    @Override
     public int getCooldown()
     {
         return 10;
     }
 
+    @Override
     public int getBarColor()
     {
         return CHAT_DARK_RED;
     }
 
 // Misc:
-
+    @Override
     public ChatFormatting getTooltipColor()
     {
         return ChatFormatting.DARK_RED;
@@ -54,6 +57,7 @@ public class FireballWandEffect extends BaseWandEffect
 // Wand effect action: //
 /////////////////////////
 
+    @Override
     public void action(Level level, Player player)
     {
         FireballProjectile fireball = new FireballProjectile(level, player);

@@ -1,20 +1,25 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,6 +45,14 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     }
 
 // Integers:
+    @Override
+    public int getUseDuration(ItemStack stack)
+    {
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+
+        return selectedWandEffect.getUseDurationMax();
+    }
+
     @Override
     public int getBarColor(ItemStack stack)
     {
@@ -79,6 +92,14 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         return WandEffectItemHelper.getSelectedWandEffect(WandEffectTagRef.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
     }
 
+    @Override
+    public UseAnim getUseAnimation(ItemStack stack)
+    {
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+
+        return selectedWandEffect.getUseAnimation();
+    }
+
 ////////////////
 // Cosmetics: //
 ////////////////
@@ -105,15 +126,22 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
         if(!level.isClientSide())
         {
-            // Get selected wand effect
-            BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
-
-            if(selectedWandEffect != null)
+            if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
             {
                 // determine if there is enough 'fuel' for action
+/*                if (!player.getAbilities().instabuild && !flag)
+                {
+                    return InteractionResultHolder.fail(itemstack);
+                }
+                else
+                {
+                    player.startUsingItem(hand);
+                    return InteractionResultHolder.consume(stack);
+                }*/
 
                 selectedWandEffect.action(level, player);
 
@@ -122,6 +150,116 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             }
         }
 
+        if (selectedWandEffect.usableOnBlockOnly())
+        {
+            return InteractionResultHolder.pass(stack);
+        }
+
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context)
+    {
+        ItemStack stack = context.getItemInHand();
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+
+        if (!context.getLevel().isClientSide())
+        {
+            BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+
+            if (selectedWandEffect != null && selectedWandEffect.checkLookedAtBlock(state) && selectedWandEffect.usableOnBlockOnly())
+            {
+                Player player = context.getPlayer();
+
+                // determine if there is enough 'fuel' for action
+                if (!player.getAbilities().instabuild && !false) //flag instead of false
+                {
+                    return InteractionResult.FAIL;
+                }
+                else
+                {
+                    player.startUsingItem(context.getHand());
+                }
+            }
+        }
+
+        if (!selectedWandEffect.usableOnBlockOnly())
+        {
+            return InteractionResult.PASS;
+        }
+
+        return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int duration)
+    {
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+
+        if (entity instanceof Player player)
+        {
+            BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+            BlockPos pos = result.getBlockPos();
+            BlockState state = level.getBlockState(pos);
+
+            // looked at invalid block, stop using
+            if (!selectedWandEffect.checkLookedAtBlock(state))
+            {
+                player.stopUsingItem();
+                return;
+            }
+
+            if (level.isClientSide())
+            {
+                // selectedWandEffect special effects (particles, noise, etc.)
+            }
+            else if (selectedWandEffect.canBePartiallyDrawn())
+            {
+                // consume fuel
+
+                selectedWandEffect.actionOn(level, player, pos);
+            }
+        }
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int duration)
+    {
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+
+        if (entity instanceof Player player)
+        {
+            BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+            BlockPos pos = result.getBlockPos();
+            BlockState state = level.getBlockState(pos);
+
+            // looked at invalid block, stop using
+            if (!selectedWandEffect.checkLookedAtBlock(state))
+            {
+                player.stopUsingItem();
+                return;
+            }
+
+            if (level.isClientSide())
+            {
+                // selectedWandEffect special effects (particles, noise, etc.)
+            }
+            else if (selectedWandEffect.canBePartiallyDrawn())
+            {
+                // consume fuel
+
+                selectedWandEffect.actionOn(level, player, pos);
+            }
+            else if (selectedWandEffect.getUseDurationMax() - duration > selectedWandEffect.getUseDurationMin())
+            {
+                // consume fuel
+
+                selectedWandEffect.actionOn(level, player, pos);
+
+                player.awardStat(Stats.ITEM_USED.get(this));
+                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+            }
+        }
     }
 }

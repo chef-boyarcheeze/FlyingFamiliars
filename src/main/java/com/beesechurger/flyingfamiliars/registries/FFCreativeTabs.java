@@ -67,6 +67,15 @@ public class FFCreativeTabs
                 output.accept(FFItems.VOID_SHARD.get());
                 output.accept(FFItems.LIGHT_PRISM.get());
 
+                // Spirit Remnants:
+                output.accept(FFItems.WET_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.LUSH_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.GUSTING_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.STONY_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.BURNING_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get());
+
                 // Phylacteries:
                 output.accept(FFItems.PHYLACTERY_BLUE.get());
                 output.accept(FFItems.PHYLACTERY_GREEN.get());

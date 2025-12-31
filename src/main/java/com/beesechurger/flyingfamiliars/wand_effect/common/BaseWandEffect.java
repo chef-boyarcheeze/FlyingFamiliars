@@ -1,8 +1,12 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BaseWandEffect
 {
@@ -18,7 +22,38 @@ public abstract class BaseWandEffect
     // translatable name of wand effect for UI
     public abstract String getTranslatableName();
 
+// Booleans:
+
+    // effect only usable for useOn context (looking directly at block)
+    public boolean usableOnBlockOnly()
+    {
+        return false;
+    }
+
+    // effect works when only partially drawn
+    public boolean canBePartiallyDrawn()
+    {
+        return false;
+    }
+
+    // pre-check for charge-up wand effects
+    public boolean checkLookedAtBlock(BlockState state)
+    {
+        return true;
+    }
+
 // Integers:
+
+    // use duration of soul wand
+    public int getUseDurationMin()
+    {
+        return 0;
+    }
+
+    public int getUseDurationMax()
+    {
+        return 0;
+    }
 
     // cost of wand effect cast in (units?)
     public abstract int getCost();
@@ -34,10 +69,21 @@ public abstract class BaseWandEffect
     // soul wand inventory tooltip color, in minecraft chat colors
     public abstract ChatFormatting getTooltipColor();
 
+    // soul wand use animation
+    public UseAnim getUseAnimation()
+    {
+        return UseAnim.NONE;
+    }
+
 /////////////////////////
 // Wand effect action: //
 /////////////////////////
 
     // perform wand effect cast
-    public abstract void action(Level level, Player player);
+    public void action(Level level, Player player) {
+
+    }
+
+    // perform block-only wand effect cast
+    public void actionOn(Level level, Player player, BlockPos pos) {}
 }

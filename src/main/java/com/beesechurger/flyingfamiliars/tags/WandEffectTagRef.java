@@ -37,7 +37,7 @@ public class WandEffectTagRef implements IStorageTagRef
 
         // add default capture projectile wand effect entry to add to initial list
         CompoundTag captureTag = new CompoundTag();
-        captureTag.putString(STORAGE_WAND_EFFECT_TYPE, "capture_projectile");
+        captureTag.putString(STORAGE_WAND_EFFECT_TYPE, "tectonic_crush");
 
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);

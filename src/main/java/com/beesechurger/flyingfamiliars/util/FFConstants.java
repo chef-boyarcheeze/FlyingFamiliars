@@ -103,4 +103,7 @@ public class FFConstants
     // Familiar movement values:
     public static final float BASE_FLYING_SPEED = 0.1f;
     public static final float BASE_MOVEMENT_SPEED = 0.1f;
+
+    // Wand effect constant values:
+    public static final int MAX_CHARGE_TIME = 72000;
 }

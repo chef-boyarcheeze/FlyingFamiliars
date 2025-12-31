@@ -19,7 +19,7 @@ import org.joml.Vector4f;
 
 public class WandEffectSelectionScreen implements IGuiOverlay
 {
-    public final static WandEffectSelectionScreen INSTANCE = new WandEffectSelectionScreen();
+    public static final WandEffectSelectionScreen INSTANCE = new WandEffectSelectionScreen();
 
     private Boolean active = false;
     private int mouseSelection = -1;
@@ -75,7 +75,6 @@ public class WandEffectSelectionScreen implements IGuiOverlay
     @Override
     public void render(ForgeGui gui, GuiGraphics graphics, float partialTick, int screenWidth, int screenHeight)
     {
-        System.out.println("not yety rendereing");
         if (!active)
             return;
 
