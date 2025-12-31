@@ -22,13 +22,13 @@ import org.jetbrains.annotations.NotNull;
 public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
 {
     public static final RecipeType<BrazierRecipe> TYPE = RecipeType.create(FlyingFamiliars.MOD_ID, "brazier", BrazierRecipe.class);
-    public final static ResourceLocation INPUTS =
+    public static final ResourceLocation INPUTS =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_inputs_jei.png");
-    public final static ResourceLocation SINGLE_ARROW =
+    public static final ResourceLocation SINGLE_ARROW =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_single_arrow_jei.png");
-    public final static ResourceLocation DOUBLE_ARROW =
+    public static final ResourceLocation DOUBLE_ARROW =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_double_arrow_jei.png");
-    public final static ResourceLocation OUTPUTS =
+    public static final ResourceLocation OUTPUTS =
             new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/brazier_outputs_jei.png");
 
     private final IDrawable background;

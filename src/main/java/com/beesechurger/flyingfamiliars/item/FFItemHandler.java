@@ -36,7 +36,7 @@ import static com.beesechurger.flyingfamiliars.registries.FFKeys.*;
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class FFItemHandler
 {
-	public final static FFItemHandler INSTANCE = new FFItemHandler();
+	public static final FFItemHandler INSTANCE = new FFItemHandler();
 
 	@SubscribeEvent
 	public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event)

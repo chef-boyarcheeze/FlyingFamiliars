@@ -34,7 +34,7 @@ import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_T
 
 public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 {
-    public final static int MAX_FLUID = 250;
+    public static final int MAX_FLUID = 250;
 
     public NonNullList<ItemStack> items = null;
     public CompoundTag entityStorageTag = new CompoundTag();
