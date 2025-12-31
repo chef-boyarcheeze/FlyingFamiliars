@@ -150,7 +150,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             }
         }
 
-        if (selectedWandEffect.usableOnBlockOnly())
+        if (selectedWandEffect != null && selectedWandEffect.usableOnBlockOnly())
         {
             return InteractionResultHolder.pass(stack);
         }
@@ -184,7 +184,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             }
         }
 
-        if (!selectedWandEffect.usableOnBlockOnly())
+        if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
         {
             return InteractionResult.PASS;
         }
@@ -197,7 +197,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if (entity instanceof Player player)
+        if (entity instanceof Player player && selectedWandEffect != null)
         {
             BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
             BlockPos pos = result.getBlockPos();
@@ -210,15 +210,10 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 return;
             }
 
-            if (level.isClientSide())
+            if (selectedWandEffect.canBePartiallyDrawn())
             {
-                // selectedWandEffect special effects (particles, noise, etc.)
-            }
-            else if (selectedWandEffect.canBePartiallyDrawn())
-            {
-                // consume fuel
-
                 selectedWandEffect.actionOn(level, player, pos);
+                // consume fuel
             }
         }
     }
@@ -228,7 +223,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if (entity instanceof Player player)
+        if (entity instanceof Player player && selectedWandEffect != null)
         {
             BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
             BlockPos pos = result.getBlockPos();
@@ -241,21 +236,14 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 return;
             }
 
-            if (level.isClientSide())
+            if (selectedWandEffect.canBePartiallyDrawn())
             {
-                // selectedWandEffect special effects (particles, noise, etc.)
-            }
-            else if (selectedWandEffect.canBePartiallyDrawn())
-            {
-                // consume fuel
-
                 selectedWandEffect.actionOn(level, player, pos);
             }
             else if (selectedWandEffect.getUseDurationMax() - duration > selectedWandEffect.getUseDurationMin())
             {
-                // consume fuel
-
                 selectedWandEffect.actionOn(level, player, pos);
+                // consume fuel
 
                 player.awardStat(Stats.ITEM_USED.get(this));
                 player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());

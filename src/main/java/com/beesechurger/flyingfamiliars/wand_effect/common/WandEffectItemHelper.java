@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common;
 
-import com.beesechurger.flyingfamiliars.wand_effect.common.charm.TectonicCrushWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.charm.TectonicSunderWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FireballWandEffect;
 import com.google.common.collect.Maps;
@@ -10,25 +10,44 @@ import java.util.Map;
 
 public class WandEffectItemHelper
 {
-    // Charm wand effects:
-    //private static final CrystalSpikeWandEffect CRYSTAL_SPIKE = new CrystalSpikeWandEffect();
-    private static final TectonicCrushWandEffect TECTONIC_CRUSH = new TectonicCrushWandEffect();
+/////////////////////////////////////
+/// Wand Effect String Constants: ///
+/////////////////////////////////////
 
-    // Projectile wand effects:
+/// Charms:
+    public static final String EFFECT_CRYSTAL_SPIKE = "crystal_spike_charm";
+    public static final String EFFECT_TECTONIC_SUNDER = "tectonic_sunder_charm";
+    public static final String EFFECT_ZEPHYREAN_GUST = "zephyrean_gust_charm";
+
+/// Projectiles:
+    public static final String EFFECT_CAPTURE = "capture_projectile";
+    public static final String EFFECT_FIREBALL = "fireball_projectile";
+
+/// Sentries:
+
+//////////////////////////////
+/// Wand Effect Instances: ///
+//////////////////////////////
+
+/// Charm wand effects:
+    //private static final CrystalSpikeWandEffect CRYSTAL_SPIKE = new CrystalSpikeWandEffect();
+    private static final TectonicSunderWandEffect TECTONIC_SUNDER = new TectonicSunderWandEffect();
+
+/// Projectile wand effects:
     private static final CaptureWandEffect CAPTURE = new CaptureWandEffect();
     private static final FireballWandEffect FIREBALL = new FireballWandEffect();
 
-    // Sentry wand effects:
+/// Sentry wand effects:
 
     private static final Map<String, BaseWandEffect> WAND_EFFECT_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
-        // Charm wand effects:
-        map.put("tectonic_crush", TECTONIC_CRUSH);
+    /// Charms:
+        map.put(EFFECT_TECTONIC_SUNDER, TECTONIC_SUNDER);
 
-        // Projectile wand effects:
-        map.put("capture_projectile", CAPTURE);
-        map.put("fireball_projectile", FIREBALL);
+    /// Projectiles:
+        map.put(EFFECT_CAPTURE, CAPTURE);
+        map.put(EFFECT_FIREBALL, FIREBALL);
 
-        // Sentry wand effects:
+    /// Sentries:
 
     });
 

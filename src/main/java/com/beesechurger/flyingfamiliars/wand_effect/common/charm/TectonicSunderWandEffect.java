@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
-import com.beesechurger.flyingfamiliars.recipe.TectonicCrushRecipe;
+import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -9,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,15 +23,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.MAX_CHARGE_TIME;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_TECTONIC_SUNDER;
 
-public class TectonicCrushWandEffect extends BaseWandEffect
+public class TectonicSunderWandEffect extends BaseWandEffect
 {
     private static final Set<Item> INPUT_ITEMS = new HashSet<>();
 
@@ -41,13 +44,7 @@ public class TectonicCrushWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return "tectonic_crush_charm";
-    }
-
-    @Override
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.tectonic_crush_charm";
+        return EFFECT_TECTONIC_SUNDER;
     }
 
 // Booleans:
@@ -123,7 +120,7 @@ public class TectonicCrushWandEffect extends BaseWandEffect
     {
         INPUT_ITEMS.clear();
 
-        for(TectonicCrushRecipe entry : Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(TectonicCrushRecipe.Type.INSTANCE))
+        for(TectonicSunderRecipe entry : Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(TectonicSunderRecipe.Type.INSTANCE))
         {
             INPUT_ITEMS.add(entry.getInputItem().getItem());
         }
@@ -155,20 +152,11 @@ public class TectonicCrushWandEffect extends BaseWandEffect
                     BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
                     InteractionResult result = substituteUse(new UseOnContext(player, InteractionHand.MAIN_HAND, hit), replacement).getFirst();
 
-                    if (!player.getAbilities().instabuild)
-                    {
-                        if (result.consumesAction())
-                        {
-                            /*removeFromInventory(player, rod, replacement, true);
-                            displayRemainderCounter(player, rod);*/
-                        }
-                        else
-                        {
-                            System.out.println("particle");
-                            ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-                                    2, 0.1, 0.1, 0.1, 0);
-                        }
-                    }
+                    level.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
+                            FFSounds.TECTONIC_SUNDER.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
+
+                    ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D,
+                            2, 0.1, 0.1, 0.1, 0);
                 }
             }
         }
@@ -213,7 +201,7 @@ public class TectonicCrushWandEffect extends BaseWandEffect
     private ItemStack getOutputItem(Level level, ItemStack inputItem)
     {
         boolean found = false;
-        for(TectonicCrushRecipe entry : level.getRecipeManager().getAllRecipesFor(TectonicCrushRecipe.Type.INSTANCE))
+        for(TectonicSunderRecipe entry : level.getRecipeManager().getAllRecipesFor(TectonicSunderRecipe.Type.INSTANCE))
         {
             if(entry.itemMatches(inputItem))
             {

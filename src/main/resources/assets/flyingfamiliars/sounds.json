@@ -154,28 +154,35 @@
 			"flyingfamiliars:familiars/griffonfly/griffonfly_release"
 		]
 	},
+    "tectonic_sunder": {
+      "subtitle": "sounds.flyingfamiliars.tectonic_sunder_1",
+      "sounds": [
+          "flyingfamiliars:wand_effects/charm/tectonic_sunder/tectonic_sunder_1",
+          "flyingfamiliars:wand_effects/charm/tectonic_sunder/tectonic_sunder_2"
+      ]
+    },
+    "capture_projectile_impact": {
+      "subtitle": "sounds.flyingfamiliars.capture_projectile_impact",
+      "sounds": [
+          "flyingfamiliars:wand_effects/projectile/capture_projectile/capture_projectile_impact"
+      ]
+    },
 	"fireball_projectile_cast": {
 		"subtitle": "sounds.flyingfamiliars.fireball_projectile_cast",
 		"sounds": [
-			"flyingfamiliars:wand_effects/fireball_projectile/fireball_projectile_cast"
+			"flyingfamiliars:wand_effects/projectile/fireball_projectile/fireball_projectile_cast"
 		]
 	},
 	"fireball_projectile_explode": {
 		"subtitle": "sounds.flyingfamiliars.fireball_projectile_explode",
 		"sounds": [
-			"flyingfamiliars:wand_effects/fireball_projectile/fireball_projectile_explode"
+			"flyingfamiliars:wand_effects/projectile/fireball_projectile/fireball_projectile_explode"
 		]
 	},
 	"fireball_projectile_idle": {
 		"subtitle": "sounds.flyingfamiliars.fireball_projectile_idle",
 		"sounds": [
-			"flyingfamiliars:wand_effects/fireball_projectile/fireball_projectile_idle"
-		]
-	},
-	"capture_projectile_impact": {
-		"subtitle": "sounds.flyingfamiliars.capture_projectile_impact",
-		"sounds": [
-			"flyingfamiliars:wand_effects/capture_projectile/capture_projectile_impact"
+			"flyingfamiliars:wand_effects/projectile/fireball_projectile/fireball_projectile_idle"
 		]
 	},
 	"soul_wand_swap": {

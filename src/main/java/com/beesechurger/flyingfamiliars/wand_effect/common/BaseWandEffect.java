@@ -10,19 +10,22 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BaseWandEffect
 {
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
 
     // nbt tag name of wand effect
     public abstract String getName();
 
     // translatable name of wand effect for UI
-    public abstract String getTranslatableName();
+    public final String getTranslatableName()
+    {
+        return "tooltip.flyingfamiliars.wand_effect." + getName();
+    }
 
-// Booleans:
+/// Booleans:
 
     // effect only usable for useOn context (looking directly at block)
     public boolean usableOnBlockOnly()
@@ -42,7 +45,7 @@ public abstract class BaseWandEffect
         return true;
     }
 
-// Integers:
+/// Integers:
 
     // use duration of soul wand
     public int getUseDurationMin()
@@ -64,7 +67,7 @@ public abstract class BaseWandEffect
     // soul wand durability bar color, in minecraft colors
     public abstract int getBarColor();
 
-// Misc:
+/// Misc:
 
     // soul wand inventory tooltip color, in minecraft chat colors
     public abstract ChatFormatting getTooltipColor();
@@ -75,9 +78,9 @@ public abstract class BaseWandEffect
         return UseAnim.NONE;
     }
 
-/////////////////////////
-// Wand effect action: //
-/////////////////////////
+///////////////////////////
+/// Wand Effect Action: ///
+///////////////////////////
 
     // perform wand effect cast
     public void action(Level level, Player player) {

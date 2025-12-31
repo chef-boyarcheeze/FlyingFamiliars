@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_RED;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_FIREBALL;
 
 public class FireballWandEffect extends BaseWandEffect
 {
@@ -18,13 +19,7 @@ public class FireballWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return "fireball_projectile";
-    }
-
-    @Override
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.fireball_projectile";
+        return EFFECT_FIREBALL;
     }
 
 // Integers:

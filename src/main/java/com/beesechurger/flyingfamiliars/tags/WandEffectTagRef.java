@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_TECTONIC_SUNDER;
 
 public class WandEffectTagRef implements IStorageTagRef
 {
@@ -37,7 +38,7 @@ public class WandEffectTagRef implements IStorageTagRef
 
         // add default capture projectile wand effect entry to add to initial list
         CompoundTag captureTag = new CompoundTag();
-        captureTag.putString(STORAGE_WAND_EFFECT_TYPE, "tectonic_crush");
+        captureTag.putString(STORAGE_WAND_EFFECT_TYPE, EFFECT_TECTONIC_SUNDER);
 
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);

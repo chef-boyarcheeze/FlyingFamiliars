@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_CAPTURE;
 
 public class CaptureWandEffect extends BaseWandEffect
 {
@@ -19,13 +20,7 @@ public class CaptureWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return "capture_projectile";
-    }
-
-    @Override
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.capture_projectile";
+        return EFFECT_CAPTURE;
     }
 
 // Integers:

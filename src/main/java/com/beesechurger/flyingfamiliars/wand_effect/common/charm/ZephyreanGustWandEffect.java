@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_YELLOW;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_ZEPHYREAN_GUST;
 
 public class ZephyreanGustWandEffect extends BaseWandEffect
 {
@@ -18,13 +19,7 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return "boreal_gust_charm";
-    }
-
-    @Override
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.boreal_gust_charm";
+        return EFFECT_ZEPHYREAN_GUST;
     }
 
 // Integers:

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_CRYSTAL_SPIKE;
 
 public class CrystalSpikeWandEffect extends BaseWandEffect
 {
@@ -19,13 +20,7 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return "crystal_spike_charm";
-    }
-
-    @Override
-    public String getTranslatableName()
-    {
-        return "tooltip.flyingfamiliars.wand_effect.crystal_spike_charm";
+        return EFFECT_CRYSTAL_SPIKE;
     }
 
 // Integers:
