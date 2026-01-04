@@ -147,10 +147,12 @@ public class TectonicSunderWandEffect extends BaseWandEffect
                 // useful for wand effect cost?
                 float hardness = state.getDestroySpeed(level, pos);
 
-                level.destroyBlock(pos, !player.getAbilities().instabuild, player);
-
-                BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
-                FFItemHandler.substituteUse(new UseOnContext(player, InteractionHand.MAIN_HAND, hit), replacement).getFirst();
+                if (!level.isClientSide())
+                {
+                    level.destroyBlock(pos, !player.getAbilities().instabuild, player);
+                    BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
+                    FFItemHandler.substituteUse(new UseOnContext(player, InteractionHand.MAIN_HAND, hit), replacement).getFirst();
+                }
 
                 level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), FFSounds.TECTONIC_SUNDER.get(), SoundSource.BLOCKS, 0.5f, 2.0f * FFSounds.getPitch());
                 level.addParticle(ParticleTypes.EXPLOSION, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, 1, 0, 0);
