@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
@@ -88,7 +89,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
     @Override
     public int getCooldown()
     {
-        return 20;
+        return 5;
     }
 
     // charge up time?
@@ -143,58 +144,17 @@ public class TectonicSunderWandEffect extends BaseWandEffect
             if (!state.isAir() && state.getDestroyProgress(player, level, pos) > 0
                     && state.getBlock().asItem() != replacement.getItem())
             {
+                // useful for wand effect cost?
                 float hardness = state.getDestroySpeed(level, pos);
 
-                if (!level.isClientSide)
-                {
-                    level.destroyBlock(pos, !player.getAbilities().instabuild, player);
+                level.destroyBlock(pos, !player.getAbilities().instabuild, player);
 
-                    BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
-                    InteractionResult result = substituteUse(new UseOnContext(player, InteractionHand.MAIN_HAND, hit), replacement).getFirst();
+                BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
+                FFItemHandler.substituteUse(new UseOnContext(player, InteractionHand.MAIN_HAND, hit), replacement).getFirst();
 
-                    level.playSound(null, pos.getX(), pos.getY(), pos.getZ(),
-                            FFSounds.TECTONIC_SUNDER.get(), SoundSource.PLAYERS, 0.5f, 2.0f * FFSounds.getPitch());
-
-                    ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D,
-                            2, 0.1, 0.1, 0.1, 0);
-                }
+                level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), FFSounds.TECTONIC_SUNDER.get(), SoundSource.BLOCKS, 0.5f, 2.0f * FFSounds.getPitch());
+                level.addParticle(ParticleTypes.EXPLOSION, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, 1, 0, 0);
             }
-        }
-    }
-    
-    private Pair<InteractionResult, BlockPos> substituteUse(UseOnContext context, ItemStack toUse)
-    {
-        ItemStack save = ItemStack.EMPTY;
-        BlockHitResult hit = new BlockHitResult(context.getClickLocation(), context.getClickedFace(), context.getClickedPos(), context.isInside());
-        UseOnContext newcontext;
-
-        if (context.getPlayer() != null) {
-            save = context.getPlayer().getItemInHand(context.getHand());
-            context.getPlayer().setItemInHand(context.getHand(), toUse);
-            // Need to construct a new one still to refresh the itemstack
-            newcontext = new UseOnContext(context.getPlayer(), context.getHand(), hit);
-        }
-        else
-        {
-            newcontext = new ItemUseContextWithNullPlayer(context.getLevel(), context.getHand(), toUse, hit);
-        }
-
-        BlockPos finalPos = new BlockPlaceContext(newcontext).getClickedPos();
-
-        InteractionResult result = toUse.useOn(newcontext);
-
-        if (context.getPlayer() != null) {
-            context.getPlayer().setItemInHand(context.getHand(), save);
-        }
-
-        return Pair.of(result, finalPos);
-    }
-
-    private static class ItemUseContextWithNullPlayer extends UseOnContext
-    {
-        public ItemUseContextWithNullPlayer(Level world, InteractionHand hand, ItemStack stack, BlockHitResult rayTraceResult)
-        {
-            super(world, null, hand, stack, rayTraceResult);
         }
     }
 

@@ -12,11 +12,17 @@ import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import com.google.common.collect.Iterables;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -124,6 +130,35 @@ public class FFItemHandler
 
 		return stacks;
 	}
+
+    // swapping of item to bein player's hand, derived from Botania's version in their Player helper class
+    public static Pair<InteractionResult, BlockPos> substituteUse(UseOnContext context, ItemStack toUse)
+    {
+        ItemStack save = ItemStack.EMPTY;
+        BlockHitResult hit = new BlockHitResult(context.getClickLocation(), context.getClickedFace(), context.getClickedPos(), context.isInside());
+        UseOnContext newcontext;
+
+        if (context.getPlayer() != null) {
+            save = context.getPlayer().getItemInHand(context.getHand());
+            context.getPlayer().setItemInHand(context.getHand(), toUse);
+            // Need to construct a new one still to refresh the itemstack
+            newcontext = new UseOnContext(context.getPlayer(), context.getHand(), hit);
+        }
+        else
+        {
+            newcontext = new UseOnContext(context.getLevel(), null, context.getHand(), toUse, hit);
+        }
+
+        BlockPos finalPos = new BlockPlaceContext(newcontext).getClickedPos();
+
+        InteractionResult result = toUse.useOn(newcontext);
+
+        if (context.getPlayer() != null) {
+            context.getPlayer().setItemInHand(context.getHand(), save);
+        }
+
+        return Pair.of(result, finalPos);
+    }
 
 	public static ItemStack getCurioCharmTagItem(Player player)
 	{

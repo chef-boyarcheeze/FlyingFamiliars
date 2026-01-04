@@ -155,7 +155,7 @@
 		]
 	},
     "tectonic_sunder": {
-      "subtitle": "sounds.flyingfamiliars.tectonic_sunder_1",
+      "subtitle": "sounds.flyingfamiliars.tectonic_sunder",
       "sounds": [
           "flyingfamiliars:wand_effects/charm/tectonic_sunder/tectonic_sunder_1",
           "flyingfamiliars:wand_effects/charm/tectonic_sunder/tectonic_sunder_2"

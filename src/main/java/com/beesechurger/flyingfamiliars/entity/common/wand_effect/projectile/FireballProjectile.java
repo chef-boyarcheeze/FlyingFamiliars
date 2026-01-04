@@ -167,7 +167,10 @@ public class FireballProjectile extends BaseWandEffectProjectile
             for (int i = 0; i < 360; i++)
             {
                 // capture
-                if(i % 5 == 0) level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 9) * Math.sin(i * 9)), 0.1 * Math.sin(i));
+                if(i % 5 == 0)
+                {
+                    level().addParticle(ParticleTypes.EXPLOSION, getX(), getY(), getZ(), 0.1 * Math.cos(i), 0.05 * (Math.cos(i * 9) * Math.sin(i * 9)), 0.1 * Math.sin(i));
+                }
             }
         }
     }

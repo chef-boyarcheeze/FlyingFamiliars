@@ -112,7 +112,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         if(stack.hasTag() && selectedWandEffect != null)
         {
             tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
-                    .withStyle(ChatFormatting.GRAY));
+                    .withStyle(selectedWandEffect.getTooltipColor()));
         }
 
         super.appendHoverText(stack, level, tooltip, tipFlag);
@@ -128,26 +128,23 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         ItemStack stack = player.getItemInHand(hand);
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if(!level.isClientSide())
+        if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
         {
-            if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
-            {
-                // determine if there is enough 'fuel' for action
+            // determine if there is enough 'fuel' for action
 /*                if (!player.getAbilities().instabuild && !flag)
-                {
-                    return InteractionResultHolder.fail(itemstack);
-                }
-                else
-                {
-                    player.startUsingItem(hand);
-                    return InteractionResultHolder.consume(stack);
-                }*/
-
-                selectedWandEffect.action(level, player);
-
-                player.awardStat(Stats.ITEM_USED.get(this));
-                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+            {
+                return InteractionResultHolder.fail(itemstack);
             }
+            else
+            {
+                player.startUsingItem(hand);
+                return InteractionResultHolder.consume(stack);
+            }*/
+
+            selectedWandEffect.action(level, player);
+
+            player.awardStat(Stats.ITEM_USED.get(this));
+            player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
         }
 
         if (selectedWandEffect != null && selectedWandEffect.usableOnBlockOnly())
@@ -164,23 +161,20 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         ItemStack stack = context.getItemInHand();
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if (!context.getLevel().isClientSide())
+        BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+
+        if (selectedWandEffect != null && selectedWandEffect.checkLookedAtBlock(state) && selectedWandEffect.usableOnBlockOnly())
         {
-            BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+            Player player = context.getPlayer();
 
-            if (selectedWandEffect != null && selectedWandEffect.checkLookedAtBlock(state) && selectedWandEffect.usableOnBlockOnly())
+            // determine if there is enough 'fuel' for action
+            if (!player.getAbilities().instabuild && !false) //flag instead of false
             {
-                Player player = context.getPlayer();
-
-                // determine if there is enough 'fuel' for action
-                if (!player.getAbilities().instabuild && !false) //flag instead of false
-                {
-                    return InteractionResult.FAIL;
-                }
-                else
-                {
-                    player.startUsingItem(context.getHand());
-                }
+                return InteractionResult.FAIL;
+            }
+            else
+            {
+                player.startUsingItem(context.getHand());
             }
         }
 
@@ -236,11 +230,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 return;
             }
 
-            if (selectedWandEffect.canBePartiallyDrawn())
-            {
-                selectedWandEffect.actionOn(level, player, pos);
-            }
-            else if (selectedWandEffect.getUseDurationMax() - duration > selectedWandEffect.getUseDurationMin())
+            if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.getUseDurationMax() - duration > selectedWandEffect.getUseDurationMin())
             {
                 selectedWandEffect.actionOn(level, player, pos);
                 // consume fuel
