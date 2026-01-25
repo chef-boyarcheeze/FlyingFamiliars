@@ -128,7 +128,7 @@ public class FFItemHandler
 		return stacks;
 	}
 
-    // swapping of item to bein player's hand, derived from Botania's version in their Player helper class
+    // swapping of item to be in player's hand, derived from Botania's version in their Player helper class
     public static Pair<InteractionResult, BlockPos> substituteUse(UseOnContext context, ItemStack toUse)
     {
         ItemStack save = ItemStack.EMPTY;

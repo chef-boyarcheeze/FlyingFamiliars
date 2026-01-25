@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -28,11 +29,9 @@ public class WandEffectSelectionScreen implements IGuiOverlay
 
     private Boolean active = false;
     private ItemStack stack = null;
-
+    private ListTag wandEffectList = null;
     private int newSelectionIndex = -1;
     private int currentSelectionIndex = -1;
-    
-    private List<CompoundTag> wandEffectList = new ArrayList<>();
 
     private final Vector4f lineColor = new Vector4f(1f, 0.85f, 0.7f, 1f);
     private final Vector4f radialButtonColor = new Vector4f(.04f, .03f, .01f, .6f);
@@ -47,32 +46,30 @@ public class WandEffectSelectionScreen implements IGuiOverlay
     {
         if (incomingStack.getItem() instanceof BaseSoulWand item)
         {
-            active = true;
-            newSelectionIndex = -1;
             stack = incomingStack;
-            
-            for (Tag tag : WandEffectTagRef.INSTANCE.getEntryList(stack.getOrCreateTag()))
+
+            if (!WandEffectTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()))
             {
-                wandEffectList.add((CompoundTag) tag);
-            }
+                active = true;
+                wandEffectList = WandEffectTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+                newSelectionIndex = -1;
 
-            CompoundTag selection = WandEffectTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+                CompoundTag selection = WandEffectTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
 
-            for (int i = 0; i < wandEffectList.size(); ++i)
-            {
-                String selectionString = selection.get(STORAGE_WAND_EFFECT_TYPE).toString();
-                String comparisonString = wandEffectList.get(i).get(STORAGE_WAND_EFFECT_TYPE).toString();
-
-                if (selectionString.equals(comparisonString))
+                for (int i = 0; i < wandEffectList.size(); ++i)
                 {
-                    currentSelectionIndex = i;
-                    break;
+                    String selectionString = selection.get(STORAGE_WAND_EFFECT_TYPE).toString();
+                    String comparisonString = wandEffectList.getCompound(i).get(STORAGE_WAND_EFFECT_TYPE).toString();
+
+                    if (selectionString.equals(comparisonString))
+                    {
+                        currentSelectionIndex = i;
+                        break;
+                    }
                 }
+
+                Minecraft.getInstance().mouseHandler.releaseMouse();
             }
-
-            // if list size == 0 then don't release mouse
-
-            Minecraft.getInstance().mouseHandler.releaseMouse();
         }
     }
 
@@ -86,7 +83,8 @@ public class WandEffectSelectionScreen implements IGuiOverlay
         }
 
         stack = null;
-        wandEffectList = new ArrayList<>();
+        wandEffectList = null;
+        newSelectionIndex = -1;
         currentSelectionIndex = -1;
 
         Minecraft.getInstance().mouseHandler.grabMouse();
@@ -128,7 +126,7 @@ public class WandEffectSelectionScreen implements IGuiOverlay
 
         if (mousePos.distanceToSqr(screenCenter) < outerBoundaryMin * outerBoundaryMin)
         {
-            // reset mouse selection to currently selected wand effect
+            // reset new selection when not selecting any wand effect
             newSelectionIndex = currentSelectionIndex;
         }
 

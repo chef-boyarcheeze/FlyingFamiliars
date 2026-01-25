@@ -12,11 +12,11 @@ public class WandEffectTagRef implements IStorageTagRef
 {
     public static final WandEffectTagRef INSTANCE = new WandEffectTagRef();
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
     @Override
     public String getEntryListName()
     {
@@ -34,7 +34,7 @@ public class WandEffectTagRef implements IStorageTagRef
         return hasTag(entry) ? entry.get(STORAGE_WAND_EFFECT_TYPE).getAsString() : "";
     }
 
-// Tags:
+/// Tags:
     @Override
     public ListTag getInitialEntryList(CompoundTag storageTag)
     {
