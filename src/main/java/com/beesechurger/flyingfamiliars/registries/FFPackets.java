@@ -44,11 +44,17 @@ public class FFPackets
 				.consumerMainThread(EntityCycleC2SPacket::handle)
 				.add();
 
-		net.messageBuilder(EntryManipModeC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-				.decoder(EntryManipModeC2SPacket::new)
-				.encoder(EntryManipModeC2SPacket::toBytes)
-				.consumerMainThread(EntryManipModeC2SPacket::handle)
+		net.messageBuilder(WandEffectAttackC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+				.decoder(WandEffectAttackC2SPacket::new)
+				.encoder(WandEffectAttackC2SPacket::toBytes)
+				.consumerMainThread(WandEffectAttackC2SPacket::handle)
 				.add();
+
+        net.messageBuilder(WandEffectSelectionC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(WandEffectSelectionC2SPacket::new)
+                .encoder(WandEffectSelectionC2SPacket::toBytes)
+                .consumerMainThread(WandEffectSelectionC2SPacket::handle)
+                .add();
 	}
 	
 	public static <MSG> void sendToServer(MSG message)

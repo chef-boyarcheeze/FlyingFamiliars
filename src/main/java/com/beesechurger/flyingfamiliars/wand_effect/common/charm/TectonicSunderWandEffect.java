@@ -4,21 +4,17 @@ import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -26,12 +22,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.MAX_CHARGE_TIME;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_TECTONIC_SUNDER;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TECTONIC_SUNDER;
 
 public class TectonicSunderWandEffect extends BaseWandEffect
 {
@@ -45,7 +40,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return EFFECT_TECTONIC_SUNDER;
+        return WAND_EFFECT_TECTONIC_SUNDER;
     }
 
 // Booleans:
@@ -92,8 +87,6 @@ public class TectonicSunderWandEffect extends BaseWandEffect
         return 5;
     }
 
-    // charge up time?
-
     @Override
     public int getBarColor()
     {
@@ -108,7 +101,8 @@ public class TectonicSunderWandEffect extends BaseWandEffect
     }
 
     @Override
-    public UseAnim getUseAnimation() {
+    public UseAnim getUseAnimation()
+    {
         return UseAnim.BOW;
     }
 
@@ -117,7 +111,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
 ///////////////
 
 // Misc:
-    public void populateItemList()
+    private void populateItemList()
     {
         INPUT_ITEMS.clear();
 
@@ -132,7 +126,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
 /////////////////////////
 
     @Override
-    public void actionOn(Level level, Player player, BlockPos pos)
+    public void useOn(Level level, Player player, BlockPos pos)
     {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();

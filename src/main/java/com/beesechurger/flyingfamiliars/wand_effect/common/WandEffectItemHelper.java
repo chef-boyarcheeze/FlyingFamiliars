@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common;
 
+import com.beesechurger.flyingfamiliars.wand_effect.common.charm.CloudCallWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.charm.TectonicSunderWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FireballWandEffect;
@@ -15,13 +16,14 @@ public class WandEffectItemHelper
 /////////////////////////////////////
 
 /// Charms:
-    public static final String EFFECT_CRYSTAL_SPIKE = "crystal_spike_charm";
-    public static final String EFFECT_TECTONIC_SUNDER = "tectonic_sunder_charm";
-    public static final String EFFECT_ZEPHYREAN_GUST = "zephyrean_gust_charm";
+    public static final String WAND_EFFECT_CLOUD_CALL = "cloud_call_charm";
+    public static final String WAND_EFFECT_CRYSTAL_SPIKE = "crystal_spike_charm";
+    public static final String WAND_EFFECT_TECTONIC_SUNDER = "tectonic_sunder_charm";
+    public static final String WAND_EFFECT_ZEPHYREAN_GUST = "zephyrean_gust_charm";
 
 /// Projectiles:
-    public static final String EFFECT_CAPTURE = "capture_projectile";
-    public static final String EFFECT_FIREBALL = "fireball_projectile";
+    public static final String WAND_EFFECT_CAPTURE = "capture_projectile";
+    public static final String WAND_EFFECT_FIREBALL = "fireball_projectile";
 
 /// Sentries:
 
@@ -30,6 +32,7 @@ public class WandEffectItemHelper
 //////////////////////////////
 
 /// Charm wand effects:
+    private static final CloudCallWandEffect CLOUD_CALL = new CloudCallWandEffect();
     //private static final CrystalSpikeWandEffect CRYSTAL_SPIKE = new CrystalSpikeWandEffect();
     private static final TectonicSunderWandEffect TECTONIC_SUNDER = new TectonicSunderWandEffect();
 
@@ -41,11 +44,12 @@ public class WandEffectItemHelper
 
     private static final Map<String, BaseWandEffect> WAND_EFFECT_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
     /// Charms:
-        map.put(EFFECT_TECTONIC_SUNDER, TECTONIC_SUNDER);
+        map.put(WAND_EFFECT_CLOUD_CALL, CLOUD_CALL);
+        map.put(WAND_EFFECT_TECTONIC_SUNDER, TECTONIC_SUNDER);
 
     /// Projectiles:
-        map.put(EFFECT_CAPTURE, CAPTURE);
-        map.put(EFFECT_FIREBALL, FIREBALL);
+        map.put(WAND_EFFECT_CAPTURE, CAPTURE);
+        map.put(WAND_EFFECT_FIREBALL, FIREBALL);
 
     /// Sentries:
 

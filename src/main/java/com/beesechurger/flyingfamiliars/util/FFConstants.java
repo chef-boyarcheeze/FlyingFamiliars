@@ -22,6 +22,7 @@ public class FFConstants
 
     public static final String STORAGE_WAND_EFFECT_TAGNAME = "ff.item.wand_effect";
     public static final String STORAGE_WAND_EFFECT_TYPE = "WandEffectType";
+    public static final String STORAGE_WAND_EFFECT_SELECTION = "WandEffectSelection";
 
     public static final String STORAGE_SETTINGS = "Settings";
     public static final String STORAGE_ENTRY_LIST = "EntryList";

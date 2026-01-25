@@ -6,16 +6,14 @@ import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagIt
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
 import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
-import com.beesechurger.flyingfamiliars.packet.EntryManipModeC2SPacket;
+import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import com.google.common.collect.Iterables;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -33,7 +31,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +48,7 @@ public class FFItemHandler
 
 		if (!stack.isEmpty() && stack.getItem() instanceof BaseStorageTagItem)
 		{
-			FFPackets.sendToServer(new EntryManipModeC2SPacket());
+			FFPackets.sendToServer(new WandEffectAttackC2SPacket());
 		}
 	}
 

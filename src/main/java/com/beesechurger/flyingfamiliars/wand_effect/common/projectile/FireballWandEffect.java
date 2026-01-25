@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_RED;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_FIREBALL;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_FIREBALL;
 
 public class FireballWandEffect extends BaseWandEffect
 {
@@ -19,7 +19,7 @@ public class FireballWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return EFFECT_FIREBALL;
+        return WAND_EFFECT_FIREBALL;
     }
 
 // Integers:
@@ -53,7 +53,7 @@ public class FireballWandEffect extends BaseWandEffect
 /////////////////////////
 
     @Override
-    public void action(Level level, Player player)
+    public void use(Level level, Player player)
     {
         FireballProjectile fireball = new FireballProjectile(level, player);
         fireball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);

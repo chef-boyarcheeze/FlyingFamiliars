@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_TECTONIC_SUNDER;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TECTONIC_SUNDER;
 
 public class TectonicSunderRecipe implements Recipe<SimpleContainer>
 {
@@ -97,13 +97,13 @@ public class TectonicSunderRecipe implements Recipe<SimpleContainer>
     {
         private Type() {}
         public static final TectonicSunderRecipe.Type INSTANCE = new TectonicSunderRecipe.Type();
-        public static final String ID = EFFECT_TECTONIC_SUNDER;
+        public static final String ID = WAND_EFFECT_TECTONIC_SUNDER;
     }
 
     public static class Serializer implements RecipeSerializer<TectonicSunderRecipe>
     {
         public static final TectonicSunderRecipe.Serializer INSTANCE = new TectonicSunderRecipe.Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(FlyingFamiliars.MOD_ID, EFFECT_TECTONIC_SUNDER);
+        public static final ResourceLocation ID = new ResourceLocation(FlyingFamiliars.MOD_ID, WAND_EFFECT_TECTONIC_SUNDER);
 
         @Override
         public TectonicSunderRecipe fromJson(ResourceLocation id, JsonObject json)

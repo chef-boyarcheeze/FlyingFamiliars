@@ -2,9 +2,11 @@ package com.beesechurger.flyingfamiliars.tags;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_TECTONIC_SUNDER;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.*;
+import static java.lang.System.exit;
 
 public class WandEffectTagRef implements IStorageTagRef
 {
@@ -26,8 +28,10 @@ public class WandEffectTagRef implements IStorageTagRef
         if(!hasTag(storageTag) || isEmpty(storageTag))
             return STORAGE_EMPTY;
 
+        CompoundTag entry = getSelectedEntry(storageTag);
+
         // getAsString() returns selection name without quotes, which is the correct key for WandEffectItemHelper map
-        return getSelectedEntry(storageTag).get(STORAGE_WAND_EFFECT_TYPE).getAsString();
+        return hasTag(entry) ? entry.get(STORAGE_WAND_EFFECT_TYPE).getAsString() : "";
     }
 
 // Tags:
@@ -38,13 +42,24 @@ public class WandEffectTagRef implements IStorageTagRef
 
         // add default capture projectile wand effect entry to add to initial list
         CompoundTag captureTag = new CompoundTag();
-        captureTag.putString(STORAGE_WAND_EFFECT_TYPE, EFFECT_TECTONIC_SUNDER);
+        captureTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_CAPTURE);
+
+        CompoundTag fireballTag = new CompoundTag();
+        fireballTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_FIREBALL);
+
+        CompoundTag cloudCallTag = new CompoundTag();
+        cloudCallTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_CLOUD_CALL);
+
+        CompoundTag tectonicSunderTag = new CompoundTag();
+        tectonicSunderTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_TECTONIC_SUNDER);
 
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
 
         // add capture projectile entry to list
         tagList.add(captureTag);
+        tagList.add(cloudCallTag);
+        tagList.add(tectonicSunderTag);
 
         return tagList;
     }
@@ -56,5 +71,32 @@ public class WandEffectTagRef implements IStorageTagRef
         tag.putInt(STORAGE_ENTRY_STORAGE_MAX, 5);
 
         return tag;
+    }
+
+    @Override
+    public CompoundTag getSelectedEntry(CompoundTag storageTag)
+    {
+        ListTag entryList = getEntryList(storageTag);
+
+        for (Tag tag : entryList)
+        {
+            CompoundTag entry = (CompoundTag) tag;
+
+            if (entry.contains(STORAGE_WAND_EFFECT_SELECTION))
+            {
+                return entry;
+            }
+        }
+
+        // no wand effect is selected, select either first or none
+        if (entryList.size() > 0)
+        {
+            CompoundTag entry = entryList.getCompound(0);
+            entry.put(STORAGE_WAND_EFFECT_SELECTION, new CompoundTag());
+
+            return entry;
+        }
+
+        return new CompoundTag();
     }
 }

@@ -1,14 +1,21 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_CAPTURE;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_CAPTURE;
 
 public class CaptureWandEffect extends BaseWandEffect
 {
@@ -20,7 +27,7 @@ public class CaptureWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return EFFECT_CAPTURE;
+        return WAND_EFFECT_CAPTURE;
     }
 
 // Integers:
@@ -54,7 +61,28 @@ public class CaptureWandEffect extends BaseWandEffect
 /////////////////////////
 
     @Override
-    public void action(Level level, Player player)
+    public void attack(Level level, Player player)
+    {
+        ItemStack stack = player.getMainHandItem();
+
+        if (stack.getItem() instanceof BaseEntityTagItem item)
+        {
+            CompoundTag stackTag = stack.getOrCreateTag();
+
+            item.toggleManipMode(stack);
+
+            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
+
+            MutableComponent message = item.getManipMode(stack)
+                    ? Component.translatable("message.flyingfamiliars.item_info_tag.toggle_manip_mode.place")
+                    : Component.translatable("message.flyingfamiliars.item_info_tag.toggle_manip_mode.remove");
+
+            player.displayClientMessage(message.withStyle(ChatFormatting.WHITE), true);
+        }
+    }
+
+    @Override
+    public void use(Level level, Player player)
     {
         CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
         capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);

@@ -5,7 +5,6 @@ import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
@@ -41,7 +40,9 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     @Override
     public boolean canCycle(Player player, ItemStack stack)
     {
-        return super.canCycle(player, stack) && getSelectedWandEffect(stack) instanceof CaptureWandEffect;
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+
+        return super.canCycle(player, stack) && selectedWandEffect != null && selectedWandEffect instanceof CaptureWandEffect;
     }
 
 // Integers:
@@ -50,7 +51,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        return selectedWandEffect.getUseDurationMax();
+        return selectedWandEffect != null ? selectedWandEffect.getUseDurationMax() : super.getUseDuration(stack);
     }
 
     @Override
@@ -58,14 +59,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if(selectedWandEffect != null)
-        {
-            return selectedWandEffect.getBarColor();
-        }
-        else
-        {
-            return CHAT_GRAY;
-        }
+        return selectedWandEffect != null ? selectedWandEffect.getBarColor() : CHAT_GRAY;
     }
 
 // Misc:
@@ -74,17 +68,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if(selectedWandEffect != null)
-        {
-            return Component.translatable(super.getDescriptionId(stack))
-                    .append(" (")
-                    .append(Component.translatable(selectedWandEffect.getTranslatableName()))
-                    .append(")");
-        }
-        else
-        {
-            return Component.translatable(super.getDescriptionId(stack));
-        }
+        return selectedWandEffect != null ? Component.translatable(super.getDescriptionId(stack))
+                                            .append(" (")
+                                            .append(Component.translatable(selectedWandEffect.getTranslatableName()))
+                                            .append(")")
+                                          : Component.translatable(super.getDescriptionId(stack));
     }
 
     public BaseWandEffect getSelectedWandEffect(ItemStack stack)
@@ -97,7 +85,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        return selectedWandEffect.getUseAnimation();
+        return selectedWandEffect != null ? selectedWandEffect.getUseAnimation() : super.getUseAnimation(stack);
     }
 
 ////////////////
@@ -131,20 +119,21 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
         {
             // determine if there is enough 'fuel' for action
-/*                if (!player.getAbilities().instabuild && !flag)
+            if (!player.getAbilities().instabuild && !false) //flag instead of false TODO
             {
-                return InteractionResultHolder.fail(itemstack);
+                return InteractionResultHolder.fail(stack);
+            }
+            else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
+            {
+                player.startUsingItem(hand);
             }
             else
             {
-                player.startUsingItem(hand);
-                return InteractionResultHolder.consume(stack);
-            }*/
+                selectedWandEffect.use(level, player);
 
-            selectedWandEffect.action(level, player);
-
-            player.awardStat(Stats.ITEM_USED.get(this));
-            player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                player.awardStat(Stats.ITEM_USED.get(this));
+                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+            }
         }
 
         if (selectedWandEffect != null && selectedWandEffect.usableOnBlockOnly())
@@ -160,7 +149,6 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         ItemStack stack = context.getItemInHand();
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
-
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 
         if (selectedWandEffect != null && selectedWandEffect.checkLookedAtBlock(state) && selectedWandEffect.usableOnBlockOnly())
@@ -168,7 +156,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             Player player = context.getPlayer();
 
             // determine if there is enough 'fuel' for action
-            if (!player.getAbilities().instabuild && !false) //flag instead of false
+            if (!player.getAbilities().instabuild && !false) //flag instead of false TODO
             {
                 return InteractionResult.FAIL;
             }
@@ -206,7 +194,15 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
             if (selectedWandEffect.canBePartiallyDrawn())
             {
-                selectedWandEffect.actionOn(level, player, pos);
+                if (selectedWandEffect.usableOnBlockOnly())
+                {
+                    selectedWandEffect.useOn(level, player, pos);
+                }
+                else
+                {
+                    selectedWandEffect.use(level, player);
+                }
+
                 // consume fuel
             }
         }
@@ -232,7 +228,15 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
             if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.getUseDurationMax() - duration > selectedWandEffect.getUseDurationMin())
             {
-                selectedWandEffect.actionOn(level, player, pos);
+                if (selectedWandEffect.usableOnBlockOnly())
+                {
+                    selectedWandEffect.useOn(level, player, pos);
+                }
+                else
+                {
+                    selectedWandEffect.use(level, player);
+                }
+
                 // consume fuel
 
                 player.awardStat(Stats.ITEM_USED.get(this));

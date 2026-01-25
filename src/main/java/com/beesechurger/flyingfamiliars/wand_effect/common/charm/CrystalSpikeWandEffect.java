@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_CRYSTAL_SPIKE;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_CRYSTAL_SPIKE;
 
 public class CrystalSpikeWandEffect extends BaseWandEffect
 {
@@ -20,7 +20,7 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return EFFECT_CRYSTAL_SPIKE;
+        return WAND_EFFECT_CRYSTAL_SPIKE;
     }
 
 // Integers:
@@ -54,7 +54,7 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
 /////////////////////////
 
     @Override
-    public void action(Level level, Player player)
+    public void use(Level level, Player player)
     {
         
     }

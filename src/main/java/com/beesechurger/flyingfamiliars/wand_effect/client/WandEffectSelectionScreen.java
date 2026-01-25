@@ -1,15 +1,15 @@
 package com.beesechurger.flyingfamiliars.wand_effect.client;
 
 import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
+import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
@@ -17,14 +17,22 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.joml.Vector4f;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_WAND_EFFECT_TYPE;
+
 public class WandEffectSelectionScreen implements IGuiOverlay
 {
     public static final WandEffectSelectionScreen INSTANCE = new WandEffectSelectionScreen();
 
     private Boolean active = false;
-    private int mouseSelection = -1;
     private ItemStack stack = null;
-    private ListTag wandEffectList = new ListTag();
+
+    private int newSelectionIndex = -1;
+    private int currentSelectionIndex = -1;
+    
+    private List<CompoundTag> wandEffectList = new ArrayList<>();
 
     private final Vector4f lineColor = new Vector4f(1f, 0.85f, 0.7f, 1f);
     private final Vector4f radialButtonColor = new Vector4f(.04f, .03f, .01f, .6f);
@@ -32,21 +40,39 @@ public class WandEffectSelectionScreen implements IGuiOverlay
 
     private final double innerBoundary = 20;
     private double outerBoundary = 80;
-    private double outerBoundaryMin = 65;
-    private double outerBoundaryMax = 80;
+    private final double outerBoundaryMin = 65;
+    private final double outerBoundaryMax = 80;
 
     public void open(ItemStack incomingStack)
     {
         if (incomingStack.getItem() instanceof BaseSoulWand item)
         {
             active = true;
-            mouseSelection = -1;
+            newSelectionIndex = -1;
             stack = incomingStack;
-            wandEffectList = WandEffectTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+            
+            for (Tag tag : WandEffectTagRef.INSTANCE.getEntryList(stack.getOrCreateTag()))
+            {
+                wandEffectList.add((CompoundTag) tag);
+            }
+
+            CompoundTag selection = WandEffectTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+
+            for (int i = 0; i < wandEffectList.size(); ++i)
+            {
+                String selectionString = selection.get(STORAGE_WAND_EFFECT_TYPE).toString();
+                String comparisonString = wandEffectList.get(i).get(STORAGE_WAND_EFFECT_TYPE).toString();
+
+                if (selectionString.equals(comparisonString))
+                {
+                    currentSelectionIndex = i;
+                    break;
+                }
+            }
+
+            // if list size == 0 then don't release mouse
 
             Minecraft.getInstance().mouseHandler.releaseMouse();
-
-            System.out.println("open");
         }
     }
 
@@ -54,17 +80,16 @@ public class WandEffectSelectionScreen implements IGuiOverlay
     {
         active = false;
 
-        if (mouseSelection >= 0)
+        if (newSelectionIndex >= 0 && newSelectionIndex != currentSelectionIndex)
         {
-            // select wand effect in item
+            FFPackets.sendToServer(new WandEffectSelectionC2SPacket(newSelectionIndex, currentSelectionIndex));
         }
 
         stack = null;
-        wandEffectList = new ListTag();
+        wandEffectList = new ArrayList<>();
+        currentSelectionIndex = -1;
 
         Minecraft.getInstance().mouseHandler.grabMouse();
-
-        System.out.println("close");
     }
 
     public Boolean isActive()
@@ -79,35 +104,32 @@ public class WandEffectSelectionScreen implements IGuiOverlay
             return;
 
         Minecraft mc = Minecraft.getInstance();
-
+        
         if (mc.player == null || mc.screen != null || mc.mouseHandler.isMouseGrabbed() || wandEffectList.size() <= 0)
         {
             close();
             return;
         }
 
-        System.out.println("rendereing");
-
         PoseStack poseStack = graphics.pose();
         poseStack.pushPose();
 
-        int centerX = screenWidth / 2;
-        int centerY = screenHeight / 2;
-
-        Vec2 screenCenter = new Vec2(mc.getWindow().getScreenWidth() * .5f, mc.getWindow().getScreenHeight() * .5f);
+        Vec2 screenCenter = new Vec2(mc.getWindow().getScreenWidth() * 0.5f, mc.getWindow().getScreenHeight() * 0.5f);
         Vec2 mousePos = new Vec2((float) mc.mouseHandler.xpos(), (float) mc.mouseHandler.ypos());
 
-        double x1 = mc.mouseHandler.xpos(), x2 = mc.getWindow().getScreenWidth() * 0.5f;
-        double y1 = mc.mouseHandler.ypos(), y2 = mc.getWindow().getScreenHeight() * 0.5f;
+        double screenWidthCenter = mc.getWindow().getScreenWidth() * 0.5f;
+        double screenHeightCenter = mc.getWindow().getScreenHeight() * 0.5f;
 
         double radiansPerWandEffect = Math.toRadians(360 / (float) wandEffectList.size());
-        float mouseRotation = (getMouseAngle(x1, x2, y1, y2) + 1.570f + (float) radiansPerWandEffect * .5f) % 6.283f;
 
-        mouseSelection = (int) Mth.clamp(mouseRotation / radiansPerWandEffect, 0, wandEffectList.size() - 1);
-        if (Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2)) < outerBoundaryMin * outerBoundaryMin)
+        double mouseRotation = (getMouseAngle(mousePos.x, mousePos.y, screenWidthCenter, screenHeightCenter) + 1.570f + (float) radiansPerWandEffect * .5f) % (2 * Math.PI);
+
+        newSelectionIndex = (int) Mth.clamp(mouseRotation / radiansPerWandEffect, 0, wandEffectList.size() - 1);
+
+        if (mousePos.distanceToSqr(screenCenter) < outerBoundaryMin * outerBoundaryMin)
         {
             // reset mouse selection to currently selected wand effect
-            mouseSelection = 0;
+            newSelectionIndex = currentSelectionIndex;
         }
 
         graphics.fill(0, 0, screenWidth, screenHeight, 0);
@@ -116,6 +138,9 @@ public class WandEffectSelectionScreen implements IGuiOverlay
         final Tesselator tesselator = Tesselator.getInstance();
         final BufferBuilder buffer = tesselator.getBuilder();
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+        final int centerX = screenWidth / 2;
+        final int centerY = screenHeight / 2;
 
         drawRadialBackgrounds(buffer, centerX, centerY);
         drawDividingLines(buffer, centerX, centerY);
@@ -134,7 +159,7 @@ public class WandEffectSelectionScreen implements IGuiOverlay
         var title = selectedSpell.getSpell().getDisplayName(minecraft.player).withStyle(Style.EMPTY.withUnderlined(true));
         var level = Component.translatable("ui.irons_spellbooks.level", TooltipsUtils.getLevelComponenet(selectedSpell, player).withStyle(selectedSpell.getSpell().getRarity(spellLevel).getDisplayName().getStyle()));
         var mana = Component.translatable("ui.irons_spellbooks.mana_cost", selectedSpell.getSpell().getManaCost(spellLevel)).withStyle(ChatFormatting.AQUA);
-//            selectedSpell.getUniqueInfo(minecraft.player).forEach((line) -> lines.add(line.withStyle(ChatFormatting.DARK_GREEN)));
+        selectedSpell.getUniqueInfo(minecraft.player).forEach((line) -> lines.add(line.withStyle(ChatFormatting.DARK_GREEN)));
 
         drawTextBackground(guiHelper, centerX, centerY, outerBoundary + textHeight - textTitleMargin - font.lineHeight, textCenterMargin, Math.max(2, info.size()) * font.lineHeight);
         guiHelper.drawString(font, title, (int) (centerX - font.width(title) / 2), (int) (centerY - (outerBoundary + textHeight)), 0xFFFFFF, true);
@@ -171,19 +196,19 @@ public class WandEffectSelectionScreen implements IGuiOverlay
                 int cdWidth = 16 / 2;
                 //blit(poseStack, centerX + (int) locations[i].x + 3, centerY + (int) locations[i].y + 3, 0, 0, 16, 16, 16, 16);
                 graphics.blit(texture, (int) locations[i].x - iconWidth, (int) locations[i].y - iconWidth, 0, 0, 16, 16, 16, 16);
-            *//*
-            Border
-             *//*
+
+            //Border
+
                 graphics.blit(TEXTURE, (int) locations[i].x - borderWidth, (int) locations[i].y - borderWidth, swsm.getSelectionIndex() == i ? 32 : 0, 106, 32, 32);
-            *//*
-            Cooldown
-             *//*
+
+            //Cooldown
+
                 float f = ClientMagicData.getCooldownPercent(spell.getSpell());
                 if (f > 0)
                 {
                     RenderSystem.enableBlend();
                     int pixels = (int) (16 * f + 1f);
-//                    gui.blit(poseStack, centerX + (int) locations[i].x + 3, centerY + (int) locations[i].y + 19 - pixels, 47, 87, 16, pixels);
+                    gui.blit(poseStack, centerX + (int) locations[i].x + 3, centerY + (int) locations[i].y + 19 - pixels, 47, 87, 16, pixels);
                     graphics.blit(TEXTURE, (int) locations[i].x - cdWidth, (int) locations[i].y + cdWidth - pixels, 47, 87, 16, pixels);
                 }
                 poseStack.popPose();
@@ -253,7 +278,7 @@ public class WandEffectSelectionScreen implements IGuiOverlay
             final double y1m2 = Math.sin(beginRadians) * outerBoundary;
             final double y2m2 = Math.sin(endRadians) * outerBoundary;
 
-            boolean isHighlighted = (i * wandEffectList.size()) / segments == mouseSelection;
+            boolean isHighlighted = (i * wandEffectList.size()) / segments == newSelectionIndex;
 
             Vector4f color = radialButtonColor;
             if (isHighlighted) color = highlightColor;
@@ -282,6 +307,6 @@ public class WandEffectSelectionScreen implements IGuiOverlay
 
     private static float getMouseAngle(double x1, double y1, double x2, double y2)
     {
-        return (float) (Math.atan2(y2 - y1, x2- x1) + Math.PI);
+        return (float) (Math.atan2(y2 - y1, x2 - x1) + Math.PI);
     }
 }

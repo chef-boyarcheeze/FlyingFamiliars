@@ -8,14 +8,14 @@ import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
 public interface IStorageTagRef
 {
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
     public String getEntryListName();
 
-// Booleans:
+/// Booleans:
     default boolean hasTag(CompoundTag tag)
     {
         return tag != null && tag != new CompoundTag();
@@ -31,7 +31,7 @@ public interface IStorageTagRef
         return getEntryList(storageTag).size() == getMaxEntries(storageTag) && getMaxEntries(storageTag) > 0;
     }
 
-// Integers:
+/// Integers:
     default int getMaxEntries(CompoundTag storageTag)
     {
         return getSettingsTag(storageTag).getInt(STORAGE_ENTRY_STORAGE_MAX);
@@ -42,11 +42,15 @@ public interface IStorageTagRef
         return getEntryList(storageTag).size();
     }
 
-// Tags:
+/// Tags:
+    default CompoundTag getStorageNameTag(CompoundTag storageTag)
+    {
+        return getOrCreateTag(storageTag).getCompound(getEntryListName());
+    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Initial tag setup functions:
+/// Initial tag setup functions:
     default CompoundTag getOrCreateTag(CompoundTag storageTag)
     {
         if(!hasTag(storageTag) || !storageTag.contains(getEntryListName()))
@@ -74,12 +78,12 @@ public interface IStorageTagRef
 
     default ListTag getEntryList(CompoundTag storageTag)
     {
-        return getOrCreateTag(storageTag).getCompound(getEntryListName()).getList(STORAGE_ENTRY_LIST, ListTag.TAG_COMPOUND);
+        return getStorageNameTag(storageTag).getList(STORAGE_ENTRY_LIST, ListTag.TAG_COMPOUND);
     }
 
     default CompoundTag getSettingsTag(CompoundTag storageTag)
     {
-        return getOrCreateTag(storageTag).getCompound(getEntryListName()).getCompound(STORAGE_SETTINGS);
+        return getStorageNameTag(storageTag).getCompound(STORAGE_SETTINGS);
     }
 
     default CompoundTag getSelectedEntry(CompoundTag storageTag)
@@ -87,37 +91,36 @@ public interface IStorageTagRef
         ListTag entryList = getEntryList(storageTag);
 
         if(!isEmpty(storageTag))
+        {
             return entryList.getCompound(getEntryCount(storageTag) - 1);
+        }
 
         return new CompoundTag();
     }
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Integers:
+/// Integers:
     default void setMaxEntries(CompoundTag storageTag, int newSize)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);
         settingsTag.putInt(STORAGE_ENTRY_STORAGE_MAX, newSize);
 
-        getOrCreateTag(storageTag).getCompound(getEntryListName()).put(STORAGE_SETTINGS, settingsTag);
+        getStorageNameTag(storageTag).put(STORAGE_SETTINGS, settingsTag);
     }
 
-//////////////////
-// Tag actions: //
-//////////////////
+////////////////////
+/// Tag actions: ///
+////////////////////
 
     default boolean addEntry(CompoundTag storageTag, CompoundTag entryTag)
     {
         if (!isFull(storageTag) && hasTag(entryTag))
         {
-            // get current entry list, add incoming entry tag, and update item stack's tag
             ListTag entryList = getEntryList(storageTag);
             entryList.add(entryTag);
-
-            storageTag.getCompound(getEntryListName()).put(STORAGE_ENTRY_LIST, entryList);
 
             return true;
         }
@@ -144,11 +147,8 @@ public interface IStorageTagRef
     {
         if (!isEmpty(storageTag) && hasTag(entryTag))
         {
-            // get current entry list, remove selected entry tag, and update storedTag
             ListTag entryList = getEntryList(storageTag);
             entryList.remove(entryTag);
-
-            storageTag.getCompound(getEntryListName()).put(STORAGE_ENTRY_LIST, entryList);
 
             return true;
         }

@@ -1,13 +1,12 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import com.electronwill.nightconfig.core.conversion.Conversion;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_YELLOW;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.EFFECT_ZEPHYREAN_GUST;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_ZEPHYREAN_GUST;
 
 public class ZephyreanGustWandEffect extends BaseWandEffect
 {
@@ -19,7 +18,7 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     @Override
     public String getName()
     {
-        return EFFECT_ZEPHYREAN_GUST;
+        return WAND_EFFECT_ZEPHYREAN_GUST;
     }
 
 // Integers:
@@ -53,7 +52,7 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
 /////////////////////////
 
     @Override
-    public void action(Level level, Player player)
+    public void use(Level level, Player player)
     {
 
     }

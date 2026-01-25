@@ -105,10 +105,12 @@
 	"tooltip.flyingfamiliars.fluid_tag.stored_1": "1 stored fluid",
 	"tooltip.flyingfamiliars.fluid_tag.stored_multiple": " stored fluids",
 
-	"tooltip.flyingfamiliars.wand_effect.boreal_gust_charm": "Boreal Gust Charm",
-	"tooltip.flyingfamiliars.wand_effect.crystal_spike_charm": "Crystal Spike Charm",
-	"tooltip.flyingfamiliars.wand_effect.capture_projectile": "Capture Projectile",
-	"tooltip.flyingfamiliars.wand_effect.fireball_projectile": "Fireball Projectile",
+	"tooltip.flyingfamiliars.wand_effect.boreal_gust_charm": "Boreal Gust",
+    "tooltip.flyingfamiliars.wand_effect.capture_projectile": "Capture",
+	"tooltip.flyingfamiliars.wand_effect.crystal_spike_charm": "Crystal Spike",
+    "tooltip.flyingfamiliars.wand_effect.cloud_call": "Cloud Call",
+	"tooltip.flyingfamiliars.wand_effect.fireball_projectile": "Fireball",
+    "tooltip.flyingfamiliars.wand_effect.tectonic_sunder": "Tectonic Sunder",
 
 	"message.flyingfamiliars.sitting": "Familiar set to stay",
 	"message.flyingfamiliars.standing": "Familiar set to follow",
