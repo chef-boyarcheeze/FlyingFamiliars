@@ -58,6 +58,7 @@ public class WandEffectTagRef implements IStorageTagRef
 
         // add capture projectile entry to list
         tagList.add(captureTag);
+        tagList.add(fireballTag);
         tagList.add(cloudCallTag);
         tagList.add(tectonicSunderTag);
 
