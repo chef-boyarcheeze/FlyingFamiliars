@@ -32,18 +32,18 @@ public class TectonicSunderWandEffect extends BaseWandEffect
 {
     private static final Set<Item> INPUT_ITEMS = new HashSet<>();
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
     @Override
     public String getName()
     {
         return WAND_EFFECT_TECTONIC_SUNDER;
     }
 
-// Booleans:
+/// Booleans:
     @Override
     public boolean usableOnBlockOnly()
     {
@@ -61,7 +61,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
         return INPUT_ITEMS.contains(state.getBlock().asItem());
     }
 
-// Integers:
+/// Integers:
 
     @Override
     public int getUseDurationMin()
@@ -93,7 +93,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
         return CHAT_GOLD;
     }
 
-// Misc:
+/// Misc:
     @Override
     public ChatFormatting getTooltipColor()
     {
@@ -106,11 +106,11 @@ public class TectonicSunderWandEffect extends BaseWandEffect
         return UseAnim.BOW;
     }
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Misc:
+/// Misc:
     private void populateItemList()
     {
         INPUT_ITEMS.clear();
@@ -121,9 +121,9 @@ public class TectonicSunderWandEffect extends BaseWandEffect
         }
     }
 
-/////////////////////////
-// Wand effect action: //
-/////////////////////////
+///////////////////////////
+/// Wand effect action: ///
+///////////////////////////
 
     @Override
     public void useOn(Level level, Player player, BlockPos pos)

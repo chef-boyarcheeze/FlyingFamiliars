@@ -11,18 +11,18 @@ import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItem
 
 public class FireballWandEffect extends BaseWandEffect
 {
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
     @Override
     public String getName()
     {
         return WAND_EFFECT_FIREBALL;
     }
 
-// Integers:
+/// Integers:
     @Override
     public int getCost()
     {
@@ -41,16 +41,16 @@ public class FireballWandEffect extends BaseWandEffect
         return CHAT_DARK_RED;
     }
 
-// Misc:
+/// Misc:
     @Override
     public ChatFormatting getTooltipColor()
     {
         return ChatFormatting.DARK_RED;
     }
 
-/////////////////////////
-// Wand effect action: //
-/////////////////////////
+///////////////////////////
+/// Wand effect action: ///
+///////////////////////////
 
     @Override
     public void use(Level level, Player player)

@@ -19,18 +19,18 @@ import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItem
 
 public class CaptureWandEffect extends BaseWandEffect
 {
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
     @Override
     public String getName()
     {
         return WAND_EFFECT_CAPTURE;
     }
 
-// Integers:
+/// Integers:
     @Override
     public int getCost()
     {
@@ -49,16 +49,16 @@ public class CaptureWandEffect extends BaseWandEffect
         return CHAT_GRAY;
     }
 
-// Misc:
+/// Misc:
     @Override
     public ChatFormatting getTooltipColor()
     {
         return ChatFormatting.GRAY;
     }
 
-/////////////////////////
-// Wand effect action: //
-/////////////////////////
+///////////////////////////
+/// Wand effect action: ///
+///////////////////////////
 
     @Override
     public void attack(Level level, Player player)
@@ -67,17 +67,13 @@ public class CaptureWandEffect extends BaseWandEffect
 
         if (stack.getItem() instanceof BaseEntityTagItem item)
         {
-            CompoundTag stackTag = stack.getOrCreateTag();
-
             item.toggleManipMode(stack);
-
-            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
-
             MutableComponent message = item.getManipMode(stack)
-                    ? Component.translatable("message.flyingfamiliars.item_info_tag.toggle_manip_mode.place")
-                    : Component.translatable("message.flyingfamiliars.item_info_tag.toggle_manip_mode.remove");
+                    ? Component.translatable("message.flyingfamiliars.wand_effect_tag.capture_projectile.place")
+                    : Component.translatable("message.flyingfamiliars.wand_effect_tag.capture_projectile.remove");
 
             player.displayClientMessage(message.withStyle(ChatFormatting.WHITE), true);
+            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
         }
     }
 

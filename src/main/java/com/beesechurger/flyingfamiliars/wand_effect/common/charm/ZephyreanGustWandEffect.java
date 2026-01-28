@@ -10,18 +10,18 @@ import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItem
 
 public class ZephyreanGustWandEffect extends BaseWandEffect
 {
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
     @Override
     public String getName()
     {
         return WAND_EFFECT_ZEPHYREAN_GUST;
     }
 
-// Integers:
+/// Integers:
     @Override
     public int getCost()
     {
@@ -40,16 +40,16 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
         return CHAT_YELLOW;
     }
 
-// Misc:
+/// Misc:
     @Override
     public ChatFormatting getTooltipColor()
     {
         return ChatFormatting.YELLOW;
     }
 
-/////////////////////////
-// Wand effect action: //
-/////////////////////////
+///////////////////////////
+/// Wand effect action: ///
+///////////////////////////
 
     @Override
     public void use(Level level, Player player)

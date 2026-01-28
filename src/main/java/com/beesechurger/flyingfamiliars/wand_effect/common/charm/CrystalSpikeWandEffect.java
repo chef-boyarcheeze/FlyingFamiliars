@@ -10,20 +10,20 @@ import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItem
 
 public class CrystalSpikeWandEffect extends BaseWandEffect
 {
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
     // summon single spike at target nearest to player look location, which both sets the victim to ride the spike (impaling), but also damages it, and persists for a short time before retracting
 
-// Strings:
+/// Strings:
     @Override
     public String getName()
     {
         return WAND_EFFECT_CRYSTAL_SPIKE;
     }
 
-// Integers:
+/// Integers:
     @Override
     public int getCost()
     {
@@ -42,16 +42,16 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
         return CHAT_GOLD;
     }
 
-// Misc:
+/// Misc:
     @Override
     public ChatFormatting getTooltipColor()
     {
         return ChatFormatting.GOLD;
     }
 
-/////////////////////////
-// Wand effect action: //
-/////////////////////////
+///////////////////////////
+/// Wand effect action: ///
+///////////////////////////
 
     @Override
     public void use(Level level, Player player)

@@ -32,11 +32,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         super(properties);
     }
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Booleans:
+/// Booleans:
     @Override
     public boolean canCycle(Player player, ItemStack stack)
     {
@@ -45,7 +45,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         return super.canCycle(player, stack) && selectedWandEffect != null && selectedWandEffect instanceof CaptureWandEffect;
     }
 
-// Integers:
+/// Integers:
     @Override
     public int getUseDuration(ItemStack stack)
     {
@@ -62,7 +62,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         return selectedWandEffect != null ? selectedWandEffect.getBarColor() : CHAT_GRAY;
     }
 
-// Misc:
+/// Misc:
     @Override
     public Component getName(ItemStack stack)
     {
@@ -88,9 +88,9 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         return selectedWandEffect != null ? selectedWandEffect.getUseAnimation() : super.getUseAnimation(stack);
     }
 
-////////////////
-// Cosmetics: //
-////////////////
+//////////////////
+/// Cosmetics: ///
+//////////////////
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
@@ -106,9 +106,9 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         super.appendHoverText(stack, level, tooltip, tipFlag);
     }
 
-///////////////////
-// Item actions: //
-///////////////////
+/////////////////////
+/// Item actions: ///
+/////////////////////
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
@@ -126,6 +126,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
             {
                 player.startUsingItem(hand);
+                return InteractionResultHolder.pass(stack);
             }
             else
             {
@@ -163,6 +164,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             else
             {
                 player.startUsingItem(context.getHand());
+                return InteractionResult.PASS;
             }
         }
 
