@@ -76,14 +76,8 @@ public class FFCreativeTabs
                 output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get());
 
-                // Phylacteries:
-                output.accept(FFItems.PHYLACTERY_BLUE.get());
-                output.accept(FFItems.PHYLACTERY_GREEN.get());
-                output.accept(FFItems.PHYLACTERY_YELLOW.get());
-                output.accept(FFItems.PHYLACTERY_GOLD.get());
-                output.accept(FFItems.PHYLACTERY_RED.get());
-                output.accept(FFItems.PHYLACTERY_BLACK.get());
-                output.accept(FFItems.PHYLACTERY_WHITE.get());
+                // Phylactery:
+                output.accept(FFItems.PHYLACTERY.get());
 
                 // Multiphials:
                 output.accept(FFItems.MULTIPHIAL_BLUE.get());

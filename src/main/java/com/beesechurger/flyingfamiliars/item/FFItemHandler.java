@@ -123,7 +123,9 @@ public class FFItemHandler
 
 		// phylactery in curio slot
 		if (getCurioCharmTagItem(player) != null)
-			stacks.add(getCurioCharmTagItem(player));
+        {
+            stacks.add(getCurioCharmTagItem(player));
+        }
 
 		return stacks;
 	}
@@ -159,28 +161,12 @@ public class FFItemHandler
 
 	public static ItemStack getCurioCharmTagItem(Player player)
 	{
-		ItemStack[] checkCurios = new ItemStack[7];
-		checkCurios[0] = findItem(player, FFItems.PHYLACTERY_BLUE.get());
-		checkCurios[1] = findItem(player, FFItems.PHYLACTERY_GREEN.get());
-		checkCurios[2] = findItem(player, FFItems.PHYLACTERY_YELLOW.get());
-		checkCurios[3] = findItem(player, FFItems.PHYLACTERY_GOLD.get());
-		checkCurios[4] = findItem(player, FFItems.PHYLACTERY_RED.get());
-		checkCurios[5] = findItem(player, FFItems.PHYLACTERY_BLACK.get());
-		checkCurios[6] = findItem(player, FFItems.PHYLACTERY_WHITE.get());
-
-		ItemStack curioCharm = null;
-
-		for(ItemStack stack : checkCurios)
-		{
-			if(stack != null)
-			{
-				curioCharm = stack;
-				break;
-			}
-		}
+		ItemStack curioCharm = findItem(player, FFItems.PHYLACTERY.get());
 
 		if(curioCharm != null && curioCharm.getItem() instanceof Phylactery item)
-			return curioCharm;
+        {
+            return curioCharm;
+        }
 
 		return null;
 	}

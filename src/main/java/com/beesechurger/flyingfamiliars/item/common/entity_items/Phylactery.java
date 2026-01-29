@@ -4,12 +4,14 @@ import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
 
 public class Phylactery extends BaseEntityTagItem implements ITieredItem
 {
-    protected final ItemTier TIER;
-
-    public Phylactery(Properties properties, ItemTier tier)
+    public Phylactery(Properties properties)
     {
         super(properties);
-
-        this.TIER = tier;
     }
+
+//////////////////
+/// Accessors: ///
+//////////////////
+
+///
 }

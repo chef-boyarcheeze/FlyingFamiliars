@@ -31,7 +31,6 @@ public interface IEntityCycleItem
             List<ItemStack> stacks = FFItemHandler.getEntityStackList(player);
             List<ListTag> entryLists = new ArrayList<>();
 
-
             for (int i = 0; i < stacks.size(); )
             {
                 if (stacks.get(i).getItem() instanceof BaseEntityTagItem item)
@@ -68,7 +67,8 @@ public interface IEntityCycleItem
                 {
                     firstList.add((CompoundTag) lastList.remove(0));
                 }
-            } else
+            }
+            else
             {
                 for (int i = entryLists.size() - 1; i > 0; i--)
                 {

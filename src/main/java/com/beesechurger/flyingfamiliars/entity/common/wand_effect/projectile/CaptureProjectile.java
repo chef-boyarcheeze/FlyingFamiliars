@@ -81,9 +81,9 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 	    super(FFEntityTypes.CAPTURE_PROJECTILE.get(), x, y, z, level);
 	}
 
-/////////////////////////////////
-// GeckoLib animation control: //
-/////////////////////////////////
+///////////////////////////////////
+/// GeckoLib animation control: ///
+///////////////////////////////////
 
 	private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
 	{
@@ -115,17 +115,17 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		data.add(bodyController);
 	}
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Booleans:
+/// Booleans:
 	public boolean isCapturable(Entity entity)
 	{
 		return !(entity instanceof Player) && entity.canChangeDimensions() && entity.isAlive() && entity instanceof Mob && !level().isClientSide();
 	}
 
-// Integers:
+/// Integers:
 	@Override
 	public int getSpawnTimerMax()
 	{
@@ -138,7 +138,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		return 10;
 	}
 
-// Floats:
+/// Floats:
 
 	@Override
 	protected float getGravity()
@@ -146,9 +146,9 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		return 0.03f;
 	}
 
-////////////////////////////////////
-// Player and entity interaction: //
-////////////////////////////////////
+//////////////////////////////////////
+/// Player and entity interaction: ///
+//////////////////////////////////////
 	
 	@Override
     protected void onHitEntity(EntityHitResult result)
@@ -188,7 +188,6 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 
 					// remove successfully captured entity from level
 					entity.remove(Entity.RemovalReason.KILLED);
-
 					displaySelectionMessage(stack);
 
 					return true;
@@ -234,7 +233,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
                     entryTag = selectedEntry;
                 }
 
-				if(entryTag.contains(STORAGE_ENTITY_TYPE))
+				if(entryTag.contains(STORAGE_ENTITY_TYPE) && EntityTagRef.INSTANCE.getEntryList(stackTag).contains(entryTag))
 				{
 					EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
 
@@ -282,9 +281,9 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 		}
 	}
 
-////////////////
-// Entity AI: //
-////////////////
+//////////////////
+/// Entity AI: ///
+//////////////////
 
 	@Override
 	public void tick()

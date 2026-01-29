@@ -70,12 +70,6 @@ public class FFClientSetup
         ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_WHITE_VITALITY.get(), RenderType.translucent());
 
         // Curio items:
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLUE.get(), PhylacteryRenderer::new);
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_GREEN.get(), PhylacteryRenderer::new);
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_YELLOW.get(), PhylacteryRenderer::new);
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_GOLD.get(), PhylacteryRenderer::new);
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_RED.get(), PhylacteryRenderer::new);
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_BLACK.get(), PhylacteryRenderer::new);
-        CuriosRendererRegistry.register(FFItems.PHYLACTERY_WHITE.get(), PhylacteryRenderer::new);
+        CuriosRendererRegistry.register(FFItems.PHYLACTERY.get(), PhylacteryRenderer::new);
     }
 }

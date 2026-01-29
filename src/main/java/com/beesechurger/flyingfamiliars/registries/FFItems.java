@@ -34,14 +34,8 @@ public class FFItems
     public static final RegistryObject<Item> VACUOUS_SPIRIT_FRAGMENT = register("vacuous_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
     public static final RegistryObject<Item> LUMINOUS_SPIRIT_FRAGMENT = register("luminous_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
 
-	// Phylacteries:
-	public static final RegistryObject<Item> PHYLACTERY_BLUE = register("phylactery_blue", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.BLUE));
-	public static final RegistryObject<Item> PHYLACTERY_GREEN = register("phylactery_green", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.GREEN));
-	public static final RegistryObject<Item> PHYLACTERY_YELLOW = register("phylactery_yellow", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.YELLOW));
-	public static final RegistryObject<Item> PHYLACTERY_GOLD = register("phylactery_gold", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ITieredItem.ItemTier.GOLD));
-	public static final RegistryObject<Item> PHYLACTERY_RED = register("phylactery_red", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ITieredItem.ItemTier.RED));
-	public static final RegistryObject<Item> PHYLACTERY_BLACK = register("phylactery_black", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), ITieredItem.ItemTier.BLACK));
-	public static final RegistryObject<Item> PHYLACTERY_WHITE = register("phylactery_white", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), ITieredItem.ItemTier.WHITE));
+	// Phylactery:
+	public static final RegistryObject<Item> PHYLACTERY = register("phylactery_blue", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 
 	// Multiphials:
 	public static final RegistryObject<Item> MULTIPHIAL_BLUE = register("multiphial_blue", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.BLUE));
