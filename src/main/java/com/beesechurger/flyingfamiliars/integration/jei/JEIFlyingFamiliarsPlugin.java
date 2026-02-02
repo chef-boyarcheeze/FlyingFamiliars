@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import mezz.jei.api.IModPlugin;
@@ -31,14 +32,19 @@ public class JEIFlyingFamiliarsPlugin implements IModPlugin
     public void registerCategories(IRecipeCategoryRegistration registration)
     {
         registration.addRecipeCategories(new BrazierRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new TectonicSunderRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration)
     {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-        List<BrazierRecipe> recipes = rm.getAllRecipesFor(BrazierRecipe.Type.INSTANCE);
-        registration.addRecipes(BrazierRecipeCategory.TYPE, recipes);
+
+        List<BrazierRecipe> brazierRecipes = rm.getAllRecipesFor(BrazierRecipe.Type.INSTANCE);
+        registration.addRecipes(BrazierRecipeCategory.TYPE, brazierRecipes);
+
+        List<TectonicSunderRecipe> tectonicSunderRecipes = rm.getAllRecipesFor(TectonicSunderRecipe.Type.INSTANCE);
+        registration.addRecipes(TectonicSunderRecipeCategory.TYPE, tectonicSunderRecipes);
     }
 
     @Override

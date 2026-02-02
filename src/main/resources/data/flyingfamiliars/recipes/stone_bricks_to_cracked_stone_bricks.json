@@ -1,9 +1,0 @@
-{
-	"type": "flyingfamiliars:tectonic_sunder_charm",
-	"inputItem": {
-        "item": "minecraft:stone_bricks"
-    },
-	"outputItem": {
-		"item": "minecraft:cracked_stone_bricks"
-	}
-}
