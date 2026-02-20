@@ -51,6 +51,7 @@ public class FFClientSetup
 
         // Block entities:
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(FFBlocks.FRAGMENT_PEDESTAL.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.VITA_ALEMBIC.get(), RenderType.translucent());
 
         // Fluids:

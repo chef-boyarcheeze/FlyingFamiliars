@@ -15,7 +15,6 @@ import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.ArrayList;
 import java.util.List;

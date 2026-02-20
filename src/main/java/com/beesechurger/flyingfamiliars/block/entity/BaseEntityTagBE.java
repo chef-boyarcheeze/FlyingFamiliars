@@ -70,17 +70,17 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         entityStorageTag = tag.getCompound(STORAGE_ENTITY_TAGNAME);
     }
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Booleans:
+/// Booleans:
     public boolean itemsFull()
     {
         return getItemCount() == getMaxItems();
     }
 
-// Integers:
+/// Integers:
     public int getItemCount()
     {
         for(int i = 0; i < getMaxItems(); i++)
@@ -95,9 +95,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
     public abstract int getMaxEntities();
 
-///////////////////////////
-// Item related methods: //
-///////////////////////////
+/////////////////////////////
+/// Item related methods: ///
+/////////////////////////////
 
     protected void createItems()
     {
@@ -148,9 +148,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         }
     }
 
-/////////////////////////////////
-// Entity tag related methods: //
-/////////////////////////////////
+///////////////////////////////////
+/// Entity tag related methods: ///
+///////////////////////////////////
 
     public boolean placeEntity(Player player, InteractionHand hand)
     {
@@ -248,9 +248,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return entityStrings;
     }
 
-////////////////////////////
-// Fluid related methods: //
-////////////////////////////
+//////////////////////////////
+/// Fluid related methods: ///
+//////////////////////////////
 
     public void createFluid()
     {
@@ -272,9 +272,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return getFluidLevel() == getMaxFluid();
     }
 
-//////////////////////
-// Storage methods: //
-//////////////////////
+////////////////////////
+/// Storage methods: ///
+////////////////////////
 
     protected void contentsChanged()
     {
@@ -316,9 +316,9 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         clearContent();
     }
 
-///////////////////////////
-// Block Entity methods: //
-///////////////////////////
+/////////////////////////////
+/// Block Entity methods: ///
+/////////////////////////////
 
     public ClientboundBlockEntityDataPacket getUpdatePacket()
     {

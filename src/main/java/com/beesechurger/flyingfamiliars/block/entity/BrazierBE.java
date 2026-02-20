@@ -76,11 +76,11 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 	    progress = tag.getInt(BLOCK_PROGRESS_TAGNAME);
 	}
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Integers:
+/// Integers:
 
 	@Override
 	public int getMaxItems()
@@ -104,20 +104,20 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 		return maxProgress;
 	}
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Integers:
+/// Integers:
 
 	public void setProgress(int pr)
 	{
 		progress = pr;
 	}
 
-///////////////////////
-// Crafting methods: //
-///////////////////////
+/////////////////////////
+/// Crafting methods: ///
+/////////////////////////
 
 	@Override
 	public void findMatch()
@@ -169,9 +169,9 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 		}
 	}
 
-///////////////////////////
-// Block Entity methods: //
-///////////////////////////
+/////////////////////////////
+/// Block Entity methods: ///
+/////////////////////////////
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBE entity)
 	{

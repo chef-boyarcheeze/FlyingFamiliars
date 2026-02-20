@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "flyingfamiliars:block/fragment_pedestal" },
+		"facing=east": { "model": "flyingfamiliars:block/fragment_pedestal", "y": 90 },
+		"facing=south": { "model": "flyingfamiliars:block/fragment_pedestal", "y": 180 },
+		"facing=west": { "model": "flyingfamiliars:block/fragment_pedestal", "y": 270 }
+	}
+}

@@ -122,6 +122,7 @@ public class FFCreativeTabs
 
                 // Block entities:
                 output.accept(FFBlocks.BRAZIER.get());
+                output.accept(FFBlocks.FRAGMENT_PEDESTAL.get());
                 output.accept(FFBlocks.OBELISK.get());
                 output.accept(FFBlocks.VITA_ALEMBIC.get());
                 output.accept(FFBlocks.CEREMONIAL_FONT.get());

@@ -1,0 +1,74 @@
+package com.beesechurger.flyingfamiliars.block.common;
+
+import com.beesechurger.flyingfamiliars.block.entity.FragmentPedestalBE;
+import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+
+import javax.annotation.Nullable;
+
+public class FragmentPedestalBlock extends BaseEntityTagBlock
+{
+	public FragmentPedestalBlock(Properties properties)
+	{
+		super(properties);
+		registerDefaultState(this.stateDefinition.any());
+		this.SHAPE = Shapes.join(Block.box(0, 0, 0, 16, 4, 16),
+				Block.box(2, 4, 2, 14, 16, 14), BooleanOp.OR).optimize();
+	}
+
+	@Nullable
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+	{
+		return new FragmentPedestalBE(pos, state);
+	}
+	
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity)
+	{
+		return createTickerHelper(blockEntity, FFBlockEntities.FRAGMENT_PEDESTAL_BLOCK_ENTITY.get(), FragmentPedestalBE::tick);
+	}
+	
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+	{
+		/*if (random.nextInt(20) == 0)
+		{
+			level.playLocalSound((double) pos.getX() + 0.5D,(double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
+					FFSounds.BRAZIER_AMBIENT.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F, false);
+		}
+		
+		if (random.nextInt(3) == 0)
+		{
+		   for(int i = 0; i < random.nextInt(1) + 1; ++i)
+		   {
+			   level.addParticle(ParticleTypes.SOUL, (double) pos.getX() + 0.5D,
+					   								 (double) pos.getY() + 0.5D,
+					   								 (double) pos.getZ() + 0.5D,
+					   								 (double)(random.nextFloat() / 20.0F), 0.1D, (double)(random.nextFloat() / 20.0F));
+		   }
+		}
+		
+      	level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, (double) pos.getX() + 0.5D + random.nextDouble() / 3.0D * (double) (random.nextBoolean() ? 1 : -1),
+      																			(double) pos.getY() + 1.2D,
+      																			(double) pos.getZ() + 0.5D + random.nextDouble() / 3.0D * (double) (random.nextBoolean() ? 1 : -1),
+      																			0.0D, 0.07D, 0.0D);
+      	
+      	level.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
+      										   (double) pos.getY() + 0.8D,
+      										   (double) pos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1),
+      										   0.0D, 0.005D, 0.0D);*/
+    }
+}

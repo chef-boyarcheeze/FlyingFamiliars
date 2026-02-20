@@ -111,9 +111,9 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
         return FFSounds.TAG_BLOCK_REMOVE_ENTITY.get();
     }
 
-////////////////////////////
-// BlockState parameters: //
-////////////////////////////
+//////////////////////////////
+/// BlockState parameters: ///
+//////////////////////////////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx)
