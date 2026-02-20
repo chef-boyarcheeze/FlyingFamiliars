@@ -1,11 +1,8 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
-import com.beesechurger.flyingfamiliars.block.entity.FragmentPedestalBE;
+import com.beesechurger.flyingfamiliars.block.entity.RunicPedestalBE;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -18,9 +15,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 
 import javax.annotation.Nullable;
 
-public class FragmentPedestalBlock extends BaseEntityTagBlock
+public class RunicPedestalBlock extends BaseEntityTagBlock
 {
-	public FragmentPedestalBlock(Properties properties)
+	public RunicPedestalBlock(Properties properties)
 	{
 		super(properties);
 		registerDefaultState(this.stateDefinition.any());
@@ -32,14 +29,14 @@ public class FragmentPedestalBlock extends BaseEntityTagBlock
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new FragmentPedestalBE(pos, state);
+		return new RunicPedestalBE(pos, state);
 	}
 	
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntity)
 	{
-		return createTickerHelper(blockEntity, FFBlockEntities.FRAGMENT_PEDESTAL_BLOCK_ENTITY.get(), FragmentPedestalBE::tick);
+		return createTickerHelper(blockEntity, FFBlockEntities.RUNIC_PEDESTAL_BLOCK_ENTITY.get(), RunicPedestalBE::tick);
 	}
 	
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)

@@ -87,9 +87,9 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
                 else
                 {
                     if (!player.isShiftKeyDown())
-                        return InteractionResult.sidedSuccess(baseEntity.placeItem(stack));
+                        return InteractionResult.sidedSuccess(baseEntity.placeItem(player, stack));
                     else
-                        return InteractionResult.sidedSuccess(baseEntity.removeItem(level, pos));
+                        return InteractionResult.sidedSuccess(baseEntity.removeItem(player, level, pos));
                 }
             }
 

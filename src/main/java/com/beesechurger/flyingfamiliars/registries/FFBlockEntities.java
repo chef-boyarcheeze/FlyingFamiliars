@@ -4,7 +4,7 @@ import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.block.client.brazier.BrazierRenderer;
 import com.beesechurger.flyingfamiliars.block.client.ceremonial_font.CeremonialFontBasinModel;
 import com.beesechurger.flyingfamiliars.block.client.ceremonial_font.CeremonialFontRenderer;
-import com.beesechurger.flyingfamiliars.block.client.fragment_pedestal.FragmentPedestalRenderer;
+import com.beesechurger.flyingfamiliars.block.client.runic_pedestal.RunicPedestalRenderer;
 import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskPillarModel;
 import com.beesechurger.flyingfamiliars.block.client.obelisk.ObeliskRenderer;
 import com.beesechurger.flyingfamiliars.block.client.vita_alembic.VitaAlembicRenderer;
@@ -23,7 +23,7 @@ public class FFBlockEntities
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_REG = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, FlyingFamiliars.MOD_ID);
 	
 	public static final RegistryObject<BlockEntityType<BrazierBE>> BRAZIER_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("brazier_block_entity", () -> BlockEntityType.Builder.of(BrazierBE::new, FFBlocks.BRAZIER.get()).build(null));
-	public static final RegistryObject<BlockEntityType<FragmentPedestalBE>> FRAGMENT_PEDESTAL_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("fragment_pedestal_block_entity", () -> BlockEntityType.Builder.of(FragmentPedestalBE::new, FFBlocks.FRAGMENT_PEDESTAL.get()).build(null));
+	public static final RegistryObject<BlockEntityType<RunicPedestalBE>> RUNIC_PEDESTAL_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("runic_pedestal_block_entity", () -> BlockEntityType.Builder.of(RunicPedestalBE::new, FFBlocks.RUNIC_PEDESTAL.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ObeliskBE>> OBELISK_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("obelisk_block_entity", () -> BlockEntityType.Builder.of(ObeliskBE::new, FFBlocks.OBELISK.get()).build(null));
 	public static final RegistryObject<BlockEntityType<VitaAlembicBE>> VITA_ALEMBIC_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("vita_alembic_block_entity", () -> BlockEntityType.Builder.of(VitaAlembicBE::new, FFBlocks.VITA_ALEMBIC.get()).build(null));
 	public static final RegistryObject<BlockEntityType<CeremonialFontBE>> CEREMONIAL_FONT_BLOCK_ENTITY = BLOCK_ENTITY_REG.register("ceremonial_font_block_entity", () -> BlockEntityType.Builder.of(CeremonialFontBE::new, FFBlocks.CEREMONIAL_FONT.get()).build(null));
@@ -32,7 +32,7 @@ public class FFBlockEntities
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
 	{
 		event.registerBlockEntityRenderer(FFBlockEntities.BRAZIER_BLOCK_ENTITY.get(), BrazierRenderer::new);
-		event.registerBlockEntityRenderer(FFBlockEntities.FRAGMENT_PEDESTAL_BLOCK_ENTITY.get(), FragmentPedestalRenderer::new);
+		event.registerBlockEntityRenderer(FFBlockEntities.RUNIC_PEDESTAL_BLOCK_ENTITY.get(), RunicPedestalRenderer::new);
 		event.registerBlockEntityRenderer(FFBlockEntities.OBELISK_BLOCK_ENTITY.get(), ObeliskRenderer::new);
 		event.registerBlockEntityRenderer(FFBlockEntities.VITA_ALEMBIC_BLOCK_ENTITY.get(), VitaAlembicRenderer::new);
 		event.registerBlockEntityRenderer(FFBlockEntities.CEREMONIAL_FONT_BLOCK_ENTITY.get(), CeremonialFontRenderer::new);

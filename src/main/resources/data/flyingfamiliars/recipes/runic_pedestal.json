@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" G ",
+		"AIA",
+		"RRR"
+	],
+	"key": {
+		"G": {
+			"item": "minecraft:gold_block"
+		},
+		"A": {
+			"item": "minecraft:amethyst_cluster"
+		},
+		"I": {
+			"item": "minecraft:iron_ingot"
+		},
+		"D": {
+			"item": "flyingfamiliars:runic_bricks"
+		}
+	},
+	"result": {
+		"item": "flyingfamiliars:runic_pedestal"
+	}
+}

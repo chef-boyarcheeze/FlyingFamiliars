@@ -104,11 +104,14 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         items = NonNullList.withSize(getMaxItems(), ItemStack.EMPTY);
     }
 
-    public boolean placeItem(ItemStack stack)
+    public boolean placeItem(Player player, ItemStack stack)
     {
         if(getItemCount() < getMaxItems() && stack.getItem() != Items.AIR)
         {
-            items.set(getItemCount(), stack.split(1));
+            ItemStack item = player.getAbilities().instabuild ? stack.copy().split(1)
+                                                              : stack.split(1);
+
+            items.set(getItemCount(), item);
             contentsChanged();
 
             level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_ADD_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
@@ -119,7 +122,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         return false;
     }
 
-    public boolean removeItem(Level level, BlockPos pos)
+    public boolean removeItem(Player player, Level level, BlockPos pos)
     {
         if(getItemCount() > 0)
         {
