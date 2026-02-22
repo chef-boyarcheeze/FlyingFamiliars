@@ -5,6 +5,7 @@ import com.beesechurger.flyingfamiliars.entity.common.familiar.*;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.charm.CrystalSpikeCharm;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.RunicCubeProjectile;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -20,13 +21,13 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class FFEntityTypes 
+public class FFEntityTypes
 {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPE_REG = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, FlyingFamiliars.MOD_ID);
 
-	////////////////
-	// Familiars: //
-	////////////////
+//////////////////
+/// Familiars: ///
+//////////////////
 
 	// Cloud Ray
 	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPE_REG.register("cloud_ray",
@@ -94,54 +95,68 @@ public class FFEntityTypes
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "void_moth").toString()));
 
-	// Mirror shield
+	// Mirror Shield
 	public static final RegistryObject<EntityType<MirrorShieldEntity>> MIRROR_SHIELD = ENTITY_TYPE_REG.register("mirror_shield",
 			() -> EntityType.Builder.of(MirrorShieldEntity::new, MobCategory.CREATURE)
 					.sized(1.0f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "mirror_shield").toString()));
 
-	///////////////////
-	// Wand Effects: //
-	///////////////////
+/// Familiar render sizes:
 
-	// Charms:
+	public static final Map<String, Float> ENTITY_RENDER_SIZE_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
+		map.put("cloud_ray", 1.0f);
+		map.put("griffonfly", 1.6f);
+		//map.put("thunderbird", 1.0f);
+		map.put("magic_carpet", 1.5f);
+		//map.put("dragon", 1.0f);
+		map.put("shadewyrm", 1.0f);
+		//map.put("sundog", 1.0f);
+
+		map.put("deep_jellyfish", 1.2f);
+		map.put("shrubling", 1.2f);
+		map.put("zephyr_fish", 1.0f);
+		map.put("crystal_tressym", 1.2f);
+		map.put("phoenix", 1.2f);
+		map.put("void_moth", 1.0f);
+		map.put("mirror_shield", 1.2f);
+	});
+
+/////////////////////
+/// Wand Effects: ///
+/////////////////////
+
+/// Charms:
+
+	// Crystal Spike
 	public static final RegistryObject<EntityType<CrystalSpikeCharm>> CRYSTAL_SPIKE_CHARM = ENTITY_TYPE_REG.register("crystal_spike_charm",
 			() -> EntityType.Builder.<CrystalSpikeCharm>of(CrystalSpikeCharm::new, MobCategory.MISC)
 					.sized(1.0f, 1.0f)
 					.build("crystal_spike_charm"));
 
-	// Projectiles:
+/// Projectiles:
+
+	// Capture
 	public static final RegistryObject<EntityType<CaptureProjectile>> CAPTURE_PROJECTILE = ENTITY_TYPE_REG.register("capture_projectile",
 			() -> EntityType.Builder.<CaptureProjectile>of(CaptureProjectile::new, MobCategory.MISC)
 					.sized(0.5f, 0.5f)
 					.setShouldReceiveVelocityUpdates(true)
 					.build("capture_projectile"));
 
+	// Fireball
 	public static final RegistryObject<EntityType<FireballProjectile>> FIREBALL_PROJECTILE = ENTITY_TYPE_REG.register("fireball_projectile",
 			() -> EntityType.Builder.<FireballProjectile>of(FireballProjectile::new, MobCategory.MISC)
 					.sized(0.8f, 0.8f)
 					.setShouldReceiveVelocityUpdates(true)
 					.build("fireball_projectile"));
 
-	// Sentries:
+	// Runic Pedestal cube
+	public static final RegistryObject<EntityType<RunicCubeProjectile>> RUNIC_CUBE_PROJECTILE = ENTITY_TYPE_REG.register("runic_cube_projectile",
+			() -> EntityType.Builder.<RunicCubeProjectile>of(RunicCubeProjectile::new, MobCategory.MISC)
+					.sized(0.8f, 0.8f)
+					.setShouldReceiveVelocityUpdates(true)
+					.build("runic_cube_projectile"));
 
-    public static final Map<String, Float> ENTITY_RENDER_SIZE_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
-        map.put("cloud_ray", 1.0f);
-        map.put("griffonfly", 1.6f);
-        //map.put("thunderbird", 1.0f);
-        map.put("magic_carpet", 1.5f);
-        //map.put("dragon", 1.0f);
-        map.put("shadewyrm", 1.0f);
-        //map.put("sundog", 1.0f);
-
-        map.put("deep_jellyfish", 1.2f);
-        map.put("shrubling", 1.2f);
-        map.put("zephyr_fish", 1.0f);
-        map.put("crystal_tressym", 1.2f);
-        map.put("phoenix", 1.2f);
-        map.put("void_moth", 1.0f);
-        map.put("mirror_shield", 1.2f);
-    });
+/// Sentries:
 
 	@SubscribeEvent
 	public static void entityAttributeEvent(EntityAttributeCreationEvent event)

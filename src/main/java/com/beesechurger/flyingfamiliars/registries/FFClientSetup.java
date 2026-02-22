@@ -13,6 +13,7 @@ import com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth.VoidMot
 import com.beesechurger.flyingfamiliars.entity.client.familiar.zephyr_fish.ZephyrFishRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.charm.crystal_spike_charm.CrystalSpikeCharmRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.CaptureProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.RunicCubeProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fireball_projectile.FireballProjectileRenderer;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -48,6 +49,7 @@ public class FFClientSetup
         // Projectiles:
         EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), CaptureProjectileRenderer::new);
         EntityRenderers.register(FFEntityTypes.FIREBALL_PROJECTILE.get(), FireballProjectileRenderer::new);
+        EntityRenderers.register(FFEntityTypes.RUNIC_CUBE_PROJECTILE.get(), RunicCubeProjectileRenderer::new);
 
         // Block entities:
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());

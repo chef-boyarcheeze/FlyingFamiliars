@@ -128,11 +128,14 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         {
             ItemStack stack = items.get(getItemCount() - 1);
 
-            ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack);
-            drop.setDefaultPickUpDelay();
-            level.addFreshEntity(drop);
+            if (!player.getAbilities().instabuild)
+            {
+                ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack);
+                drop.setDefaultPickUpDelay();
+                level.addFreshEntity(drop);
+            }
 
-            items.set(getItemCount()-1, ItemStack.EMPTY);
+            items.set(getItemCount() - 1, ItemStack.EMPTY);
             contentsChanged();
 
             level.playSound(null, getBlockPos(), FFSounds.TAG_BLOCK_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.4F);
