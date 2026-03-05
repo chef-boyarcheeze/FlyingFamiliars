@@ -1,8 +1,6 @@
 package com.beesechurger.flyingfamiliars.block.client.runic_pedestal;
 
 import com.beesechurger.flyingfamiliars.block.entity.RunicPedestalBE;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.RunicCubeProjectile;
-import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -11,12 +9,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class RunicPedestalRenderer implements BlockEntityRenderer<RunicPedestalBE>
 {
@@ -38,7 +33,6 @@ public class RunicPedestalRenderer implements BlockEntityRenderer<RunicPedestalB
                 {
                     if (runicPedestalBE.runicCubeProjectile == null)
                     {
-                        //System.out.println("cube null");
                         break;
                     }
 
@@ -50,7 +44,7 @@ public class RunicPedestalRenderer implements BlockEntityRenderer<RunicPedestalB
                 }
                 else
                 {
-                    BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(storedItem, runicPedestalBE.getLevel(), (LivingEntity)null, 0);
+                    BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(storedItem, runicPedestalBE.getLevel(), (LivingEntity) null, 0);
 
                     stack.pushPose();
                     stack.translate(0.5d, 1.2d, 0.5d);

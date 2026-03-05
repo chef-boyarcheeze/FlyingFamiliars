@@ -3,27 +3,22 @@ package com.beesechurger.flyingfamiliars.block.entity;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.RunicCubeProjectile;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TAGNAME;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TYPE;
 
 public class RunicPedestalBE extends BaseEntityTagBE
 {
 	private static final String STORAGE_RUNIC_CUBE_PROJECTILE_TAGNAME = "RunicCubeProjectile";
 
-	public RunicCubeProjectile runicCubeProjectile = null;
+	public Entity runicCubeProjectile = null;
 	public CompoundTag runicCubeProjectileTag = new CompoundTag();
 
 	public RunicPedestalBE(BlockPos position, BlockState state)
@@ -60,6 +55,14 @@ public class RunicPedestalBE extends BaseEntityTagBE
 				runicCubeProjectile = new RunicCubeProjectile(FFEntityTypes.RUNIC_CUBE_PROJECTILE.get(), getLevel());
 				runicCubeProjectile.load(runicCubeProjectileTag);
 			}
+			else
+			{
+				runicCubeProjectile = null;
+			}
+		}
+		else
+		{
+			runicCubeProjectile = null;
 		}
 	}
 
@@ -124,6 +127,15 @@ public class RunicPedestalBE extends BaseEntityTagBE
 		}
 
 		super.contentsChanged();
+	}
+
+	@Override
+	public void drops()
+	{
+		super.drops();
+
+		runicCubeProjectile = null;
+		runicCubeProjectileTag = new CompoundTag();
 	}
 
 /////////////////////////////

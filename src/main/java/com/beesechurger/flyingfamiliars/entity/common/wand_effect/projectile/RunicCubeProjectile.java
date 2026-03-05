@@ -31,7 +31,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TYPE;
 
 public class RunicCubeProjectile extends BaseWandEffectProjectile
 {
