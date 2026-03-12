@@ -79,15 +79,6 @@ public class FFCreativeTabs
                 // Phylactery:
                 output.accept(FFItems.PHYLACTERY.get());
 
-                // Multiphials:
-                output.accept(FFItems.MULTIPHIAL_BLUE.get());
-                output.accept(FFItems.MULTIPHIAL_GREEN.get());
-                output.accept(FFItems.MULTIPHIAL_YELLOW.get());
-                output.accept(FFItems.MULTIPHIAL_GOLD.get());
-                output.accept(FFItems.MULTIPHIAL_RED.get());
-                output.accept(FFItems.MULTIPHIAL_BLACK.get());
-                output.accept(FFItems.MULTIPHIAL_WHITE.get());
-
                 // Type items:
                 output.accept(FFItems.SOUL_WAND_ROD.get());
                 output.accept(FFItems.PELT_OF_THE_FOREST.get());

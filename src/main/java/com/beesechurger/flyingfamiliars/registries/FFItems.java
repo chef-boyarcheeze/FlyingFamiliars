@@ -1,10 +1,8 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.*;
-import com.beesechurger.flyingfamiliars.item.common.fluid_items.Multiphial;
 import com.google.common.base.Supplier;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -36,15 +34,6 @@ public class FFItems
 
 	// Phylactery:
 	public static final RegistryObject<Item> PHYLACTERY = register("phylactery_blue", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-
-	// Multiphials:
-	public static final RegistryObject<Item> MULTIPHIAL_BLUE = register("multiphial_blue", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.BLUE));
-	public static final RegistryObject<Item> MULTIPHIAL_GREEN = register("multiphial_green", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.GREEN));
-	public static final RegistryObject<Item> MULTIPHIAL_YELLOW = register("multiphial_yellow", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), ITieredItem.ItemTier.YELLOW));
-	public static final RegistryObject<Item> MULTIPHIAL_GOLD = register("multiphial_gold", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ITieredItem.ItemTier.GOLD));
-	public static final RegistryObject<Item> MULTIPHIAL_RED = register("multiphial_red", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ITieredItem.ItemTier.RED));
-	public static final RegistryObject<Item> MULTIPHIAL_BLACK = register("multiphial_black", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), ITieredItem.ItemTier.BLACK));
-	public static final RegistryObject<Item> MULTIPHIAL_WHITE = register("multiphial_white", () -> new Multiphial(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC), ITieredItem.ItemTier.WHITE));
 
 	// Buckets:
 	public static final RegistryObject<Item> BLUE_VITALITY_BUCKET = register("blue_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_BLUE_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));

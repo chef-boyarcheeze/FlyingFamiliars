@@ -13,18 +13,19 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_WAND_EFFECT_TAGNAME;
 
-public abstract class BaseStorageTagItem extends Item implements IEntryManipModeItem
+public abstract class BaseStorageTagItem extends Item
 {
     public BaseStorageTagItem(Properties properties)
     {
         super(properties);
     }
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Booleans:
+/// Booleans:
+
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player)
     {

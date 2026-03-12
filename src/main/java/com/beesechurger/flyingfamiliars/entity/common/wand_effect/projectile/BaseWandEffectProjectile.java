@@ -59,9 +59,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
         this.setPos(x, y, z);
     }
 
-///////////////////////////
-// Additional Save Data: //
-///////////////////////////
+/////////////////////////////
+/// Additional Save Data: ///
+/////////////////////////////
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag)
@@ -86,11 +86,12 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
         entityData.define(DEAD, false);
     }
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Booleans:
+/// Booleans:
+
     public boolean isSpawning()
     {
         return entityData.get(SPAWNING);
@@ -101,15 +102,18 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
         return entityData.get(DEAD);
     }
 
-// Integers:
+/// Integers:
+
     public abstract int getSpawnTimerMax();
 
     public abstract int getDeadTimerMax();
 
-// Floats:
+/// Floats:
+
     protected abstract float getGravity();
 
-// Doubles:
+/// Doubles:
+
     public double getPitch(double partialTicks)
     {
         if(xRotO == getXRot())
@@ -126,18 +130,20 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
         return partialTicks == 1.0 ? getYRot() : Mth.lerp(partialTicks, yRotO, getYRot());
     }
 
-// Misc:
+/// Misc:
+
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache()
     {
         return cache;
     }
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Booleans:
+/// Booleans:
+
     public void setSpawning(boolean spawning)
     {
         entityData.set(SPAWNING, spawning);
@@ -148,9 +154,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
         entityData.set(DEAD, dead);
     }
 
-/////////
-// AI: //
-/////////
+///////////
+/// AI: ///
+///////////
 
     @Override
     public void tick()
@@ -237,9 +243,9 @@ public abstract class BaseWandEffectProjectile extends Projectile implements Geo
         }
     }
 
-/////////////
-// Sounds: //
-/////////////
+///////////////
+/// Sounds: ///
+///////////////
 
     protected void playLocalSound(SoundEvent event)
     {

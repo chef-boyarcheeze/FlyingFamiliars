@@ -2,7 +2,9 @@ package com.beesechurger.flyingfamiliars.block.entity;
 
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.RunicCubeProjectile;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
+import com.beesechurger.flyingfamiliars.registries.FFItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TYPE;
 
@@ -74,7 +77,7 @@ public class RunicPedestalBE extends BaseEntityTagBE
 
 	public boolean containsRunicCubeItem(ItemStack storedItem)
 	{
-		return storedItem.is(Items.WHITE_WOOL);
+		return storedItem.is(FFBlocks.RUNIC_PEDESTAL.get().asItem());
 	}
 
 /// Integers:
@@ -104,7 +107,7 @@ public class RunicPedestalBE extends BaseEntityTagBE
 		{
 			if (containsRunicCubeItem(storedItem))
 			{
-				runicCubeProjectile = new RunicCubeProjectile(FFEntityTypes.RUNIC_CUBE_PROJECTILE.get(), getLevel());
+				runicCubeProjectile = new RunicCubeProjectile(FFEntityTypes.RUNIC_CUBE_PROJECTILE.get(), getLevel(), true);
 				flag = true;
 				break;
 			}
@@ -122,6 +125,7 @@ public class RunicPedestalBE extends BaseEntityTagBE
 		}
 		else
 		{
+			runicCubeProjectile.setPos(getBlockPos().getCenter().add(0, 1.0f, 0));
 			runicCubeProjectileTag.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(runicCubeProjectile.getType()).toString());
 			runicCubeProjectile.saveWithoutId(runicCubeProjectileTag);
 		}

@@ -48,12 +48,13 @@ public abstract class BaseWandEffect
 
 /// Integers:
 
-    // use duration of soul wand
+    // minimum use duration of soul wand
     public int getUseDurationMin()
     {
         return 0;
     }
 
+    // maximum use duration of soul wand
     public int getUseDurationMax()
     {
         return 0;
@@ -89,7 +90,9 @@ public abstract class BaseWandEffect
 ///////////////////////////
 
     // perform left-click function
-    public void attack(Level level, Player player) {}
+    public void attack(Level level, Player player) {
+
+    }
 
     // perform wand effect cast
     public void use(Level level, Player player) {
@@ -97,6 +100,5 @@ public abstract class BaseWandEffect
 
     // perform block-only wand effect cast
     public void useOn(Level level, Player player, BlockPos pos) {
-
     }
 }

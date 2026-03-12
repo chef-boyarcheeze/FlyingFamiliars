@@ -5,6 +5,7 @@ import com.beesechurger.flyingfamiliars.entity.common.familiar.*;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.charm.CrystalSpikeCharm;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.RunicCubeProjectile;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
@@ -148,6 +149,13 @@ public class FFEntityTypes
 					.sized(0.8f, 0.8f)
 					.setShouldReceiveVelocityUpdates(true)
 					.build("fireball_projectile"));
+
+	// Flamethrower
+	public static final RegistryObject<EntityType<FlamethrowerProjectile>> FLAMETHROWER_PROJECTILE = ENTITY_TYPE_REG.register("flamethrower_projectile",
+			() -> EntityType.Builder.<FlamethrowerProjectile>of(FlamethrowerProjectile::new, MobCategory.MISC)
+					.sized(0.8f, 0.8f)
+					.setShouldReceiveVelocityUpdates(true)
+					.build("flamethrower_projectile"));
 
 	// Runic Pedestal cube
 	public static final RegistryObject<EntityType<RunicCubeProjectile>> RUNIC_CUBE_PROJECTILE = ENTITY_TYPE_REG.register("runic_cube_projectile",

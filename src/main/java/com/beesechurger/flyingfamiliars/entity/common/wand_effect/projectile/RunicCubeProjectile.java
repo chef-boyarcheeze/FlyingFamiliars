@@ -13,6 +13,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,6 +38,8 @@ import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_T
 
 public class RunicCubeProjectile extends BaseWandEffectProjectile
 {
+    private static final EntityDataAccessor<Boolean> PEDESTAL_CUBE = SynchedEntityData.defineId(RunicCubeProjectile.class, EntityDataSerializers.BOOLEAN);
+
     private NonNullList<ItemStack> stacks = NonNullList.create();
     private boolean action = false;
 
@@ -43,6 +48,12 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
     public RunicCubeProjectile(EntityType<? extends RunicCubeProjectile> proj, Level level)
     {
         super(proj, level);
+    }
+
+    public RunicCubeProjectile(EntityType<? extends RunicCubeProjectile> proj, Level level, boolean pedestalCube)
+    {
+        super(proj, level);
+        this.setPedestalCube(pedestalCube);
     }
 
     public RunicCubeProjectile(Level level, LivingEntity entity, boolean action)
@@ -81,9 +92,34 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
         super(FFEntityTypes.RUNIC_CUBE_PROJECTILE.get(), x, y, z, level);
     }
 
-    ///////////////////////////////////
-    /// GeckoLib animation control: ///
-    ///////////////////////////////////
+/////////////////////////////
+/// Additional Save Data: ///
+/////////////////////////////
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        setPedestalCube(tag.getBoolean("isPedestalCube"));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag)
+    {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("isPedestalCube", isPedestalCube());
+    }
+
+    @Override
+    protected void defineSynchedData()
+    {
+        super.defineSynchedData();
+        entityData.define(PEDESTAL_CUBE, false);
+    }
+
+///////////////////////////////////
+/// GeckoLib animation control: ///
+///////////////////////////////////
 
     private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
     {
@@ -119,13 +155,20 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
 /// Accessors: ///
 //////////////////
 
-    /// Booleans:
+/// Booleans:
+
+    public boolean isPedestalCube()
+    {
+        return entityData.get(PEDESTAL_CUBE);
+    }
+
     public boolean isCapturable(Entity entity)
     {
         return !(entity instanceof Player) && entity.canChangeDimensions() && entity.isAlive() && entity instanceof Mob && !level().isClientSide();
     }
 
-    /// Integers:
+/// Integers:
+
     @Override
     public int getSpawnTimerMax()
     {
@@ -138,17 +181,28 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
         return 10;
     }
 
-    /// Floats:
+/// Floats:
 
     @Override
     protected float getGravity()
     {
-        return 0.03f;
+        return isPedestalCube() ? 0.0f : 0.03f;
     }
 
-    //////////////////////////////////////
-    /// Player and entity interaction: ///
-    //////////////////////////////////////
+/////////////////
+/// Mutators: ///
+/////////////////
+
+/// Booleans:
+
+    protected void setPedestalCube(boolean pedestalCube)
+    {
+        entityData.set(PEDESTAL_CUBE, pedestalCube);
+    }
+
+//////////////////////////////////////
+/// Player and entity interaction: ///
+//////////////////////////////////////
 
     @Override
     protected void onHitEntity(EntityHitResult result)
@@ -281,9 +335,9 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
         }
     }
 
-    //////////////////
-    /// Entity AI: ///
-    //////////////////
+//////////////////
+/// Entity AI: ///
+//////////////////
 
     @Override
     public void tick()

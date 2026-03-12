@@ -2,8 +2,6 @@ package com.beesechurger.flyingfamiliars.block.common;
 
 import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
-import com.beesechurger.flyingfamiliars.item.common.fluid_items.BaseVitalityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -76,13 +74,6 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
                         return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
                     else
                         return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));
-                }
-                else if (stack.getItem() instanceof BaseVitalityTagItem) // fluid item
-                {
-                    // if server
-                    return InteractionResult.SUCCESS;
-
-                    // consume if client
                 }
                 else
                 {
