@@ -166,15 +166,15 @@ public class TimberCleaveWandEffect extends BaseWandEffect
 
         if (numLeaves > 3)
         {
-            // TODO: invert order of breaking (block search)
-            for (int xPos = pos.getX() - TIMBER_CLEAVE_MAX_WIDTH; xPos <= pos.getX() + TIMBER_CLEAVE_MAX_WIDTH; xPos++)
+            for (int xPos = pos.getX() + TIMBER_CLEAVE_MAX_WIDTH; xPos >= pos.getX() - TIMBER_CLEAVE_MAX_WIDTH; xPos--)
             {
-                for (int yPos = pos.getY(); yPos <= pos.getY() + height + 1; yPos++)
+                for (int yPos = pos.getY() + height + 1; yPos >= pos.getY(); yPos--)
                 {
-                    for (int zPos = pos.getZ() - TIMBER_CLEAVE_MAX_WIDTH; zPos <= pos.getZ() + TIMBER_CLEAVE_MAX_WIDTH; zPos++)
+                    for (int zPos = pos.getZ() + TIMBER_CLEAVE_MAX_WIDTH; zPos >= pos.getZ() - TIMBER_CLEAVE_MAX_WIDTH; zPos--)
                     {
-                        BlockState block = level.getBlockState(new BlockPos(xPos, yPos, zPos));
-                        if (wood == block.getBlock())
+                        BlockPos currentPos = new BlockPos(xPos, yPos, zPos);
+                        BlockState currentBlock = level.getBlockState(currentPos);
+                        if (wood == currentBlock.getBlock())
                         {
                             int xDist = xPos - pos.getX();
                             int yDist = yPos - pos.getY();
@@ -182,12 +182,7 @@ public class TimberCleaveWandEffect extends BaseWandEffect
 
                             if (9*xDist*xDist + yDist*yDist + 9*zDist*zDist < 2500)
                             {
-                                level.destroyBlock(new BlockPos(xPos, yPos, zPos), !player.isCreative());
-
-                                /*if (level.isClientSide())
-                                {
-                                    breakTree(level, xPos, yPos, zPos, xStart, yStart, zStart, wood);
-                                }*/
+                                level.destroyBlock(currentPos, !player.isCreative());
                             }
                         }
                     }
