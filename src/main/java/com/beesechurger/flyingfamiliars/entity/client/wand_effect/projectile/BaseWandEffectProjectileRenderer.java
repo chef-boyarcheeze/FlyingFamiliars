@@ -8,7 +8,7 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class BaseWandEffectProjectileRenderer<T extends BaseWandEffectProjectile & GeoAnimatable> extends GeoEntityRenderer<T>
+public abstract class BaseWandEffectProjectileRenderer<T extends BaseWandEffectProjectile & GeoAnimatable> extends GeoEntityRenderer<T>
 {
     public BaseWandEffectProjectileRenderer(EntityRendererProvider.Context renderManager, GeoModel<T> model)
     {
