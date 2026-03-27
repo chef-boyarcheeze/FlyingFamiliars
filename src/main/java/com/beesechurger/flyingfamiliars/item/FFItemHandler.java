@@ -137,7 +137,8 @@ public class FFItemHandler
         BlockHitResult hit = new BlockHitResult(context.getClickLocation(), context.getClickedFace(), context.getClickedPos(), context.isInside());
         UseOnContext newcontext;
 
-        if (context.getPlayer() != null) {
+        if (context.getPlayer() != null)
+		{
             save = context.getPlayer().getItemInHand(context.getHand());
             context.getPlayer().setItemInHand(context.getHand(), toUse);
             // Need to construct a new one still to refresh the itemstack
@@ -152,7 +153,8 @@ public class FFItemHandler
 
         InteractionResult result = toUse.useOn(newcontext);
 
-        if (context.getPlayer() != null) {
+        if (context.getPlayer() != null)
+		{
             context.getPlayer().setItemInHand(context.getHand(), save);
         }
 

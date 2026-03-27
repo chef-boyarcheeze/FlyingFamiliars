@@ -97,6 +97,7 @@
   "tooltip.flyingfamiliars.wand_effect.cloud_call_charm": "Cloud Call",
   "tooltip.flyingfamiliars.wand_effect.fireball_projectile": "Fireball",
   "tooltip.flyingfamiliars.wand_effect.tectonic_sunder_charm": "Tectonic Sunder",
+  "tooltip.flyingfamiliars.wand_effect.timber_cleave_charm": "Timber Cleave",
 
   "message.flyingfamiliars.sitting": "Familiar set to stay",
   "message.flyingfamiliars.standing": "Familiar set to follow",

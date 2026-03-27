@@ -29,11 +29,11 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         super(properties);
     }
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Booleans:
+/// Booleans:
     @Override
     public boolean isFoil(ItemStack stack)
     {
@@ -62,13 +62,13 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         return EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag()) > 1 || count > 0;
     }
 
-    @Override
     public boolean getManipMode(ItemStack stack)
     {
         return EntityTagRef.INSTANCE.getManipMode(stack.getOrCreateTag());
     }
 
-// Integers:
+/// Integers:
+
     @Override
     public int getBarWidth(ItemStack stack)
     {
@@ -81,20 +81,20 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         return CHAT_GRAY;
     }
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Booleans:
-    @Override
+/// Booleans:
+
     public void toggleManipMode(ItemStack stack)
     {
         EntityTagRef.INSTANCE.toggleManipMode(stack.getOrCreateTag());
     }
 
-////////////////
-// Cosmetics: //
-////////////////
+//////////////////
+/// Cosmetics: ///
+//////////////////
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)

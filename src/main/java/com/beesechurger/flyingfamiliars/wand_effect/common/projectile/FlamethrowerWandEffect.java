@@ -1,28 +1,46 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_RED;
-import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_FIREBALL;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.MAX_CHARGE_TIME;
+import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_FLAMETHROWER;
 
-public class FireballWandEffect extends BaseWandEffect
+public class FlamethrowerWandEffect extends BaseWandEffect
 {
 //////////////////
 /// Accessors: ///
 //////////////////
 
 /// Strings:
+
     @Override
     public String getName()
     {
-        return WAND_EFFECT_FIREBALL;
+        return WAND_EFFECT_FLAMETHROWER;
+    }
+
+/// Booleans:
+
+    @Override
+    public boolean canBePartiallyDrawn()
+    {
+        return true;
     }
 
 /// Integers:
+
+    @Override
+    public int getUseDurationMax()
+    {
+        return MAX_CHARGE_TIME;
+    }
+
     @Override
     public int getCost()
     {
@@ -32,7 +50,7 @@ public class FireballWandEffect extends BaseWandEffect
     @Override
     public int getCooldown()
     {
-        return 10;
+        return 5;
     }
 
     @Override
@@ -42,6 +60,7 @@ public class FireballWandEffect extends BaseWandEffect
     }
 
 /// Misc:
+
     @Override
     public ChatFormatting getTooltipColor()
     {
@@ -55,8 +74,8 @@ public class FireballWandEffect extends BaseWandEffect
     @Override
     public void use(Level level, Player player)
     {
-        FireballProjectile fireball = new FireballProjectile(level, player);
-        fireball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);
-        level.addFreshEntity(fireball);
+        FlamethrowerProjectile flamethower = new FlamethrowerProjectile(level, player);
+        flamethower.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);
+        level.addFreshEntity(flamethower);
     }
 }

@@ -6,6 +6,8 @@ import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -35,9 +37,9 @@ public class FlamethrowerProjectile extends BaseWandEffectProjectile
         super(FFEntityTypes.FLAMETHROWER_PROJECTILE.get(), x, y, z, level);
     }
 
-/////////////////////////////////
-// GeckoLib animation control: //
-/////////////////////////////////
+///////////////////////////////////
+/// GeckoLib animation control: ///
+///////////////////////////////////
 
     private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
     {
@@ -64,16 +66,17 @@ public class FlamethrowerProjectile extends BaseWandEffectProjectile
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data)
     {
-        FFAnimationController bodyController = new FFAnimationController(this, "bodyController", 2, 0, this::bodyController);
+        /*FFAnimationController bodyController = new FFAnimationController(this, "bodyController", 2, 0, this::bodyController);
 
-        data.add(bodyController);
+        data.add(bodyController);*/
     }
 
-///////////////////////
-// Entity accessors: //
-///////////////////////
+/////////////////////////
+/// Entity accessors: ///
+/////////////////////////
 
-// Integers:
+/// Integers:
+
     @Override
     public int getSpawnTimerMax()
     {
@@ -86,16 +89,22 @@ public class FlamethrowerProjectile extends BaseWandEffectProjectile
         return 10;
     }
 
-// Floats:
+/// Floats:
+
     @Override
     protected float getGravity()
     {
-        return 0.03f;
+        return 0.0f;
     }
 
-////////////////////////////////////
-// Player and entity interaction: //
-////////////////////////////////////
+    protected Item getDefaultItem()
+    {
+        return Items.CHAIN;
+    }
+
+//////////////////////////////////////
+/// Player and entity interaction: ///
+//////////////////////////////////////
 
     @Override
     protected void onHitEntity(EntityHitResult result)
@@ -140,9 +149,9 @@ public class FlamethrowerProjectile extends BaseWandEffectProjectile
         return true;
     }
 
-////////////////
-// Entity AI: //
-////////////////
+//////////////////
+/// Entity AI: ///
+//////////////////
 
     @Override
     public void tick()

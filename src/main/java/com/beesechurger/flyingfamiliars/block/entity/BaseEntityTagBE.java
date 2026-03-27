@@ -108,7 +108,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
     {
         if(getItemCount() < getMaxItems() && stack.getItem() != Items.AIR)
         {
-            ItemStack item = player.getAbilities().instabuild ? stack.copy().split(1)
+            ItemStack item = player.isCreative() ? stack.copy().split(1)
                                                               : stack.split(1);
 
             items.set(getItemCount(), item);
@@ -128,7 +128,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
         {
             ItemStack stack = items.get(getItemCount() - 1);
 
-            if (!player.getAbilities().instabuild)
+            if (!player.isCreative())
             {
                 ItemEntity drop = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, stack);
                 drop.setDefaultPickUpDelay();

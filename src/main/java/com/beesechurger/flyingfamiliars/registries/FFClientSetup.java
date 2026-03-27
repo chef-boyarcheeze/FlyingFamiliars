@@ -15,10 +15,15 @@ import com.beesechurger.flyingfamiliars.entity.client.wand_effect.charm.crystal_
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.CaptureProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.RunicCubeProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fireball_projectile.FireballProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.flamethrower_projectile.FlamethrowerProjectileRenderer;
+import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.entity.projectile.Snowball;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 public class FFClientSetup
@@ -49,6 +54,7 @@ public class FFClientSetup
         // Projectiles:
         EntityRenderers.register(FFEntityTypes.CAPTURE_PROJECTILE.get(), CaptureProjectileRenderer::new);
         EntityRenderers.register(FFEntityTypes.FIREBALL_PROJECTILE.get(), FireballProjectileRenderer::new);
+        EntityRenderers.register(FFEntityTypes.FLAMETHROWER_PROJECTILE.get(), FlamethrowerProjectileRenderer::new);
         EntityRenderers.register(FFEntityTypes.RUNIC_CUBE_PROJECTILE.get(), RunicCubeProjectileRenderer::new);
 
         // Block entities:

@@ -119,7 +119,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
         {
             // determine if there is enough 'fuel' for action
-            if (!player.getAbilities().instabuild && !false) //flag instead of false TODO
+            if (!player.isCreative() && !false) //flag instead of false TODO
             {
                 return InteractionResultHolder.fail(stack);
             }
@@ -157,7 +157,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             Player player = context.getPlayer();
 
             // determine if there is enough 'fuel' for action
-            if (!player.getAbilities().instabuild && !false) //flag instead of false TODO
+            if (!player.isCreative() && !false) //flag instead of false TODO
             {
                 return InteractionResult.FAIL;
             }
@@ -194,7 +194,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 return;
             }
 
-            if (selectedWandEffect.canBePartiallyDrawn())
+            if (selectedWandEffect.canBePartiallyDrawn() && duration % selectedWandEffect.getCooldown() == 0)
             {
                 if (selectedWandEffect.usableOnBlockOnly())
                 {

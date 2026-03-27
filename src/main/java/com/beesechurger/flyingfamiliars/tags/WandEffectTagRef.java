@@ -47,11 +47,17 @@ public class WandEffectTagRef implements IStorageTagRef
         CompoundTag fireballTag = new CompoundTag();
         fireballTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_FIREBALL);
 
+        CompoundTag flamethrowerTag = new CompoundTag();
+        flamethrowerTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_FLAMETHROWER);
+
         CompoundTag cloudCallTag = new CompoundTag();
         cloudCallTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_CLOUD_CALL);
 
         CompoundTag tectonicSunderTag = new CompoundTag();
         tectonicSunderTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_TECTONIC_SUNDER);
+
+        CompoundTag timberCleaveTag = new CompoundTag();
+        timberCleaveTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_TIMBER_CLEAVE);
 
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
@@ -59,8 +65,10 @@ public class WandEffectTagRef implements IStorageTagRef
         // add capture projectile entry to list
         tagList.add(captureTag);
         tagList.add(fireballTag);
+        tagList.add(flamethrowerTag);
         tagList.add(cloudCallTag);
         tagList.add(tectonicSunderTag);
+        tagList.add(timberCleaveTag);
 
         return tagList;
     }
@@ -69,7 +77,7 @@ public class WandEffectTagRef implements IStorageTagRef
     public CompoundTag getInitialSettingsTag(CompoundTag storageTag)
     {
         CompoundTag tag = new CompoundTag();
-        tag.putInt(STORAGE_ENTRY_STORAGE_MAX, 5);
+        tag.putInt(STORAGE_ENTRY_STORAGE_MAX, 10);
 
         return tag;
     }

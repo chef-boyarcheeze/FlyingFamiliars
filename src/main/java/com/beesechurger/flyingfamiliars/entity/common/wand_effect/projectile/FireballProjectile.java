@@ -35,9 +35,9 @@ public class FireballProjectile extends BaseWandEffectProjectile
         super(FFEntityTypes.FIREBALL_PROJECTILE.get(), x, y, z, level);
     }
 
-/////////////////////////////////
-// GeckoLib animation control: //
-/////////////////////////////////
+///////////////////////////////////
+/// GeckoLib animation control: ///
+///////////////////////////////////
 
     private <E extends GeoAnimatable> PlayState bodyController(AnimationState<E> event)
     {
@@ -69,11 +69,12 @@ public class FireballProjectile extends BaseWandEffectProjectile
         data.add(bodyController);
     }
 
-///////////////////////
-// Entity accessors: //
-///////////////////////
+/////////////////////////
+/// Entity accessors: ///
+/////////////////////////
 
-// Integers:
+/// Integers:
+
     @Override
     public int getSpawnTimerMax()
     {
@@ -86,16 +87,17 @@ public class FireballProjectile extends BaseWandEffectProjectile
         return 10;
     }
 
-// Floats:
+/// Floats:
+
     @Override
     protected float getGravity()
     {
         return 0.03f;
     }
 
-////////////////////////////////////
-// Player and entity interaction: //
-////////////////////////////////////
+//////////////////////////////////////
+/// Player and entity interaction: ///
+//////////////////////////////////////
 
     @Override
     protected void onHitEntity(EntityHitResult result)
@@ -140,9 +142,9 @@ public class FireballProjectile extends BaseWandEffectProjectile
         return true;
     }
 
-////////////////
-// Entity AI: //
-////////////////
+//////////////////
+/// Entity AI: ///
+//////////////////
 
     @Override
     public void tick()

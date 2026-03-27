@@ -83,9 +83,9 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         }
     }
 
-///////////////////////////
-// Additional save data: //
-///////////////////////////
+/////////////////////////////
+/// Additional save data: ///
+/////////////////////////////
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag)
@@ -108,9 +108,9 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         // has molted
     }
 
-//////////////////////////////////
-// Geckolib animation controls: //
-//////////////////////////////////
+////////////////////////////////////
+/// Geckolib animation controls: ///
+////////////////////////////////////
 
     private <E extends GeoAnimatable> PlayState crestController(AnimationState<E> event)
     {
@@ -127,18 +127,28 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         FFAnimationController controller = (FFAnimationController) event.getController();
 
         if(isFlying())
+        {
             if(isMoving())
+            {
                 controller.setAnimation(RawAnimation.begin()
-                        .thenLoop("animation.phoenix.body_flapping"));
+                        .thenLoop("animation.phoenix.body_flying"));
+            }
             else
+            {
                 controller.setAnimation(RawAnimation.begin()
                         .thenLoop("animation.phoenix.body_hovering"));
+            }
+        }
         else if(!isFlying() && isMoving())
+        {
             controller.setAnimation(RawAnimation.begin()
                     .thenLoop("animation.phoenix.body_walking"));
+        }
         else
+        {
             controller.setAnimation(RawAnimation.begin()
                     .thenLoop("animation.phoenix.body_idle"));
+        }
 
         return PlayState.CONTINUE;
     }
@@ -156,9 +166,9 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         animationControllers.add(bodyController);
     }
 
-////////////////////////////////
-// Sound-controlling methods: //
-////////////////////////////////
+//////////////////////////////////
+/// Sound-controlling methods: ///
+//////////////////////////////////
 
     @Override
     public int getAmbientSoundInterval()
@@ -189,11 +199,11 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         return SoundEvents.PARROT_DEATH;
     }
 
-///////////////////////
-// Entity accessors: //
-///////////////////////
+/////////////////////////
+/// Entity accessors: ///
+/////////////////////////
 
-// Enums:
+/// Enums:
 
     @Override
     public FamiliarMoveTypes getMoveControlType()
@@ -201,7 +211,7 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         return FamiliarMoveTypes.NONE;
     }
 
-// Booleans:
+/// Booleans:
 
     @Override
     public boolean canOwnerRide()
@@ -221,7 +231,7 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         return stack.is(Items.BAMBOO);
     }
 
-// Doubles:
+/// Doubles:
 
     @Override
     public double getFlySpeedMod()
@@ -235,18 +245,18 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         return 1.2d;
     }
 
-//////////////////////
-// Entity mutators: //
-//////////////////////
+////////////////////////
+/// Entity mutators: ///
+////////////////////////
 
     protected void setHasRing(boolean hasRing)
     {
         entityData.set(HAS_RING, hasRing);
     }
 
-////////////////////////////////////
-// Player and entity interaction: //
-////////////////////////////////////
+//////////////////////////////////////
+/// Player and entity interaction: ///
+//////////////////////////////////////
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -273,9 +283,9 @@ public class PhoenixEntity extends BaseFamiliarEntity implements IFireEntity
         return super.mobInteract(player, hand);
     }
 
-/////////////
-// Mob AI: //
-/////////////
+///////////////
+/// Mob AI: ///
+///////////////
 
     @Override
     public void tick()

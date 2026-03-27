@@ -339,7 +339,7 @@ public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEnt
 		{
 			if (isTameItem(stack))
 			{
-				if (!player.getAbilities().instabuild)
+				if (!player.isCreative())
 				{
 					stack.shrink(1);
 				}

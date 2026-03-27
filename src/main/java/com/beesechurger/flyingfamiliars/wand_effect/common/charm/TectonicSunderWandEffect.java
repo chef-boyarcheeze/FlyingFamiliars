@@ -143,7 +143,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
 
                 if (!level.isClientSide())
                 {
-                    level.destroyBlock(pos, !player.getAbilities().instabuild, player);
+                    level.destroyBlock(pos, false, player);
                     BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
                     FFItemHandler.substituteUse(new UseOnContext(player, InteractionHand.MAIN_HAND, hit), replacement).getFirst();
                 }
