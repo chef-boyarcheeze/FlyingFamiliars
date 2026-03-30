@@ -33,7 +33,7 @@ public class FFItems
     public static final RegistryObject<Item> LUMINOUS_SPIRIT_FRAGMENT = register("luminous_spirit_fragment", () -> new Item(new Item.Properties().stacksTo(64).rarity(Rarity.COMMON)));
 
 	// Phylactery:
-	public static final RegistryObject<Item> PHYLACTERY = register("phylactery_blue", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> PHYLACTERY = register("phylactery", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 
 	// Buckets:
 	public static final RegistryObject<Item> BLUE_VITALITY_BUCKET = register("blue_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_BLUE_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
