@@ -48,7 +48,9 @@ public class FlyingFamiliars
 		MinecraftForge.EVENT_BUS.addListener(ClientEvents::onCameraSetup);
 
 		if(ModList.get().isLoaded(CURIOS_MODNAME))
+		{
 			CuriosIntegration.register();
+		}
 
 		GeckoLib.initialize();
 	}

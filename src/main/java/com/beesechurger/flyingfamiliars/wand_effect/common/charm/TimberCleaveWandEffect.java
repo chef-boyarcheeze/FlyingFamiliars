@@ -19,6 +19,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_GREEN;
@@ -27,8 +29,7 @@ import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItem
 
 public class TimberCleaveWandEffect extends BaseWandEffect
 {
-    private static final int TIMBER_CLEAVE_MAX_HEIGHT = 80;
-    private static final int TIMBER_CLEAVE_MAX_WIDTH = 5;
+    private static final int TIMBER_CLEAVE_MAX_BLOCK_COUNT = 500;
 
 //////////////////
 /// Accessors: ///
@@ -61,7 +62,7 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     @Override
     public int getUseDurationMin()
     {
-        return 20;
+        return 60;
     }
 
     @Override
@@ -79,7 +80,7 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     @Override
     public int getCooldown()
     {
-        return 20;
+        return 100;
     }
 
     @Override
@@ -130,64 +131,49 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     private void breakTree(Level level, BlockPos pos, Player player)
     {
         BlockState state = level.getBlockState(pos);
-        Block wood = state.getBlock();
 
-        var height = 0;
-        for (;;)
+        Set<BlockPos> treeBlocks = new HashSet<>();
+        Queue<BlockPos> toCheck = new LinkedList<>();
+        Set<BlockPos> visited = new HashSet<>();
+
+        toCheck.add(pos);
+        visited.add(pos);
+
+        while (!toCheck.isEmpty())
         {
-            BlockState block = level.getBlockState(pos.offset(0, height + 1, 0));
+            BlockPos traversePos = toCheck.poll();
+            treeBlocks.add(traversePos);
 
-            if (block == null || block.getBlock() != wood)
+            for (int x = -1; x <= 1; x++)
             {
-                break;
-            }
-
-            height++;
-        }
-
-        var numLeaves = 0;
-        if (height + 1 < TIMBER_CLEAVE_MAX_HEIGHT)
-        {
-            for (int xPos = pos.getX() - 1; xPos <= pos.getX() + 1; xPos++)
-            {
-                for (int yPos = pos.getY() + height - 1; yPos <= pos.getY() + height + 1; yPos++)
+                for (int y = -1; y <= 1; y++)
                 {
-                    for (int zPos = pos.getZ() - 1; zPos <= pos.getZ() + 1; zPos++)
+                    for (int z = -1; z <= 1; z++)
                     {
-                        BlockState leaves = level.getBlockState(new BlockPos(xPos, yPos, zPos));
-                        if (leaves != null && leaves.is(BlockTags.LEAVES))
+                        BlockPos neighbor = traversePos.offset(x, y, z);
+                        BlockState neighborState = level.getBlockState(neighbor);
+
+                        if (neighborState.getBlock() == state.getBlock() && !visited.contains(neighbor))
                         {
-                            numLeaves++;
+                            toCheck.add(neighbor);
+                            visited.add(neighbor);
                         }
                     }
                 }
             }
         }
 
-        if (numLeaves > 3)
+        if (treeBlocks.size() <= TIMBER_CLEAVE_MAX_BLOCK_COUNT)
         {
-            for (int xPos = pos.getX() + TIMBER_CLEAVE_MAX_WIDTH; xPos >= pos.getX() - TIMBER_CLEAVE_MAX_WIDTH; xPos--)
+            for (BlockPos destroyPos : treeBlocks)
             {
-                for (int yPos = pos.getY() + height + 1; yPos >= pos.getY(); yPos--)
-                {
-                    for (int zPos = pos.getZ() + TIMBER_CLEAVE_MAX_WIDTH; zPos >= pos.getZ() - TIMBER_CLEAVE_MAX_WIDTH; zPos--)
-                    {
-                        BlockPos currentPos = new BlockPos(xPos, yPos, zPos);
-                        BlockState currentBlock = level.getBlockState(currentPos);
-                        if (wood == currentBlock.getBlock())
-                        {
-                            int xDist = xPos - pos.getX();
-                            int yDist = yPos - pos.getY();
-                            int zDist = zPos - pos.getZ();
-
-                            if (9*xDist*xDist + yDist*yDist + 9*zDist*zDist < 2500)
-                            {
-                                level.destroyBlock(currentPos, !player.isCreative());
-                            }
-                        }
-                    }
-                }
+                level.destroyBlock(destroyPos, !player.isCreative());
+                // cost
             }
+        }
+        else
+        {
+            // failure
         }
     }
 }

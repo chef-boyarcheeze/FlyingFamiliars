@@ -13,7 +13,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -119,7 +121,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
         {
             // determine if there is enough 'fuel' for action
-            if (!player.isCreative() && !false) //flag instead of false TODO
+            if (!player.isCreative() && false) //flag instead of false TODO
             {
                 return InteractionResultHolder.fail(stack);
             }
