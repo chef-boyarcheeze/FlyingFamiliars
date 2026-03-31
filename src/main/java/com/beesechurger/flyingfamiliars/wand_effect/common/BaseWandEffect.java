@@ -34,16 +34,16 @@ public abstract class BaseWandEffect
         return false;
     }
 
-    // effect works when only partially drawn
-    public boolean canBePartiallyDrawn()
-    {
-        return false;
-    }
-
-    // pre-check for charge-up wand effects
+    // block currently looked at is correct
     public boolean checkLookedAtBlock(BlockState state)
     {
         return true;
+    }
+
+    // effect works when partially drawn
+    public boolean canBePartiallyDrawn()
+    {
+        return false;
     }
 
 /// Integers:

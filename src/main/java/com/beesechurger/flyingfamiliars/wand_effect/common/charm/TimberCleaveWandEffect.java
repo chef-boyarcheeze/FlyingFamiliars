@@ -123,6 +123,7 @@ public class TimberCleaveWandEffect extends BaseWandEffect
                 breakTree(level, pos, player);
             }
 
+            // TODO: make new sound, and maybe new particle
             level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), FFSounds.TECTONIC_SUNDER.get(), SoundSource.BLOCKS, 0.5f, 2.0f * FFSounds.getPitch());
             level.addParticle(ParticleTypes.EXPLOSION, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, 1, 0, 0);
         }

@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
 
+import com.beesechurger.flyingfamiliars.item.FFItemClientExtension;
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
@@ -21,9 +22,11 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
 
@@ -39,6 +42,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 //////////////////
 
 /// Booleans:
+
     @Override
     public boolean canCycle(Player player, ItemStack stack)
     {
@@ -48,6 +52,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     }
 
 /// Integers:
+
     @Override
     public int getUseDuration(ItemStack stack)
     {
@@ -65,6 +70,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     }
 
 /// Misc:
+
     @Override
     public Component getName(ItemStack stack)
     {
@@ -106,6 +112,12 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         }
 
         super.appendHoverText(stack, level, tooltip, tipFlag);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer)
+    {
+        consumer.accept(FFItemClientExtension.INSTANCE);
     }
 
 /////////////////////
