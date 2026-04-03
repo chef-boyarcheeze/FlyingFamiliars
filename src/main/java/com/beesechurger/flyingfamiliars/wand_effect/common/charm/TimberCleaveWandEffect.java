@@ -13,10 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_GREEN;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TIMBER_CLEAVE;
@@ -127,16 +125,16 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     {
         BlockState state = level.getBlockState(pos);
 
-        Set<BlockPos> treeBlocks = new HashSet<>();
-        Queue<BlockPos> toCheck = new LinkedList<>();
-        Set<BlockPos> visited = new HashSet<>();
+        List<BlockPos> treeBlocks = new ArrayList<>();
+        List<BlockPos> toCheck = new ArrayList<>();
+        List<BlockPos> visited = new ArrayList<>();
 
         toCheck.add(pos);
         visited.add(pos);
 
         while (!toCheck.isEmpty())
         {
-            BlockPos traversePos = toCheck.poll();
+            BlockPos traversePos = toCheck.remove(0);
             treeBlocks.add(traversePos);
 
             for (int x = -1; x <= 1; x++)
@@ -160,10 +158,10 @@ public class TimberCleaveWandEffect extends BaseWandEffect
 
         if (treeBlocks.size() <= TIMBER_CLEAVE_MAX_BLOCK_COUNT)
         {
-            for (BlockPos destroyPos : treeBlocks)
+            for (int i = treeBlocks.size() - 1; i >= 0; i--)
             {
-                level.destroyBlock(destroyPos, !player.isCreative());
-                // cost
+                level.destroyBlock(treeBlocks.get(i), !player.isCreative());
+                // cost per block
             }
         }
         else

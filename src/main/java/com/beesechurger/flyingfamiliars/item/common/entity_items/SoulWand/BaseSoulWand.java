@@ -137,7 +137,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             {
                 return InteractionResultHolder.fail(stack);
             }
-            else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.canBeContinuouslyDrawn())
+            else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.canBeContinuouslyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
             {
                 player.startUsingItem(hand);
                 return InteractionResultHolder.pass(stack);
