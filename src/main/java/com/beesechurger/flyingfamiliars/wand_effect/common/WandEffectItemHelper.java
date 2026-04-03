@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars.wand_effect.common;
 import com.beesechurger.flyingfamiliars.wand_effect.common.charm.CloudCallWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.charm.TectonicSunderWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.charm.TimberCleaveWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.charm.ZephyreanGustWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FireballWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FlamethrowerWandEffect;
@@ -40,7 +41,7 @@ public class WandEffectItemHelper
     //private static final CrystalSpikeWandEffect CRYSTAL_SPIKE = new CrystalSpikeWandEffect();
     private static final TectonicSunderWandEffect TECTONIC_SUNDER = new TectonicSunderWandEffect();
     private static final TimberCleaveWandEffect TIMBER_CLEAVE = new TimberCleaveWandEffect();
-    //private static final ZephyreanGustWandEffect ZEPHYREAN_GUST = new ZephyreanGustWandEffect();
+    private static final ZephyreanGustWandEffect ZEPHYREAN_GUST = new ZephyreanGustWandEffect();
 
 /// Projectile wand effects:
     private static final CaptureWandEffect CAPTURE = new CaptureWandEffect();
@@ -54,6 +55,7 @@ public class WandEffectItemHelper
         map.put(WAND_EFFECT_CLOUD_CALL, CLOUD_CALL);
         map.put(WAND_EFFECT_TECTONIC_SUNDER, TECTONIC_SUNDER);
         map.put(WAND_EFFECT_TIMBER_CLEAVE, TIMBER_CLEAVE);
+        map.put(WAND_EFFECT_ZEPHYREAN_GUST, ZEPHYREAN_GUST);
 
     /// Projectiles:
         map.put(WAND_EFFECT_CAPTURE, CAPTURE);

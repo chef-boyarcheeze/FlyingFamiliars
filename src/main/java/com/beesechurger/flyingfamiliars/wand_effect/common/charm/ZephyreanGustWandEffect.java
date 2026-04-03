@@ -2,8 +2,11 @@ package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_YELLOW;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_ZEPHYREAN_GUST;
@@ -15,13 +18,35 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
 //////////////////
 
 /// Strings:
+
     @Override
     public String getName()
     {
         return WAND_EFFECT_ZEPHYREAN_GUST;
     }
 
+/// Booleans:
+
+    @Override
+    public boolean canBePartiallyDrawn()
+    {
+        return true;
+    }
+
 /// Integers:
+
+    @Override
+    public int getUseDurationMin()
+    {
+        return 20;
+    }
+
+    @Override
+    public int getUseDurationMax()
+    {
+        return MAX_CHARGE_TIME;
+    }
+
     @Override
     public int getCost()
     {
@@ -31,7 +56,7 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     @Override
     public int getCooldown()
     {
-        return 5;
+        return 50;
     }
 
     @Override
@@ -41,10 +66,17 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     }
 
 /// Misc:
+
     @Override
     public ChatFormatting getTooltipColor()
     {
         return ChatFormatting.YELLOW;
+    }
+
+    @Override
+    public UseAnim getUseAnimation()
+    {
+        return UseAnim.SPEAR;
     }
 
 ///////////////////////////
@@ -54,6 +86,9 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     @Override
     public void use(Level level, Player player)
     {
+        Vec3 angle = player.getLookAngle();
+        angle = angle.normalize();
 
+        player.push(angle.x, angle.y, angle.z);
     }
 }

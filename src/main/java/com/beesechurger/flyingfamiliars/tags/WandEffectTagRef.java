@@ -59,6 +59,9 @@ public class WandEffectTagRef implements IStorageTagRef
         CompoundTag timberCleaveTag = new CompoundTag();
         timberCleaveTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_TIMBER_CLEAVE);
 
+        CompoundTag zephyreanGustTag = new CompoundTag();
+        zephyreanGustTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_ZEPHYREAN_GUST);
+
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
 
@@ -69,6 +72,7 @@ public class WandEffectTagRef implements IStorageTagRef
         tagList.add(cloudCallTag);
         tagList.add(tectonicSunderTag);
         tagList.add(timberCleaveTag);
+        tagList.add(zephyreanGustTag);
 
         return tagList;
     }

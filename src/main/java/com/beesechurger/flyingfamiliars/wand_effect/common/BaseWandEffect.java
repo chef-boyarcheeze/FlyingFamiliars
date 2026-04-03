@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BaseWandEffect
 {
+    protected static final int MAX_CHARGE_TIME = 72000;
+
 //////////////////
 /// Accessors: ///
 //////////////////
@@ -38,6 +40,12 @@ public abstract class BaseWandEffect
     public boolean checkLookedAtBlock(BlockState state)
     {
         return true;
+    }
+
+    // effect works when continuously drawn
+    public boolean canBeContinuouslyDrawn()
+    {
+        return false;
     }
 
     // effect works when partially drawn

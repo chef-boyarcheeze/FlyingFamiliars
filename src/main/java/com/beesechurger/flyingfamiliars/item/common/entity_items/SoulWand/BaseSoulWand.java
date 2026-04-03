@@ -137,7 +137,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             {
                 return InteractionResultHolder.fail(stack);
             }
-            else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
+            else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.canBeContinuouslyDrawn())
             {
                 player.startUsingItem(hand);
                 return InteractionResultHolder.pass(stack);
@@ -208,7 +208,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 return;
             }
 
-            if (selectedWandEffect.canBePartiallyDrawn() && duration % selectedWandEffect.getCooldown() == 0)
+            if (selectedWandEffect.canBeContinuouslyDrawn() && duration % selectedWandEffect.getCooldown() == 0)
             {
                 if (selectedWandEffect.usableOnBlockOnly())
                 {
@@ -220,6 +220,8 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 }
 
                 // consume fuel
+
+                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
             }
         }
     }

@@ -5,18 +5,13 @@ import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -24,7 +19,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_GREEN;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.MAX_CHARGE_TIME;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TIMBER_CLEAVE;
 
 public class TimberCleaveWandEffect extends BaseWandEffect

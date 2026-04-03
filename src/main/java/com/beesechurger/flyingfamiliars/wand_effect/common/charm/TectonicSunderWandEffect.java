@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.MAX_CHARGE_TIME;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TECTONIC_SUNDER;
 
 public class TectonicSunderWandEffect extends BaseWandEffect

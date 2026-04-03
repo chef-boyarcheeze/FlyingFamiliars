@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.projectile;
 
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
@@ -8,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_RED;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.MAX_CHARGE_TIME;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_FLAMETHROWER;
 
 public class FlamethrowerWandEffect extends BaseWandEffect
@@ -28,7 +26,7 @@ public class FlamethrowerWandEffect extends BaseWandEffect
 /// Booleans:
 
     @Override
-    public boolean canBePartiallyDrawn()
+    public boolean canBeContinuouslyDrawn()
     {
         return true;
     }
@@ -50,7 +48,7 @@ public class FlamethrowerWandEffect extends BaseWandEffect
     @Override
     public int getCooldown()
     {
-        return 5;
+        return 3;
     }
 
     @Override
