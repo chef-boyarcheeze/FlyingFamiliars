@@ -23,9 +23,9 @@ public class MagicCarpetRenderer extends BaseFamiliarRenderer<MagicCarpetEntity>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(MagicCarpetEntity magicCarpetEntity)
+	public ResourceLocation getTextureLocation(MagicCarpetEntity entity)
 	{
-		return switch (magicCarpetEntity.getVariant()) {
+		return switch (entity.getVariant()) {
 			case "white" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_white.png");
 			case "light_gray" ->

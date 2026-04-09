@@ -13,15 +13,15 @@ import software.bernie.geckolib.model.GeoModel;
 public class DeepJellyfishModel extends GeoModel<DeepJellyfishEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(DeepJellyfishEntity DeepJellyfishEntity)
+	public ResourceLocation getModelResource(DeepJellyfishEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/deep_jellyfish.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(DeepJellyfishEntity DeepJellyfishEntity)
+	public ResourceLocation getTextureResource(DeepJellyfishEntity entity)
 	{
-		return switch (DeepJellyfishEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "blue" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/deep_jellyfish/deep_jellyfish_blue.png");
@@ -35,21 +35,22 @@ public class DeepJellyfishModel extends GeoModel<DeepJellyfishEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(DeepJellyfishEntity DeepJellyfishEntity) {
+	public ResourceLocation getAnimationResource(DeepJellyfishEntity entity)
+	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/deep_jellyfish.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(DeepJellyfishEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(DeepJellyfishEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;
 	}
 
 	@Override
-	public RenderType getRenderType(DeepJellyfishEntity animatable, ResourceLocation texture)
+	public RenderType getRenderType(DeepJellyfishEntity entity, ResourceLocation texture)
 	{
 		return RenderType.entityTranslucent(texture);
 	}

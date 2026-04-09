@@ -23,9 +23,9 @@ public class ShadewyrmRenderer extends BaseFamiliarRenderer<ShadewyrmEntity>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(ShadewyrmEntity animatable)
+	public ResourceLocation getTextureLocation(ShadewyrmEntity entity)
 	{
-		return switch (animatable.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "onyx" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shadewyrm/shadewyrm_onyx.png");

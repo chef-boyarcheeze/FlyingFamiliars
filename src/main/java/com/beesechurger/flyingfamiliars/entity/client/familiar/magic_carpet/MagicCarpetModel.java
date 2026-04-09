@@ -11,15 +11,15 @@ import software.bernie.geckolib.model.GeoModel;
 public class MagicCarpetModel extends GeoModel<MagicCarpetEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(MagicCarpetEntity animatable)
+	public ResourceLocation getModelResource(MagicCarpetEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/magic_carpet.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(MagicCarpetEntity animatable)
+	public ResourceLocation getTextureResource(MagicCarpetEntity entity)
 	{
-        return switch (animatable.getVariant()) {
+        return switch (entity.getVariant()) {
             case "white" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/magic_carpet/magic_carpet_white.png");
             case "light_gray" ->
@@ -58,7 +58,7 @@ public class MagicCarpetModel extends GeoModel<MagicCarpetEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(MagicCarpetEntity animatable)
+	public ResourceLocation getAnimationResource(MagicCarpetEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/magic_carpet.animation.json");
 	}

@@ -17,15 +17,15 @@ import software.bernie.geckolib.model.data.EntityModelData;
 public class GriffonflyModel extends GeoModel<GriffonflyEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(GriffonflyEntity griffonflyEntity)
+	public ResourceLocation getModelResource(GriffonflyEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/griffonfly.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(GriffonflyEntity griffonflyEntity)
+	public ResourceLocation getTextureResource(GriffonflyEntity entity)
 	{
-        return switch (griffonflyEntity.getVariant()) {
+        return switch (entity.getVariant()) {
             case "yellow" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_yellow.png");
             case "green" ->
@@ -42,15 +42,15 @@ public class GriffonflyModel extends GeoModel<GriffonflyEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(GriffonflyEntity griffonflyEntity)
+	public ResourceLocation getAnimationResource(GriffonflyEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/griffonfly.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(GriffonflyEntity griffonflyEntity, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(GriffonflyEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(griffonflyEntity, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;

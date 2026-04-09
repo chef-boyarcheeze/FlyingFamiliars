@@ -26,21 +26,21 @@ public class BaseFamiliarRenderer<T extends BaseFamiliarEntity & GeoAnimatable> 
     }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, T animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void actuallyRender(PoseStack poseStack, T entity, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
-        if (!(animatable.isPassenger() && ClientEvents.blockRenderList.contains(animatable.getUUID())))
+        if (!(entity.isPassenger() && ClientEvents.blockRenderList.contains(entity.getUUID())))
         {
-            super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+            super.actuallyRender(poseStack, entity, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
         }
     }
 
     @Override
-    protected void applyRotations(T animatable, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void applyRotations(T entity, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
     {
-        super.applyRotations(animatable, stack, ageInTicks, rotationYaw, partialTicks);
+        super.applyRotations(entity, stack, ageInTicks, rotationYaw, partialTicks);
 
-        float renderPitch = (float) animatable.getPitch(partialTicks);
-        float renderRoll = (float) animatable.getRoll(partialTicks);
+        float renderPitch = (float) entity.getPitch(partialTicks);
+        float renderRoll = (float) entity.getRoll(partialTicks);
 
         stack.mulPose(Axis.XP.rotationDegrees(-renderPitch));
         stack.mulPose(Axis.ZP.rotationDegrees(renderRoll));

@@ -29,24 +29,24 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
     }
 
     @Override
-    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTicks, int packedLight, int packedOverlay)
+    public void render(PoseStack poseStack, T entity, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTicks, int packedLight, int packedOverlay)
     {
-        if (animatable.isVehicle())
+        if (entity.isVehicle())
         {
             var familiarModel = getRenderer().getGeoModel();
 
             if (!familiarModel.getBone(getSeatBone()).isEmpty())
             {
-                float vehicleRenderSize = FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(animatable.getType().toShortString());
+                float vehicleRenderSize = FFEntityTypes.ENTITY_RENDER_SIZE_MAP.get(entity.getType().toShortString());
 
-                var pitch = (float) animatable.getPitch(partialTicks);
-                var yaw = (float) animatable.getYaw(partialTicks);
-                var roll = (float) animatable.getRoll(partialTicks);
+                var pitch = (float) entity.getPitch(partialTicks);
+                var yaw = (float) entity.getYaw(partialTicks);
+                var roll = (float) entity.getRoll(partialTicks);
 
                 var bone = familiarModel.getBone(getSeatBone()).get();
                 Vec3 pivot = new Vec3(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ());
 
-                for (Entity passenger : animatable.getPassengers())
+                for (Entity passenger : entity.getPassengers())
                 {
                     if (passenger != Minecraft.getInstance().player || Minecraft.getInstance().options.getCameraType() != CameraType.FIRST_PERSON)
                     {
@@ -80,8 +80,8 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
                                 poseStack.translate(pivot.x * 0.0625f, pivot.y * 0.0625f, pivot.z * 0.0625f);
 
                                 // translate to final render location
-                                Vec3 pos = animatable.getRiderPosition(passenger);
-                                Vec3 renderOffset = getRenderOffset(animatable, passenger);
+                                Vec3 pos = entity.getRiderPosition(passenger);
+                                Vec3 renderOffset = getRenderOffset(entity, passenger);
                                 poseStack.translate(-pos.x, pos.y - renderOffset.y, -pos.z);
 
                             // rotate out of current familiar yaw frame of reference
@@ -99,5 +99,5 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
 
     protected abstract String getSeatBone();
 
-    protected abstract Vec3 getRenderOffset(T animatable, Entity passenger);
+    protected abstract Vec3 getRenderOffset(T entity, Entity passenger);
 }

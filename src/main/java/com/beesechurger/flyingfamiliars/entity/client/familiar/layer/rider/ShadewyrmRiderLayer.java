@@ -24,7 +24,7 @@ public class ShadewyrmRiderLayer extends BaseFamiliarRiderLayer<ShadewyrmEntity>
     }
 
     @Override
-    protected Vec3 getRenderOffset(ShadewyrmEntity animatable, Entity passenger)
+    protected Vec3 getRenderOffset(ShadewyrmEntity entity, Entity passenger)
     {
         return new Vec3(0, 0,0);
     }

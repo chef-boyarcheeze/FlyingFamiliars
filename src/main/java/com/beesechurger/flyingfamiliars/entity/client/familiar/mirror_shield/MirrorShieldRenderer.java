@@ -20,7 +20,7 @@ public class MirrorShieldRenderer extends BaseFamiliarRenderer<MirrorShieldEntit
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(MirrorShieldEntity MirrorShieldEntity)
+	public ResourceLocation getTextureLocation(MirrorShieldEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/mirror_shield/mirror_shield.png");
 	}

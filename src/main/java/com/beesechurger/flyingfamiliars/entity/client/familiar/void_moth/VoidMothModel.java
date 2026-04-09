@@ -12,27 +12,27 @@ import software.bernie.geckolib.model.GeoModel;
 public class VoidMothModel extends GeoModel<VoidMothEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(VoidMothEntity animatable)
+	public ResourceLocation getModelResource(VoidMothEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/void_moth.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(VoidMothEntity animatable)
+	public ResourceLocation getTextureResource(VoidMothEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/void_moth/void_moth.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(VoidMothEntity animatable)
+	public ResourceLocation getAnimationResource(VoidMothEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/void_moth.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(VoidMothEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(VoidMothEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		/*if(customPredicate == null || phoenixEntity.isFlying())
 			return;

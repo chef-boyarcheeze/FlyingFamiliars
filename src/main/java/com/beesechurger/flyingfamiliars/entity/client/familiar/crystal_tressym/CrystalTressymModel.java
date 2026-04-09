@@ -18,15 +18,15 @@ import javax.swing.*;
 public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(CrystalTressymEntity CrystalTressymEntity)
+	public ResourceLocation getModelResource(CrystalTressymEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/crystal_tressym.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(CrystalTressymEntity CrystalTressymEntity)
+	public ResourceLocation getTextureResource(CrystalTressymEntity entity)
 	{
-		return switch (CrystalTressymEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "blue" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/crystal_tressym/crystal_tressym_blue.png");
@@ -40,14 +40,15 @@ public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(CrystalTressymEntity CrystalTressymEntity) {
+	public ResourceLocation getAnimationResource(CrystalTressymEntity entity)
+	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/crystal_tressym.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(CrystalTressymEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(CrystalTressymEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;
@@ -55,7 +56,7 @@ public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
 		CoreGeoBone head = this.getAnimationProcessor().getBone("head");
 
-        float pitchOffset = animatable.isSitting() ? 40 : 30;
+        float pitchOffset = entity.isSitting() ? 40 : 30;
 
         float pitch = Mth.clamp(extraDataOfType.headPitch() - pitchOffset, -60, -15);
 		float yaw = Mth.clamp(extraDataOfType.netHeadYaw(), -20.0f, 20.0f);

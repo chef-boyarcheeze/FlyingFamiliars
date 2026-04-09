@@ -24,7 +24,7 @@ public class MagicCarpetRiderLayer extends BaseFamiliarRiderLayer<MagicCarpetEnt
     }
 
     @Override
-    protected Vec3 getRenderOffset(MagicCarpetEntity animatable, Entity passenger)
+    protected Vec3 getRenderOffset(MagicCarpetEntity entity, Entity passenger)
     {
         return new Vec3(0, 0.4,0);
     }

@@ -24,7 +24,7 @@ public class CloudRayRiderLayer extends BaseFamiliarRiderLayer<CloudRayEntity>
     }
 
     @Override
-    protected Vec3 getRenderOffset(CloudRayEntity animatable, Entity passenger)
+    protected Vec3 getRenderOffset(CloudRayEntity entity, Entity passenger)
     {
         return new Vec3(0, 1.2,0);
     }

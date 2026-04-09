@@ -20,9 +20,9 @@ public class CrystalTressymRenderer extends BaseFamiliarRenderer<CrystalTressymE
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CrystalTressymEntity CrystalTressymEntity)
+	public ResourceLocation getTextureLocation(CrystalTressymEntity entity)
 	{
-		return switch (CrystalTressymEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "green" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/crystal_tressym/crystal_tressym_green.png");

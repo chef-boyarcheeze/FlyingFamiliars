@@ -20,9 +20,9 @@ public class ShrublingRenderer extends BaseFamiliarRenderer<ShrublingEntity>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(ShrublingEntity ShrublingEntity)
+	public ResourceLocation getTextureLocation(ShrublingEntity entity)
 	{
-		return switch (ShrublingEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "oak" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shrubling/shrubling_oak.png");

@@ -13,27 +13,27 @@ import software.bernie.geckolib.model.GeoModel;
 public class ZephyrFishModel extends GeoModel<ZephyrFishEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(ZephyrFishEntity animatable)
+	public ResourceLocation getModelResource(ZephyrFishEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/zephyr_fish.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(ZephyrFishEntity animatable)
+	public ResourceLocation getTextureResource(ZephyrFishEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/zephyr_fish/zephyr_fish.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(ZephyrFishEntity animatable)
+	public ResourceLocation getAnimationResource(ZephyrFishEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/zephyr_fish.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(ZephyrFishEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(ZephyrFishEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		/*if(customPredicate == null || phoenixEntity.isFlying())
 			return;

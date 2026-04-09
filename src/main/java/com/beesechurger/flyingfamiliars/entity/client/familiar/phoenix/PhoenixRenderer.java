@@ -24,9 +24,9 @@ public class PhoenixRenderer extends BaseFamiliarRenderer<PhoenixEntity>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(PhoenixEntity phoenixEntity)
+	public ResourceLocation getTextureLocation(PhoenixEntity entity)
 	{
-		return switch (phoenixEntity.getVariant()) {
+		return switch (entity.getVariant()) {
 			case "red" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 			case "blue" ->

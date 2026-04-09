@@ -16,15 +16,15 @@ import software.bernie.geckolib.model.data.EntityModelData;
 public class CloudRayModel extends GeoModel<CloudRayEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(CloudRayEntity cloudRayEntity)
+	public ResourceLocation getModelResource(CloudRayEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/cloud_ray.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(CloudRayEntity cloudRayEntity)
+	public ResourceLocation getTextureResource(CloudRayEntity entity)
 	{
-		return switch (cloudRayEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "white" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");
@@ -38,14 +38,15 @@ public class CloudRayModel extends GeoModel<CloudRayEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(CloudRayEntity cloudRayEntity) {
+	public ResourceLocation getAnimationResource(CloudRayEntity entity)
+	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/cloud_ray.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(CloudRayEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(CloudRayEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;

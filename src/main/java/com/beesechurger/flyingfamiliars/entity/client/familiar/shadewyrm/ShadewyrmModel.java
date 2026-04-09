@@ -3,28 +3,24 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.shadewyrm;
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.ShadewyrmEntity;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
 
 @OnlyIn(Dist.CLIENT)
 public class ShadewyrmModel extends GeoModel<ShadewyrmEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(ShadewyrmEntity animatable)
+	public ResourceLocation getModelResource(ShadewyrmEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/shadewyrm.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(ShadewyrmEntity animatable)
+	public ResourceLocation getTextureResource(ShadewyrmEntity entity)
 	{
-		return switch (animatable.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "onyx" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shadewyrm/shadewyrm_onyx.png");
@@ -38,15 +34,15 @@ public class ShadewyrmModel extends GeoModel<ShadewyrmEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(ShadewyrmEntity animatable)
+	public ResourceLocation getAnimationResource(ShadewyrmEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/shadewyrm.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(ShadewyrmEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(ShadewyrmEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;

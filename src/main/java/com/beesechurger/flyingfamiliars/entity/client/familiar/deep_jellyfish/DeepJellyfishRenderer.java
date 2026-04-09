@@ -20,9 +20,9 @@ public class DeepJellyfishRenderer extends BaseFamiliarRenderer<DeepJellyfishEnt
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(DeepJellyfishEntity DeepJellyfishEntity)
+	public ResourceLocation getTextureLocation(DeepJellyfishEntity entity)
 	{
-		return switch (DeepJellyfishEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "blue" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/deep_jellyfish/deep_jellyfish_blue.png");

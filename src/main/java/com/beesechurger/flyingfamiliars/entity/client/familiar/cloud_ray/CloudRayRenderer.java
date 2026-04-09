@@ -24,9 +24,9 @@ public class CloudRayRenderer extends BaseFamiliarRenderer<CloudRayEntity>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CloudRayEntity cloudRayEntity)
+	public ResourceLocation getTextureLocation(CloudRayEntity entity)
 	{
-		return switch (cloudRayEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "white" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/cloud_ray/cloud_ray_white.png");

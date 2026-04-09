@@ -37,7 +37,7 @@ public class GriffonflyRiderLayer extends BaseFamiliarRiderLayer<GriffonflyEntit
     }
 
     @Override
-    protected Vec3 getRenderOffset(GriffonflyEntity animatable, Entity passenger)
+    protected Vec3 getRenderOffset(GriffonflyEntity entity, Entity passenger)
     {
         return new Vec3(0, 0.75,0);
     }

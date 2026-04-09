@@ -24,9 +24,9 @@ public class GriffonflyRenderer extends BaseFamiliarRenderer<GriffonflyEntity>
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(GriffonflyEntity griffonflyEntity)
+	public ResourceLocation getTextureLocation(GriffonflyEntity entity)
 	{
-        return switch (griffonflyEntity.getVariant())
+        return switch (entity.getVariant())
 		{
             case "yellow" ->
                     new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/griffonfly/griffonfly_yellow.png");

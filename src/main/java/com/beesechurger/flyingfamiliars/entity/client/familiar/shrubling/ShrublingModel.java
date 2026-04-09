@@ -12,15 +12,15 @@ import software.bernie.geckolib.model.GeoModel;
 public class ShrublingModel extends GeoModel<ShrublingEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(ShrublingEntity ShrublingEntity)
+	public ResourceLocation getModelResource(ShrublingEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/shrubling.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(ShrublingEntity ShrublingEntity)
+	public ResourceLocation getTextureResource(ShrublingEntity entity)
 	{
-		return switch (ShrublingEntity.getVariant())
+		return switch (entity.getVariant())
 		{
 			case "oak" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/shrubling/shrubling_oak.png");
@@ -44,14 +44,14 @@ public class ShrublingModel extends GeoModel<ShrublingEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(ShrublingEntity ShrublingEntity) {
+	public ResourceLocation getAnimationResource(ShrublingEntity entity) {
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/shrubling.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(ShrublingEntity animatable, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(ShrublingEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(animatable, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
 		if(customPredicate == null)
 			return;

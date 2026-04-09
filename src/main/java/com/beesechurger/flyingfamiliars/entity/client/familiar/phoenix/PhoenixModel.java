@@ -12,15 +12,15 @@ import software.bernie.geckolib.model.GeoModel;
 public class PhoenixModel extends GeoModel<PhoenixEntity>
 {
 	@Override
-	public ResourceLocation getModelResource(PhoenixEntity phoenixEntity)
+	public ResourceLocation getModelResource(PhoenixEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "geo/familiar/phoenix.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(PhoenixEntity phoenixEntity)
+	public ResourceLocation getTextureResource(PhoenixEntity entity)
 	{
-		return switch (phoenixEntity.getVariant()) {
+		return switch (entity.getVariant()) {
 			case "red" ->
 					new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/phoenix/phoenix_red.png");
 			case "blue" ->
@@ -31,17 +31,17 @@ public class PhoenixModel extends GeoModel<PhoenixEntity>
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(PhoenixEntity phoenixEntity)
+	public ResourceLocation getAnimationResource(PhoenixEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "animations/familiar/phoenix.animation.json");
 	}
 
 	@Override
-	public void setCustomAnimations(PhoenixEntity phoenixEntity, long instanceId, AnimationState customPredicate)
+	public void setCustomAnimations(PhoenixEntity entity, long instanceId, AnimationState customPredicate)
 	{
-		super.setCustomAnimations(phoenixEntity, instanceId, customPredicate);
+		super.setCustomAnimations(entity, instanceId, customPredicate);
 
-		/*if(customPredicate == null || phoenixEntity.isFlying())
+		/*if(customPredicate == null || entity.isFlying())
 			return;
 
 		EntityModelData extraDataOfType = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);

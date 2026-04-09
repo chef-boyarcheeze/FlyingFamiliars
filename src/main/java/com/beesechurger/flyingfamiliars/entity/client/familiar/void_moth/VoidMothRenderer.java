@@ -24,7 +24,7 @@ public class VoidMothRenderer extends BaseFamiliarRenderer<VoidMothEntity>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(VoidMothEntity animatable)
+	public ResourceLocation getTextureLocation(VoidMothEntity entity)
 	{
 		return new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/familiar/void_moth/void_moth.png");
 	}
