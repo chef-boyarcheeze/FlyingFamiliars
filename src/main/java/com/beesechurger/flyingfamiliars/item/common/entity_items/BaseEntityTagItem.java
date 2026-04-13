@@ -34,6 +34,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 //////////////////
 
 /// Booleans:
+
     @Override
     public boolean isFoil(ItemStack stack)
     {

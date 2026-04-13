@@ -24,6 +24,7 @@ public class CaptureWandEffect extends BaseWandEffect
 //////////////////
 
 /// Strings:
+
     @Override
     public String getName()
     {
@@ -31,6 +32,7 @@ public class CaptureWandEffect extends BaseWandEffect
     }
 
 /// Integers:
+
     @Override
     public int getCost()
     {
@@ -50,6 +52,7 @@ public class CaptureWandEffect extends BaseWandEffect
     }
 
 /// Misc:
+
     @Override
     public ChatFormatting getTooltipColor()
     {

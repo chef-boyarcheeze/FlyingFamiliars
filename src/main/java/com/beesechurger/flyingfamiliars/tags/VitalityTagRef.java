@@ -15,18 +15,20 @@ public class VitalityTagRef implements IStorageTagRef
 {
     public static final VitalityTagRef INSTANCE = new VitalityTagRef();
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
+
     @Override
     public String getEntryListName()
     {
         return STORAGE_FLUID_TAGNAME;
     }
 
-// Booleans:
+/// Booleans:
+
     public boolean getManipMode(CompoundTag storageTag)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);
@@ -39,7 +41,8 @@ public class VitalityTagRef implements IStorageTagRef
         return false;
     }
 
-// Integers:
+/// Integers:
+
     @Override
     public int getMaxEntries(CompoundTag storageTag)
     {
@@ -51,7 +54,8 @@ public class VitalityTagRef implements IStorageTagRef
         return 100;
     }
 
-// Tags:
+/// Tags:
+
     @Override
     public ListTag getInitialEntryList(CompoundTag storageTag)
     {
@@ -81,7 +85,8 @@ public class VitalityTagRef implements IStorageTagRef
         return tag;
     }
 
-// Misc:
+/// Misc:
+
     public Map<String, Integer> getStoredVitality(CompoundTag storageTag)
     {
         ListTag entryList = getEntryList(storageTag);
@@ -102,11 +107,12 @@ public class VitalityTagRef implements IStorageTagRef
         return entryMap;
     }
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Booleans:
+/// Booleans:
+
     public void toggleManipMode(CompoundTag storageTag)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);

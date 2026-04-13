@@ -10,6 +10,7 @@ public class FFConstants
 //////////////////////
 
 /// Tag IDs:
+
     public static final String STORAGE_EMPTY = "Empty";
 
     public static final String STORAGE_ENTITY_TAGNAME = "ff.base.entity";
@@ -32,9 +33,11 @@ public class FFConstants
     public static final String BLOCK_PROGRESS_TAGNAME = "ff.block.progress";
 
 /// Client event constants:
+
     public static final String WAND_EFFECT_WHEEL = "wand_effect_list";
 
 /// Fluid tag constants:
+
     public static final String VITALITY_BLUE = "blue";
     public static final String VITALITY_GREEN = "green";
     public static final String VITALITY_YELLOW = "yellow";
@@ -54,12 +57,15 @@ public class FFConstants
     );
 
 /// Animation constants:
+
     public static final String ANIMATION_EMPTY = "Empty";
 
 /// Mod IDs:
+
     public static final String CURIOS_MODNAME = "curios";
 
 /// Entity layer renderer bones:
+
     public static final String LAYER_RIDER_BONE_CLOUD_RAY = "torso";
     public static final String LAYER_RIDER_BONE_GRIFFONFLY = "center_thorax";
     public static final String LAYER_RIDER_BONE_MAGIC_CARPET = "body5";
@@ -70,6 +76,7 @@ public class FFConstants
 ///////////////////////
 
 /// Minecraft chat formatting colors in decimal format:
+
     public static final int CHAT_BLACK = 0;
     public static final int CHAT_DARK_BLUE = 170;
     public static final int CHAT_DARK_GREEN = 43520;
@@ -88,6 +95,7 @@ public class FFConstants
     public static final int CHAT_WHITE = 16777215;
 
 /// Familiar "type" colors in hexadecimal format:
+
     public static final int FAMILIAR_TYPE_WATER = 0x000BAB;
     public static final int FAMILIAR_TYPE_PLANT = 0x00A300;
     public static final int FAMILIAR_TYPE_AIR = 0xFAF000;
@@ -97,11 +105,13 @@ public class FFConstants
     public static final int FAMILIAR_TYPE_LIGHT = 0xF0F0F0;
 
 /// Familiar goal values:
+
     public static final int BUILDING_LIMIT_LOW = -64;
     public static final int BUILDING_LIMIT_HIGH = 320;
     public static final int RANDOM_MOVE_CHANCE = 50;
 
 /// Familiar movement values:
+
     public static final float BASE_FLYING_SPEED = 0.1f;
     public static final float BASE_MOVEMENT_SPEED = 0.1f;
 }

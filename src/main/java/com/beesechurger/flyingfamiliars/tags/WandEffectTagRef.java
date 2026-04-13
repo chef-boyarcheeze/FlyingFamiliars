@@ -17,6 +17,7 @@ public class WandEffectTagRef implements IStorageTagRef
 //////////////////
 
 /// Strings:
+
     @Override
     public String getEntryListName()
     {
@@ -35,6 +36,7 @@ public class WandEffectTagRef implements IStorageTagRef
     }
 
 /// Tags:
+
     @Override
     public ListTag getInitialEntryList(CompoundTag storageTag)
     {

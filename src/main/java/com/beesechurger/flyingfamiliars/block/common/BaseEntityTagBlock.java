@@ -51,6 +51,7 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
         if(state.getBlock() != newState.getBlock())
         {
             BlockEntity entity = level.getBlockEntity(pos);
+
             if(entity instanceof BaseEntityTagBE)
             {
                 ((BaseEntityTagBE) entity).drops();
@@ -71,16 +72,20 @@ public abstract class BaseEntityTagBlock extends BaseEntityBlock
                 if (stack.getItem() instanceof BaseEntityTagItem item)
                 {
                     if (item.getManipMode(stack))
+                    {
                         return InteractionResult.sidedSuccess(baseEntity.placeEntity(player, hand));
-                    else
-                        return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));
+                    }
+
+                    return InteractionResult.sidedSuccess(baseEntity.removeEntity(player, hand));
                 }
                 else
                 {
                     if (!player.isShiftKeyDown())
+                    {
                         return InteractionResult.sidedSuccess(baseEntity.placeItem(player, stack));
-                    else
-                        return InteractionResult.sidedSuccess(baseEntity.removeItem(player, level, pos));
+                    }
+
+                    return InteractionResult.sidedSuccess(baseEntity.removeItem(player, level, pos));
                 }
             }
 

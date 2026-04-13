@@ -13,9 +13,11 @@ public interface IStorageTagRef
 //////////////////
 
 /// Strings:
+
     public String getEntryListName();
 
 /// Booleans:
+
     default boolean hasTag(CompoundTag tag)
     {
         return tag != null && tag != new CompoundTag();
@@ -32,6 +34,7 @@ public interface IStorageTagRef
     }
 
 /// Integers:
+
     default int getMaxEntries(CompoundTag storageTag)
     {
         return getSettingsTag(storageTag).getInt(STORAGE_ENTRY_STORAGE_MAX);
@@ -43,6 +46,7 @@ public interface IStorageTagRef
     }
 
 /// Tags:
+
     default CompoundTag getStorageNameTag(CompoundTag storageTag)
     {
         return getOrCreateTag(storageTag).getCompound(getEntryListName());
@@ -51,6 +55,7 @@ public interface IStorageTagRef
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /// Initial tag setup functions:
+
     default CompoundTag getOrCreateTag(CompoundTag storageTag)
     {
         if(!hasTag(storageTag) || !storageTag.contains(getEntryListName()))
@@ -103,6 +108,7 @@ public interface IStorageTagRef
 /////////////////
 
 /// Integers:
+
     default void setMaxEntries(CompoundTag storageTag, int newSize)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);

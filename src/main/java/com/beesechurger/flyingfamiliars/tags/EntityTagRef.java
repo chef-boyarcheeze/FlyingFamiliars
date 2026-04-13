@@ -10,11 +10,12 @@ public class EntityTagRef implements IStorageTagRef
 {
     public static final EntityTagRef INSTANCE = new EntityTagRef();
 
-////////////////
-// Accessors: //
-////////////////
+//////////////////
+/// Accessors: ///
+//////////////////
 
-// Strings:
+/// Strings:
+
     @Override
     public String getEntryListName()
     {
@@ -29,7 +30,8 @@ public class EntityTagRef implements IStorageTagRef
         return STORAGE_EMPTY;
     }
 
-// Booleans:
+/// Booleans:
+
     public static Boolean isEntityTamed(CompoundTag tag)
     {
         return tag != null && tag.contains("Owner");
@@ -47,7 +49,8 @@ public class EntityTagRef implements IStorageTagRef
         return false;
     }
 
-// Tags:
+/// Tags:
+
     @Override
     public CompoundTag getInitialSettingsTag(CompoundTag storageTag)
     {
@@ -57,11 +60,12 @@ public class EntityTagRef implements IStorageTagRef
         return tag;
     }
 
-///////////////
-// Mutators: //
-///////////////
+/////////////////
+/// Mutators: ///
+/////////////////
 
-// Booleans:
+/// Booleans:
+
     public void toggleManipMode(CompoundTag storageTag)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);
