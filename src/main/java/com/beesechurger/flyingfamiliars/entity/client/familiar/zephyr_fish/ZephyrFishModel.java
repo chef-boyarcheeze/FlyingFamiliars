@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar.zephyr_fish;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.common.familiar.VoidMothEntity;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.ZephyrFishEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

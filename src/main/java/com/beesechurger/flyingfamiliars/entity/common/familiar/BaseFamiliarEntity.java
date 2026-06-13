@@ -40,6 +40,9 @@ import static com.beesechurger.flyingfamiliars.util.FFConstants.BUILDING_LIMIT_L
 
 public abstract class BaseFamiliarEntity extends TamableAnimal implements GeoEntity
 {
+	protected static final float BASE_FLYING_SPEED = 0.1f;
+	protected static final float BASE_MOVEMENT_SPEED = 0.1f;
+
 	private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(BaseFamiliarEntity.class, EntityDataSerializers.BOOLEAN);

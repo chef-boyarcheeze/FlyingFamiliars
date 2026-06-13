@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.client.wand_effect.charm.crystal
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.charm.CrystalSpikeCharm;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

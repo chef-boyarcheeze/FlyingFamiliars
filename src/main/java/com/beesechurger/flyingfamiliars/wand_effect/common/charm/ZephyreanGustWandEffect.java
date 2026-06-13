@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;

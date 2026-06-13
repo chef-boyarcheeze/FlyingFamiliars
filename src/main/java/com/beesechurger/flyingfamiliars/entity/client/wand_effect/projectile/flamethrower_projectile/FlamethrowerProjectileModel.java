@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.flamethrower_projectile;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

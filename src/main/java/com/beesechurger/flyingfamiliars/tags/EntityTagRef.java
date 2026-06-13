@@ -1,8 +1,6 @@
 package com.beesechurger.flyingfamiliars.tags;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
@@ -25,7 +23,9 @@ public class EntityTagRef implements IStorageTagRef
     public static String getEntityID(CompoundTag tag)
     {
         if (tag != null && tag.contains(STORAGE_ENTITY_TYPE))
+        {
             return tag.getString(STORAGE_ENTITY_TYPE);
+        }
 
         return STORAGE_EMPTY;
     }

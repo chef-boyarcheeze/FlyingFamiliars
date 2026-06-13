@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.shadewyrm;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.BaseFamiliarRiderLayer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.ShadewyrmRiderLayer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.ShadewyrmEntity;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;

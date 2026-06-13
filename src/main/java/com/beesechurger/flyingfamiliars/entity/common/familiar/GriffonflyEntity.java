@@ -3,9 +3,9 @@ package com.beesechurger.flyingfamiliars.entity.common.familiar;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.entity.common.type.IEarthEntity;
 import com.beesechurger.flyingfamiliars.entity.common.type.IPlantEntity;
-import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -29,9 +29,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
-
-import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_FLYING_SPEED;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_MOVEMENT_SPEED;
 
 public class GriffonflyEntity extends BaseFamiliarEntity implements IPlantEntity, IEarthEntity
 {

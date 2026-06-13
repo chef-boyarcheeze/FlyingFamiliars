@@ -1,12 +1,12 @@
 package com.beesechurger.flyingfamiliars.entity.common.familiar;
 
-import com.beesechurger.flyingfamiliars.entity.common.type.IAirEntity;
-import com.beesechurger.flyingfamiliars.entity.common.type.IWaterEntity;
-import com.beesechurger.flyingfamiliars.registries.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
+import com.beesechurger.flyingfamiliars.entity.common.type.IAirEntity;
+import com.beesechurger.flyingfamiliars.entity.common.type.IWaterEntity;
+import com.beesechurger.flyingfamiliars.registries.FFEffects;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -32,9 +32,6 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
-
-import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_FLYING_SPEED;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_MOVEMENT_SPEED;
 
 public class CloudRayEntity extends BaseFamiliarEntity implements IWaterEntity, IAirEntity
 {

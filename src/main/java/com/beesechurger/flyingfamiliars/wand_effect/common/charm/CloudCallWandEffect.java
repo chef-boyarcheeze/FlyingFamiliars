@@ -14,11 +14,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_AQUA;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_CLOUD_CALL;
 
 public class CloudCallWandEffect extends BaseWandEffect

@@ -6,7 +6,6 @@ import net.minecraft.nbt.Tag;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.*;
-import static java.lang.System.exit;
 
 public class WandEffectTagRef implements IStorageTagRef
 {

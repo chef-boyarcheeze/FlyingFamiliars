@@ -12,8 +12,6 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-import javax.swing.*;
-
 @OnlyIn(Dist.CLIENT)
 public class CrystalTressymModel extends GeoModel<CrystalTressymEntity>
 {

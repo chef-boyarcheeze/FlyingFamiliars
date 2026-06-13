@@ -1,15 +1,12 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.charm;
 
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
-import com.beesechurger.flyingfamiliars.entity.client.wand_effect.charm.crystal_spike_charm.CrystalSpikeCharmRenderer;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;

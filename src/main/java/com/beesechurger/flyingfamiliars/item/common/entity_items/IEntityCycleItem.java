@@ -5,7 +5,6 @@ import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSo
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 

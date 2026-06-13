@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.tags;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 

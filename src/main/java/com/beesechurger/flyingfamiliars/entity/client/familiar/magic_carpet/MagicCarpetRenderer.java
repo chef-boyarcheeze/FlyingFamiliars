@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.client.familiar.magic_carpet;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
-import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.BaseFamiliarRiderLayer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.MagicCarpetRiderLayer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.MagicCarpetEntity;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;

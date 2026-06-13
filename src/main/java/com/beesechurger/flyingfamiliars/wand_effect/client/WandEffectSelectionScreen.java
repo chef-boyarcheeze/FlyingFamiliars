@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
@@ -18,14 +17,12 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.joml.Vector4f;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_WAND_EFFECT_TYPE;
 
 public class WandEffectSelectionScreen implements IGuiOverlay
 {
     public static final WandEffectSelectionScreen INSTANCE = new WandEffectSelectionScreen();
+    public static final String WAND_EFFECT_WHEEL = "wand_effect_list";
 
     private Boolean active = false;
     private ItemStack stack = null;

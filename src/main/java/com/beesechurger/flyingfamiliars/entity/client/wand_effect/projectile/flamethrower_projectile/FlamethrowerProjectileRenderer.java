@@ -2,7 +2,6 @@ package com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fl
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.BaseWandEffectProjectileRenderer;
-import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;

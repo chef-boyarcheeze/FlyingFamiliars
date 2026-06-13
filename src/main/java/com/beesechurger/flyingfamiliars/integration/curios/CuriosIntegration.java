@@ -11,11 +11,11 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 public class CuriosIntegration
 {
-    private static CuriosIntegration instance;
+    private static final CuriosIntegration INSTANCE = new CuriosIntegration();
+    public static final String CURIOS_MODNAME = "curios";
 
     public static void register()
     {
-        instance = new CuriosIntegration();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CuriosIntegration::sendImc);
     }
 

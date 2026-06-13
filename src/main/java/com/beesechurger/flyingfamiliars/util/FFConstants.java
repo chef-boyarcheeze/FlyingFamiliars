@@ -16,10 +16,10 @@ public class FFConstants
     public static final String STORAGE_ENTITY_TAGNAME = "ff.base.entity";
     public static final String STORAGE_ENTITY_TYPE = "EntityType";
 
-    public static final String STORAGE_FLUID_TAGNAME = "ff.item.fluid";
-    public static final String STORAGE_FLUID_TYPE = "FluidType";
-    public static final String STORAGE_FLUID_STORAGE = "FluidStorage";
-    public static final String STORAGE_FLUID_STORAGE_MAX = "FluidStorageMax";
+    public static final String STORAGE_FRAGMENT_TAGNAME = "ff.item.fragment";
+    public static final String STORAGE_FRAGMENT_TYPE = "FragmentType";
+    public static final String STORAGE_FRAGMENT_STORAGE = "FragmentStorage";
+    public static final String STORAGE_FRAGMENT_STORAGE_MAX = "FragmentStorageMax";
 
     public static final String STORAGE_WAND_EFFECT_TAGNAME = "ff.item.wand_effect";
     public static final String STORAGE_WAND_EFFECT_TYPE = "WandEffectType";
@@ -31,10 +31,6 @@ public class FFConstants
     public static final String STORAGE_ENTRY_MANIP_MODE = "EntryManipMode";
 
     public static final String BLOCK_PROGRESS_TAGNAME = "ff.block.progress";
-
-/// Client event constants:
-
-    public static final String WAND_EFFECT_WHEEL = "wand_effect_list";
 
 /// Fluid tag constants:
 
@@ -59,17 +55,6 @@ public class FFConstants
 /// Animation constants:
 
     public static final String ANIMATION_EMPTY = "Empty";
-
-/// Mod IDs:
-
-    public static final String CURIOS_MODNAME = "curios";
-
-/// Entity layer renderer bones:
-
-    public static final String LAYER_RIDER_BONE_CLOUD_RAY = "torso";
-    public static final String LAYER_RIDER_BONE_GRIFFONFLY = "center_thorax";
-    public static final String LAYER_RIDER_BONE_MAGIC_CARPET = "body5";
-    public static final String LAYER_RIDER_BONE_SHADEWYRM = "center";
 
 ///////////////////////
 /// Integer values: ///
@@ -109,9 +94,4 @@ public class FFConstants
     public static final int BUILDING_LIMIT_LOW = -64;
     public static final int BUILDING_LIMIT_HIGH = 320;
     public static final int RANDOM_MOVE_CHANCE = 50;
-
-/// Familiar movement values:
-
-    public static final float BASE_FLYING_SPEED = 0.1f;
-    public static final float BASE_MOVEMENT_SPEED = 0.1f;
 }

@@ -1,13 +1,12 @@
 package com.beesechurger.flyingfamiliars.packet;
 
-import java.util.function.Supplier;
-
 import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 public class BEProgressS2CPacket
 {

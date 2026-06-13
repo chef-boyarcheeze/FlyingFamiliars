@@ -2,17 +2,13 @@ package com.beesechurger.flyingfamiliars.event;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -20,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.WAND_EFFECT_WHEEL;
-
-@OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents
 {
@@ -59,7 +52,7 @@ public class ClientEvents
     }
 
     @SubscribeEvent
-    public static void cancelRenderLiving(RenderLivingEvent event)
+    public static void preLivingRender(RenderLivingEvent.Pre event)
     {
         Entity passenger = event.getEntity();
         Entity vehicle = passenger.getVehicle();
@@ -68,17 +61,5 @@ public class ClientEvents
         {
             event.setCanceled(true);
         }
-    }
-
-    @SubscribeEvent
-    public static void preLivingRender(RenderLivingEvent.Pre event)
-    {
-        cancelRenderLiving(event);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterOverlays(RegisterGuiOverlaysEvent event)
-    {
-        event.registerAbove(VanillaGuiOverlay.PLAYER_LIST.id(), WAND_EFFECT_WHEEL, WandEffectSelectionScreen.INSTANCE);
     }
 }

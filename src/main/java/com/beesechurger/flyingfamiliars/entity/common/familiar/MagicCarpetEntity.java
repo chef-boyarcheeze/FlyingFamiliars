@@ -4,9 +4,9 @@ import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarFollowOwnerGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarSitGoal;
 import com.beesechurger.flyingfamiliars.entity.ai.goals.FamiliarWanderGoal;
+import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.entity.common.type.IAirEntity;
 import com.beesechurger.flyingfamiliars.entity.common.type.IEarthEntity;
-import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -27,7 +27,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -35,8 +34,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.ANIMATION_EMPTY;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_FLYING_SPEED;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.BASE_MOVEMENT_SPEED;
 
 public class MagicCarpetEntity extends BaseFamiliarEntity implements IEarthEntity, IAirEntity
 {

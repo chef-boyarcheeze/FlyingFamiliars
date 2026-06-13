@@ -1,11 +1,8 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
-import javax.annotation.Nullable;
-
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
+import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
@@ -16,6 +13,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
 
 public class BrazierBlock extends BaseEntityTagBlock
 {

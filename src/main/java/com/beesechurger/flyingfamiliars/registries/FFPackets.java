@@ -1,8 +1,10 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.packet.*;
-
+import com.beesechurger.flyingfamiliars.packet.BEProgressS2CPacket;
+import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
+import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
+import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;

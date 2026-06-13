@@ -1,8 +1,6 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar;
 
-import com.beesechurger.flyingfamiliars.entity.client.familiar.void_moth.VoidMothModel;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.entity.common.familiar.VoidMothEntity;
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
