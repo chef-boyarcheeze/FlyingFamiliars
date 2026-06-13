@@ -1,10 +1,7 @@
 package com.beesechurger.flyingfamiliars.packet;
 
-import java.util.function.Supplier;
-
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 public class EntityCycleC2SPacket
 {
@@ -52,7 +51,7 @@ public class EntityCycleC2SPacket
 				ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
 
 				if(player.getRandom().nextInt(15) == 0)
-					level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
+					level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.PLAYERS, 0.5f, FFSounds.getPitch());
 
 				player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
 						.append(": " + EntityTagRef.getEntityID(entryTag))

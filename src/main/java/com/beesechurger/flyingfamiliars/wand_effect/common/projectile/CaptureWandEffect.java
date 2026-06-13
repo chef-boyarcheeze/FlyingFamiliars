@@ -6,7 +6,6 @@ import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
@@ -76,7 +75,7 @@ public class CaptureWandEffect extends BaseWandEffect
                     : Component.translatable("message.flyingfamiliars.wand_effect_tag.capture_projectile.remove");
 
             player.displayClientMessage(message.withStyle(ChatFormatting.WHITE), true);
-            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.NEUTRAL, 0.5f, FFSounds.getPitch());
+            level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.PLAYERS, 0.5f, FFSounds.getPitch());
         }
     }
 
