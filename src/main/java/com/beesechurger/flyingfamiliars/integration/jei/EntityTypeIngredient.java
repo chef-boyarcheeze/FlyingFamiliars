@@ -13,12 +13,18 @@ public class EntityTypeIngredient
     @Nullable
     private Entity entity;
 
-    public EntityTypeIngredient(String e)
-    {
-        type = EntityType.byString(e).orElse(null);
+    public final int x;
+    public final int y;
 
-        if(Minecraft.getInstance().level != null && type != null)
-            entity = type.create(Minecraft.getInstance().level);
+    public EntityTypeIngredient(String e, int x, int y)
+    {
+        this.type = EntityType.byString(e).orElse(null);
+
+        if(Minecraft.getInstance().level != null && this.type != null)
+            this.entity = this.type.create(Minecraft.getInstance().level);
+
+        this.x = x;
+        this.y = y;
     }
 
     EntityType<?> getEntityType()

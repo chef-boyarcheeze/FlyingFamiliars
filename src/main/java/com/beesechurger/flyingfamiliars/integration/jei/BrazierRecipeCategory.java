@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
+import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -126,7 +126,7 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
             int y = (int) (yCenterInput - yModInput * Math.sin(Math.toRadians(angle)));
 
             builder.addSlot(RecipeIngredientRole.INPUT, x, y)
-                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getInputEntities().get(i)));
+                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getInputEntities().get(i), x, y));
         }
 
         int xCenterOutput = 130;
@@ -141,6 +141,6 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
                     .addItemStack(recipe.getOutputItem());
         if(recipe.getOutputEntity() != null)
             builder.addSlot(RecipeIngredientRole.OUTPUT, xCenterOutput, yCenterOutput - yModOutput)
-                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getOutputEntity()));
+                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getOutputEntity(), xCenterOutput, yCenterOutput - yModOutput));
     }
 }

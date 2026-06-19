@@ -12,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,26 +28,32 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
     @Override
     public void render(GuiGraphics graphics, @Nullable EntityTypeIngredient ingredient)
     {
-        if (Minecraft.getInstance().level == null || Minecraft.getInstance().player == null || ingredient == null)
-            return;
-        if (ingredient.getEntity() != null && ingredient.getEntity() instanceof LivingEntity entity)
+        if (Minecraft.getInstance().level != null
+                && Minecraft.getInstance().player != null
+                && ingredient != null
+                && ingredient.getEntity() != null
+                && ingredient.getEntity() instanceof LivingEntity entity)
         {
             graphics.pose().pushPose();
             entity.tickCount = Minecraft.getInstance().player.tickCount;
             graphics.pose().translate(0.5f * size, 0.9f * size, 0);
 
             float scale = 0.5f * size * Math.min(1.7f / entity.getBbHeight(), 1f);
-            renderEntity(graphics, entity, scale);
+            renderEntity(graphics, entity, ingredient.x, ingredient.y, scale);
             graphics.pose().popPose();
         }
     }
 
-    private void renderEntity(GuiGraphics graphics, LivingEntity entity, float scale)
+    private void renderEntity(GuiGraphics graphics, LivingEntity entity, int x, int y, float scale)
     {
+        var mouseHandler = Minecraft.getInstance().mouseHandler;
+        var guiLeftEdge = (Minecraft.getInstance().getWindow().getWidth() - graphics.guiWidth()) / 2;
+        var guiTopEdge = (Minecraft.getInstance().getWindow().getHeight() - graphics.guiHeight()) / 2;
+
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
         modelView.mulPoseMatrix(graphics.pose().last().pose());
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, 0, 0, (int) scale, 75, -20, entity);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, 0, 0, (int) scale, (float) (guiLeftEdge + x - mouseHandler.xpos()), (float) (guiTopEdge + y - mouseHandler.ypos()), entity);
         modelView.popPose();
         RenderSystem.applyModelViewMatrix();
     }
@@ -58,10 +63,12 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
     {
         List<Component> tooltip = new ArrayList<>();
         tooltip.add(ingredient.getEntity().getDisplayName());
+
         if(tooltipFlag.isAdvanced())
         {
             tooltip.add(Component.translatable(ForgeRegistries.ENTITY_TYPES.getKey(ingredient.getEntityType()).toString()).withStyle(ChatFormatting.DARK_GRAY));
         }
+
         return tooltip;
     }
 
