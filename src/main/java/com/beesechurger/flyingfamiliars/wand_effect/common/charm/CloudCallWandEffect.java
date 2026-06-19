@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.Level;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_AQUA;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_CLOUD_CALL;
 
 public class CloudCallWandEffect extends BaseWandEffect
@@ -77,16 +77,9 @@ public class CloudCallWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_DARK_AQUA;
-    }
-
-/// Misc:
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.DARK_AQUA;
+        return FFConstants.FAMILIAR_TYPE_WATER;
     }
 
     @Override

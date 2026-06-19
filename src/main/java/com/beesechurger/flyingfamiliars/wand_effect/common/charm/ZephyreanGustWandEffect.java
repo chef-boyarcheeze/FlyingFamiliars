@@ -1,13 +1,12 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_YELLOW;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_ZEPHYREAN_GUST;
 
 public class ZephyreanGustWandEffect extends BaseWandEffect
@@ -59,18 +58,12 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_YELLOW;
+        return FFConstants.FAMILIAR_TYPE_AIR;
     }
 
 /// Misc:
-
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.YELLOW;
-    }
 
     @Override
     public UseAnim getUseAnimation()

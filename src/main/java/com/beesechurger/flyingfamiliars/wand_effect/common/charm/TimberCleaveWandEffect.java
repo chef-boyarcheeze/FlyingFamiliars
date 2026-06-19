@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_GREEN;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TIMBER_CLEAVE;
 
 public class TimberCleaveWandEffect extends BaseWandEffect
@@ -76,18 +75,12 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_DARK_GREEN;
+        return FFConstants.FAMILIAR_TYPE_LIFE;
     }
 
 /// Misc:
-
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.DARK_GREEN;
-    }
 
     @Override
     public UseAnim getUseAnimation()

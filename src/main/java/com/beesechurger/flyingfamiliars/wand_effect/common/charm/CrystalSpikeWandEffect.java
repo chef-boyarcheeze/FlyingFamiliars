@@ -1,11 +1,10 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_CRYSTAL_SPIKE;
 
 public class CrystalSpikeWandEffect extends BaseWandEffect
@@ -37,16 +36,9 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_GOLD;
-    }
-
-/// Misc:
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.GOLD;
+        return FFConstants.FAMILIAR_TYPE_EARTH;
     }
 
 ///////////////////////////

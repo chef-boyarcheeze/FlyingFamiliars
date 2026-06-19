@@ -6,8 +6,11 @@ import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,8 +30,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
 
 public abstract class BaseSoulWand extends BaseEntityTagItem
 {
@@ -66,8 +67,10 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        return selectedWandEffect != null ? selectedWandEffect.getBarColor() : CHAT_GRAY;
+        return selectedWandEffect != null ? selectedWandEffect.getColor() : ChatFormatting.GRAY.getColor();
     }
+
+    protected abstract int getColor();
 
 /// Misc:
 
@@ -76,11 +79,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        return selectedWandEffect != null ? Component.translatable(super.getDescriptionId(stack))
-                                            .append(" (")
-                                            .append(Component.translatable(selectedWandEffect.getTranslatableName()))
-                                            .append(")")
-                                          : Component.translatable(super.getDescriptionId(stack));
+        return selectedWandEffect != null ? Component.translatable(super.getDescriptionId(stack)).withStyle(Style.EMPTY.withColor(getColor()))
+                                            .append(Component.literal(" (").withStyle(ChatFormatting.WHITE))
+                                            .append(Component.translatable(selectedWandEffect.getTranslatableName()).withStyle(Style.EMPTY.withColor(selectedWandEffect.getColor())))
+                                            .append(Component.literal(")").withStyle(ChatFormatting.WHITE))
+                                          : Component.translatable(super.getDescriptionId(stack)).withStyle(Style.EMPTY.withColor(getColor()));
     }
 
     public BaseWandEffect getSelectedWandEffect(ItemStack stack)
@@ -105,10 +108,10 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if(stack.hasTag() && selectedWandEffect != null)
+        if(!Screen.hasShiftDown() && stack.hasTag() && selectedWandEffect != null)
         {
             tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
-                    .withStyle(selectedWandEffect.getTooltipColor()));
+                    .withStyle(Style.EMPTY.withColor(selectedWandEffect.getColor())));
         }
 
         super.appendHoverText(stack, level, tooltip, tipFlag);

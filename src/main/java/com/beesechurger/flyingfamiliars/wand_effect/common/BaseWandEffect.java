@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common;
 
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -74,13 +73,10 @@ public abstract class BaseWandEffect
     // cooldown time in ticks
     public abstract int getCooldown();
 
-    // soul wand durability bar color, in minecraft colors
-    public abstract int getBarColor();
+    // soul wand durability bar / tooltip color
+    public abstract int getColor();
 
 /// Misc:
-
-    // soul wand inventory tooltip color, in minecraft chat colors
-    public abstract ChatFormatting getTooltipColor();
 
     // soul wand use animation
     public UseAnim getUseAnimation()

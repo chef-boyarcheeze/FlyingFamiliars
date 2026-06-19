@@ -3,8 +3,8 @@ package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GOLD;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TECTONIC_SUNDER;
 
 public class TectonicSunderWandEffect extends BaseWandEffect
@@ -87,17 +86,12 @@ public class TectonicSunderWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_GOLD;
+        return FFConstants.FAMILIAR_TYPE_EARTH;
     }
 
 /// Misc:
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.GOLD;
-    }
 
     @Override
     public UseAnim getUseAnimation()

@@ -4,6 +4,7 @@ import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.Cap
 import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_CAPTURE;
 
 public class CaptureWandEffect extends BaseWandEffect
@@ -45,17 +45,9 @@ public class CaptureWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_GRAY;
-    }
-
-/// Misc:
-
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.GRAY;
+        return FFConstants.FAMILIAR_TYPE_VOID;
     }
 
 ///////////////////////////

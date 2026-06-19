@@ -1,12 +1,11 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FireballProjectile;
+import com.beesechurger.flyingfamiliars.util.FFConstants;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_DARK_RED;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_FIREBALL;
 
 public class FireballWandEffect extends BaseWandEffect
@@ -36,16 +35,9 @@ public class FireballWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getBarColor()
+    public int getColor()
     {
-        return CHAT_DARK_RED;
-    }
-
-/// Misc:
-    @Override
-    public ChatFormatting getTooltipColor()
-    {
-        return ChatFormatting.DARK_RED;
+        return FFConstants.FAMILIAR_TYPE_FIRE;
     }
 
 ///////////////////////////
