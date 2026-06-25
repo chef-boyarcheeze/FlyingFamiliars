@@ -13,9 +13,12 @@ import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionSc
 import com.google.common.collect.Iterables;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,7 +37,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.registries.FFKeys.*;
+import static com.beesechurger.flyingfamiliars.registries.FFKeys.WAND_EFFECT_SELECT_STATE;
+import static com.beesechurger.flyingfamiliars.registries.FFKeys.update;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class FFItemHandler
@@ -178,5 +182,64 @@ public class FFItemHandler
 		return CuriosApi.getCuriosInventory(player)
 				.map(i -> i.findFirstCurio(item).map(SlotResult::stack).orElse(ItemStack.EMPTY))
 				.orElse(ItemStack.EMPTY);
+	}
+
+	public static class TooltipLockHandler
+	{
+		public static final TooltipLockHandler INSTANCE = new TooltipLockHandler();
+
+		private int lockX = 0;
+		private int lockY = 0;
+
+		private Slot mouseLockSlot = null;
+
+		public ItemStack getLockedStack()
+		{
+			return mouseLockSlot.getItem();
+		}
+
+		public int getLockedX()
+		{
+			return lockX;
+		}
+
+		public int getLockedY()
+		{
+			return lockY;
+		}
+
+		public boolean isLocked()
+		{
+			Minecraft mc = Minecraft.getInstance();
+
+			if (Screen.hasShiftDown() && Screen.hasControlDown())
+			{
+				if (mouseLockSlot == null && mc.screen instanceof AbstractContainerScreen<?> containerScreen)
+				{
+					Slot hoveredSlot = containerScreen.getSlotUnderMouse();
+
+					if (hoveredSlot != null && hoveredSlot.getItem().getItem() instanceof BaseEntityTagItem)
+					{
+						mouseLockSlot = hoveredSlot;
+						lockX = (int) (mc.mouseHandler.xpos() / mc.getWindow().getGuiScale());
+						lockY = (int) (mc.mouseHandler.ypos() / mc.getWindow().getGuiScale());
+					}
+					else
+					{
+						mouseLockSlot = null;
+						lockX = 0;
+						lockY = 0;
+					}
+				}
+			}
+			else
+			{
+				mouseLockSlot = null;
+				lockX = 0;
+				lockY = 0;
+			}
+
+			return mouseLockSlot != null;
+		}
 	}
 }

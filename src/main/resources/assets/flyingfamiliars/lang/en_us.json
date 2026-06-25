@@ -88,16 +88,20 @@
   "key.flyingfamiliars.item_mode_cycle": "Item Mode Cycle",
   "key.flyingfamiliars.soul_wand_shift": "Soul Wand Shift",
 
+  "tooltip.flyingfamiliars.tag.left_alt": "Press \u00A7eSHIFT+ALT\u00A7r for more details",
+  "tooltip.flyingfamiliars.tag.left_control": "Press \u00A7eSHIFT+CONTROL\u00A7r to lock window in place",
+  "tooltip.flyingfamiliars.tag.more_entries": "More",
+
   "tooltip.flyingfamiliars.entity_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
   "tooltip.flyingfamiliars.entity_tag.slot": "Slot",
   "tooltip.flyingfamiliars.entity_tag.empty": "Empty",
   "tooltip.flyingfamiliars.entity_tag.stored_1": "1 stored mob",
   "tooltip.flyingfamiliars.entity_tag.stored_multiple": " stored mobs",
 
-  "tooltip.flyingfamiliars.fluid_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored fluids",
-  "tooltip.flyingfamiliars.fluid_tag.empty": "Empty",
-  "tooltip.flyingfamiliars.fluid_tag.stored_1": "1 stored fluid",
-  "tooltip.flyingfamiliars.fluid_tag.stored_multiple": " stored fluids",
+  "tooltip.flyingfamiliars.soul_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored soul types",
+  "tooltip.flyingfamiliars.soul_tag.empty": "Empty",
+  "tooltip.flyingfamiliars.soul_tag.stored_1": "1 stored soul type",
+  "tooltip.flyingfamiliars.soul_tag.stored_multiple": " stored soul types",
 
   "tooltip.flyingfamiliars.wand_effect.boreal_gust_charm": "Boreal Gust",
   "tooltip.flyingfamiliars.wand_effect.capture_projectile": "Capture",

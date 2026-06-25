@@ -2,12 +2,18 @@ package com.beesechurger.flyingfamiliars.event;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
+import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents
@@ -62,4 +69,21 @@ public class ClientEvents
             event.setCanceled(true);
         }
     }
+
+	@SubscribeEvent
+	public static void onGatherTooltipComponents(RenderTooltipEvent.GatherComponents event)
+	{
+		ItemStack stack = event.getItemStack();
+
+		if (stack.getItem() instanceof BaseEntityTagItem item)
+		{
+			event.getTooltipElements().addAll(
+					1,
+					item.getTooltipComponents(stack)
+							.stream()
+							.map(Either::<FormattedText, TooltipComponent>right)
+							.collect(Collectors.toList())
+			);
+		}
+	}
 }

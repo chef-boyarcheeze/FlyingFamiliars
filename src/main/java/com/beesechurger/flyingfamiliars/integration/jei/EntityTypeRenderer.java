@@ -50,10 +50,14 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
         var guiLeftEdge = (Minecraft.getInstance().getWindow().getWidth() - graphics.guiWidth()) / 2;
         var guiTopEdge = (Minecraft.getInstance().getWindow().getHeight() - graphics.guiHeight()) / 2;
 
+        boolean renderHitboxes = Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
+
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
         modelView.mulPoseMatrix(graphics.pose().last().pose());
+        Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(false);
         InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, 0, 0, (int) scale, (float) (guiLeftEdge + x - mouseHandler.xpos()), (float) (guiTopEdge + y - mouseHandler.ypos()), entity);
+        Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(renderHitboxes);
         modelView.popPose();
         RenderSystem.applyModelViewMatrix();
     }

@@ -37,7 +37,8 @@ public interface IEntityCycleItem
                     if (EntityTagRef.INSTANCE.isEmpty(stacks.get(i).getOrCreateTag()) && !(stacks.get(i).getItem() instanceof BaseSoulWand))
                     {
                         stacks.remove(i);
-                    } else
+                    }
+                    else
                     {
                         entryLists.add(EntityTagRef.INSTANCE.getEntryList(stacks.get(i).getOrCreateTag()));
 

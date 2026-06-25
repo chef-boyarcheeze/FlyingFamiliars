@@ -33,13 +33,13 @@ public class FFEntityTypes
 	// Cloud Ray
 	public static final RegistryObject<EntityType<CloudRayEntity>> CLOUD_RAY = ENTITY_TYPE_REG.register("cloud_ray",
 			() -> EntityType.Builder.of(CloudRayEntity::new, MobCategory.CREATURE)
-					.sized(4.0f, 2.0f)
+					.sized(4.5f, 2.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "cloud_ray").toString()));
 
 	// Griffonfly
 	public static final RegistryObject<EntityType<GriffonflyEntity>> GRIFFONFLY = ENTITY_TYPE_REG.register("griffonfly",
 			() -> EntityType.Builder.of(GriffonflyEntity::new, MobCategory.CREATURE)
-					.sized(1.5f, 1.5f)
+					.sized(1.8f, 1.8f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "griffonfly").toString()));
 
 	// Thunderbird
@@ -63,31 +63,31 @@ public class FFEntityTypes
 	// Deep Jellyfish
 	public static final RegistryObject<EntityType<DeepJellyfishEntity>> DEEP_JELLYFISH = ENTITY_TYPE_REG.register("deep_jellyfish",
 			() -> EntityType.Builder.of(DeepJellyfishEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(1.0f, 2.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "deep_jellyfish").toString()));
 
 	// Shrubling
 	public static final RegistryObject<EntityType<ShrublingEntity>> SHRUBLING = ENTITY_TYPE_REG.register("shrubling",
 			() -> EntityType.Builder.of(ShrublingEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(1.0f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "shrubling").toString()));
 
 	// Zephyr Fish
 	public static final RegistryObject<EntityType<ZephyrFishEntity>> ZEPHYR_FISH = ENTITY_TYPE_REG.register("zephyr_fish",
 			() -> EntityType.Builder.of(ZephyrFishEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(1.2f, 1.2f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "zephyr_fish").toString()));
 
 	// Crystal Tressym
 	public static final RegistryObject<EntityType<CrystalTressymEntity>> CRYSTAL_TRESSYM = ENTITY_TYPE_REG.register("crystal_tressym",
 			() -> EntityType.Builder.of(CrystalTressymEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(1.2f, 1.0f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "crystal_tressym").toString()));
 
 	// Phoenix
 	public static final RegistryObject<EntityType<PhoenixEntity>> PHOENIX = ENTITY_TYPE_REG.register("phoenix",
 			() -> EntityType.Builder.of(PhoenixEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(0.8f, 1.4f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "phoenix").toString()));
 
 	// Void Moth
@@ -99,7 +99,7 @@ public class FFEntityTypes
 	// Mirror Shield
 	public static final RegistryObject<EntityType<MirrorShieldEntity>> MIRROR_SHIELD = ENTITY_TYPE_REG.register("mirror_shield",
 			() -> EntityType.Builder.of(MirrorShieldEntity::new, MobCategory.CREATURE)
-					.sized(1.0f, 1.0f)
+					.sized(1.0f, 1.5f)
 					.build(new ResourceLocation(FlyingFamiliars.MOD_ID, "mirror_shield").toString()));
 
 /// Familiar render sizes:

@@ -1,29 +1,28 @@
 package com.beesechurger.flyingfamiliars.item.common.entity_items;
 
-import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
+import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.item.FFItemHandler.getEntityStackList;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.CHAT_GRAY;
-import static net.minecraft.network.chat.Component.literal;
-import static net.minecraft.network.chat.Component.translatable;
 
 public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IEntityCycleItem
 {
+    protected static final int ENTITY_TOOLTIP_VISIBLE_MAX = 3;
+
     public BaseEntityTagItem(Properties properties)
     {
         super(properties);
@@ -79,7 +78,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public int getBarColor(ItemStack stack)
     {
-        return CHAT_GRAY;
+        return ChatFormatting.GRAY.getColor();
     }
 
 /////////////////
@@ -98,48 +97,86 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 //////////////////
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
         ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
-        int entryCount = EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag());
 
-        if (entryCount == 0)
+        if (EntityTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()))
         {
-            tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.empty")
+            tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.empty")
                     .withStyle(ChatFormatting.GRAY));
         }
         else
         {
-            if (Screen.hasShiftDown())
+            if (!Screen.hasShiftDown())
             {
-                int count = 0;
-
-                for (Tag entry : entryList)
+                if (entryList.size() > 1)
                 {
-                    ChatFormatting format = EntityTagRef.INSTANCE.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
-
-                    tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
-                            .withStyle(format).append(" " + (count+1) + ": " + EntityTagRef.INSTANCE.getEntityID((CompoundTag) entry)));
-
-                    count++;
-                }
-            }
-            else
-            {
-                if (entryCount > 1)
-                {
-                    tooltip.add(literal(String.valueOf(entryCount)).append(translatable("tooltip.flyingfamiliars.entity_tag.stored_multiple")
-                            .withStyle(ChatFormatting.GRAY))
+                    tooltip.add(Component.literal(String.valueOf(entryList.size())).append(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_multiple")
+                                    .withStyle(ChatFormatting.GRAY))
                             .withStyle(ChatFormatting.GRAY));
                 }
                 else
                 {
-                    tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.stored_1")
+                    tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.stored_1")
                             .withStyle(ChatFormatting.GRAY));
                 }
 
-                tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.left_shift").withStyle(ChatFormatting.GRAY));
+            }
+            else
+            {
+                if (!Screen.hasAltDown())
+                {
+                    tooltip.add(Component.translatable("tooltip.flyingfamiliars.tag.left_alt")
+                            .withStyle(ChatFormatting.GRAY));
+                }
+                if (!Screen.hasControlDown())
+                {
+                    tooltip.add(Component.translatable("tooltip.flyingfamiliars.tag.left_control")
+                            .withStyle(ChatFormatting.GRAY));
+                }
+
+                /*ChatFormatting format = EntityTagRef.INSTANCE.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+                    tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
+                            .withStyle(format).append(" " + (count+1) + ": " + EntityTagRef.INSTANCE.getEntityID((CompoundTag) entry)));*/
             }
         }
+    }
+
+    public List<TooltipComponent> getTooltipComponents(ItemStack stack)
+    {
+        List<TooltipComponent> componentTooltips = new ArrayList<>();
+
+        if (Screen.hasShiftDown())
+        {
+            ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+            List<List<CompoundTag>> componentEntryLists = new ArrayList<>();
+
+            boolean hasMoreEntities = false;
+
+            // separate entry list into rows of 9, accounting for remainder
+            for (int i = 0; i < entryList.size() && (Screen.hasAltDown() || i < ENTITY_TOOLTIP_VISIBLE_MAX); i++)
+            {
+                if (i % 9 == 0)
+                {
+                    componentEntryLists.add(new ArrayList<>());
+                }
+
+                componentEntryLists.get(componentEntryLists.size() - 1).add((CompoundTag) entryList.get(i));
+            }
+
+            if (entryList.size() > ENTITY_TOOLTIP_VISIBLE_MAX && !Screen.hasAltDown())
+            {
+                hasMoreEntities = true;
+            }
+
+            for (var componentEntryList : componentEntryLists)
+            {
+                componentTooltips.add(new EntityStorageTooltipComponent(componentEntryList, hasMoreEntities));
+            }
+        }
+
+        return componentTooltips;
     }
 }
