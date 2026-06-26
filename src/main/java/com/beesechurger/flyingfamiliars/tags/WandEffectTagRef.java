@@ -41,7 +41,7 @@ public class WandEffectTagRef implements IStorageTagRef
     {
         CompoundTag tag = new CompoundTag();
 
-        // add default capture projectile wand effect entry to add to initial list
+        // add default capture projectile wand effect entryTag to add to initial list
         CompoundTag captureTag = new CompoundTag();
         captureTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_CAPTURE);
 
@@ -66,7 +66,7 @@ public class WandEffectTagRef implements IStorageTagRef
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
 
-        // add capture projectile entry to list
+        // add capture projectile entryTag to list
         tagList.add(captureTag);
         tagList.add(fireballTag);
         tagList.add(flamethrowerTag);

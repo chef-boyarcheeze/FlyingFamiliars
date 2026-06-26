@@ -1,7 +1,7 @@
-package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.entity.SoulWand;
 
 import com.beesechurger.flyingfamiliars.item.FFItemClientExtension;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
@@ -69,8 +69,6 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
         return selectedWandEffect != null ? selectedWandEffect.getColor() : ChatFormatting.GRAY.getColor();
     }
-
-    protected abstract int getColor();
 
 /// Misc:
 

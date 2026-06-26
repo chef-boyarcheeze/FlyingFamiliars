@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
-import com.beesechurger.flyingfamiliars.util.FFConstants;
+import com.beesechurger.flyingfamiliars.util.FFColors;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -38,7 +38,7 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFConstants.FAMILIAR_TYPE_EARTH;
+        return FFColors.FAMILIAR_TYPE_EARTH;
     }
 
 ///////////////////////////

@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.item.client;
 
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;

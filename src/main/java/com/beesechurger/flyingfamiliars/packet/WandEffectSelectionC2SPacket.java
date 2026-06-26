@@ -1,7 +1,7 @@
 
 package com.beesechurger.flyingfamiliars.packet;
 
-import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.item.common.entity.SoulWand.BaseSoulWand;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

@@ -17,8 +17,8 @@ import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.cap
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fireball_projectile.FireballProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.flamethrower_projectile.FlamethrowerProjectileRenderer;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
-import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageClientTooltipComponent;
 import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
+import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.registries.FFFluids;
@@ -108,6 +108,7 @@ public class ClientSetup
 
     private void registerClientTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event)
     {
-        event.register(EntityStorageTooltipComponent.class, EntityStorageClientTooltipComponent::new);
+        event.register(EntityStorageTooltipComponent.class, EntityStorageTooltipComponent.Client::new);
+        event.register(SpiritStorageTooltipComponent.class, SpiritStorageTooltipComponent.Client::new);
     }
 }

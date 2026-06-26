@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.packet;
 
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.ChatFormatting;

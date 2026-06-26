@@ -1,0 +1,163 @@
+package com.beesechurger.flyingfamiliars.item.common.entity_items;
+
+import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
+import com.beesechurger.flyingfamiliars.item.tooltip.SoulStorageTooltipComponent;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
+
+public class Phylactery extends BaseEntityTagItem implements ITieredItem
+{
+    public Phylactery(Properties properties)
+    {
+        super(properties);
+    }
+
+//////////////////
+/// Accessors: ///
+//////////////////
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
+    {
+        // get list of stuff and display it, probably in order (water, plant, air, earth, fire, void, light)
+        ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+
+        // need to look at:
+        // botania mana ring for mana bar
+        // embers blazing ray with heat augment for heat bar
+        // AE2 portable cell for stored items
+        // embers music disc for fiery text
+        // species ricoshield for text
+        // ad astra jet suit for overlay
+
+        super.appendHoverText(stack, level, tooltip, tipFlag);
+    }
+
+/////////////////
+/// Mutators: ///
+/////////////////
+
+/// Tags:
+
+    public static void onPickupItem(ItemEntity entity, Player player)
+    {
+        ItemStack entityStack = entity.getItem();
+
+        if (!entityStack.isEmpty() && entityStack.getItem() instanceof Spirit)
+        {
+            int slot; // TODO: curio slot only(?)
+
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++)
+            {
+                if (i == player.getInventory().selected)
+                {
+                    continue; // prevent item deletion
+                }
+
+                ItemStack phylacteryStack = player.getInventory().getItem(i);
+
+                if (!phylacteryStack.isEmpty() && phylacteryStack.getItem() instanceof Phylactery)
+                {
+                    ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
+                    CompoundTag entryTag = null;
+                    CompoundTag emptyTag = null;
+
+                    for (Tag tag : entryList)
+                    {
+                        String entryName = ((CompoundTag) tag).getString(STORAGE_FRAGMENT_TYPE);
+
+                        if (entryName.equals(entityStack.getItem().toString()))
+                        {
+                            entryTag = (CompoundTag) tag;
+                            break;
+                        }
+                        else if (emptyTag == null && entryName.equals(STORAGE_EMPTY))
+                        {
+                            emptyTag = (CompoundTag) tag;
+                        }
+                    }
+
+                    if (entryTag == null)
+                    {
+                        if (emptyTag != null)
+                        {
+                            entryTag = emptyTag;
+                        }
+                        else if (entryList.size() < SpiritTagRef.INSTANCE.getMaxEntries(phylacteryStack.getOrCreateTag()))
+                        {
+                            CompoundTag newEntry = new CompoundTag();
+
+                            newEntry.putString(STORAGE_FRAGMENT_TYPE, entityStack.getItem().toString());
+                            newEntry.putInt(STORAGE_FRAGMENT_STORAGE, 0);
+
+                            entryTag = newEntry;
+                            entryList.add(entryTag);
+                        }
+                    }
+
+                    if (entryTag != null)
+                    {
+                        int currentStorage = entryTag.getInt(STORAGE_FRAGMENT_STORAGE);
+                        int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxVolume(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
+                        int pickedUpCount = (int) Math.ceil((newStorage - currentStorage) / 10.0F);
+
+                        if (pickedUpCount > 0)
+                        {
+                            entryTag.putInt(STORAGE_FRAGMENT_STORAGE, newStorage);
+                            entityStack.shrink(pickedUpCount);
+
+                            // resync code for item entity, from Botania's EntityHelper
+                            var save = entity.getItem();
+                            entity.setItem(ItemStack.EMPTY);
+                            entity.setItem(save);
+
+                            player.take(entity, pickedUpCount);
+
+                            System.out.println(phylacteryStack.getOrCreateTag());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+//////////////////
+/// Cosmetics: ///
+//////////////////
+
+    @Override
+    public List<TooltipComponent> getTooltipComponents(ItemStack stack)
+    {
+        List<TooltipComponent> componentTooltips = super.getTooltipComponents(stack);
+
+        // Show stored entities if shift is pressed, show spirit fragment levels if not
+        if (!Screen.hasShiftDown())
+        {
+            ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+
+            // separate entryTag list into rows of 9, accounting for remainder
+            for (Tag tag : entryList)
+            {
+                componentTooltips.add(new SoulStorageTooltipComponent((CompoundTag) tag, ));
+            }
+        }
+
+        return componentTooltips;
+    }
+}

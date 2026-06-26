@@ -1,6 +1,6 @@
-package com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.entity.SoulWand;
 
-import com.beesechurger.flyingfamiliars.util.FFConstants;
+import com.beesechurger.flyingfamiliars.util.FFColors;
 
 public class VerdantBough extends BaseSoulWand
 {
@@ -18,6 +18,6 @@ public class VerdantBough extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFConstants.FAMILIAR_TYPE_LIFE;
+        return FFColors.FAMILIAR_TYPE_LIFE;
     }
 }

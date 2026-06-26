@@ -137,9 +137,9 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
                             .withStyle(ChatFormatting.GRAY));
                 }
 
-                /*ChatFormatting format = EntityTagRef.INSTANCE.isEntityTamed((CompoundTag) entry) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+                /*ChatFormatting format = EntityTagRef.INSTANCE.isEntityTamed((CompoundTag) entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
                     tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
-                            .withStyle(format).append(" " + (count+1) + ": " + EntityTagRef.INSTANCE.getEntityID((CompoundTag) entry)));*/
+                            .withStyle(format).append(" " + (count+1) + ": " + EntityTagRef.INSTANCE.getEntityID((CompoundTag) entryTag)));*/
             }
         }
     }
@@ -155,7 +155,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 
             boolean hasMoreEntities = false;
 
-            // separate entry list into rows of 9, accounting for remainder
+            // separate entryTag list into rows of 9, accounting for remainder
             for (int i = 0; i < entryList.size() && (Screen.hasAltDown() || i < ENTITY_TOOLTIP_VISIBLE_MAX); i++)
             {
                 if (i % 9 == 0)

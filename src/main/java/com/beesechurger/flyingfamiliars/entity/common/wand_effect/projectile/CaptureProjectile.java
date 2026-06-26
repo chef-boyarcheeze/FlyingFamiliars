@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
@@ -59,7 +59,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
                 {
                     CompoundTag stackTag = stack.getOrCreateTag();
 
-                    // get selected entity's entry tag and confirm tag is real
+                    // get selected entity's entryTag tag and confirm tag is real
                     CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
 
                     if(entryTag.contains(STORAGE_ENTITY_TYPE))
@@ -176,7 +176,7 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 			{
 				CompoundTag stackTag = stack.getOrCreateTag();
 
-				// get entity type as string and save to entry - then save entity NBT onto whole entry tag
+				// get entity type as string and save to entryTag - then save entity NBT onto whole entryTag tag
 				CompoundTag entryTag = new CompoundTag();
 				entryTag.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
 				entity.saveWithoutId(entryTag);
@@ -224,10 +224,10 @@ public class CaptureProjectile extends BaseWandEffectProjectile
 			{
 				CompoundTag stackTag = stack.getOrCreateTag();
 
-				// get selected entity's entry tag and confirm tag is real
+				// get selected entity's entryTag tag and confirm tag is real
 				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
 
-                // use entry selected at time of cast
+                // use entryTag selected at time of cast
                 if (selectedEntry != null)
                 {
                     entryTag = selectedEntry;

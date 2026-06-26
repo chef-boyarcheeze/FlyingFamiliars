@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.client;
 
-import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.item.common.entity.SoulWand.BaseSoulWand;
 import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;

@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.event;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;

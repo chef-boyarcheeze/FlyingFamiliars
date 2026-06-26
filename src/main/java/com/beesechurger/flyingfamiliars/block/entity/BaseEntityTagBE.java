@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.ChatFormatting;
@@ -173,7 +173,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
             if (!EntityTagRef.isEntityTamed(EntityTagRef.INSTANCE.getSelectedEntry(stackTag)))
             {
-                // use BE entityTagRef since it has the correct max entry size for entityStorageTag
+                // use BE entityTagRef since it has the correct max entryTag size for entityStorageTag
                 if (EntityTagRef.INSTANCE.moveEntry(stackTag, entityStorageTag))
                 {
                     // save updated entity tag list to stack
@@ -215,7 +215,7 @@ public abstract class BaseEntityTagBE extends BlockEntity implements Clearable
 
             String selectedEntity = EntityTagRef.getEntityID(EntityTagRef.INSTANCE.getSelectedEntry(entityStorageTag));
 
-            // use item entityTagRef since it has the correct max entry size for stackTag
+            // use item entityTagRef since it has the correct max entryTag size for stackTag
             if (EntityTagRef.INSTANCE.moveEntry(entityStorageTag, stackTag))
             {
                 // save updated entity tag list to stack
