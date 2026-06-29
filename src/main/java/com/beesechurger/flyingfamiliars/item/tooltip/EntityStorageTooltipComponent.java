@@ -40,20 +40,6 @@ public record EntityStorageTooltipComponent(List<CompoundTag> entryList, boolean
         }
 
         @Override
-        public int getHeight()
-        {
-            int height = 0;
-
-            var entryList = tooltipComponent.entryList;
-            if (!entryList.isEmpty())
-            {
-                height += ENTRY_BOX_SIZE + 4;
-            }
-
-            return height;
-        }
-
-        @Override
         public int getWidth(Font font)
         {
             int width = 0;
@@ -70,6 +56,20 @@ public record EntityStorageTooltipComponent(List<CompoundTag> entryList, boolean
             }
 
             return width;
+        }
+
+        @Override
+        public int getHeight()
+        {
+            int height = 0;
+
+            var entryList = tooltipComponent.entryList;
+            if (!entryList.isEmpty())
+            {
+                height += ENTRY_BOX_SIZE + 4;
+            }
+
+            return height;
         }
 
         @Override
