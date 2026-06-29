@@ -153,7 +153,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         if (Screen.hasShiftDown())
         {
             ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
-            List<List<CompoundTag>> componentEntryLists = new ArrayList<>();
+            List<ListTag> componentEntryLists = new ArrayList<>();
 
             boolean hasMoreEntities = false;
 
@@ -162,7 +162,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
             {
                 if (i % 9 == 0)
                 {
-                    componentEntryLists.add(new ArrayList<>());
+                    componentEntryLists.add(new ListTag());
                 }
 
                 componentEntryLists.get(componentEntryLists.size() - 1).add((CompoundTag) entryList.get(i));

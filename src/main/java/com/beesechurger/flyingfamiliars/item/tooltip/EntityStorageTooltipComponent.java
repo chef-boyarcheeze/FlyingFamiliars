@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.tooltip;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.util.FFColors;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,11 +23,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.joml.Matrix4f;
 
-import java.util.List;
-
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_ENTITY_TYPE;
 
-public record EntityStorageTooltipComponent(List<CompoundTag> entryList, boolean hasMoreEntities, int color) implements TooltipComponent
+public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEntities, int color) implements TooltipComponent
 {
     public static class Client implements ClientTooltipComponent
     {
@@ -95,7 +95,9 @@ public record EntityStorageTooltipComponent(List<CompoundTag> entryList, boolean
         @Override
         public void renderImage(Font font, int x, int y, GuiGraphics graphics)
         {
-            var entryList = tooltipComponent.entryList;
+            ListTag entryList = tooltipComponent.entryList;
+            FFColors.ColorType color = FFColors.getTypeColorRGBA(tooltipComponent.color);
+
             if (!entryList.isEmpty())
             {
                 int xOff = 0;
@@ -126,12 +128,7 @@ public record EntityStorageTooltipComponent(List<CompoundTag> entryList, boolean
                             var entityY = y + yOff;
 
                             // Set color of entity boxes to color of item type
-                            RenderSystem.setShaderColor(
-                                    FastColor.ARGB32.red(tooltipComponent.color) / 255.0f,
-                                    FastColor.ARGB32.green(tooltipComponent.color) / 255.0f,
-                                    FastColor.ARGB32.blue(tooltipComponent.color) / 255.0f,
-                                    FastColor.ARGB32.alpha(tooltipComponent.color) / 255.0f
-                            );
+                            RenderSystem.setShaderColor(color.red, color.green, color.blue, color.alpha);
                             graphics.blit(ENTRY_BACKGROUND, x + xOff, y, 0, 0, ENTRY_BOX_SIZE, ENTRY_BOX_SIZE, 32, 32);
                             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
