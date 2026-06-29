@@ -1,4 +1,4 @@
-package com.beesechurger.flyingfamiliars.item.common.entity_items;
+package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
@@ -80,6 +80,8 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     {
         return ChatFormatting.GRAY.getColor();
     }
+
+    protected abstract int getColor();
 
 /////////////////
 /// Mutators: ///
@@ -173,7 +175,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 
             for (var componentEntryList : componentEntryLists)
             {
-                componentTooltips.add(new EntityStorageTooltipComponent(componentEntryList, hasMoreEntities));
+                componentTooltips.add(new EntityStorageTooltipComponent(componentEntryList, hasMoreEntities, getColor()));
             }
         }
 
