@@ -78,9 +78,9 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
         return selectedWandEffect != null ? Component.translatable(super.getDescriptionId(stack)).withStyle(Style.EMPTY.withColor(getColor()))
-                                            .append(Component.literal(" (").withStyle(ChatFormatting.WHITE))
+                                            .append(Component.literal(" (").withStyle(ChatFormatting.GRAY))
                                             .append(Component.translatable(selectedWandEffect.getTranslatableName()).withStyle(Style.EMPTY.withColor(selectedWandEffect.getColor())))
-                                            .append(Component.literal(")").withStyle(ChatFormatting.WHITE))
+                                            .append(Component.literal(")").withStyle(ChatFormatting.GRAY))
                                           : Component.translatable(super.getDescriptionId(stack)).withStyle(Style.EMPTY.withColor(getColor()));
     }
 
