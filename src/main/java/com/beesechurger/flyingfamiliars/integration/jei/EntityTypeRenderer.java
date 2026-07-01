@@ -43,12 +43,12 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
             entity.tickCount = Minecraft.getInstance().player.tickCount;
             float scale = 0.6f * size / Math.max(entity.getBbWidth(), 0.8f * entity.getBbHeight());
 
-            renderEntity(graphics, entity, ingredient.x, ingredient.y, scale);
+            renderEntity(graphics, entity, scale);
             graphics.pose().popPose();
         }
     }
 
-    private void renderEntity(GuiGraphics graphics, LivingEntity entity, int x, int y, float scale)
+    private void renderEntity(GuiGraphics graphics, LivingEntity entity, float scale)
     {
         MouseHandler mouseHandler = Minecraft.getInstance().mouseHandler;
         float recipeX = graphics.pose().last().pose().m30();

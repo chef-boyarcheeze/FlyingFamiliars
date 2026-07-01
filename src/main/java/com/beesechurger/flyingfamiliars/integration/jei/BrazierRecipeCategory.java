@@ -126,7 +126,7 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
             int y = (int) (yCenterInput - yModInput * Math.sin(Math.toRadians(angle)));
 
             builder.addSlot(RecipeIngredientRole.INPUT, x, y)
-                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getInputEntities().get(i), x, y));
+                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getInputEntities().get(i)));
         }
 
         int xCenterOutput = 130;
@@ -134,13 +134,19 @@ public class BrazierRecipeCategory implements IRecipeCategory<BrazierRecipe>
         int yModOutput = 0;
 
         if(recipe.getOutputItem() != ItemStack.EMPTY && recipe.getOutputEntity() != null)
+        {
             yModOutput = 15;
+        }
 
         if(recipe.getOutputItem() != ItemStack.EMPTY)
+        {
             builder.addSlot(RecipeIngredientRole.OUTPUT, xCenterOutput, yCenterOutput + yModOutput)
                     .addItemStack(recipe.getOutputItem());
+        }
         if(recipe.getOutputEntity() != null)
+        {
             builder.addSlot(RecipeIngredientRole.OUTPUT, xCenterOutput, yCenterOutput - yModOutput)
-                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getOutputEntity(), xCenterOutput, yCenterOutput - yModOutput));
+                    .addIngredient(EntityTypeIngredient.ENTITY, new EntityTypeIngredient(recipe.getOutputEntity()));
+        }
     }
 }
