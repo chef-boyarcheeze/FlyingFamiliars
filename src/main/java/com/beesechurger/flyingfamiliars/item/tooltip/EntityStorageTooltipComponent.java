@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.tooltip;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.util.FFColors;
+import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -17,7 +17,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -96,7 +95,7 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
         public void renderImage(Font font, int x, int y, GuiGraphics graphics)
         {
             ListTag entryList = tooltipComponent.entryList;
-            FFColors.ColorType color = FFColors.getTypeColorRGBA(tooltipComponent.color);
+            FFTypes.ColorType color = FFTypes.getTypeColorRGBA(tooltipComponent.color);
 
             if (!entryList.isEmpty())
             {

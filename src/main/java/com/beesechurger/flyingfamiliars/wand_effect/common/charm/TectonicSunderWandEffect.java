@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.util.FFColors;
+import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -88,7 +88,7 @@ public class TectonicSunderWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFColors.FAMILIAR_TYPE_EARTH;
+        return FFTypes.FAMILIAR_TYPE_EARTH;
     }
 
 /// Misc:

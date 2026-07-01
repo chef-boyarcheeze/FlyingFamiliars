@@ -1,7 +1,8 @@
-package com.beesechurger.flyingfamiliars.item.common.entity.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.entity.soul_wand;
 
 import com.beesechurger.flyingfamiliars.item.FFItemClientExtension;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
@@ -106,7 +107,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if(!Screen.hasShiftDown() && stack.hasTag() && selectedWandEffect != null)
+        if((EntityTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()) || !Screen.hasShiftDown()) && stack.hasTag() && selectedWandEffect != null)
         {
             tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
                     .withStyle(Style.EMPTY.withColor(selectedWandEffect.getColor())));

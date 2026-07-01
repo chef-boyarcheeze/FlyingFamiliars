@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
-import com.beesechurger.flyingfamiliars.item.common.entity.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

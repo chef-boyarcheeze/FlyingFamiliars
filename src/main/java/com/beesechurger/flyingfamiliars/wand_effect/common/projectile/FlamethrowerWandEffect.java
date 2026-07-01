@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.projectile;
 
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.FlamethrowerProjectile;
-import com.beesechurger.flyingfamiliars.util.FFColors;
+import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -53,7 +53,7 @@ public class FlamethrowerWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFColors.FAMILIAR_TYPE_FIRE;
+        return FFTypes.FAMILIAR_TYPE_FIRE;
     }
 
 ///////////////////////////

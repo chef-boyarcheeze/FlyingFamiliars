@@ -3,11 +3,12 @@ package com.beesechurger.flyingfamiliars.util;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 
 import java.util.Map;
 
-public class FFColors
+public class FFTypes
 {
     public static final int FAMILIAR_TYPE_WATER = 0xFF2040D0;
     public static final int FAMILIAR_TYPE_LIFE = 0xFF008020;
@@ -29,7 +30,12 @@ public class FFColors
 
     public static int getTypeColorInt(String type)
     {
-        return TYPE_COLOR_MAP.get(type);
+        if (TYPE_COLOR_MAP.containsKey(type))
+        {
+            return TYPE_COLOR_MAP.get(type);
+        }
+
+        return 0xFFFFFFFF;
     }
 
     public static ColorType getTypeColorRGBA(int color)
@@ -56,5 +62,25 @@ public class FFColors
             this.blue = blue;
             this.alpha = alpha;
         }
+    }
+
+    private static final Map<String, Component> TYPE_NAME_MAP = Map.ofEntries(
+            Map.entry(FFItems.WET_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_water")),
+            Map.entry(FFItems.LUSH_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_life")),
+            Map.entry(FFItems.GUSTING_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_air")),
+            Map.entry(FFItems.STONY_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_earth")),
+            Map.entry(FFItems.BURNING_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_fire")),
+            Map.entry(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_light")),
+            Map.entry(FFItems.VACUOUS_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_void"))
+    );
+
+    public static Component getTypeName(String type)
+    {
+        if (TYPE_COLOR_MAP.containsKey(type))
+        {
+            return TYPE_NAME_MAP.get(type);
+        }
+
+        return Component.literal("null: ");
     }
 }

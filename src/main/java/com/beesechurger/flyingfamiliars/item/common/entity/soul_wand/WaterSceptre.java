@@ -1,6 +1,6 @@
-package com.beesechurger.flyingfamiliars.item.common.entity.SoulWand;
+package com.beesechurger.flyingfamiliars.item.common.entity.soul_wand;
 
-import com.beesechurger.flyingfamiliars.util.FFColors;
+import com.beesechurger.flyingfamiliars.util.FFTypes;
 
 public class WaterSceptre extends BaseSoulWand
 {
@@ -18,6 +18,6 @@ public class WaterSceptre extends BaseSoulWand
 	@Override
 	protected int getColor()
 	{
-		return FFColors.FAMILIAR_TYPE_WATER;
+		return FFTypes.FAMILIAR_TYPE_WATER;
 	}
 }

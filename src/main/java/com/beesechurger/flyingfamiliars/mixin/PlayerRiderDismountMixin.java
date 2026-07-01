@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.mixin;
 
-import com.beesechurger.flyingfamiliars.item.common.entity.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
