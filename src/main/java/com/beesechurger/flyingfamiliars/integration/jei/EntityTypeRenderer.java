@@ -1,13 +1,16 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
+import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -35,10 +38,11 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
                 && ingredient.getEntity() instanceof LivingEntity entity)
         {
             graphics.pose().pushPose();
-            entity.tickCount = Minecraft.getInstance().player.tickCount;
             graphics.pose().translate(0.5f * size, 0.9f * size, 0);
 
-            float scale = 0.5f * size * Math.min(1.7f / entity.getBbHeight(), 1f);
+            entity.tickCount = Minecraft.getInstance().player.tickCount;
+            float scale = 0.6f * size / Math.max(entity.getBbWidth(), 0.8f * entity.getBbHeight());
+
             renderEntity(graphics, entity, ingredient.x, ingredient.y, scale);
             graphics.pose().popPose();
         }
@@ -46,17 +50,24 @@ public class EntityTypeRenderer implements IIngredientRenderer<EntityTypeIngredi
 
     private void renderEntity(GuiGraphics graphics, LivingEntity entity, int x, int y, float scale)
     {
-        var mouseHandler = Minecraft.getInstance().mouseHandler;
-        var guiLeftEdge = (Minecraft.getInstance().getWindow().getWidth() - graphics.guiWidth()) / 2;
-        var guiTopEdge = (Minecraft.getInstance().getWindow().getHeight() - graphics.guiHeight()) / 2;
-
+        MouseHandler mouseHandler = Minecraft.getInstance().mouseHandler;
+        float recipeX = graphics.pose().last().pose().m30();
+        float recipeY = graphics.pose().last().pose().m31();
         boolean renderHitboxes = Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
 
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
         modelView.mulPoseMatrix(graphics.pose().last().pose());
         Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(false);
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, 0, 0, (int) scale, (float) (guiLeftEdge + x - mouseHandler.xpos()), (float) (guiTopEdge + y - mouseHandler.ypos()), entity);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(
+                graphics,
+                0,
+                0,
+                (int) scale,
+                (float) (Minecraft.getInstance().getWindow().getGuiScale() * recipeX - mouseHandler.xpos()),
+                (float) (Minecraft.getInstance().getWindow().getGuiScale() * (recipeY - getHeight() / 2) - mouseHandler.ypos()),
+                entity
+        );
         Minecraft.getInstance().getEntityRenderDispatcher().setRenderHitBoxes(renderHitboxes);
         modelView.popPose();
         RenderSystem.applyModelViewMatrix();

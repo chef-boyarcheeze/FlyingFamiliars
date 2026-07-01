@@ -96,6 +96,7 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
         {
             ListTag entryList = tooltipComponent.entryList;
             FFTypes.ColorType color = FFTypes.getTypeColorRGBA(tooltipComponent.color);
+            var mc = Minecraft.getInstance();
 
             if (!entryList.isEmpty())
             {
@@ -118,11 +119,6 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
 
                             var size = ENTRY_BOX_SIZE / 2;
                             var entityScale = size / Math.max(entity.getBbWidth(), 0.8f * entity.getBbHeight());
-
-                            var mouseHandler = Minecraft.getInstance().mouseHandler;
-                            var guiLeftEdge = (Minecraft.getInstance().getWindow().getWidth() - graphics.guiWidth()) / 2;
-                            var guiTopEdge = (Minecraft.getInstance().getWindow().getHeight() - graphics.guiHeight()) / 2;
-
                             var entityX = x + xOff;
                             var entityY = y + yOff;
 
@@ -150,8 +146,8 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
                                     entityX + (ENTRY_BOX_SIZE / 2),
                                     entityY + (ENTRY_BOX_SIZE / 2),
                                     (int) entityScale,
-                                    (float) (guiLeftEdge + entityX - mouseHandler.xpos()),
-                                    (float) (guiTopEdge + entityY - mouseHandler.ypos()),
+                                    (float) (mc.getWindow().getGuiScale() * (entityX + (ENTRY_BOX_SIZE / 2)) - mc.mouseHandler.xpos()),
+                                    (float) (mc.getWindow().getGuiScale() * (entityY + (ENTRY_BOX_SIZE / 4)) - mc.mouseHandler.ypos()),
                                     (LivingEntity) entity
                             );
 
