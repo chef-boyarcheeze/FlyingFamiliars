@@ -16,10 +16,10 @@ public class FFConstants
     public static final String STORAGE_ENTITY_TAGNAME = "ff.base.entity";
     public static final String STORAGE_ENTITY_TYPE = "EntityType";
 
-    public static final String STORAGE_FRAGMENT_TAGNAME = "ff.item.fragment";
-    public static final String STORAGE_FRAGMENT_TYPE = "FragmentType";
-    public static final String STORAGE_FRAGMENT_STORAGE = "FragmentStorage";
-    public static final String STORAGE_FRAGMENT_STORAGE_MAX = "FragmentStorageMax";
+    public static final String STORAGE_SPIRIT_TAGNAME = "ff.item.spirit";
+    public static final String STORAGE_SPIRIT_TYPE = "SpiritType";
+    public static final String STORAGE_SPIRIT_STORAGE = "SpiritStorage";
+    public static final String STORAGE_SPIRIT_STORAGE_MAX = "SpiritStorageMax";
 
     public static final String STORAGE_WAND_EFFECT_TAGNAME = "ff.item.wand_effect";
     public static final String STORAGE_WAND_EFFECT_TYPE = "WandEffectType";
@@ -60,17 +60,7 @@ public class FFConstants
 /// Integer values: ///
 ///////////////////////
 
-/// Familiar type colors in hexadecimal format:
-
-    public static final int FAMILIAR_TYPE_WATER = 0x000BAB;
-    public static final int FAMILIAR_TYPE_LIFE = 0x00A300;
-    public static final int FAMILIAR_TYPE_AIR = 0xFAF000;
-    public static final int FAMILIAR_TYPE_EARTH = 0xDEAA00;
-    public static final int FAMILIAR_TYPE_FIRE = 0xB02000;
-    public static final int FAMILIAR_TYPE_LIGHT = 0xF0F0F0;
-    public static final int FAMILIAR_TYPE_VOID = 0x202020;
-
-/// Familiar goal values:
+    /// Familiar goal values:
 
     public static final int BUILDING_LIMIT_LOW = -64;
     public static final int BUILDING_LIMIT_HIGH = 320;

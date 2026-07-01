@@ -2,13 +2,15 @@ package com.beesechurger.flyingfamiliars.item;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.Phylactery;
-import com.beesechurger.flyingfamiliars.item.common.entity_items.SoulWand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
+import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
+import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
+import com.beesechurger.flyingfamiliars.item.common.entity.Spirit;
 import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
 import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import com.google.common.collect.Iterables;
 import com.mojang.datafixers.util.Pair;
@@ -26,6 +28,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -97,6 +100,18 @@ public class FFItemHandler
 		}
 
 		update();
+	}
+
+	@SubscribeEvent
+	public static void onItemPickup(EntityItemPickupEvent event)
+	{
+		ItemStack stack = event.getItem().getItem();
+
+		if (stack.getItem() instanceof Spirit)
+		{
+			Phylactery.onPickupItem(event.getItem(), event.getEntity());
+			event.setCanceled(true);
+		}
 	}
 
 	public static List<ItemStack> getEntityStackList(Player player)
@@ -218,7 +233,7 @@ public class FFItemHandler
 				{
 					Slot hoveredSlot = containerScreen.getSlotUnderMouse();
 
-					if (hoveredSlot != null && hoveredSlot.getItem().getItem() instanceof BaseEntityTagItem)
+					if (hoveredSlot != null && hoveredSlot.getItem().getItem() instanceof BaseEntityTagItem && !EntityTagRef.INSTANCE.isEmpty(hoveredSlot.getItem().getOrCreateTag()))
 					{
 						mouseLockSlot = hoveredSlot;
 						lockX = (int) (mc.mouseHandler.xpos() / mc.getWindow().getGuiScale());

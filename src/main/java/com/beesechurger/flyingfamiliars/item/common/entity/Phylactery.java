@@ -1,8 +1,9 @@
-package com.beesechurger.flyingfamiliars.item.common.entity_items;
+package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
-import com.beesechurger.flyingfamiliars.item.tooltip.SoulStorageTooltipComponent;
+import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -32,21 +33,12 @@ public class Phylactery extends BaseEntityTagItem implements ITieredItem
 /// Accessors: ///
 //////////////////
 
+/// Integers:
+
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag tipFlag)
+    public int getColor()
     {
-        // get list of stuff and display it, probably in order (water, plant, air, earth, fire, void, light)
-        ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
-
-        // need to look at:
-        // botania mana ring for mana bar
-        // embers blazing ray with heat augment for heat bar
-        // AE2 portable cell for stored items
-        // embers music disc for fiery text
-        // species ricoshield for text
-        // ad astra jet suit for overlay
-
-        super.appendHoverText(stack, level, tooltip, tipFlag);
+        return ChatFormatting.WHITE.getColor();
     }
 
 /////////////////
@@ -80,7 +72,7 @@ public class Phylactery extends BaseEntityTagItem implements ITieredItem
 
                     for (Tag tag : entryList)
                     {
-                        String entryName = ((CompoundTag) tag).getString(STORAGE_FRAGMENT_TYPE);
+                        String entryName = ((CompoundTag) tag).getString(STORAGE_SPIRIT_TYPE);
 
                         if (entryName.equals(entityStack.getItem().toString()))
                         {
@@ -103,23 +95,25 @@ public class Phylactery extends BaseEntityTagItem implements ITieredItem
                         {
                             CompoundTag newEntry = new CompoundTag();
 
-                            newEntry.putString(STORAGE_FRAGMENT_TYPE, entityStack.getItem().toString());
-                            newEntry.putInt(STORAGE_FRAGMENT_STORAGE, 0);
+                            newEntry.putString(STORAGE_SPIRIT_TYPE, entityStack.getItem().toString());
+                            newEntry.putInt(STORAGE_SPIRIT_STORAGE, 0);
 
                             entryTag = newEntry;
                             entryList.add(entryTag);
+
+                            // TODO decide how to add spirit types in order
                         }
                     }
 
                     if (entryTag != null)
                     {
-                        int currentStorage = entryTag.getInt(STORAGE_FRAGMENT_STORAGE);
+                        int currentStorage = entryTag.getInt(STORAGE_SPIRIT_STORAGE);
                         int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxVolume(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
                         int pickedUpCount = (int) Math.ceil((newStorage - currentStorage) / 10.0F);
 
                         if (pickedUpCount > 0)
                         {
-                            entryTag.putInt(STORAGE_FRAGMENT_STORAGE, newStorage);
+                            entryTag.putInt(STORAGE_SPIRIT_STORAGE, newStorage);
                             entityStack.shrink(pickedUpCount);
 
                             // resync code for item entity, from Botania's EntityHelper
@@ -147,14 +141,17 @@ public class Phylactery extends BaseEntityTagItem implements ITieredItem
         List<TooltipComponent> componentTooltips = super.getTooltipComponents(stack);
 
         // Show stored entities if shift is pressed, show spirit fragment levels if not
-        if (!Screen.hasShiftDown())
+        if (componentTooltips.isEmpty() || !Screen.hasShiftDown())
         {
             ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+            int maxSpirit = SpiritTagRef.INSTANCE.getMaxVolume(stack.getOrCreateTag());
 
             // separate entryTag list into rows of 9, accounting for remainder
             for (Tag tag : entryList)
             {
-                componentTooltips.add(new SoulStorageTooltipComponent((CompoundTag) tag, ));
+                CompoundTag entryTag = (CompoundTag) tag;
+
+                componentTooltips.add(new SpiritStorageTooltipComponent(entryTag.getString(STORAGE_SPIRIT_TYPE), entryTag.getInt(STORAGE_SPIRIT_STORAGE), maxSpirit));
             }
         }
 

@@ -101,6 +101,8 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
+        // TODO better stuff here (alts and ctrls)
+
         ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
 
         if (EntityTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()))

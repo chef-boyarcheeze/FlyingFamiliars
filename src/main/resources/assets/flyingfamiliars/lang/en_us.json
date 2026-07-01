@@ -98,10 +98,18 @@
   "tooltip.flyingfamiliars.entity_tag.stored_1": "1 stored mob",
   "tooltip.flyingfamiliars.entity_tag.stored_multiple": " stored mobs",
 
-  "tooltip.flyingfamiliars.soul_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored soul types",
-  "tooltip.flyingfamiliars.soul_tag.empty": "Empty",
-  "tooltip.flyingfamiliars.soul_tag.stored_1": "1 stored soul type",
-  "tooltip.flyingfamiliars.soul_tag.stored_multiple": " stored soul types",
+  "tooltip.flyingfamiliars.spirit_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored soul types",
+  "tooltip.flyingfamiliars.spirit_tag.empty": "Empty",
+  "tooltip.flyingfamiliars.spirit_tag.stored_1": "1 stored soul type",
+  "tooltip.flyingfamiliars.spirit_tag.stored_multiple": " stored soul types",
+
+  "tooltip.flyingfamiliars.spirit_tag.type_water": "Water",
+  "tooltip.flyingfamiliars.spirit_tag.type_life": "Life",
+  "tooltip.flyingfamiliars.spirit_tag.type_air": "Air",
+  "tooltip.flyingfamiliars.spirit_tag.type_earth": "Earth",
+  "tooltip.flyingfamiliars.spirit_tag.type_fire": "Fire",
+  "tooltip.flyingfamiliars.spirit_tag.type_light": "Light",
+  "tooltip.flyingfamiliars.spirit_tag.type_void": "Void",
 
   "tooltip.flyingfamiliars.wand_effect.boreal_gust_charm": "Boreal Gust",
   "tooltip.flyingfamiliars.wand_effect.capture_projectile": "Capture",
