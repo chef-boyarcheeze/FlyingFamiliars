@@ -46,11 +46,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 /// Booleans:
 
     @Override
-    public boolean canCycle(Player player, ItemStack stack)
+    public boolean canCycle(Player player, ItemStack scrollStack, List<ItemStack> allStacks)
     {
-        BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
+        BaseWandEffect selectedWandEffect = getSelectedWandEffect(scrollStack);
 
-        return super.canCycle(player, stack) && selectedWandEffect != null && selectedWandEffect instanceof CaptureWandEffect;
+        return super.canCycle(player, scrollStack, allStacks) && selectedWandEffect != null && selectedWandEffect instanceof CaptureWandEffect;
     }
 
 /// Integers:
@@ -123,7 +123,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     }
 
 /////////////////////
-/// Item actions: ///
+/// Item Actions: ///
 /////////////////////
 
     @Override

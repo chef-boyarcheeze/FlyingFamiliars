@@ -64,24 +64,16 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
         // get initially selected entity tag:
         if (action)
         {
-            for (ItemStack stack : FFItemHandler.getEntityStackList((Player) getOwner()))
+            // get selected entity's entryTag tag and confirm tag is real
+            CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
+
+            if (entryTag.contains(STORAGE_ENTITY_TYPE))
             {
-                if(stack.getItem() instanceof BaseEntityTagItem item)
+                EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
+
+                if (type != null)
                 {
-                    CompoundTag stackTag = stack.getOrCreateTag();
-
-                    // get selected entity's entryTag tag and confirm tag is real
-                    CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
-
-                    if(entryTag.contains(STORAGE_ENTITY_TYPE))
-                    {
-                        EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
-
-                        if (type != null)
-                        {
-                            selectedEntry = entryTag;
-                        }
-                    }
+                    selectedEntry = entryTag;
                 }
             }
         }
@@ -242,6 +234,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
 
                     // remove successfully captured entity from level
                     entity.remove(Entity.RemovalReason.KILLED);
+
                     displaySelectionMessage(stack);
 
                     return true;
@@ -279,7 +272,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
                 CompoundTag stackTag = stack.getOrCreateTag();
 
                 // get selected entity's entryTag tag and confirm tag is real
-                CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
+                CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
 
                 // use entryTag selected at time of cast
                 if (selectedEntry != null)
@@ -287,7 +280,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
                     entryTag = selectedEntry;
                 }
 
-                if(entryTag.contains(STORAGE_ENTITY_TYPE) && EntityTagRef.INSTANCE.getEntryList(stackTag).contains(entryTag))
+                if (entryTag.contains(STORAGE_ENTITY_TYPE) && EntityTagRef.INSTANCE.getEntryList(stackTag).contains(entryTag))
                 {
                     EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
 
@@ -323,11 +316,11 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
     protected void displaySelectionMessage(ItemStack stack)
     {
         // display new entity selection
-        CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+        CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
 
         if (entryTag.contains(STORAGE_ENTITY_TYPE))
         {
-            ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
+            ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
             ((Player) getOwner()).displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
                     .append(": " + EntityTagRef.getEntityID(entryTag))
@@ -343,7 +336,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
     public void tick()
     {
         super.tick();
-        if(level().isClientSide() && !isDead())
+        if (level().isClientSide() && !isDead())
         {
             Vec3 vec3d = getDeltaMovement();
             double d0 = getX() + vec3d.x;

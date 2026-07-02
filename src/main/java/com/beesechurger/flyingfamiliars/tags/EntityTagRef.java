@@ -1,6 +1,12 @@
 package com.beesechurger.flyingfamiliars.tags;
 
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
+import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
@@ -58,6 +64,27 @@ public class EntityTagRef implements IStorageTagRef
         tag.putInt(STORAGE_ENTRY_STORAGE_MAX, 3);
 
         return tag;
+    }
+
+    public CompoundTag getPlayerFullEntityListTag(Player player)
+    {
+        ListTag fullEntryList = new ListTag();
+
+        for (ItemStack stack : FFItemHandler.getEntityStackList(player))
+        {
+            if(stack.getItem() instanceof BaseEntityTagItem item)
+            {
+                for (Tag tag : EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag()))
+                {
+                    fullEntryList.add(tag);
+                }
+            }
+        }
+
+        CompoundTag storageTag = EntityTagRef.INSTANCE.getOrCreateTag(new CompoundTag());
+        storageTag.getCompound(STORAGE_ENTITY_TAGNAME).put(STORAGE_ENTRY_LIST, fullEntryList);
+
+        return storageTag;
     }
 
 /////////////////

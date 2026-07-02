@@ -10,52 +10,58 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class EntityCycleC2SPacket
 {
+	private final int scrollStackIndex;
 	private final int direction;
+	private final boolean singleStack;
 
-	public EntityCycleC2SPacket(int di)
+	public EntityCycleC2SPacket(int scrollStackIndex, int direction, boolean singleStack)
 	{
-		direction = di;
+		this.scrollStackIndex = scrollStackIndex;
+		this.direction = direction;
+		this.singleStack = singleStack;
 	}
-	
+
 	public EntityCycleC2SPacket(FriendlyByteBuf buf)
 	{
-		direction = buf.readInt();
+		this.scrollStackIndex = buf.readInt();
+		this.direction = buf.readInt();
+		this.singleStack = buf.readBoolean();
 	}
 	
 	public void toBytes(FriendlyByteBuf buf)
 	{
+		buf.writeInt(scrollStackIndex);
 		buf.writeInt(direction);
+		buf.writeBoolean(singleStack);
 	}
 	
 	public boolean handle(Supplier<NetworkEvent.Context> supplier)
 	{
 		supplier.get().enqueueWork(() -> {
-
 			Player player = supplier.get().getSender();
-			Level level = player.level();
-			ItemStack stack = player.getMainHandItem();
+			ItemStack scrollStack = player.getInventory().items.get(scrollStackIndex);
 
-			if(stack.getItem() instanceof BaseEntityTagItem item)
+			if(scrollStack.getItem() instanceof BaseEntityTagItem item)
 			{
-				CompoundTag stackTag = stack.getOrCreateTag();
-				item.cycle(player, direction);
+				item.cycle(player, scrollStackIndex, direction, singleStack);
 
-				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(stackTag);
-				ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.WHITE;
-
-				if(player.getRandom().nextInt(15) == 0)
-					level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.PLAYERS, 0.5f, FFSounds.getPitch());
+				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag(player));
+				ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
 				player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
 						.append(": " + EntityTagRef.getEntityID(entryTag))
 						.withStyle(format), true);
+
+				if(player.getRandom().nextInt(15) == 0)
+				{
+					player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), FFSounds.SOUL_WAND_SWAP.get(), SoundSource.PLAYERS, 0.5f, FFSounds.getPitch());
+				}
 			}
 		});
 		

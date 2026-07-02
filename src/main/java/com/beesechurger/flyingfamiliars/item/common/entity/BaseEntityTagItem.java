@@ -17,8 +17,6 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.beesechurger.flyingfamiliars.item.FFItemHandler.getEntityStackList;
-
 public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IEntityCycleItem
 {
     protected static final int ENTITY_TOOLTIP_VISIBLE_MAX = 3;
@@ -47,19 +45,19 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     }
 
     @Override
-    public boolean canCycle(Player player, ItemStack stack)
+    public boolean canCycle(Player player, ItemStack scrollStack, List<ItemStack> allStacks)
     {
         int count = 0;
 
-        for (ItemStack entityStack : getEntityStackList(player))
+        for (ItemStack entityStack : allStacks)
         {
-            if (entityStack != player.getMainHandItem())
+            if (entityStack != scrollStack)
             {
                 count += EntityTagRef.INSTANCE.getEntryCount(entityStack.getOrCreateTag());
             }
         }
 
-        return EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag()) > 1 || count > 0;
+        return EntityTagRef.INSTANCE.getEntryCount(scrollStack.getOrCreateTag()) > 1 || count > 0;
     }
 
     public boolean getManipMode(ItemStack stack)

@@ -71,6 +71,6 @@ public class FFSounds
 	
 	public static float getPitch()
 	{
-		return SCALE[(int) Math.floor(Math.random()*SCALE.length)];
+		return SCALE[(int) Math.floor(Math.random() * SCALE.length)];
 	}
 }

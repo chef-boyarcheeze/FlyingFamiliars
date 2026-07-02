@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars;
 
+import com.beesechurger.flyingfamiliars.event.ClientEvents;
 import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
-import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.registries.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -39,8 +39,7 @@ public class FlyingFamiliars
 		CommonSetup.INSTANCE.register(modEventBus);
 		ClientSetup.INSTANCE.register(modEventBus);
 		
-		MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(FFItemHandler.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(ClientEvents.INSTANCE);
 
 		if(ModList.get().isLoaded(CURIOS_MODNAME))
 		{
