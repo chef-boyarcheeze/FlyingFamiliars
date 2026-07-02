@@ -88,9 +88,10 @@
   "key.flyingfamiliars.item_mode_cycle": "Item Mode Cycle",
   "key.flyingfamiliars.soul_wand_shift": "Soul Wand Shift",
 
-  "tooltip.flyingfamiliars.tag.left_alt": "Press \u00A7eSHIFT+ALT\u00A7r for more details",
-  "tooltip.flyingfamiliars.tag.left_control": "Press \u00A7eSHIFT+CONTROL\u00A7r to lock window in place",
+  "tooltip.flyingfamiliars.tag.left_alt": "Press \u00A7eSHIFT+ALT\u00A7r for more entries",
   "tooltip.flyingfamiliars.tag.more_entries": "More",
+  "tooltip.flyingfamiliars.tag.left_control": "Press \u00A7eSHIFT+CONTROL\u00A7r to lock window in place",
+  "tooltip.flyingfamiliars.tag.hover": "\u00A7eHover\u00A7r over an entry for more detail",
 
   "tooltip.flyingfamiliars.entity_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored mobs",
   "tooltip.flyingfamiliars.entity_tag.slot": "Slot",

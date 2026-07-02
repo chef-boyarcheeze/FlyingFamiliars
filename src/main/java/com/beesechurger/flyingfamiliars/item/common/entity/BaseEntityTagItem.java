@@ -101,11 +101,9 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        // TODO better stuff here (alts and ctrls)
-
         ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
 
-        if (EntityTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()))
+        if (entryList.isEmpty())
         {
             tooltip.add(Component.translatable("tooltip.flyingfamiliars.entity_tag.empty")
                     .withStyle(ChatFormatting.GRAY));
@@ -130,20 +128,22 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
             }
             else
             {
-                if (!Screen.hasAltDown())
+                if (entryList.size() > ENTITY_TOOLTIP_VISIBLE_MAX && !Screen.hasAltDown())
                 {
                     tooltip.add(Component.translatable("tooltip.flyingfamiliars.tag.left_alt")
                             .withStyle(ChatFormatting.GRAY));
                 }
+
                 if (!Screen.hasControlDown())
                 {
                     tooltip.add(Component.translatable("tooltip.flyingfamiliars.tag.left_control")
                             .withStyle(ChatFormatting.GRAY));
                 }
-
-                /*ChatFormatting format = EntityTagRef.INSTANCE.isEntityTamed((CompoundTag) entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
-                    tooltip.add(translatable("tooltip.flyingfamiliars.entity_tag.slot")
-                            .withStyle(format).append(" " + (count+1) + ": " + EntityTagRef.INSTANCE.getEntityID((CompoundTag) entryTag)));*/
+                else
+                {
+                    tooltip.add(Component.translatable("tooltip.flyingfamiliars.tag.hover")
+                            .withStyle(ChatFormatting.GRAY));
+                }
             }
         }
     }

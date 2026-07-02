@@ -24,7 +24,7 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
     public static class Client implements ClientTooltipComponent
     {
         protected static final ResourceLocation ENTRY_BAR = new ResourceLocation(FlyingFamiliars.MOD_ID, "textures/gui/entry_spirit_bar.png");
-        protected static final int TYPE_NAME_WIDTH = 40;
+        protected static final int SPIRIT_TYPE_WIDTH = 40;
         protected static final int ENTRY_BAR_END_WIDTH = 10;
         protected static final int ENTRY_BAR_SPIRIT_WIDTH = 110;
         protected static final int ENTRY_BAR_SPIRIT_HEIGHT = 8;
@@ -40,7 +40,7 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
         @Override
         public int getWidth(Font font)
         {
-            return TYPE_NAME_WIDTH + ENTRY_BAR_END_WIDTH + ENTRY_BAR_SPIRIT_WIDTH + ENTRY_BAR_END_WIDTH;
+            return SPIRIT_TYPE_WIDTH + ENTRY_BAR_END_WIDTH + ENTRY_BAR_SPIRIT_WIDTH + ENTRY_BAR_END_WIDTH;
         }
 
         @Override
@@ -53,7 +53,7 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
         public void renderText(Font font, int x, int y, Matrix4f matrix, MultiBufferSource.BufferSource buffer)
         {
             String typeName = FFTypes.getTypeName(tooltipComponent.spiritType).getString() + ":";
-            int xOff = (TYPE_NAME_WIDTH - font.width(typeName)) / 2;
+            int xOff = (SPIRIT_TYPE_WIDTH - font.width(typeName)) / 2;
 
             font.drawInBatch(Component.literal(typeName)
                             .withStyle(Style.EMPTY.withColor(FFTypes.getTypeColorInt(tooltipComponent.spiritType)))
@@ -67,7 +67,7 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
             FFTypes.ColorType color = FFTypes.getTypeColorRGBA(FFTypes.getTypeColorInt(tooltipComponent.spiritType));
             float ticks = Minecraft.getInstance().gui.getGuiTicks() + Minecraft.getInstance().getPartialTick();
 
-            int xOff = TYPE_NAME_WIDTH;
+            int xOff = SPIRIT_TYPE_WIDTH;
             int yOff = 2;
 
             float x1 = x + ENTRY_BAR_END_WIDTH;

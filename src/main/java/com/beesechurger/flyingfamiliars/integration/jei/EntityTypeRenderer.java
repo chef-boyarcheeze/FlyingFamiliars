@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
-import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.ingredients.IIngredientRenderer;
@@ -10,7 +9,6 @@ import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.registries.ForgeRegistries;
