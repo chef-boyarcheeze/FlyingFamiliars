@@ -8,8 +8,10 @@ import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity.Spirit;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
 import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
+import com.beesechurger.flyingfamiliars.packet.InventoryEntryTagMoveC2SPacket;
 import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
+import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
@@ -28,6 +30,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +131,41 @@ public class ClientEvents
 			{
 				FFPackets.sendToServer(new EntityCycleC2SPacket(player.getInventory().findSlotMatchingItem(scrollStack), (int) event.getScrollDelta(), false));
 				event.setCanceled(true);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onInventoryMouseRelease(ScreenEvent.MouseButtonReleased.Pre event)
+	{
+		int button = event.getButton();
+		boolean leftMouseFlag = button == GLFW.GLFW_MOUSE_BUTTON_LEFT;
+		boolean rightMouseFlag = button == GLFW.GLFW_MOUSE_BUTTON_RIGHT;
+
+		if (leftMouseFlag || rightMouseFlag)
+		{
+			if (event.getScreen() instanceof AbstractContainerScreen<?> containerScreen)
+			{
+				Player player = Minecraft.getInstance().player;
+
+				if (player != null)
+				{
+					Slot hoveredSlot = containerScreen.getSlotUnderMouse();
+
+					if (hoveredSlot != null && hoveredSlot.hasItem())
+					{q
+						ItemStack carriedStack = containerScreen.getMenu().getCarried();
+						ItemStack hoveredStack = hoveredSlot.getItem();
+
+						if (carriedStack.getItem() instanceof BaseEntityTagItem && hoveredStack.getItem() instanceof BaseEntityTagItem
+								&& ((leftMouseFlag && !EntityTagRef.INSTANCE.isEmpty(hoveredStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(carriedStack.getOrCreateTag()))
+									|| (rightMouseFlag && !EntityTagRef.INSTANCE.isEmpty(carriedStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(hoveredStack.getOrCreateTag()))))
+						{
+							FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
+							event.setCanceled(true);
+						}
+					}
+				}
 			}
 		}
 	}

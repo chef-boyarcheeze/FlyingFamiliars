@@ -1,10 +1,7 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.packet.BEProgressS2CPacket;
-import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
-import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
-import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
+import com.beesechurger.flyingfamiliars.packet.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -44,6 +41,18 @@ public class FFPackets
 				.decoder(EntityCycleC2SPacket::new)
 				.encoder(EntityCycleC2SPacket::toBytes)
 				.consumerMainThread(EntityCycleC2SPacket::handle)
+				.add();
+
+		net.messageBuilder(InventoryEntryTagMoveC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+				.decoder(InventoryEntryTagMoveC2SPacket::new)
+				.encoder(InventoryEntryTagMoveC2SPacket::toBytes)
+				.consumerMainThread(InventoryEntryTagMoveC2SPacket::handle)
+				.add();
+
+		net.messageBuilder(SyncInventoryCarriedItemS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+				.decoder(SyncInventoryCarriedItemS2CPacket::new)
+				.encoder(SyncInventoryCarriedItemS2CPacket::toBytes)
+				.consumerMainThread(SyncInventoryCarriedItemS2CPacket::handle)
 				.add();
 
 		net.messageBuilder(WandEffectAttackC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
