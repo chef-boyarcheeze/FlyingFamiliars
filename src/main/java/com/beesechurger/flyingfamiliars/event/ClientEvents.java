@@ -153,7 +153,7 @@ public class ClientEvents
 					Slot hoveredSlot = containerScreen.getSlotUnderMouse();
 
 					if (hoveredSlot != null && hoveredSlot.hasItem())
-					{q
+					{
 						ItemStack carriedStack = containerScreen.getMenu().getCarried();
 						ItemStack hoveredStack = hoveredSlot.getItem();
 
