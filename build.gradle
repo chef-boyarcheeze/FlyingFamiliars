@@ -25,10 +25,10 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'flyingfamiliars'
+            property 'forge.enabledGameTestNamespaces', "${mod_name}"
 
             mods {
-                flyingfamiliars {
+                "${mod_name}" {
                     source sourceSets.main
                 }
             }
@@ -39,10 +39,10 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'flyingfamiliars'
+            property 'forge.enabledGameTestNamespaces', "${mod_name}"
 
             mods {
-                flyingfamiliars {
+                "${mod_name}" {
                     source sourceSets.main
                 }
             }
@@ -53,10 +53,10 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'flyingfamiliars'
+            property 'forge.enabledGameTestNamespaces', '"${mod_name}"'
 
             mods {
-                flyingfamiliars {
+                "${mod_name}" {
                     source sourceSets.main
                 }
             }
@@ -67,10 +67,10 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'tutorialmod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', "${mod_name}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                flyingfamiliars {
+                "${mod_name}" {
                     source sourceSets.main
                 }
             }

@@ -11,17 +11,10 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 public class CuriosIntegration
 {
-    private static final CuriosIntegration INSTANCE = new CuriosIntegration();
     public static final String CURIOS_MODNAME = "curios";
 
     public static void register()
     {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(CuriosIntegration::sendImc);
-    }
-
-    public static void sendImc(final InterModEnqueueEvent event)
-    {
-        //InterModComms.sendTo(CURIOS_MODNAME, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
     }
 
     public Container getAllWornItems(LivingEntity living)

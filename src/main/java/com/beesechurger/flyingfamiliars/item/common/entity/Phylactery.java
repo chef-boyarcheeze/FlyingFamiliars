@@ -13,12 +13,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public class Phylactery extends BaseEntityTagItem implements ITieredItem
+public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITieredItem
 {
     public Phylactery(Properties properties)
     {
