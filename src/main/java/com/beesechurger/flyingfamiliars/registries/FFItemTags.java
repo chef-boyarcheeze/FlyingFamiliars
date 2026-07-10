@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -16,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class FFItemTags extends ItemTagsProvider
 {
-    public static final TagKey<Item> CHARM_CURIO = ItemTags.create(new ResourceLocation(CuriosIntegration.CURIOS_MODNAME, "charm"));
+    public static final TagKey<Item> CHARM_CURIO = ItemTags.create(new ResourceLocation("curios", "charm"));
 
     public FFItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, ExistingFileHelper existingFileHelper)
     {

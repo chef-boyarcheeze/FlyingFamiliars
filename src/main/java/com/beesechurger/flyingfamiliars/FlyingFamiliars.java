@@ -1,16 +1,12 @@
 package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.event.ClientEvents;
-import com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration;
 import com.beesechurger.flyingfamiliars.registries.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.geckolib.GeckoLib;
-
-import static com.beesechurger.flyingfamiliars.integration.curios.CuriosIntegration.CURIOS_MODNAME;
 
 @Mod("flyingfamiliars")
 public class FlyingFamiliars
@@ -40,11 +36,6 @@ public class FlyingFamiliars
 		ClientSetup.INSTANCE.register(modEventBus);
 		
 		MinecraftForge.EVENT_BUS.register(ClientEvents.INSTANCE);
-
-		if(ModList.get().isLoaded(CURIOS_MODNAME))
-		{
-			CuriosIntegration.register();
-		}
 
 		GeckoLib.initialize();
 	}

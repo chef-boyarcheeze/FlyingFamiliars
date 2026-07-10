@@ -117,17 +117,14 @@ public interface IStorageTagRef
     }
 
 ////////////////////
-/// Tag actions: ///
+/// Tag Actions: ///
 ////////////////////
 
     default boolean addEntry(CompoundTag storageTag, CompoundTag entryTag)
     {
         if (!isFull(storageTag) && hasTag(entryTag))
         {
-            ListTag entryList = getEntryList(storageTag);
-            entryList.add(entryTag);
-
-            return true;
+            return getEntryList(storageTag).add(entryTag);
         }
 
         return false;
@@ -148,14 +145,21 @@ public interface IStorageTagRef
         return false;
     }
 
+    default boolean moveEntry(CompoundTag sourceTag, CompoundTag targetTag, CompoundTag entryTag)
+    {
+        if (!isEmpty(sourceTag) && !isFull(targetTag) && hasTag(entryTag))
+        {
+            return removeEntry(sourceTag, entryTag) && addEntry(targetTag, entryTag);
+        }
+
+        return false;
+    }
+
     default boolean removeEntry(CompoundTag storageTag, CompoundTag entryTag)
     {
         if (!isEmpty(storageTag) && hasTag(entryTag))
         {
-            ListTag entryList = getEntryList(storageTag);
-            entryList.remove(entryTag);
-
-            return true;
+            return getEntryList(storageTag).remove(entryTag);
         }
 
         return false;

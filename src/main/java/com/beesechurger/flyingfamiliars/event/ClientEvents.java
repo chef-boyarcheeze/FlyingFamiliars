@@ -12,11 +12,15 @@ import com.beesechurger.flyingfamiliars.packet.InventoryEntryTagMoveC2SPacket;
 import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -39,6 +43,7 @@ import java.util.stream.Collectors;
 
 import static com.beesechurger.flyingfamiliars.registries.FFKeys.WAND_EFFECT_SELECT_STATE;
 import static com.beesechurger.flyingfamiliars.registries.FFKeys.update;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_TYPE;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEvents
@@ -159,10 +164,94 @@ public class ClientEvents
 
 						if (carriedStack.getItem() instanceof BaseEntityTagItem && hoveredStack.getItem() instanceof BaseEntityTagItem
 								&& ((leftMouseFlag && !EntityTagRef.INSTANCE.isEmpty(hoveredStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(carriedStack.getOrCreateTag()))
-									|| (rightMouseFlag && !EntityTagRef.INSTANCE.isEmpty(carriedStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(hoveredStack.getOrCreateTag()))))
+									|| (rightMouseFlag && !EntityTagRef.INSTANCE.isEmpty(carriedStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(hoveredStack.getOrCreateTag()))
+								&& !Screen.hasShiftDown()))
 						{
 							FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
 							event.setCanceled(true);
+						}
+						else if (carriedStack.getItem() instanceof Phylactery && hoveredStack.getItem() instanceof Phylactery && Screen.hasShiftDown())
+						{
+							System.out.println("hello");
+
+							if (leftMouseFlag)
+							{
+								int carriedMaxStorage = SpiritTagRef.INSTANCE.getMaxStorage(carriedStack.getOrCreateTag());
+
+								for (Tag hoveredTag : SpiritTagRef.INSTANCE.getEntryList(hoveredStack.getOrCreateTag()))
+								{
+									boolean entryExistsFlag = false;
+
+									for (Tag carriedTag : SpiritTagRef.INSTANCE.getEntryList(carriedStack.getOrCreateTag()))
+									{
+										CompoundTag hoveredEntryTag = (CompoundTag) hoveredTag;
+										CompoundTag carriedEntryTag = (CompoundTag) carriedTag;
+
+										// entry's type matches in both items and the target entry is not full
+										if (hoveredEntryTag.getString(STORAGE_SPIRIT_TYPE).equals(carriedEntryTag.getString(STORAGE_SPIRIT_TYPE)))
+										{
+											entryExistsFlag = true;
+
+											// entry exists in target stack and is not full - send packet
+											if (!SpiritTagRef.INSTANCE.isEntryFull(carriedEntryTag, carriedMaxStorage))
+											{
+												FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
+												event.setCanceled(true);
+
+												return;
+											}
+										}
+									}
+
+									// entry does not exist in target stack, and target stack is not full - send packet
+									if (!entryExistsFlag && !SpiritTagRef.INSTANCE.isFull(carriedStack.getOrCreateTag()))
+									{
+										FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
+										event.setCanceled(true);
+
+										return;
+									}
+								}
+							}
+							else if (rightMouseFlag)
+							{
+								int hoveredMaxStorage = SpiritTagRef.INSTANCE.getMaxStorage(hoveredStack.getOrCreateTag());
+
+								for (Tag carriedTag : SpiritTagRef.INSTANCE.getEntryList(carriedStack.getOrCreateTag()))
+								{
+									boolean entryExistsFlag = false;
+
+									for (Tag hoveredTag : SpiritTagRef.INSTANCE.getEntryList(hoveredStack.getOrCreateTag()))
+									{
+										CompoundTag carriedEntryTag = (CompoundTag) carriedTag;
+										CompoundTag hoveredEntryTag = (CompoundTag) hoveredTag;
+
+										// entry's type matches in both items and the target entry is not full
+										if (carriedEntryTag.getString(STORAGE_SPIRIT_TYPE).equals(hoveredEntryTag.getString(STORAGE_SPIRIT_TYPE)))
+										{
+											entryExistsFlag = true;
+
+											// entry exists in target stack and is not full - send packet
+											if (!SpiritTagRef.INSTANCE.isEntryFull(hoveredEntryTag, hoveredMaxStorage))
+											{
+												FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
+												event.setCanceled(true);
+
+												return;
+											}
+										}
+									}
+
+									// entry does not exist in target stack, and target stack is not full - send packet
+									if (!entryExistsFlag && !SpiritTagRef.INSTANCE.isFull(hoveredStack.getOrCreateTag()))
+									{
+										FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
+										event.setCanceled(true);
+
+										return;
+									}
+								}
+							}
 						}
 					}
 				}

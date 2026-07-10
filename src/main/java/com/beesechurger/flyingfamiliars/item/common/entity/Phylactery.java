@@ -105,7 +105,7 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
                     if (entryTag != null)
                     {
                         int currentStorage = entryTag.getInt(STORAGE_SPIRIT_STORAGE);
-                        int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxVolume(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
+                        int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxStorage(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
                         int pickedUpCount = (int) Math.ceil((newStorage - currentStorage) / 10.0F);
 
                         if (pickedUpCount > 0)
@@ -141,7 +141,7 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
         if (componentTooltips.isEmpty() || !Screen.hasShiftDown())
         {
             ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
-            int maxSpirit = SpiritTagRef.INSTANCE.getMaxVolume(stack.getOrCreateTag());
+            int maxSpirit = SpiritTagRef.INSTANCE.getMaxStorage(stack.getOrCreateTag());
 
             // separate entryTag list into rows of 9, accounting for remainder
             for (Tag tag : entryList)

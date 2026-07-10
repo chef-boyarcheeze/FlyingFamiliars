@@ -22,6 +22,26 @@ public class SpiritTagRef implements IStorageTagRef
 
 /// Booleans:
 
+    public boolean isEntryEmpty(CompoundTag entryTag)
+    {
+        if (hasTag(entryTag) && entryTag.contains(STORAGE_SPIRIT_TYPE))
+        {
+            return entryTag.getInt(STORAGE_SPIRIT_STORAGE) == 0;
+        }
+
+        return false;
+    }
+
+    public boolean isEntryFull(CompoundTag entryTag, int maxStorage)
+    {
+        if (hasTag(entryTag) && entryTag.contains(STORAGE_SPIRIT_TYPE))
+        {
+            return entryTag.getInt(STORAGE_SPIRIT_STORAGE) >= maxStorage;
+        }
+
+        return false;
+    }
+
     public boolean getManipMode(CompoundTag storageTag)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);
@@ -49,7 +69,7 @@ public class SpiritTagRef implements IStorageTagRef
         return 0;
     }
 
-    public int getMaxVolume(CompoundTag storageTag)
+    public int getMaxStorage(CompoundTag storageTag)
     {
         CompoundTag settingsTag = getSettingsTag(storageTag);
 
@@ -85,5 +105,57 @@ public class SpiritTagRef implements IStorageTagRef
         settingsTag.putBoolean(STORAGE_ENTRY_MANIP_MODE, !getManipMode(storageTag));
 
         storageTag.put(STORAGE_SETTINGS, settingsTag);
+    }
+
+////////////////////
+/// Tag Actions: ///
+////////////////////
+
+    public boolean addSpirit(CompoundTag entryTag, int maxStorage, int addSpiritAmount)
+    {
+        if (!isEntryFull(entryTag, maxStorage))
+        {
+            int endSpiritAmount = entryTag.getInt(STORAGE_SPIRIT_STORAGE) + addSpiritAmount;
+
+            if (endSpiritAmount <= maxStorage)
+            {
+                entryTag.putInt(STORAGE_SPIRIT_STORAGE, endSpiritAmount);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean moveSpirit(CompoundTag sourceEntryTag, CompoundTag targetEntryTag, int targetMaxStorage)
+    {
+        if (!isEntryEmpty(sourceEntryTag) && !isEntryFull(targetEntryTag, targetMaxStorage))
+        {
+            int sourceSpirit = sourceEntryTag.getInt(STORAGE_SPIRIT_STORAGE);
+            int targetSpirit = targetEntryTag.getInt(STORAGE_SPIRIT_STORAGE);
+            int moveSpiritAmount = Math.min(sourceSpirit, (targetMaxStorage - targetSpirit));
+
+            return removeSpirit(sourceEntryTag, moveSpiritAmount) && addSpirit(targetEntryTag, targetMaxStorage, moveSpiritAmount);
+        }
+
+        return false;
+    }
+
+    public boolean removeSpirit(CompoundTag entryTag, int removeSpiritAmount)
+    {
+        if (!isEntryEmpty(entryTag))
+        {
+            int endSpiritAmount = entryTag.getInt(STORAGE_SPIRIT_STORAGE) - removeSpiritAmount;
+
+            if (endSpiritAmount >= 0)
+            {
+                entryTag.putInt(STORAGE_SPIRIT_STORAGE, endSpiritAmount);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }
