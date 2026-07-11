@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider;
 
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.event.ClientEvents;
+import com.beesechurger.flyingfamiliars.event.FFEvents;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -54,7 +54,7 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
 
                         if (passengerRenderer != null)
                         {
-                            ClientEvents.blockRenderList.remove(passenger.getUUID());
+                            FFEvents.blockRenderList.remove(passenger.getUUID());
                             poseStack.pushPose();
 
                             // scale for familiar's model size
@@ -89,7 +89,7 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
 
                             passengerRenderer.render(passenger,  0, partialTicks, poseStack, bufferSource, packedLight);
                             poseStack.popPose();
-                            ClientEvents.blockRenderList.add(passenger.getUUID());
+                            FFEvents.blockRenderList.add(passenger.getUUID());
                         }
                     }
                 }

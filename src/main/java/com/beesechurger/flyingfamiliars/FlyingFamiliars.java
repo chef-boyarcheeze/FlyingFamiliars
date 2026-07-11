@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars;
 
-import com.beesechurger.flyingfamiliars.event.ClientEvents;
+import com.beesechurger.flyingfamiliars.event.FFEvents;
 import com.beesechurger.flyingfamiliars.registries.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,10 +32,10 @@ public class FlyingFamiliars
 		FFSounds.SOUND_EVENT_REG.register(modEventBus);
 		FFRecipes.RECIPE_SERIALIZER_REG.register(modEventBus);
 
-		CommonSetup.INSTANCE.register(modEventBus);
 		ClientSetup.INSTANCE.register(modEventBus);
+		CommonSetup.INSTANCE.register(modEventBus);
 		
-		MinecraftForge.EVENT_BUS.register(ClientEvents.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(FFEvents.INSTANCE);
 
 		GeckoLib.initialize();
 	}

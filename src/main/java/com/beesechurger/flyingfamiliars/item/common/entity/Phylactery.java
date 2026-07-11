@@ -1,5 +1,6 @@
 package com.beesechurger.flyingfamiliars.item.common.entity;
 
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
 import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
@@ -44,88 +45,80 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
 
 /// Tags:
 
-    public static void onPickupItem(ItemEntity entity, Player player)
+    public static boolean onPickupItem(ItemEntity entity, Player player)
     {
         ItemStack entityStack = entity.getItem();
 
         if (!entityStack.isEmpty() && entityStack.getItem() instanceof Spirit)
         {
-            int slot; // TODO: curio slot only(?)
+            ItemStack phylacteryStack = FFItemHandler.getPhylacteryCharm(player);
 
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++)
+            if (phylacteryStack != null)
             {
-                if (i == player.getInventory().selected)
+                ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
+                CompoundTag entryTag = null;
+                CompoundTag emptyTag = null;
+
+                for (Tag tag : entryList)
                 {
-                    continue; // prevent item deletion
+                    String entryName = ((CompoundTag) tag).getString(STORAGE_SPIRIT_TYPE);
+
+                    if (entryName.equals(entityStack.getItem().toString()))
+                    {
+                        entryTag = (CompoundTag) tag;
+                        break;
+                    }
+                    else if (emptyTag == null && entryName.equals(STORAGE_EMPTY))
+                    {
+                        emptyTag = (CompoundTag) tag;
+                    }
                 }
 
-                ItemStack phylacteryStack = player.getInventory().getItem(i);
-
-                if (!phylacteryStack.isEmpty() && phylacteryStack.getItem() instanceof Phylactery)
+                if (entryTag == null)
                 {
-                    ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
-                    CompoundTag entryTag = null;
-                    CompoundTag emptyTag = null;
-
-                    for (Tag tag : entryList)
+                    if (emptyTag != null)
                     {
-                        String entryName = ((CompoundTag) tag).getString(STORAGE_SPIRIT_TYPE);
-
-                        if (entryName.equals(entityStack.getItem().toString()))
-                        {
-                            entryTag = (CompoundTag) tag;
-                            break;
-                        }
-                        else if (emptyTag == null && entryName.equals(STORAGE_EMPTY))
-                        {
-                            emptyTag = (CompoundTag) tag;
-                        }
+                        entryTag = emptyTag;
                     }
-
-                    if (entryTag == null)
+                    else if (entryList.size() < SpiritTagRef.INSTANCE.getMaxEntries(phylacteryStack.getOrCreateTag()))
                     {
-                        if (emptyTag != null)
-                        {
-                            entryTag = emptyTag;
-                        }
-                        else if (entryList.size() < SpiritTagRef.INSTANCE.getMaxEntries(phylacteryStack.getOrCreateTag()))
-                        {
-                            CompoundTag newEntry = new CompoundTag();
+                        CompoundTag newEntry = new CompoundTag();
 
-                            newEntry.putString(STORAGE_SPIRIT_TYPE, entityStack.getItem().toString());
-                            newEntry.putInt(STORAGE_SPIRIT_STORAGE, 0);
+                        newEntry.putString(STORAGE_SPIRIT_TYPE, entityStack.getItem().toString());
+                        newEntry.putInt(STORAGE_SPIRIT_STORAGE, 0);
 
-                            entryTag = newEntry;
-                            entryList.add(entryTag);
+                        entryTag = newEntry;
+                        entryList.add(entryTag);
 
-                            // TODO decide how to add spirit types in order
-                        }
+                        // TODO decide how to add spirit types in order
                     }
+                }
 
-                    if (entryTag != null)
+                if (entryTag != null)
+                {
+                    int currentStorage = entryTag.getInt(STORAGE_SPIRIT_STORAGE);
+                    int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxStorage(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
+                    int pickedUpCount = (int) Math.ceil((newStorage - currentStorage) / 10.0F);
+
+                    if (pickedUpCount > 0)
                     {
-                        int currentStorage = entryTag.getInt(STORAGE_SPIRIT_STORAGE);
-                        int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxStorage(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
-                        int pickedUpCount = (int) Math.ceil((newStorage - currentStorage) / 10.0F);
+                        entryTag.putInt(STORAGE_SPIRIT_STORAGE, newStorage);
+                        entityStack.shrink(pickedUpCount);
 
-                        if (pickedUpCount > 0)
-                        {
-                            entryTag.putInt(STORAGE_SPIRIT_STORAGE, newStorage);
-                            entityStack.shrink(pickedUpCount);
+                        // resync code for item entity, from Botania's EntityHelper
+                        var save = entity.getItem();
+                        entity.setItem(ItemStack.EMPTY);
+                        entity.setItem(save);
 
-                            // resync code for item entity, from Botania's EntityHelper
-                            var save = entity.getItem();
-                            entity.setItem(ItemStack.EMPTY);
-                            entity.setItem(save);
+                        player.take(entity, pickedUpCount);
 
-                            player.take(entity, pickedUpCount);
-
-                            System.out.println(phylacteryStack.getOrCreateTag());
-                        }
+                        return true;
                     }
                 }
             }
         }
+
+        return false;
     }
 
 //////////////////

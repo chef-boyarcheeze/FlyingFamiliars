@@ -46,9 +46,9 @@ import static com.beesechurger.flyingfamiliars.registries.FFKeys.update;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_TYPE;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class ClientEvents
+public class FFEvents
 {
-	public static final ClientEvents INSTANCE = new ClientEvents();
+	public static final FFEvents INSTANCE = new FFEvents();
 
     public static List<UUID> blockRenderList = new ArrayList<>();
 
@@ -316,9 +316,8 @@ public class ClientEvents
 	{
 		ItemStack stack = event.getItem().getItem();
 
-		if (stack.getItem() instanceof Spirit)
+		if (stack.getItem() instanceof Spirit && Phylactery.onPickupItem(event.getItem(), event.getEntity()))
 		{
-			Phylactery.onPickupItem(event.getItem(), event.getEntity());
 			event.setCanceled(true);
 		}
 	}

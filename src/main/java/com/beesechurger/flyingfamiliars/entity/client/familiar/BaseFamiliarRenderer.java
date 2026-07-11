@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar;
 
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.event.ClientEvents;
+import com.beesechurger.flyingfamiliars.event.FFEvents;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -26,7 +26,7 @@ public class BaseFamiliarRenderer<T extends BaseFamiliarEntity & GeoAnimatable> 
     @Override
     public void actuallyRender(PoseStack poseStack, T entity, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
-        if (!(entity.isPassenger() && ClientEvents.blockRenderList.contains(entity.getUUID())))
+        if (!(entity.isPassenger() && FFEvents.blockRenderList.contains(entity.getUUID())))
         {
             super.actuallyRender(poseStack, entity, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
         }

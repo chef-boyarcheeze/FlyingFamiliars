@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class FFItemTags extends ItemTagsProvider
 {
-    public static final TagKey<Item> CHARM_CURIO = ItemTags.create(new ResourceLocation("curios", "charm"));
+    public static final TagKey<Item> PHYLACTERY_CURIO = ItemTags.create(new ResourceLocation("curios", "phylactery"));
 
     public FFItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, ExistingFileHelper existingFileHelper)
     {
@@ -25,6 +25,6 @@ public class FFItemTags extends ItemTagsProvider
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
-        tag(CHARM_CURIO).addOptional(FFItems.PHYLACTERY.getId());
+        tag(PHYLACTERY_CURIO).addOptional(FFItems.PHYLACTERY.getId());
     }
 }
