@@ -8,6 +8,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Map;
+
 public abstract class BaseWandEffect
 {
     protected static final int MAX_CHARGE_TIME = 72000;
@@ -68,7 +70,7 @@ public abstract class BaseWandEffect
     }
 
     // cost of wand effect cast in (units?)
-    public abstract int getCost();
+    public abstract Map<String, Integer> getCost();
 
     // cooldown time in ticks
     public abstract int getCooldown();
@@ -95,7 +97,6 @@ public abstract class BaseWandEffect
 
     // perform left-click function
     public void attack(Level level, Player player) {
-
     }
 
     // perform wand effect cast

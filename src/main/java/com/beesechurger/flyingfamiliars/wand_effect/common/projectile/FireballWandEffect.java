@@ -6,6 +6,8 @@ import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import java.util.Map;
+
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_FIREBALL;
 
 public class FireballWandEffect extends BaseWandEffect
@@ -23,9 +25,9 @@ public class FireballWandEffect extends BaseWandEffect
 
 /// Integers:
     @Override
-    public int getCost()
+    public Map<String, Integer> getCost()
     {
-        return 0;
+        return Map.of();
     }
 
     @Override

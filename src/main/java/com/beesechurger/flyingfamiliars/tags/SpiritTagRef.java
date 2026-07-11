@@ -1,6 +1,10 @@
 package com.beesechurger.flyingfamiliars.tags;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
@@ -91,6 +95,25 @@ public class SpiritTagRef implements IStorageTagRef
         tag.putInt(STORAGE_SPIRIT_STORAGE_MAX, 100);
 
         return tag;
+    }
+
+/// Misc:
+
+    public Map<String, Integer> getSpiritContents(CompoundTag storageTag)
+    {
+        Map<String, Integer> spiritContents = new HashMap<>();
+
+        if (!isEmpty(storageTag))
+        {
+            for (Tag tag : getEntryList(storageTag))
+            {
+                CompoundTag entryTag = (CompoundTag) tag;
+
+                spiritContents.put(entryTag.getString(STORAGE_SPIRIT_TYPE), entryTag.getInt(STORAGE_SPIRIT_STORAGE));
+            }
+        }
+
+        return spiritContents;
     }
 
 /////////////////

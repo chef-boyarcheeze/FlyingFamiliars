@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TIMBER_CLEAVE;
 
@@ -63,9 +64,9 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getCost()
+    public Map<String, Integer> getCost()
     {
-        return 0;
+        return Map.of();
     }
 
     @Override

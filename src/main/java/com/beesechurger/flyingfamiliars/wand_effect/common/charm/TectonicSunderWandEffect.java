@@ -2,6 +2,7 @@ package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
+import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_TECTONIC_SUNDER;
@@ -74,9 +76,11 @@ public class TectonicSunderWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getCost()
+    public Map<String, Integer> getCost()
     {
-        return 0;
+        return Map.ofEntries(
+                Map.entry(FFItems.STONY_SPIRIT_FRAGMENT.get().toString(), 10)
+        );
     }
 
     @Override

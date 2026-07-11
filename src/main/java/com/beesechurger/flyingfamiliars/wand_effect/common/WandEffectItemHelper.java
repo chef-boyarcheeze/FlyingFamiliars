@@ -7,8 +7,6 @@ import com.beesechurger.flyingfamiliars.wand_effect.common.charm.ZephyreanGustWa
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FireballWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FlamethrowerWandEffect;
-import com.google.common.collect.Maps;
-import net.minecraft.Util;
 
 import java.util.Map;
 
@@ -50,21 +48,21 @@ public class WandEffectItemHelper
 
 /// Sentry wand effects:
 
-    private static final Map<String, BaseWandEffect> WAND_EFFECT_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
+    private static final Map<String, BaseWandEffect> WAND_EFFECT_MAP = Map.ofEntries(
     /// Charms:
-        map.put(WAND_EFFECT_CLOUD_CALL, CLOUD_CALL);
-        map.put(WAND_EFFECT_TECTONIC_SUNDER, TECTONIC_SUNDER);
-        map.put(WAND_EFFECT_TIMBER_CLEAVE, TIMBER_CLEAVE);
-        map.put(WAND_EFFECT_ZEPHYREAN_GUST, ZEPHYREAN_GUST);
+        Map.entry(WAND_EFFECT_CLOUD_CALL, CLOUD_CALL),
+        Map.entry(WAND_EFFECT_TECTONIC_SUNDER, TECTONIC_SUNDER),
+        Map.entry(WAND_EFFECT_TIMBER_CLEAVE, TIMBER_CLEAVE),
+        Map.entry(WAND_EFFECT_ZEPHYREAN_GUST, ZEPHYREAN_GUST),
 
     /// Projectiles:
-        map.put(WAND_EFFECT_CAPTURE, CAPTURE);
-        map.put(WAND_EFFECT_FIREBALL, FIREBALL);
-        map.put(WAND_EFFECT_FLAMETHROWER, FLAMETHROWER);
+        Map.entry(WAND_EFFECT_CAPTURE, CAPTURE),
+        Map.entry(WAND_EFFECT_FIREBALL, FIREBALL),
+        Map.entry(WAND_EFFECT_FLAMETHROWER, FLAMETHROWER)
 
     /// Sentries:
 
-    });
+    );
 
     public static BaseWandEffect getSelectedWandEffect(String selection)
     {

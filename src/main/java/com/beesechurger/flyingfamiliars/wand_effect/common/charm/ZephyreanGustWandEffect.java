@@ -1,11 +1,14 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
+import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.WAND_EFFECT_ZEPHYREAN_GUST;
 
@@ -46,9 +49,11 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     }
 
     @Override
-    public int getCost()
+    public Map<String, Integer> getCost()
     {
-        return 0;
+        return Map.ofEntries(
+                Map.entry(FFItems.GUSTING_SPIRIT_FRAGMENT.get().toString(), 10)
+        );
     }
 
     @Override

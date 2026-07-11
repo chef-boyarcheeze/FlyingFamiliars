@@ -1,15 +1,20 @@
 package com.beesechurger.flyingfamiliars.item.common.entity.soul_wand;
 
 import com.beesechurger.flyingfamiliars.item.FFItemClientExtension;
+import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
 import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.stats.Stats;
@@ -30,7 +35,10 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_TYPE;
 
 public abstract class BaseSoulWand extends BaseEntityTagItem
 {
@@ -51,6 +59,31 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(scrollStack);
 
         return super.canCycle(player, scrollStack, allStacks) && selectedWandEffect != null && selectedWandEffect instanceof CaptureWandEffect;
+    }
+
+    public boolean canCastWandEffect(ItemStack phylactery, Map<String, Integer> requiredSpiritContents)
+    {
+        if (Minecraft.getInstance().player.isCreative())
+        {
+            return true;
+        }
+
+        if (phylactery != null)
+        {
+            Map<String, Integer> spiritContents = SpiritTagRef.INSTANCE.getSpiritContents(phylactery.getOrCreateTag());
+
+            for (var entry : requiredSpiritContents.entrySet())
+            {
+                if (!spiritContents.containsKey(entry.getKey()) || spiritContents.get(entry.getKey()) < requiredSpiritContents.get(entry.getKey()))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 /// Integers:
@@ -126,6 +159,39 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 /// Item Actions: ///
 /////////////////////
 
+    protected boolean consumeFuel(ItemStack phylacteryStack, Map<String, Integer> requiredSpiritContents)
+    {
+        if (Minecraft.getInstance().player.isCreative())
+        {
+            return true;
+        }
+
+        if (phylacteryStack != null && canCastWandEffect(phylacteryStack, requiredSpiritContents))
+        {
+            ListTag spiritEntryList = SpiritTagRef.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
+
+            for (int i = 0; i < spiritEntryList.size();)
+            {
+                CompoundTag spiritEntryTag = (CompoundTag) spiritEntryList.get(i);
+                String type = spiritEntryTag.getString(STORAGE_SPIRIT_TYPE);
+
+                if (requiredSpiritContents.containsKey(type))
+                {
+                    SpiritTagRef.INSTANCE.removeSpirit(spiritEntryTag, requiredSpiritContents.get(type));
+                }
+
+                if (!(SpiritTagRef.INSTANCE.isEntryEmpty(spiritEntryTag) && SpiritTagRef.INSTANCE.removeEntry(phylacteryStack.getOrCreateTag(), spiritEntryTag)))
+                {
+                    i++; // did not remove entry from phylacteryStack, advance normally
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
@@ -134,22 +200,26 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
         if (selectedWandEffect != null && !selectedWandEffect.usableOnBlockOnly())
         {
-            // determine if there is enough 'fuel' for action
-            if (!player.isCreative() && false) //flag instead of false TODO
+            if (canCastWandEffect(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
             {
-                return InteractionResultHolder.fail(stack);
-            }
-            else if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.canBeContinuouslyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
-            {
-                player.startUsingItem(hand);
-                return InteractionResultHolder.pass(stack);
+                if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.canBeContinuouslyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
+                {
+                    player.startUsingItem(hand);
+                    return InteractionResultHolder.pass(stack);
+                }
+                else if (consumeFuel(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
+                {
+                    selectedWandEffect.use(level, player);
+
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                }
             }
             else
             {
-                selectedWandEffect.use(level, player);
+                // TODO play failure sound
 
-                player.awardStat(Stats.ITEM_USED.get(this));
-                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                return InteractionResultHolder.fail(stack);
             }
         }
 
@@ -172,15 +242,26 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         {
             Player player = context.getPlayer();
 
-            // determine if there is enough 'fuel' for action
-            if (!player.isCreative() && !false) //flag instead of false TODO
+            if (canCastWandEffect(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
             {
-                return InteractionResult.FAIL;
+                if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.canBeContinuouslyDrawn() || selectedWandEffect.getUseDurationMax() > 0)
+                {
+                    player.startUsingItem(context.getHand());
+                    return InteractionResult.PASS;
+                }
+                else if (consumeFuel(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
+                {
+                    selectedWandEffect.useOn(context.getLevel(), player, context.getClickedPos());
+
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                }
             }
             else
             {
-                player.startUsingItem(context.getHand());
-                return InteractionResult.PASS;
+                // TODO play failure sound
+
+                return InteractionResult.FAIL;
             }
         }
 
@@ -212,18 +293,19 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
             if (selectedWandEffect.canBeContinuouslyDrawn() && duration % selectedWandEffect.getCooldown() == 0)
             {
-                if (selectedWandEffect.usableOnBlockOnly())
+                if (consumeFuel(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
                 {
-                    selectedWandEffect.useOn(level, player, pos);
-                }
-                else
-                {
-                    selectedWandEffect.use(level, player);
-                }
+                    if (selectedWandEffect.usableOnBlockOnly())
+                    {
+                        selectedWandEffect.useOn(level, player, pos);
+                    }
+                    else
+                    {
+                        selectedWandEffect.use(level, player);
+                    }
 
-                // consume fuel
-
-                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                    player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                }
             }
         }
     }
@@ -248,19 +330,20 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
             if (selectedWandEffect.canBePartiallyDrawn() || selectedWandEffect.getUseDurationMax() - duration > selectedWandEffect.getUseDurationMin())
             {
-                if (selectedWandEffect.usableOnBlockOnly())
+                if (consumeFuel(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
                 {
-                    selectedWandEffect.useOn(level, player, pos);
-                }
-                else
-                {
-                    selectedWandEffect.use(level, player);
-                }
+                    if (selectedWandEffect.usableOnBlockOnly())
+                    {
+                        selectedWandEffect.useOn(level, player, pos);
+                    }
+                    else
+                    {
+                        selectedWandEffect.use(level, player);
+                    }
 
-                // consume fuel
-
-                player.awardStat(Stats.ITEM_USED.get(this));
-                player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                    player.awardStat(Stats.ITEM_USED.get(this));
+                    player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
+                }
             }
         }
     }

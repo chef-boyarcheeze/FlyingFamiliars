@@ -1,6 +1,5 @@
 package com.beesechurger.flyingfamiliars.item;
 
-import com.beesechurger.flyingfamiliars.FlyingFamiliars;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
@@ -20,15 +19,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class FFItemHandler
 {
 	public static List<ItemStack> getEntityStackList(Player player)
@@ -55,9 +51,9 @@ public class FFItemHandler
 			}
 
 			// phylactery in curio slot
-			if (getCurioCharmTagItem(player) != null)
+			if (getPhylacteryCharm(player) != null)
 			{
-				stacks.add(getCurioCharmTagItem(player));
+				stacks.add(getPhylacteryCharm(player));
 			}
 		}
 
@@ -95,11 +91,11 @@ public class FFItemHandler
         return Pair.of(result, finalPos);
     }
 
-	public static ItemStack getCurioCharmTagItem(Player player)
+	public static ItemStack getPhylacteryCharm(Player player)
 	{
 		ItemStack curioCharm = findItem(player, FFItems.PHYLACTERY.get());
 
-		if(curioCharm != null && curioCharm.getItem() instanceof Phylactery item)
+		if (curioCharm != null && curioCharm.getItem() instanceof Phylactery item)
         {
             return curioCharm;
         }
