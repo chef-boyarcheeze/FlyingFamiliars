@@ -12,6 +12,5 @@
     "PlayerRiderDismountMixin"
   ],
   "client": [
-    "LockTooltipPositionMixin"
   ]
 }

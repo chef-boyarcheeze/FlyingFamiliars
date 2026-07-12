@@ -97,17 +97,66 @@ public class FFEvents
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(RenderTooltipEvent.GatherComponents event)
 	{
-		ItemStack stack = event.getItemStack();
+		ItemStack tooltipStack = event.getItemStack();
+		ItemStack lockedStack = FFItemHandler.TooltipLockHandler.INSTANCE.getLockedStack();
 
-		if (stack.getItem() instanceof BaseEntityTagItem item)
+		if (!lockedStack.isEmpty())
+		{
+			tooltipStack = lockedStack;
+		}
+
+		if (tooltipStack.getItem() instanceof BaseEntityTagItem item)
 		{
 			event.getTooltipElements().addAll(
 					1,
-					item.getTooltipComponents(stack)
+					item.getTooltipComponents(tooltipStack)
 							.stream()
 							.map(Either::<FormattedText, TooltipComponent>right)
 							.collect(Collectors.toList())
 			);
+		}
+	}
+
+	private static boolean TOOLTIP_LOCK = false;
+
+	@SubscribeEvent
+	public static void onRenderTooltip(RenderTooltipEvent.Pre event)
+	{
+		if (!TOOLTIP_LOCK && !FFItemHandler.TooltipLockHandler.INSTANCE.getLockedStack().isEmpty())
+		{
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onScreenRender(ScreenEvent.Render.Post event)
+	{
+		if (FFItemHandler.TooltipLockHandler.INSTANCE.lock())
+		{
+			var lockedStack = FFItemHandler.TooltipLockHandler.INSTANCE.getLockedStack();
+
+			if (!lockedStack.isEmpty() && lockedStack.getItem() instanceof BaseEntityTagItem)
+			{
+				TOOLTIP_LOCK = true;
+
+				event.getGuiGraphics().renderComponentTooltip(
+						Minecraft.getInstance().font,
+						Screen.getTooltipFromItem(Minecraft.getInstance(), lockedStack),
+						FFItemHandler.TooltipLockHandler.INSTANCE.getLockedX(),
+						FFItemHandler.TooltipLockHandler.INSTANCE.getLockedY()
+				);
+
+				TOOLTIP_LOCK = false;
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onScreenClose(ScreenEvent.Closing event)
+	{
+		if (event.getScreen() instanceof AbstractContainerScreen)
+		{
+			FFItemHandler.TooltipLockHandler.INSTANCE.unlock();
 		}
 	}
 

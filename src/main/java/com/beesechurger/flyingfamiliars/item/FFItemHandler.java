@@ -114,14 +114,13 @@ public class FFItemHandler
 	{
 		public static final TooltipLockHandler INSTANCE = new TooltipLockHandler();
 
+		private Slot mouseLockSlot = null;
 		private int lockX = 0;
 		private int lockY = 0;
 
-		private Slot mouseLockSlot = null;
-
 		public ItemStack getLockedStack()
 		{
-			return mouseLockSlot.getItem();
+			return mouseLockSlot != null ? mouseLockSlot.getItem() : ItemStack.EMPTY;
 		}
 
 		public int getLockedX()
@@ -134,13 +133,13 @@ public class FFItemHandler
 			return lockY;
 		}
 
-		public boolean isLocked()
+		public boolean lock()
 		{
 			Minecraft mc = Minecraft.getInstance();
 
 			if (Screen.hasShiftDown() && Screen.hasControlDown())
 			{
-				if (mouseLockSlot == null && mc.screen instanceof AbstractContainerScreen<?> containerScreen)
+				if (mouseLockSlot == null && mc.screen instanceof AbstractContainerScreen containerScreen)
 				{
 					Slot hoveredSlot = containerScreen.getSlotUnderMouse();
 
@@ -166,6 +165,13 @@ public class FFItemHandler
 			}
 
 			return mouseLockSlot != null;
+		}
+
+		public void unlock()
+		{
+			mouseLockSlot = null;
+			lockX = 0;
+			lockY = 0;
 		}
 	}
 }
