@@ -94,7 +94,7 @@ public class TimberCleaveWandEffect extends BaseWandEffect
 ///////////////////////////
 
     @Override
-    public void useOn(Level level, Player player, BlockPos pos)
+    public void useOn(Level level, Player player, BlockPos pos, int duration)
     {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();

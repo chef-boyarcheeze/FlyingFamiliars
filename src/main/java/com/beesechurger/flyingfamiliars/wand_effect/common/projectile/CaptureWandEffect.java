@@ -39,7 +39,8 @@ public class CaptureWandEffect extends BaseWandEffect
     public Map<String, Integer> getCost()
     {
         return Map.ofEntries(
-                Map.entry(FFItems.VACUOUS_SPIRIT_FRAGMENT.get().toString(), 10)
+                Map.entry(FFItems.WET_SPIRIT_FRAGMENT.get().toString(), 3),
+                Map.entry(FFItems.VACUOUS_SPIRIT_FRAGMENT.get().toString(), 3)
         );
     }
 
@@ -77,7 +78,7 @@ public class CaptureWandEffect extends BaseWandEffect
     }
 
     @Override
-    public void use(Level level, Player player)
+    public void use(Level level, Player player, int duration)
     {
         CaptureProjectile capture = new CaptureProjectile(level, player, FFKeys.SOUL_WAND_SHIFT.isDown());
         capture.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);

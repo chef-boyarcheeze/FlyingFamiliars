@@ -209,7 +209,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 }
                 else if (consumeFuel(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
                 {
-                    selectedWandEffect.use(level, player);
+                    selectedWandEffect.use(level, player, selectedWandEffect.getUseDurationMax());
 
                     player.awardStat(Stats.ITEM_USED.get(this));
                     player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
@@ -251,7 +251,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 }
                 else if (consumeFuel(FFItemHandler.getPhylacteryCharm(player), selectedWandEffect.getCost()))
                 {
-                    selectedWandEffect.useOn(context.getLevel(), player, context.getClickedPos());
+                    selectedWandEffect.useOn(context.getLevel(), player, context.getClickedPos(), selectedWandEffect.getUseDurationMax());
 
                     player.awardStat(Stats.ITEM_USED.get(this));
                     player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
@@ -297,11 +297,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 {
                     if (selectedWandEffect.usableOnBlockOnly())
                     {
-                        selectedWandEffect.useOn(level, player, pos);
+                        selectedWandEffect.useOn(level, player, pos, duration);
                     }
                     else
                     {
-                        selectedWandEffect.use(level, player);
+                        selectedWandEffect.use(level, player, duration);
                     }
 
                     player.getCooldowns().addCooldown(this, selectedWandEffect.getCooldown());
@@ -334,11 +334,11 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
                 {
                     if (selectedWandEffect.usableOnBlockOnly())
                     {
-                        selectedWandEffect.useOn(level, player, pos);
+                        selectedWandEffect.useOn(level, player, pos, duration);
                     }
                     else
                     {
-                        selectedWandEffect.use(level, player);
+                        selectedWandEffect.use(level, player, duration);
                     }
 
                     player.awardStat(Stats.ITEM_USED.get(this));

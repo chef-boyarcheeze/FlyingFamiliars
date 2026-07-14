@@ -48,7 +48,7 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
 ///////////////////////////
 
     @Override
-    public void use(Level level, Player player)
+    public void use(Level level, Player player, int duration)
     {
         
     }

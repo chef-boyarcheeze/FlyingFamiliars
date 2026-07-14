@@ -47,7 +47,7 @@ public class FireballWandEffect extends BaseWandEffect
 ///////////////////////////
 
     @Override
-    public void use(Level level, Player player)
+    public void use(Level level, Player player, int duration)
     {
         FireballProjectile fireball = new FireballProjectile(level, player);
         fireball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.2f, 1.0f);

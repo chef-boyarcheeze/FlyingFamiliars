@@ -81,7 +81,7 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
 ///////////////////////////
 
     @Override
-    public void use(Level level, Player player)
+    public void use(Level level, Player player, int duration)
     {
         Vec3 angle = player.getLookAngle();
         angle = angle.normalize();

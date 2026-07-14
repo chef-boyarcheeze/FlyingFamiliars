@@ -129,7 +129,7 @@ public class CloudCallWandEffect extends BaseWandEffect
     }
 
     @Override
-    public void use(Level level, Player player)
+    public void use(Level level, Player player, int duration)
     {
         ItemStack stack = player.getMainHandItem();
         CompoundTag selectedEntryTag = WandEffectTagUtil.INSTANCE.getSelectedEntry(stack.getOrCreateTag());

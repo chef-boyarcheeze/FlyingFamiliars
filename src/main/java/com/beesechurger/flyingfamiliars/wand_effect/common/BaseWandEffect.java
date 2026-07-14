@@ -100,10 +100,10 @@ public abstract class BaseWandEffect
     }
 
     // perform wand effect cast
-    public void use(Level level, Player player) {
+    public void use(Level level, Player player, int duration) {
     }
 
     // perform block-only wand effect cast
-    public void useOn(Level level, Player player, BlockPos pos) {
+    public void useOn(Level level, Player player, BlockPos pos, int duration) {
     }
 }
