@@ -7,9 +7,9 @@ import net.minecraft.nbt.Tag;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 import static com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper.*;
 
-public class WandEffectTagRef implements IStorageTagRef
+public class WandEffectTagUtil implements IStorageTagUtil
 {
-    public static final WandEffectTagRef INSTANCE = new WandEffectTagRef();
+    public static final WandEffectTagUtil INSTANCE = new WandEffectTagUtil();
 
 //////////////////
 /// Accessors: ///

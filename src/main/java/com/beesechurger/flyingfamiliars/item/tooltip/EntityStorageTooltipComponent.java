@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.item.tooltip;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -207,7 +207,7 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
                                         y + ENTRY_BACKGROUND_BOX_SIZE
                                 );
 
-                                int lineWidth = font.width(EntityTagRef.getEntityID(entryTag));
+                                int lineWidth = font.width(EntityTagUtil.getEntityID(entryTag));
                                 int lineOffset = 0;
 
                                 if (lineWidth > ENTITY_NAME_WIDTH + ENTITY_NAME_END_WIDTH)
@@ -218,12 +218,12 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
                                     lineOffset = (int) (scrollProgress * maxScroll);
                                 }
 
-                                var nameColor = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+                                var nameColor = EntityTagUtil.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
                                 // Draw the line shifted left by its calculated offset
                                 graphics.drawString(
                                         font,
-                                        Component.literal(EntityTagRef.getEntityID(entryTag)),
+                                        Component.literal(EntityTagUtil.getEntityID(entryTag)),
                                         x + xOff + ENTRY_BACKGROUND_BOX_SIZE + ENTITY_NAME_BORDER_WIDTH - lineOffset,
                                         y + ENTRY_BACKGROUND_BOX_SIZE / 4 + 1,
                                         nameColor.getColor(),

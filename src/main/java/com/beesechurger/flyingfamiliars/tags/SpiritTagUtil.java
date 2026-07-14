@@ -8,9 +8,9 @@ import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public class SpiritTagRef implements IStorageTagRef
+public class SpiritTagUtil implements IStorageTagUtil
 {
-    public static final SpiritTagRef INSTANCE = new SpiritTagRef();
+    public static final SpiritTagUtil INSTANCE = new SpiritTagUtil();
 
 //////////////////
 /// Accessors: ///

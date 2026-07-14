@@ -5,7 +5,7 @@ import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -165,7 +165,7 @@ public class BrazierBE extends BaseEntityTagBE implements IRecipeBE
 			result.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
 			entity.saveWithoutId(result);
 
-			EntityTagRef.INSTANCE.addEntry(entityStorageTag, result);
+			EntityTagUtil.INSTANCE.addEntry(entityStorageTag, result);
 		}
 	}
 

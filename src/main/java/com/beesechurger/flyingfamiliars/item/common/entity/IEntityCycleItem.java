@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -37,13 +37,13 @@ public interface IEntityCycleItem
                 if (stacks.get(i).getItem() instanceof BaseEntityTagItem item)
                 {
                     // remove empty non-soul wand from stack list - this allows phylacteries to fill soul wand in hand
-                    if (EntityTagRef.INSTANCE.isEmpty(stacks.get(i).getOrCreateTag()) && !(stacks.get(i).getItem() instanceof BaseSoulWand))
+                    if (EntityTagUtil.INSTANCE.isEmpty(stacks.get(i).getOrCreateTag()) && !(stacks.get(i).getItem() instanceof BaseSoulWand))
                     {
                         stacks.remove(i);
                     }
                     else
                     {
-                        for (Tag tag : EntityTagRef.INSTANCE.getEntryList(stacks.get(i).getOrCreateTag()))
+                        for (Tag tag : EntityTagUtil.INSTANCE.getEntryList(stacks.get(i).getOrCreateTag()))
                         {
                             fullEntryList.add((CompoundTag) tag);
                         }
@@ -76,10 +76,10 @@ public interface IEntityCycleItem
                 if (stack.getItem() instanceof BaseEntityTagItem item)
                 {
                     CompoundTag stackTag = stack.getOrCreateTag();
-                    ListTag newEntryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+                    ListTag newEntryList = EntityTagUtil.INSTANCE.getEntryList(stack.getOrCreateTag());
                     newEntryList.clear();
 
-                    for (int i = 0; !fullEntryList.isEmpty() && i < EntityTagRef.INSTANCE.getMaxEntries(stack.getOrCreateTag()); i++)
+                    for (int i = 0; !fullEntryList.isEmpty() && i < EntityTagUtil.INSTANCE.getMaxEntries(stack.getOrCreateTag()); i++)
                     {
                         newEntryList.add(fullEntryList.remove(0));
                     }

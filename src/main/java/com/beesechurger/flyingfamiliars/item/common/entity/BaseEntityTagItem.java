@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +35,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public boolean isFoil(ItemStack stack)
     {
-        return EntityTagRef.INSTANCE.isFull(stack.getOrCreateTag());
+        return EntityTagUtil.INSTANCE.isFull(stack.getOrCreateTag());
     }
 
     @Override
@@ -53,16 +53,16 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
         {
             if (entityStack != scrollStack)
             {
-                count += EntityTagRef.INSTANCE.getEntryCount(entityStack.getOrCreateTag());
+                count += EntityTagUtil.INSTANCE.getEntryCount(entityStack.getOrCreateTag());
             }
         }
 
-        return EntityTagRef.INSTANCE.getEntryCount(scrollStack.getOrCreateTag()) > 1 || count > 0;
+        return EntityTagUtil.INSTANCE.getEntryCount(scrollStack.getOrCreateTag()) > 1 || count > 0;
     }
 
     public boolean getManipMode(ItemStack stack)
     {
-        return EntityTagRef.INSTANCE.getManipMode(stack.getOrCreateTag());
+        return EntityTagUtil.INSTANCE.getManipMode(stack.getOrCreateTag());
     }
 
 /// Integers:
@@ -70,7 +70,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public int getBarWidth(ItemStack stack)
     {
-        return Math.round((float) EntityTagRef.INSTANCE.getEntryCount(stack.getOrCreateTag()) * 13.0f / (float) EntityTagRef.INSTANCE.getMaxEntries(stack.getOrCreateTag()));
+        return Math.round((float) EntityTagUtil.INSTANCE.getEntryCount(stack.getOrCreateTag()) * 13.0f / (float) EntityTagUtil.INSTANCE.getMaxEntries(stack.getOrCreateTag()));
     }
 
     @Override
@@ -89,7 +89,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 
     public void toggleManipMode(ItemStack stack)
     {
-        EntityTagRef.INSTANCE.toggleManipMode(stack.getOrCreateTag());
+        EntityTagUtil.INSTANCE.toggleManipMode(stack.getOrCreateTag());
     }
 
 //////////////////
@@ -99,7 +99,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag tipFlag)
     {
-        ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+        ListTag entryList = EntityTagUtil.INSTANCE.getEntryList(stack.getOrCreateTag());
 
         if (entryList.isEmpty())
         {
@@ -152,7 +152,7 @@ public abstract class BaseEntityTagItem extends BaseStorageTagItem implements IE
 
         if (Screen.hasShiftDown())
         {
-            ListTag entryList = EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
+            ListTag entryList = EntityTagUtil.INSTANCE.getEntryList(stack.getOrCreateTag());
             List<ListTag> componentEntryLists = new ArrayList<>();
 
             boolean hasMoreEntities = false;

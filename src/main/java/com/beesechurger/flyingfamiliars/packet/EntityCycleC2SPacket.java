@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.packet;
 
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -51,11 +51,11 @@ public class EntityCycleC2SPacket
 			{
 				item.cycle(player, scrollStackIndex, direction, singleStack);
 
-				CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag(player));
-				ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+				CompoundTag entryTag = EntityTagUtil.INSTANCE.getSelectedEntry(EntityTagUtil.INSTANCE.getPlayerFullEntityListTag(player));
+				ChatFormatting format = EntityTagUtil.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
 				player.displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
-						.append(": " + EntityTagRef.getEntityID(entryTag))
+						.append(": " + EntityTagUtil.getEntityID(entryTag))
 						.withStyle(format), true);
 
 				if(player.getRandom().nextInt(15) == 0)

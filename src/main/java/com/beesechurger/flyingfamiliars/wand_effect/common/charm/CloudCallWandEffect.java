@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
@@ -97,7 +97,7 @@ public class CloudCallWandEffect extends BaseWandEffect
     public void attack(Level level, Player player)
     {
         ItemStack stack = player.getMainHandItem();
-        CompoundTag selectedEntryTag = WandEffectTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+        CompoundTag selectedEntryTag = WandEffectTagUtil.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
 
         String weatherType = getWeatherType(selectedEntryTag);
         int index = WEATHER_TYPES.indexOf(weatherType);
@@ -132,7 +132,7 @@ public class CloudCallWandEffect extends BaseWandEffect
     public void use(Level level, Player player)
     {
         ItemStack stack = player.getMainHandItem();
-        CompoundTag selectedEntryTag = WandEffectTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+        CompoundTag selectedEntryTag = WandEffectTagUtil.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
         String weatherType = getWeatherType(selectedEntryTag);
 
         if (level instanceof ServerLevel server)

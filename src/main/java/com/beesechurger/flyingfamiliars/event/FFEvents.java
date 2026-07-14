@@ -11,8 +11,8 @@ import com.beesechurger.flyingfamiliars.packet.EntityCycleC2SPacket;
 import com.beesechurger.flyingfamiliars.packet.InventoryEntryTagMoveC2SPacket;
 import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
-import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
@@ -212,8 +212,8 @@ public class FFEvents
 						ItemStack hoveredStack = hoveredSlot.getItem();
 
 						if (carriedStack.getItem() instanceof BaseEntityTagItem && hoveredStack.getItem() instanceof BaseEntityTagItem
-								&& ((leftMouseFlag && !EntityTagRef.INSTANCE.isEmpty(hoveredStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(carriedStack.getOrCreateTag()))
-									|| (rightMouseFlag && !EntityTagRef.INSTANCE.isEmpty(carriedStack.getOrCreateTag()) && !EntityTagRef.INSTANCE.isFull(hoveredStack.getOrCreateTag()))
+								&& ((leftMouseFlag && !EntityTagUtil.INSTANCE.isEmpty(hoveredStack.getOrCreateTag()) && !EntityTagUtil.INSTANCE.isFull(carriedStack.getOrCreateTag()))
+									|| (rightMouseFlag && !EntityTagUtil.INSTANCE.isEmpty(carriedStack.getOrCreateTag()) && !EntityTagUtil.INSTANCE.isFull(hoveredStack.getOrCreateTag()))
 								&& !Screen.hasShiftDown()))
 						{
 							FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
@@ -225,13 +225,13 @@ public class FFEvents
 
 							if (leftMouseFlag)
 							{
-								int carriedMaxStorage = SpiritTagRef.INSTANCE.getMaxStorage(carriedStack.getOrCreateTag());
+								int carriedMaxStorage = SpiritTagUtil.INSTANCE.getMaxStorage(carriedStack.getOrCreateTag());
 
-								for (Tag hoveredTag : SpiritTagRef.INSTANCE.getEntryList(hoveredStack.getOrCreateTag()))
+								for (Tag hoveredTag : SpiritTagUtil.INSTANCE.getEntryList(hoveredStack.getOrCreateTag()))
 								{
 									boolean entryExistsFlag = false;
 
-									for (Tag carriedTag : SpiritTagRef.INSTANCE.getEntryList(carriedStack.getOrCreateTag()))
+									for (Tag carriedTag : SpiritTagUtil.INSTANCE.getEntryList(carriedStack.getOrCreateTag()))
 									{
 										CompoundTag hoveredEntryTag = (CompoundTag) hoveredTag;
 										CompoundTag carriedEntryTag = (CompoundTag) carriedTag;
@@ -242,7 +242,7 @@ public class FFEvents
 											entryExistsFlag = true;
 
 											// entry exists in target stack and is not full - send packet
-											if (!SpiritTagRef.INSTANCE.isEntryFull(carriedEntryTag, carriedMaxStorage))
+											if (!SpiritTagUtil.INSTANCE.isEntryFull(carriedEntryTag, carriedMaxStorage))
 											{
 												FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
 												event.setCanceled(true);
@@ -253,7 +253,7 @@ public class FFEvents
 									}
 
 									// entry does not exist in target stack, and target stack is not full - send packet
-									if (!entryExistsFlag && !SpiritTagRef.INSTANCE.isFull(carriedStack.getOrCreateTag()))
+									if (!entryExistsFlag && !SpiritTagUtil.INSTANCE.isFull(carriedStack.getOrCreateTag()))
 									{
 										FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
 										event.setCanceled(true);
@@ -264,13 +264,13 @@ public class FFEvents
 							}
 							else if (rightMouseFlag)
 							{
-								int hoveredMaxStorage = SpiritTagRef.INSTANCE.getMaxStorage(hoveredStack.getOrCreateTag());
+								int hoveredMaxStorage = SpiritTagUtil.INSTANCE.getMaxStorage(hoveredStack.getOrCreateTag());
 
-								for (Tag carriedTag : SpiritTagRef.INSTANCE.getEntryList(carriedStack.getOrCreateTag()))
+								for (Tag carriedTag : SpiritTagUtil.INSTANCE.getEntryList(carriedStack.getOrCreateTag()))
 								{
 									boolean entryExistsFlag = false;
 
-									for (Tag hoveredTag : SpiritTagRef.INSTANCE.getEntryList(hoveredStack.getOrCreateTag()))
+									for (Tag hoveredTag : SpiritTagUtil.INSTANCE.getEntryList(hoveredStack.getOrCreateTag()))
 									{
 										CompoundTag carriedEntryTag = (CompoundTag) carriedTag;
 										CompoundTag hoveredEntryTag = (CompoundTag) hoveredTag;
@@ -281,7 +281,7 @@ public class FFEvents
 											entryExistsFlag = true;
 
 											// entry exists in target stack and is not full - send packet
-											if (!SpiritTagRef.INSTANCE.isEntryFull(hoveredEntryTag, hoveredMaxStorage))
+											if (!SpiritTagUtil.INSTANCE.isEntryFull(hoveredEntryTag, hoveredMaxStorage))
 											{
 												FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
 												event.setCanceled(true);
@@ -292,7 +292,7 @@ public class FFEvents
 									}
 
 									// entry does not exist in target stack, and target stack is not full - send packet
-									if (!entryExistsFlag && !SpiritTagRef.INSTANCE.isFull(hoveredStack.getOrCreateTag()))
+									if (!entryExistsFlag && !SpiritTagUtil.INSTANCE.isFull(hoveredStack.getOrCreateTag()))
 									{
 										FFPackets.sendToServer(new InventoryEntryTagMoveC2SPacket(carriedStack, player.getInventory().findSlotMatchingItem(hoveredStack), button));
 										event.setCanceled(true);

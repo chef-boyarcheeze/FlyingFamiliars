@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.packet;
 
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import net.minecraft.network.FriendlyByteBuf;
@@ -35,7 +35,7 @@ public class WandEffectAttackC2SPacket
 
 			if(stack.getItem() instanceof BaseEntityTagItem item)
 			{
-                BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(WandEffectTagRef.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
+                BaseWandEffect selectedWandEffect = WandEffectItemHelper.getSelectedWandEffect(WandEffectTagUtil.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
 
                 if (selectedWandEffect != null)
                 {

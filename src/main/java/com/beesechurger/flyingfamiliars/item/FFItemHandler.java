@@ -4,7 +4,7 @@ import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
 import com.beesechurger.flyingfamiliars.registries.FFItems;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.google.common.collect.Iterables;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
@@ -143,7 +143,7 @@ public class FFItemHandler
 				{
 					Slot hoveredSlot = containerScreen.getSlotUnderMouse();
 
-					if (hoveredSlot != null && hoveredSlot.hasItem() && hoveredSlot.getItem().getItem() instanceof BaseEntityTagItem && !EntityTagRef.INSTANCE.isEmpty(hoveredSlot.getItem().getOrCreateTag()))
+					if (hoveredSlot != null && hoveredSlot.hasItem() && hoveredSlot.getItem().getItem() instanceof BaseEntityTagItem && !EntityTagUtil.INSTANCE.isEmpty(hoveredSlot.getItem().getOrCreateTag()))
 					{
 						mouseLockSlot = hoveredSlot;
 						lockX = (int) (mc.mouseHandler.xpos() / mc.getWindow().getGuiScale());

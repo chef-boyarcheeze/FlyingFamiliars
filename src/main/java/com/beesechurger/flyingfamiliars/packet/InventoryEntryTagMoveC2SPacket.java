@@ -3,8 +3,8 @@ package com.beesechurger.flyingfamiliars.packet;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
-import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -57,7 +57,7 @@ public class InventoryEntryTagMoveC2SPacket
 			{
 				if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT)
 				{
-					if (EntityTagRef.INSTANCE.moveEntry(hoverStack.getOrCreateTag(), carriedStack.getOrCreateTag()))
+					if (EntityTagUtil.INSTANCE.moveEntry(hoverStack.getOrCreateTag(), carriedStack.getOrCreateTag()))
 					{
 						FFPackets.sendToClients(new SyncInventoryCarriedItemS2CPacket(carriedStack));
 						// do stuff, play sound
@@ -65,7 +65,7 @@ public class InventoryEntryTagMoveC2SPacket
 				}
 				else if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT)
 				{
-					if (EntityTagRef.INSTANCE.moveEntry(carriedStack.getOrCreateTag(), hoverStack.getOrCreateTag()))
+					if (EntityTagUtil.INSTANCE.moveEntry(carriedStack.getOrCreateTag(), hoverStack.getOrCreateTag()))
 					{
 						FFPackets.sendToClients(new SyncInventoryCarriedItemS2CPacket(carriedStack));
 						// do stuff, play sound
@@ -107,10 +107,10 @@ public class InventoryEntryTagMoveC2SPacket
 
 	protected boolean handleMoveSpirit(ItemStack sourceStack, ItemStack targetStack)
 	{
-		ListTag sourceEntryList = SpiritTagRef.INSTANCE.getEntryList(sourceStack.getOrCreateTag());
-		ListTag targetEntryList = SpiritTagRef.INSTANCE.getEntryList(targetStack.getOrCreateTag());
+		ListTag sourceEntryList = SpiritTagUtil.INSTANCE.getEntryList(sourceStack.getOrCreateTag());
+		ListTag targetEntryList = SpiritTagUtil.INSTANCE.getEntryList(targetStack.getOrCreateTag());
 
-		int targetMaxStorage = SpiritTagRef.INSTANCE.getMaxStorage(targetStack.getOrCreateTag());
+		int targetMaxStorage = SpiritTagUtil.INSTANCE.getMaxStorage(targetStack.getOrCreateTag());
 		boolean successFlag = false;
 
 		for (int i = 0; i < sourceEntryList.size();)
@@ -118,7 +118,7 @@ public class InventoryEntryTagMoveC2SPacket
 			CompoundTag sourceEntryTag = (CompoundTag) sourceEntryList.get(i);
 			boolean entryExistsFlag = false;
 
-			for (Tag targetTag : SpiritTagRef.INSTANCE.getEntryList(targetStack.getOrCreateTag()))
+			for (Tag targetTag : SpiritTagUtil.INSTANCE.getEntryList(targetStack.getOrCreateTag()))
 			{
 				CompoundTag targetEntryTag = (CompoundTag) targetTag;
 
@@ -126,12 +126,12 @@ public class InventoryEntryTagMoveC2SPacket
 				{
 					entryExistsFlag = true;
 
-					if (SpiritTagRef.INSTANCE.moveSpirit(sourceEntryTag, targetEntryTag, targetMaxStorage) && !successFlag) // always want to evaluate moveSpirit first
+					if (SpiritTagUtil.INSTANCE.moveSpirit(sourceEntryTag, targetEntryTag, targetMaxStorage) && !successFlag) // always want to evaluate moveSpirit first
 					{
 						successFlag = true;
 					}
 
-					if (!(SpiritTagRef.INSTANCE.isEntryEmpty(sourceEntryTag) && SpiritTagRef.INSTANCE.removeEntry(sourceStack.getOrCreateTag(), sourceEntryTag)))
+					if (!(SpiritTagUtil.INSTANCE.isEntryEmpty(sourceEntryTag) && SpiritTagUtil.INSTANCE.removeEntry(sourceStack.getOrCreateTag(), sourceEntryTag)))
 					{
 						i++; // did not remove entry from sourceStack, advance normally
 					}
@@ -142,7 +142,7 @@ public class InventoryEntryTagMoveC2SPacket
 
 			if (!entryExistsFlag)
 			{
-				if (SpiritTagRef.INSTANCE.moveEntry(sourceStack.getOrCreateTag(), targetStack.getOrCreateTag(), sourceEntryTag))
+				if (SpiritTagUtil.INSTANCE.moveEntry(sourceStack.getOrCreateTag(), targetStack.getOrCreateTag(), sourceEntryTag))
 				{
 					successFlag = true;
 				}

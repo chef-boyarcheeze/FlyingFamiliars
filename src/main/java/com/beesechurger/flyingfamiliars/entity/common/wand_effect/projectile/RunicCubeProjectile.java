@@ -5,7 +5,7 @@ import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -65,7 +65,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
         if (action)
         {
             // get selected entity's entryTag tag and confirm tag is real
-            CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
+            CompoundTag entryTag = EntityTagUtil.INSTANCE.getSelectedEntry(EntityTagUtil.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
 
             if (entryTag.contains(STORAGE_ENTITY_TYPE))
             {
@@ -227,7 +227,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
                 entryTag.putString(STORAGE_ENTITY_TYPE, EntityType.getKey(entity.getType()).toString());
                 entity.saveWithoutId(entryTag);
 
-                if (EntityTagRef.INSTANCE.addEntry(stackTag, entryTag))
+                if (EntityTagUtil.INSTANCE.addEntry(stackTag, entryTag))
                 {
                     // save updated entity tag list to stack
                     stack.setTag(stackTag);
@@ -272,7 +272,7 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
                 CompoundTag stackTag = stack.getOrCreateTag();
 
                 // get selected entity's entryTag tag and confirm tag is real
-                CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
+                CompoundTag entryTag = EntityTagUtil.INSTANCE.getSelectedEntry(EntityTagUtil.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
 
                 // use entryTag selected at time of cast
                 if (selectedEntry != null)
@@ -280,11 +280,11 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
                     entryTag = selectedEntry;
                 }
 
-                if (entryTag.contains(STORAGE_ENTITY_TYPE) && EntityTagRef.INSTANCE.getEntryList(stackTag).contains(entryTag))
+                if (entryTag.contains(STORAGE_ENTITY_TYPE) && EntityTagUtil.INSTANCE.getEntryList(stackTag).contains(entryTag))
                 {
                     EntityType<?> type = EntityType.byString(entryTag.getString(STORAGE_ENTITY_TYPE)).orElse(null);
 
-                    if (type != null && EntityTagRef.INSTANCE.removeEntry(stackTag, entryTag))
+                    if (type != null && EntityTagUtil.INSTANCE.removeEntry(stackTag, entryTag))
                     {
                         // save updated entity tag list to stack
                         stack.setTag(stackTag);
@@ -316,14 +316,14 @@ public class RunicCubeProjectile extends BaseWandEffectProjectile
     protected void displaySelectionMessage(ItemStack stack)
     {
         // display new entity selection
-        CompoundTag entryTag = EntityTagRef.INSTANCE.getSelectedEntry(EntityTagRef.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
+        CompoundTag entryTag = EntityTagUtil.INSTANCE.getSelectedEntry(EntityTagUtil.INSTANCE.getPlayerFullEntityListTag((Player) getOwner()));
 
         if (entryTag.contains(STORAGE_ENTITY_TYPE))
         {
-            ChatFormatting format = EntityTagRef.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
+            ChatFormatting format = EntityTagUtil.isEntityTamed(entryTag) ? ChatFormatting.GREEN : ChatFormatting.YELLOW;
 
             ((Player) getOwner()).displayClientMessage(Component.translatable("message.flyingfamiliars.entity_tag.select")
-                    .append(": " + EntityTagRef.getEntityID(entryTag))
+                    .append(": " + EntityTagUtil.getEntityID(entryTag))
                     .withStyle(format), true);
         }
     }

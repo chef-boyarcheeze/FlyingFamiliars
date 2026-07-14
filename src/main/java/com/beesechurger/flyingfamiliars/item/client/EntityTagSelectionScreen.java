@@ -3,8 +3,8 @@ package com.beesechurger.flyingfamiliars.item.client;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
 import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -45,7 +45,7 @@ public class EntityTagSelectionScreen implements IGuiOverlay
         {
             stack = incomingStack;
 
-            if (!EntityTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()))
+            if (!EntityTagUtil.INSTANCE.isEmpty(stack.getOrCreateTag()))
             {
                 active = true;
                 //wandEffectList = WandEffectTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
@@ -71,7 +71,7 @@ public class EntityTagSelectionScreen implements IGuiOverlay
 
                 newSelectionIndex = -1;
 
-                CompoundTag selection = WandEffectTagRef.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
+                CompoundTag selection = WandEffectTagUtil.INSTANCE.getSelectedEntry(stack.getOrCreateTag());
 
                 for (int i = 0; i < wandEffectList.size(); ++i)
                 {

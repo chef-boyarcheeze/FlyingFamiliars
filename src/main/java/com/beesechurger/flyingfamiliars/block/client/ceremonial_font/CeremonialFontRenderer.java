@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.client.ceremonial_font;
 
 import com.beesechurger.flyingfamiliars.block.entity.CeremonialFontBE;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -67,19 +67,19 @@ public class CeremonialFontRenderer implements BlockEntityRenderer<CeremonialFon
                 stack.popPose();
             }
 
-            for(int i = 0; i < EntityTagRef.INSTANCE.getEntryCount(ceremonialFontBE.entityStorageTag); i++)
+            for(int i = 0; i < EntityTagUtil.INSTANCE.getEntryCount(ceremonialFontBE.entityStorageTag); i++)
             {
-                float angle = ((i+1) * 360f / EntityTagRef.INSTANCE.getEntryCount(ceremonialFontBE.entityStorageTag));
+                float angle = ((i+1) * 360f / EntityTagUtil.INSTANCE.getEntryCount(ceremonialFontBE.entityStorageTag));
 
                 EntityType<?> type = EntityType.byString(ceremonialFontBE.getEntitiesStrings().get(i)).orElse(null);
                 if(type != null)
                 {
                     Entity storedEntity = type.create(ceremonialFontBE.getLevel());
-                    storedEntity.load(EntityTagRef.INSTANCE.getEntryList(ceremonialFontBE.entityStorageTag).getCompound(i));
+                    storedEntity.load(EntityTagUtil.INSTANCE.getEntryList(ceremonialFontBE.entityStorageTag).getCompound(i));
 
                     //double craftingOffset = 0.25d * ((double) ceremonialFontBE.getProgress() / (double) ceremonialFontBE.getMaxProgress());
                     //double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
-                    double centerShift = 0.6d * (EntityTagRef.INSTANCE.getEntryCount(ceremonialFontBE.entityStorageTag) - 1);
+                    double centerShift = 0.6d * (EntityTagUtil.INSTANCE.getEntryCount(ceremonialFontBE.entityStorageTag) - 1);
 
                     stack.pushPose();
                     stack.translate(0.5d, 1.4d, 0.5d);

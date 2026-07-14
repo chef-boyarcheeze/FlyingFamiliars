@@ -3,9 +3,9 @@ package com.beesechurger.flyingfamiliars.item.common.entity.soul_wand;
 import com.beesechurger.flyingfamiliars.item.FFItemClientExtension;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
-import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
+import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
@@ -70,7 +70,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
         if (phylactery != null)
         {
-            Map<String, Integer> spiritContents = SpiritTagRef.INSTANCE.getSpiritContents(phylactery.getOrCreateTag());
+            Map<String, Integer> spiritContents = SpiritTagUtil.INSTANCE.getSpiritContents(phylactery.getOrCreateTag());
 
             for (var entry : requiredSpiritContents.entrySet())
             {
@@ -120,7 +120,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
     public BaseWandEffect getSelectedWandEffect(ItemStack stack)
     {
-        return WandEffectItemHelper.getSelectedWandEffect(WandEffectTagRef.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
+        return WandEffectItemHelper.getSelectedWandEffect(WandEffectTagUtil.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
     }
 
     @Override
@@ -140,7 +140,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
     {
         BaseWandEffect selectedWandEffect = getSelectedWandEffect(stack);
 
-        if((EntityTagRef.INSTANCE.isEmpty(stack.getOrCreateTag()) || !Screen.hasShiftDown()) && stack.hasTag() && selectedWandEffect != null)
+        if((EntityTagUtil.INSTANCE.isEmpty(stack.getOrCreateTag()) || !Screen.hasShiftDown()) && stack.hasTag() && selectedWandEffect != null)
         {
             tooltip.add(Component.translatable(selectedWandEffect.getTranslatableName())
                     .withStyle(Style.EMPTY.withColor(selectedWandEffect.getColor())));
@@ -168,7 +168,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
         if (phylacteryStack != null && canCastWandEffect(phylacteryStack, requiredSpiritContents))
         {
-            ListTag spiritEntryList = SpiritTagRef.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
+            ListTag spiritEntryList = SpiritTagUtil.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
 
             for (int i = 0; i < spiritEntryList.size();)
             {
@@ -177,10 +177,10 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
 
                 if (requiredSpiritContents.containsKey(type))
                 {
-                    SpiritTagRef.INSTANCE.removeSpirit(spiritEntryTag, requiredSpiritContents.get(type));
+                    SpiritTagUtil.INSTANCE.removeSpirit(spiritEntryTag, requiredSpiritContents.get(type));
                 }
 
-                if (!(SpiritTagRef.INSTANCE.isEntryEmpty(spiritEntryTag) && SpiritTagRef.INSTANCE.removeEntry(phylacteryStack.getOrCreateTag(), spiritEntryTag)))
+                if (!(SpiritTagUtil.INSTANCE.isEntryEmpty(spiritEntryTag) && SpiritTagUtil.INSTANCE.removeEntry(phylacteryStack.getOrCreateTag(), spiritEntryTag)))
                 {
                     i++; // did not remove entry from phylacteryStack, advance normally
                 }

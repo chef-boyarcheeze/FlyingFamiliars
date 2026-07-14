@@ -2,7 +2,7 @@
 package com.beesechurger.flyingfamiliars.packet;
 
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -48,7 +48,7 @@ public class WandEffectSelectionC2SPacket
             if(stack.getItem() instanceof BaseSoulWand item)
             {
                 CompoundTag storageTag = stack.getOrCreateTag();
-                ListTag entryList = WandEffectTagRef.INSTANCE.getEntryList(storageTag);
+                ListTag entryList = WandEffectTagUtil.INSTANCE.getEntryList(storageTag);
 
                 entryList.getCompound(newSelectionIndex).put(STORAGE_WAND_EFFECT_SELECTION, new CompoundTag());
                 entryList.getCompound(currentSelectionIndex).remove(STORAGE_WAND_EFFECT_SELECTION);

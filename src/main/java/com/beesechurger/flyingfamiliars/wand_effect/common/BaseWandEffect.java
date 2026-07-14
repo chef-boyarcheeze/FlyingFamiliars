@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common;
 
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagRef;
+import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -88,7 +88,7 @@ public abstract class BaseWandEffect
 
     public BaseWandEffect getSelectedWandEffect(ItemStack stack)
     {
-        return WandEffectItemHelper.getSelectedWandEffect(WandEffectTagRef.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
+        return WandEffectItemHelper.getSelectedWandEffect(WandEffectTagUtil.INSTANCE.getSelectedWandEffect(stack.getOrCreateTag()));
     }
 
 ///////////////////////////

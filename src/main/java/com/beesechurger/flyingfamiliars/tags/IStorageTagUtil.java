@@ -5,7 +5,7 @@ import net.minecraft.nbt.ListTag;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public interface IStorageTagRef
+public interface IStorageTagUtil
 {
 //////////////////
 /// Accessors: ///

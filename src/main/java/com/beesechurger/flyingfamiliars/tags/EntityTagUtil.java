@@ -10,9 +10,9 @@ import net.minecraft.world.item.ItemStack;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
-public class EntityTagRef implements IStorageTagRef
+public class EntityTagUtil implements IStorageTagUtil
 {
-    public static final EntityTagRef INSTANCE = new EntityTagRef();
+    public static final EntityTagUtil INSTANCE = new EntityTagUtil();
 
 //////////////////
 /// Accessors: ///
@@ -74,14 +74,14 @@ public class EntityTagRef implements IStorageTagRef
         {
             if(stack.getItem() instanceof BaseEntityTagItem item)
             {
-                for (Tag tag : EntityTagRef.INSTANCE.getEntryList(stack.getOrCreateTag()))
+                for (Tag tag : EntityTagUtil.INSTANCE.getEntryList(stack.getOrCreateTag()))
                 {
                     fullEntryList.add(tag);
                 }
             }
         }
 
-        CompoundTag storageTag = EntityTagRef.INSTANCE.getOrCreateTag(new CompoundTag());
+        CompoundTag storageTag = EntityTagUtil.INSTANCE.getOrCreateTag(new CompoundTag());
         storageTag.getCompound(STORAGE_ENTITY_TAGNAME).put(STORAGE_ENTRY_LIST, fullEntryList);
 
         return storageTag;

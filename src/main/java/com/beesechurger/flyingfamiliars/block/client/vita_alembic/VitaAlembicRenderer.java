@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.client.vita_alembic;
 
 import com.beesechurger.flyingfamiliars.block.entity.VitaAlembicBE;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -25,13 +25,13 @@ public class VitaAlembicRenderer implements BlockEntityRenderer<VitaAlembicBE>
         {
             float time = Minecraft.getInstance().level.getGameTime() + partialTicks;
 
-            for(int i = 0; i < EntityTagRef.INSTANCE.getEntryCount(vitaAlembicBE.entityStorageTag); i++)
+            for(int i = 0; i < EntityTagUtil.INSTANCE.getEntryCount(vitaAlembicBE.entityStorageTag); i++)
             {
                 EntityType<?> type = EntityType.byString(vitaAlembicBE.getEntitiesStrings().get(i)).orElse(null);
                 if(type != null)
                 {
                     Entity storedEntity = type.create(vitaAlembicBE.getLevel());
-                    storedEntity.load(EntityTagRef.INSTANCE.getEntryList(vitaAlembicBE.entityStorageTag).getCompound(i));
+                    storedEntity.load(EntityTagUtil.INSTANCE.getEntryList(vitaAlembicBE.entityStorageTag).getCompound(i));
 
                     stack.pushPose();
                     stack.translate(0.5d, 1.6d, 0.5d); //.6875

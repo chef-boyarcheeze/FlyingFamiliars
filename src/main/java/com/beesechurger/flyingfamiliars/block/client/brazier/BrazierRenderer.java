@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.client.brazier;
 
 import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
-import com.beesechurger.flyingfamiliars.tags.EntityTagRef;
+import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -50,19 +50,19 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBE>
 				stack.popPose();
 			}
 
-			for(int i = 0; i < EntityTagRef.INSTANCE.getEntryCount(brazierBE.entityStorageTag); i++)
+			for(int i = 0; i < EntityTagUtil.INSTANCE.getEntryCount(brazierBE.entityStorageTag); i++)
 			{
-				float angle = ((i+1) * 360f / EntityTagRef.INSTANCE.getEntryCount(brazierBE.entityStorageTag));
+				float angle = ((i+1) * 360f / EntityTagUtil.INSTANCE.getEntryCount(brazierBE.entityStorageTag));
 
 				EntityType<?> type = EntityType.byString(brazierBE.getEntitiesStrings().get(i)).orElse(null);
 				if(type != null)
 				{
 					Entity storedEntity = type.create(brazierBE.getLevel());
-					storedEntity.load(EntityTagRef.INSTANCE.getEntryList(brazierBE.entityStorageTag).getCompound(i));
+					storedEntity.load(EntityTagUtil.INSTANCE.getEntryList(brazierBE.entityStorageTag).getCompound(i));
 
 					double craftingOffset = 0.25d * ((double) brazierBE.getProgress() / (double) brazierBE.getMaxProgress());
 					double craftingShift = Math.cos((angle + time) / 2) * craftingOffset;
-					double centerShift = 0.6d * (EntityTagRef.INSTANCE.getEntryCount(brazierBE.entityStorageTag) - 1);
+					double centerShift = 0.6d * (EntityTagUtil.INSTANCE.getEntryCount(brazierBE.entityStorageTag) - 1);
 
 					stack.pushPose();
 					stack.translate(0.5d, 1.6d, 0.5d);

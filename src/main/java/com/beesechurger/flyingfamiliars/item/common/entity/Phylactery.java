@@ -3,7 +3,7 @@ package com.beesechurger.flyingfamiliars.item.common.entity;
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
 import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
-import com.beesechurger.flyingfamiliars.tags.SpiritTagRef;
+import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +55,7 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
 
             if (phylacteryStack != null)
             {
-                ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
+                ListTag entryList = SpiritTagUtil.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
                 CompoundTag entryTag = null;
                 CompoundTag emptyTag = null;
 
@@ -80,7 +80,7 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
                     {
                         entryTag = emptyTag;
                     }
-                    else if (entryList.size() < SpiritTagRef.INSTANCE.getMaxEntries(phylacteryStack.getOrCreateTag()))
+                    else if (entryList.size() < SpiritTagUtil.INSTANCE.getMaxEntries(phylacteryStack.getOrCreateTag()))
                     {
                         CompoundTag newEntry = new CompoundTag();
 
@@ -97,7 +97,7 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
                 if (entryTag != null)
                 {
                     int currentStorage = entryTag.getInt(STORAGE_SPIRIT_STORAGE);
-                    int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagRef.INSTANCE.getMaxStorage(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
+                    int newStorage = Mth.clamp(0, currentStorage + entityStack.getCount() * 10, SpiritTagUtil.INSTANCE.getMaxStorage(phylacteryStack.getOrCreateTag())) ; // TODO: enchantment changing how much you get from each fragment
                     int pickedUpCount = (int) Math.ceil((newStorage - currentStorage) / 10.0F);
 
                     if (pickedUpCount > 0)
@@ -133,8 +133,8 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
         // Show stored entities if shift is pressed, show spirit fragment levels if not
         if (componentTooltips.isEmpty() || !Screen.hasShiftDown())
         {
-            ListTag entryList = SpiritTagRef.INSTANCE.getEntryList(stack.getOrCreateTag());
-            int maxSpirit = SpiritTagRef.INSTANCE.getMaxStorage(stack.getOrCreateTag());
+            ListTag entryList = SpiritTagUtil.INSTANCE.getEntryList(stack.getOrCreateTag());
+            int maxSpirit = SpiritTagUtil.INSTANCE.getMaxStorage(stack.getOrCreateTag());
 
             // separate entryTag list into rows of 9, accounting for remainder
             for (Tag tag : entryList)
