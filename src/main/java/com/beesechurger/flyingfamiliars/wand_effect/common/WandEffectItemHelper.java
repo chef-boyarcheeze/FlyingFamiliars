@@ -7,6 +7,8 @@ import com.beesechurger.flyingfamiliars.wand_effect.common.charm.ZephyreanGustWa
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.CaptureWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FireballWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.FlamethrowerWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.projectile.PrismaticBeamWandEffect;
+import com.beesechurger.flyingfamiliars.wand_effect.common.sentry.DryadsCurseWandEffect;
 
 import java.util.Map;
 
@@ -27,8 +29,11 @@ public class WandEffectItemHelper
     public static final String WAND_EFFECT_CAPTURE = "capture_projectile";
     public static final String WAND_EFFECT_FIREBALL = "fireball_projectile";
     public static final String WAND_EFFECT_FLAMETHROWER = "flamethrower_projectile";
+    public static final String WAND_EFFECT_PRISMATIC_BEAM = "prismatic_beam_projectile";
 
 /// Sentries:
+
+    public static final String WAND_EFFECT_DRYADS_CURSE = "dryads_curse_sentry";
 
 //////////////////////////////
 /// Wand Effect Instances: ///
@@ -45,8 +50,11 @@ public class WandEffectItemHelper
     private static final CaptureWandEffect CAPTURE = new CaptureWandEffect();
     private static final FireballWandEffect FIREBALL = new FireballWandEffect();
     private static final FlamethrowerWandEffect FLAMETHROWER = new FlamethrowerWandEffect();
+    private static final PrismaticBeamWandEffect PRISMATIC_BEAM = new PrismaticBeamWandEffect();
 
 /// Sentry wand effects:
+
+    private static final DryadsCurseWandEffect DRYADS_CURSE = new DryadsCurseWandEffect();
 
     private static final Map<String, BaseWandEffect> WAND_EFFECT_MAP = Map.ofEntries(
     /// Charms:
@@ -58,10 +66,11 @@ public class WandEffectItemHelper
     /// Projectiles:
         Map.entry(WAND_EFFECT_CAPTURE, CAPTURE),
         Map.entry(WAND_EFFECT_FIREBALL, FIREBALL),
-        Map.entry(WAND_EFFECT_FLAMETHROWER, FLAMETHROWER)
+        Map.entry(WAND_EFFECT_FLAMETHROWER, FLAMETHROWER),
+        Map.entry(WAND_EFFECT_PRISMATIC_BEAM, PRISMATIC_BEAM),
 
     /// Sentries:
-
+        Map.entry(WAND_EFFECT_DRYADS_CURSE, DRYADS_CURSE)
     );
 
     public static BaseWandEffect getSelectedWandEffect(String selection)
