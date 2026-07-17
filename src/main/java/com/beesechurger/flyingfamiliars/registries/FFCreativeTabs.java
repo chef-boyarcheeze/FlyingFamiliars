@@ -64,8 +64,8 @@ public class FFCreativeTabs
                 output.accept(FFItems.TEMPEST_STAFF.get());
                 output.accept(FFItems.FISSURE_BATON.get());
                 output.accept(FFItems.FIERY_CROOK.get());
-                output.accept(FFItems.VOID_SHARD.get());
                 output.accept(FFItems.LIGHT_PRISM.get());
+                output.accept(FFItems.VOID_SHARD.get());
 
                 // Spirit Remnants:
                 output.accept(FFItems.WET_SPIRIT_FRAGMENT.get());
@@ -73,8 +73,8 @@ public class FFCreativeTabs
                 output.accept(FFItems.GUSTING_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.STONY_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.BURNING_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
 
                 // Phylactery:
                 output.accept(FFItems.PHYLACTERY.get());
@@ -85,8 +85,8 @@ public class FFCreativeTabs
                 output.accept(FFItems.EYE_OF_THE_STORM.get());
                 output.accept(FFItems.BONES_OF_THE_EARTH.get());
                 output.accept(FFItems.HAND_OF_THE_HELLS.get());
-                output.accept(FFItems.PEARL_OF_THE_VOID.get());
                 output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
+                output.accept(FFItems.PEARL_OF_THE_VOID.get());
 
                 // Crafting items:
                 output.accept(FFItems.CEREMONIAL_FONT_BASIN.get());
