@@ -41,9 +41,8 @@ public class PhylacteryRenderer implements ICurioRenderer
         ICurioRenderer.followBodyRotations(slotContext.entity());
 
         matrixStack.mulPose(Axis.ZP.rotationDegrees(180));
-        matrixStack.translate(-0.25f, -0.7f, 0);
-        matrixStack.mulPose(Axis.YP.rotationDegrees(-90));
-        matrixStack.scale(0.5f, 0.5f, 0.5f);
+        matrixStack.translate(-0.13f, -0.3f, -0.13f);
+        matrixStack.scale(0.6f, 0.6f, 0.6f);
 
         Minecraft.getInstance().getItemRenderer().render(stack, ItemDisplayContext.GROUND, false, matrixStack, renderTypeBuffer, light, OverlayTexture.NO_OVERLAY, model);
         matrixStack.popPose();
