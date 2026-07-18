@@ -61,16 +61,16 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
         return super.canCycle(player, scrollStack, allStacks) && selectedWandEffect != null && selectedWandEffect instanceof CaptureWandEffect;
     }
 
-    public boolean canCastWandEffect(ItemStack phylactery, Map<String, Integer> requiredSpiritContents)
+    public boolean canCastWandEffect(ItemStack phylacteryStack, Map<String, Integer> requiredSpiritContents)
     {
         if (Minecraft.getInstance().player.isCreative())
         {
             return true;
         }
 
-        if (phylactery != null)
+        if (!phylacteryStack.isEmpty())
         {
-            Map<String, Integer> spiritContents = SpiritTagUtil.INSTANCE.getSpiritContents(phylactery.getOrCreateTag());
+            Map<String, Integer> spiritContents = SpiritTagUtil.INSTANCE.getSpiritContents(phylacteryStack.getOrCreateTag());
 
             for (var entry : requiredSpiritContents.entrySet())
             {
@@ -166,7 +166,7 @@ public abstract class BaseSoulWand extends BaseEntityTagItem
             return true;
         }
 
-        if (phylacteryStack != null && canCastWandEffect(phylacteryStack, requiredSpiritContents))
+        if (!phylacteryStack.isEmpty() && canCastWandEffect(phylacteryStack, requiredSpiritContents))
         {
             ListTag spiritEntryList = SpiritTagUtil.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
 

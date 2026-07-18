@@ -50,10 +50,12 @@ public class FFItemHandler
 				}
 			}
 
+			ItemStack phylacteryStack = getPhylacteryCharm(player);
+
 			// phylactery in curio slot
-			if (getPhylacteryCharm(player) != null)
+			if (!phylacteryStack.isEmpty())
 			{
-				stacks.add(getPhylacteryCharm(player));
+				stacks.add(phylacteryStack);
 			}
 		}
 
@@ -100,7 +102,7 @@ public class FFItemHandler
             return curioCharm;
         }
 
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	public static ItemStack findItem(Player player, Item item)
