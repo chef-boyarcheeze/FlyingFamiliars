@@ -55,11 +55,11 @@ public interface IEntityCycleItem
                 {
                     stacks.remove(i);
                 }
+            }
 
-                if (stacks.isEmpty())
-                {
-                    return;
-                }
+            if (stacks.isEmpty())
+            {
+                return;
             }
 
             if (direction > 0)
@@ -83,11 +83,6 @@ public interface IEntityCycleItem
                     {
                         newEntryList.add(fullEntryList.remove(0));
                     }
-                }
-
-                if (fullEntryList.isEmpty())
-                {
-                    break;
                 }
             }
         }
