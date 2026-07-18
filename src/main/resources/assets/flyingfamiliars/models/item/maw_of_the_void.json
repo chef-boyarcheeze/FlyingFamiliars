@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "flyingfamiliars:item/pearl_of_the_void"
+		"layer0": "flyingfamiliars:item/maw_of_the_void"
 	}
 }

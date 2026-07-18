@@ -67,7 +67,20 @@ public class FFCreativeTabs
                 output.accept(FFItems.LIGHT_PRISM.get());
                 output.accept(FFItems.VOID_SHARD.get());
 
-                // Spirit Remnants:
+                // Other Tools:
+                output.accept(FFItems.PHYLACTERY.get());
+                output.accept(FFItems.CHRONICLE.get());
+
+                // Type items:
+                output.accept(FFItems.SOUL_WAND_ROD.get());
+                output.accept(FFItems.PELT_OF_THE_FOREST.get());
+                output.accept(FFItems.EYE_OF_THE_STORM.get());
+                output.accept(FFItems.BONES_OF_THE_CAVERN.get());
+                output.accept(FFItems.HAND_OF_THE_HELLS.get());
+                output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
+                output.accept(FFItems.MAW_OF_THE_VOID.get());
+
+                // Spirit Fragments:
                 output.accept(FFItems.WET_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.LUSH_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.GUSTING_SPIRIT_FRAGMENT.get());
@@ -75,18 +88,6 @@ public class FFCreativeTabs
                 output.accept(FFItems.BURNING_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get());
                 output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
-
-                // Phylactery:
-                output.accept(FFItems.PHYLACTERY.get());
-
-                // Type items:
-                output.accept(FFItems.SOUL_WAND_ROD.get());
-                output.accept(FFItems.PELT_OF_THE_FOREST.get());
-                output.accept(FFItems.EYE_OF_THE_STORM.get());
-                output.accept(FFItems.BONES_OF_THE_EARTH.get());
-                output.accept(FFItems.HAND_OF_THE_HELLS.get());
-                output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
-                output.accept(FFItems.PEARL_OF_THE_VOID.get());
 
                 // Crafting items:
                 output.accept(FFItems.CEREMONIAL_FONT_BASIN.get());

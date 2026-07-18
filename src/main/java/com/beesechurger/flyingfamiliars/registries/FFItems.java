@@ -1,6 +1,7 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.item.common.ChronicleTablet;
 import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity.Spirit;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.*;
@@ -18,31 +19,36 @@ public class FFItems
 {
 	public static final DeferredRegister<Item> ITEM_REG = DeferredRegister.create(ForgeRegistries.ITEMS, FlyingFamiliars.MOD_ID);
 
+	// Wands:
+	public static final RegistryObject<Item> WATER_SCEPTRE = register("water_sceptre", () -> new WaterSceptre(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> VERDANT_BOUGH = register("verdant_bough", () -> new VerdantBough(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> TEMPEST_STAFF = register("tempest_staff", () -> new TempestStaff(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> FISSURE_BATON = register("fissure_baton", () -> new FissureBaton(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> FIERY_CROOK = register("fiery_crook", () -> new FieryCrook(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> LIGHT_PRISM = register("light_prism", () -> new LightPrism(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> VOID_SHARD = register("void_shard", () -> new VoidShard(new Item.Properties().stacksTo(1)));
+
+	// Other Tools:
+	public static final RegistryObject<Item> PHYLACTERY = register("phylactery", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> CHRONICLE = register("chronicle", () -> new ChronicleTablet(new Item.Properties().stacksTo(1)));
+
+	// Type items:
 	public static final RegistryObject<Item> SOUL_WAND_ROD = register("soul_wand_rod", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));
 	public static final RegistryObject<Item> PELT_OF_THE_FOREST = register("pelt_of_the_forest", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> EYE_OF_THE_STORM = register("eye_of_the_storm", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> BONES_OF_THE_EARTH = register("bones_of_the_earth", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> BONES_OF_THE_CAVERN = register("bones_of_the_cavern", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> HAND_OF_THE_HELLS = register("hand_of_the_hells", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> PEARL_OF_THE_VOID = register("pearl_of_the_void", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> STRAND_OF_THE_LIGHT = register("strand_of_the_light", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> MAW_OF_THE_VOID = register("maw_of_the_void", () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
-	public static final RegistryObject<Item> WET_SPIRIT_FRAGMENT = register("wet_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-	public static final RegistryObject<Item> LUSH_SPIRIT_FRAGMENT = register("lush_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-	public static final RegistryObject<Item> GUSTING_SPIRIT_FRAGMENT = register("gusting_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-	public static final RegistryObject<Item> STONY_SPIRIT_FRAGMENT = register("stony_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-	public static final RegistryObject<Item> BURNING_SPIRIT_FRAGMENT = register("burning_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-	public static final RegistryObject<Item> VACUOUS_SPIRIT_FRAGMENT = register("vacuous_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-	public static final RegistryObject<Item> LUMINOUS_SPIRIT_FRAGMENT = register("luminous_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16).rarity(Rarity.COMMON)));
-
-	public static final RegistryObject<Item> WATER_SCEPTRE = register("water_sceptre", () -> new WaterSceptre(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> VERDANT_BOUGH = register("verdant_bough", () -> new VerdantBough(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> TEMPEST_STAFF = register("tempest_staff", () -> new TempestStaff(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> FISSURE_BATON = register("fissure_baton", () -> new FissureBaton(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> FIERY_CROOK = register("fiery_crook", () -> new FieryCrook(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> VOID_SHARD = register("void_shard", () -> new VoidShard(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
-	public static final RegistryObject<Item> LIGHT_PRISM = register("light_prism", () -> new LightPrism(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
-
-	public static final RegistryObject<Item> PHYLACTERY = register("phylactery", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+	// Spirit Fragments:
+	public static final RegistryObject<Item> WET_SPIRIT_FRAGMENT = register("wet_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> LUSH_SPIRIT_FRAGMENT = register("lush_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> GUSTING_SPIRIT_FRAGMENT = register("gusting_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> STONY_SPIRIT_FRAGMENT = register("stony_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> BURNING_SPIRIT_FRAGMENT = register("burning_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> LUMINOUS_SPIRIT_FRAGMENT = register("luminous_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
+	public static final RegistryObject<Item> VACUOUS_SPIRIT_FRAGMENT = register("vacuous_spirit_fragment", () -> new Spirit(new Item.Properties().stacksTo(16)));
 
 	public static final RegistryObject<Item> BLUE_VITALITY_BUCKET = register("blue_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_BLUE_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 	public static final RegistryObject<Item> GREEN_VITALITY_BUCKET = register("green_vitality_bucket", () -> new BucketItem(FFFluids.SOURCE_GREEN_VITALITY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));

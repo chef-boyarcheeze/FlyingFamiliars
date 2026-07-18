@@ -5,32 +5,32 @@
 
   "curios.identifier.phylactery": "Phylactery",
 
+  "item.flyingfamiliars.water_sceptre": "Water Sceptre",
+  "item.flyingfamiliars.verdant_bough": "Verdant Bough",
+  "item.flyingfamiliars.tempest_staff": "Tempest Staff",
+  "item.flyingfamiliars.fissure_baton": "Fissure Baton",
+  "item.flyingfamiliars.fiery_crook": "Fiery Crook",
+  "item.flyingfamiliars.light_prism": "Light Prism",
+  "item.flyingfamiliars.void_shard": "Void Shard",
+
+  "item.flyingfamiliars.phylactery": "Phylactery",
+  "item.flyingfamiliars.chronicle": "Chronicle",
+
   "item.flyingfamiliars.soul_wand_rod": "Soul Wand Rod",
   "item.flyingfamiliars.pelt_of_the_forest": "Pelt of the Forest",
   "item.flyingfamiliars.eye_of_the_storm": "Eye of the Storm",
-  "item.flyingfamiliars.bones_of_the_earth": "Bones of the Earth",
+  "item.flyingfamiliars.bones_of_the_cavern": "Bones of the Cavern",
   "item.flyingfamiliars.hand_of_the_hells": "Hand of the Hells",
-  "item.flyingfamiliars.pearl_of_the_void": "Pearl of the Void",
   "item.flyingfamiliars.strand_of_the_light": "Strand of the Light",
+  "item.flyingfamiliars.maw_of_the_void": "Maw of the Void",
 
   "item.flyingfamiliars.wet_spirit_fragment": "Wet Spirit Fragment",
   "item.flyingfamiliars.lush_spirit_fragment": "Lush Spirit Fragment",
   "item.flyingfamiliars.gusting_spirit_fragment": "Gusting Spirit Fragment",
   "item.flyingfamiliars.stony_spirit_fragment": "Stony Spirit Fragment",
   "item.flyingfamiliars.burning_spirit_fragment": "Burning Spirit Fragment",
-  "item.flyingfamiliars.vacuous_spirit_fragment": "Vacuous Spirit Fragment",
   "item.flyingfamiliars.luminous_spirit_fragment": "Luminous Spirit Fragment",
-
-  "item.flyingfamiliars.water_sceptre": "Water Sceptre",
-  "item.flyingfamiliars.verdant_bough": "Verdant Bough",
-  "item.flyingfamiliars.tempest_staff": "Tempest Staff",
-  "item.flyingfamiliars.fissure_baton": "Fissure Baton",
-  "item.flyingfamiliars.fiery_crook": "Fiery Crook",
-  "item.flyingfamiliars.void_shard": "Void Shard",
-  "item.flyingfamiliars.light_prism": "Light Prism",
-
-  "item.flyingfamiliars.phylactery": "Phylactery",
-  "item.flyingfamiliars.chronicle": "Chronicle",
+  "item.flyingfamiliars.vacuous_spirit_fragment": "Vacuous Spirit Fragment",
 
   "item.flyingfamiliars.phoenix_feather": "Phoenix Feather",
   "item.flyingfamiliars.ceremonial_font_basin": "Ceremonial Font Basin",
