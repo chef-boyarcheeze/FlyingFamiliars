@@ -54,7 +54,7 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
 
                         if (passengerRenderer != null)
                         {
-                            FFEvents.blockRenderList.remove(passenger.getUUID());
+                            FFEvents.BLOCK_RENDER_LIST.remove(passenger.getUUID());
                             poseStack.pushPose();
 
                             // scale for familiar's model size
@@ -89,7 +89,7 @@ public abstract class BaseFamiliarRiderLayer<T extends BaseFamiliarEntity & GeoE
 
                             passengerRenderer.render(passenger,  0, partialTicks, poseStack, bufferSource, packedLight);
                             poseStack.popPose();
-                            FFEvents.blockRenderList.add(passenger.getUUID());
+                            FFEvents.BLOCK_RENDER_LIST.add(passenger.getUUID());
                         }
                     }
                 }

@@ -13,13 +13,19 @@ import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
+import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.Entity;
@@ -29,11 +35,13 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -43,6 +51,7 @@ import java.util.stream.Collectors;
 
 import static com.beesechurger.flyingfamiliars.registries.FFKeys.WAND_EFFECT_SELECT_STATE;
 import static com.beesechurger.flyingfamiliars.registries.FFKeys.update;
+import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_STORAGE;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_TYPE;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -50,7 +59,9 @@ public class FFEvents
 {
 	public static final FFEvents INSTANCE = new FFEvents();
 
-    public static List<UUID> blockRenderList = new ArrayList<>();
+/////////////////////
+/// Render Setup: ///
+/////////////////////
 
     @SubscribeEvent
     public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event)
@@ -82,17 +93,23 @@ public class FFEvents
     	}
     }
 
+	public static List<UUID> BLOCK_RENDER_LIST = new ArrayList<>();
+
     @SubscribeEvent
     public static void preLivingRender(RenderLivingEvent.Pre event)
     {
         Entity passenger = event.getEntity();
         Entity vehicle = passenger.getVehicle();
 
-        if (vehicle instanceof BaseFamiliarEntity familiar && blockRenderList.contains(passenger.getUUID()))
+        if (vehicle instanceof BaseFamiliarEntity familiar && BLOCK_RENDER_LIST.contains(passenger.getUUID()))
         {
             event.setCanceled(true);
         }
     }
+
+//////////////////
+/// Inventory: ///
+//////////////////
 
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(RenderTooltipEvent.GatherComponents event)
@@ -159,6 +176,10 @@ public class FFEvents
 			FFItemHandler.TooltipLockHandler.INSTANCE.unlock();
 		}
 	}
+
+///////////////////////////////////
+/// Client-side Player Actions: ///
+///////////////////////////////////
 
 	@SubscribeEvent
 	public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event)
@@ -359,6 +380,10 @@ public class FFEvents
 
 		update();
 	}
+
+///////////////////////////////////
+/// Server-side Player Actions: ///
+///////////////////////////////////
 
 	@SubscribeEvent
 	public static void onItemPickup(EntityItemPickupEvent event)

@@ -26,7 +26,7 @@ public class BaseFamiliarRenderer<T extends BaseFamiliarEntity & GeoAnimatable> 
     @Override
     public void actuallyRender(PoseStack poseStack, T entity, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
     {
-        if (!(entity.isPassenger() && FFEvents.blockRenderList.contains(entity.getUUID())))
+        if (!(entity.isPassenger() && FFEvents.BLOCK_RENDER_LIST.contains(entity.getUUID())))
         {
             super.actuallyRender(poseStack, entity, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
         }
