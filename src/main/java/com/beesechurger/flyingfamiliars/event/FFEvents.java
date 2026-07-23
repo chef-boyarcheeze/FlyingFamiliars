@@ -13,19 +13,13 @@ import com.beesechurger.flyingfamiliars.packet.WandEffectAttackC2SPacket;
 import com.beesechurger.flyingfamiliars.registries.FFPackets;
 import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
-import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.Entity;
@@ -41,7 +35,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -51,7 +44,6 @@ import java.util.stream.Collectors;
 
 import static com.beesechurger.flyingfamiliars.registries.FFKeys.WAND_EFFECT_SELECT_STATE;
 import static com.beesechurger.flyingfamiliars.registries.FFKeys.update;
-import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_STORAGE;
 import static com.beesechurger.flyingfamiliars.util.FFConstants.STORAGE_SPIRIT_TYPE;
 
 @Mod.EventBusSubscriber(modid = FlyingFamiliars.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -59,9 +51,9 @@ public class FFEvents
 {
 	public static final FFEvents INSTANCE = new FFEvents();
 
-/////////////////////
-/// Render Setup: ///
-/////////////////////
+//////////////////
+/// Rendering: ///
+//////////////////
 
     @SubscribeEvent
     public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event)
@@ -106,6 +98,18 @@ public class FFEvents
             event.setCanceled(true);
         }
     }
+
+	@SubscribeEvent
+	public static void onRenderGui(RenderGuiOverlayEvent.Pre event)
+	{
+		if (event.getOverlay().id().equals(VanillaGuiOverlay.CHAT_PANEL.id()))
+		{
+			if (WandEffectSelectionScreen.INSTANCE.isActive())
+			{
+				event.setCanceled(true);
+			}
+		}
+	}
 
 //////////////////
 /// Inventory: ///
@@ -184,6 +188,12 @@ public class FFEvents
 	@SubscribeEvent
 	public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event)
 	{
+		if (WandEffectSelectionScreen.INSTANCE.isActive())
+		{
+			event.setCanceled(true);
+			return;
+		}
+
 		ItemStack stack = event.getItemStack();
 
 		if (!stack.isEmpty() && stack.getItem() instanceof BaseSoulWand)
@@ -195,9 +205,15 @@ public class FFEvents
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onPlayerScrollWheel(InputEvent.MouseScrollingEvent event)
 	{
+		if (WandEffectSelectionScreen.INSTANCE.isActive())
+		{
+			event.setCanceled(true);
+			return;
+		}
+
 		Player player = Minecraft.getInstance().player;
 
-		if(player != null && player.isShiftKeyDown())
+		if (player != null && player.isShiftKeyDown())
 		{
 			ItemStack scrollStack = player.getMainHandItem();
 			List<ItemStack> allStacks = FFItemHandler.getEntityStackList(player);
@@ -361,24 +377,24 @@ public class FFEvents
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 
-		if (player == null)
-			return;
-
-		ItemStack stack = player.getMainHandItem();
-
-		if (mc.screen == null && stack.getItem() instanceof BaseSoulWand)
+		if (player != null)
 		{
-			if (WAND_EFFECT_SELECT_STATE.wasPressed())
-			{
-				WandEffectSelectionScreen.INSTANCE.open(stack);
-			}
-			else if (WAND_EFFECT_SELECT_STATE.wasReleased() && WandEffectSelectionScreen.INSTANCE.isActive())
-			{
-				WandEffectSelectionScreen.INSTANCE.close();
-			}
-		}
+			ItemStack stack = player.getMainHandItem();
 
-		update();
+			if (mc.screen == null && stack.getItem() instanceof BaseSoulWand)
+			{
+				if (WAND_EFFECT_SELECT_STATE.wasPressed())
+				{
+					WandEffectSelectionScreen.INSTANCE.open(stack);
+				}
+				else if (WAND_EFFECT_SELECT_STATE.wasReleased() && WandEffectSelectionScreen.INSTANCE.isActive())
+				{
+					WandEffectSelectionScreen.INSTANCE.close();
+				}
+			}
+
+			update();
+		}
 	}
 
 ///////////////////////////////////

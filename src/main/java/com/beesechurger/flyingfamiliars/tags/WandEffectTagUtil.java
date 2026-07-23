@@ -48,8 +48,8 @@ public class WandEffectTagUtil implements IStorageTagUtil
         CompoundTag fireballTag = new CompoundTag();
         fireballTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_FIREBALL);
 
-        CompoundTag flamethrowerTag = new CompoundTag();
-        flamethrowerTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_FLAMETHROWER);
+        /*CompoundTag flamethrowerTag = new CompoundTag();
+        flamethrowerTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_FLAMETHROWER);*/
 
         CompoundTag cloudCallTag = new CompoundTag();
         cloudCallTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_CLOUD_CALL);
@@ -60,8 +60,8 @@ public class WandEffectTagUtil implements IStorageTagUtil
         CompoundTag timberCleaveTag = new CompoundTag();
         timberCleaveTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_TIMBER_CLEAVE);
 
-        CompoundTag zephyreanGustTag = new CompoundTag();
-        zephyreanGustTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_ZEPHYREAN_GUST);
+        /*CompoundTag zephyreanGustTag = new CompoundTag();
+        zephyreanGustTag.putString(STORAGE_WAND_EFFECT_TYPE, WAND_EFFECT_ZEPHYREAN_GUST);*/
 
         // get (new) ListTag under "getEntryListName()" in 'tag', to place back into 'tag'
         ListTag tagList = tag.getList(getEntryListName(), ListTag.TAG_COMPOUND);
@@ -69,11 +69,11 @@ public class WandEffectTagUtil implements IStorageTagUtil
         // add capture projectile entryTag to list
         tagList.add(captureTag);
         tagList.add(fireballTag);
-        tagList.add(flamethrowerTag);
+        //tagList.add(flamethrowerTag);
         tagList.add(cloudCallTag);
         tagList.add(tectonicSunderTag);
         tagList.add(timberCleaveTag);
-        tagList.add(zephyreanGustTag);
+        //tagList.add(zephyreanGustTag);
 
         return tagList;
     }

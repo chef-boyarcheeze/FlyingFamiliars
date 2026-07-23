@@ -40,7 +40,7 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
         @Override
         public int getWidth(Font font)
         {
-            return SPIRIT_TYPE_WIDTH + ENTRY_BAR_END_WIDTH + ENTRY_BAR_SPIRIT_WIDTH + ENTRY_BAR_END_WIDTH;
+            return ENTRY_BAR_SPIRIT_WIDTH + ENTRY_BAR_END_WIDTH;
         }
 
         @Override
