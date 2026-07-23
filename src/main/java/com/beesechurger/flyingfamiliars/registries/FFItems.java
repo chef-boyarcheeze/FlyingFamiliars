@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.registries;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.item.common.ChronicleTablet;
+import com.beesechurger.flyingfamiliars.item.common.Codex;
 import com.beesechurger.flyingfamiliars.item.common.entity.Phylactery;
 import com.beesechurger.flyingfamiliars.item.common.entity.Spirit;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.*;
@@ -30,7 +30,7 @@ public class FFItems
 
 	// Other Tools:
 	public static final RegistryObject<Item> PHYLACTERY = register("phylactery", () -> new Phylactery(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> CHRONICLE = register("chronicle", () -> new ChronicleTablet(new Item.Properties().stacksTo(1)));
+	public static final RegistryObject<Item> CODEX = register("codex", () -> new Codex(new Item.Properties().stacksTo(1)));
 
 	// Type items:
 	public static final RegistryObject<Item> SOUL_WAND_ROD = register("soul_wand_rod", () -> new Item(new Item.Properties().rarity(Rarity.COMMON)));

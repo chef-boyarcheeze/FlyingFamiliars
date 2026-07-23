@@ -10,9 +10,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import vazkii.patchouli.api.PatchouliAPI;
 
-public class ChronicleTablet extends BaseStorageTagItem
+public class Codex extends BaseStorageTagItem
 {
-    public ChronicleTablet(Properties properties) {
+    public Codex(Properties properties) {
         super(properties);
     }
 

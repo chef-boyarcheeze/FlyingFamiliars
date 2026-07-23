@@ -13,11 +13,48 @@ public class FFCreativeTabs
 {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TAB_REG = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FlyingFamiliars.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> FAMILIARS = CREATIVE_TAB_REG.register("familiars", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.flyingfamiliars.familiars"))
-            .icon(() -> new ItemStack(FFItems.PHOENIX_FEATHER.get()))
+    public static final RegistryObject<CreativeModeTab> FLYING_FAMILIARS = CREATIVE_TAB_REG.register("flying_familiars", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.flyingfamiliars.flying_familiars"))
+            .icon(() -> new ItemStack(FFItems.WATER_SCEPTRE.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {
+                // Wands:
+                output.accept(FFItems.WATER_SCEPTRE.get());
+                output.accept(FFItems.VERDANT_BOUGH.get());
+                output.accept(FFItems.TEMPEST_STAFF.get());
+                output.accept(FFItems.FISSURE_BATON.get());
+                output.accept(FFItems.FIERY_CROOK.get());
+                output.accept(FFItems.LIGHT_PRISM.get());
+                output.accept(FFItems.VOID_SHARD.get());
+
+                // Other Tools:
+                output.accept(FFItems.PHYLACTERY.get());
+                output.accept(FFItems.CODEX.get());
+
+                // Type items:
+                output.accept(FFItems.SOUL_WAND_ROD.get());
+                output.accept(FFItems.PELT_OF_THE_FOREST.get());
+                output.accept(FFItems.EYE_OF_THE_STORM.get());
+                output.accept(FFItems.BONES_OF_THE_CAVERN.get());
+                output.accept(FFItems.HAND_OF_THE_HELLS.get());
+                output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
+                output.accept(FFItems.MAW_OF_THE_VOID.get());
+
+                // Spirit Fragments:
+                output.accept(FFItems.WET_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.LUSH_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.GUSTING_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.STONY_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.BURNING_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get());
+                output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
+
+                // Crafting items:
+                output.accept(FFItems.CEREMONIAL_FONT_BASIN.get());
+
+                // Familiar items:
+                output.accept(FFItems.PHOENIX_FEATHER.get());
+
                 // Familiar spawn eggs:
                 // Water:
                 output.accept(FFItems.CLOUD_RAY_SPAWN_EGG.get());
@@ -47,60 +84,6 @@ public class FFCreativeTabs
                 // sundog
                 output.accept(FFItems.MIRROR_SHIELD_SPAWN_EGG.get());
 
-                // Familiar items:
-                output.accept(FFItems.PHOENIX_FEATHER.get());
-            })
-            .build());
-
-    public static final RegistryObject<CreativeModeTab> WANDS_AND_TOOLS = CREATIVE_TAB_REG.register("wands_and_tools", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.flyingfamiliars.wands_and_tools"))
-            .icon(() -> new ItemStack(FFItems.WATER_SCEPTRE.get()))
-            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .withTabsBefore(FAMILIARS.getKey())
-            .displayItems((enabledFeatures, output) -> {
-                // Wands:
-                output.accept(FFItems.WATER_SCEPTRE.get());
-                output.accept(FFItems.VERDANT_BOUGH.get());
-                output.accept(FFItems.TEMPEST_STAFF.get());
-                output.accept(FFItems.FISSURE_BATON.get());
-                output.accept(FFItems.FIERY_CROOK.get());
-                output.accept(FFItems.LIGHT_PRISM.get());
-                output.accept(FFItems.VOID_SHARD.get());
-
-                // Other Tools:
-                output.accept(FFItems.PHYLACTERY.get());
-                output.accept(FFItems.CHRONICLE.get());
-
-                // Type items:
-                output.accept(FFItems.SOUL_WAND_ROD.get());
-                output.accept(FFItems.PELT_OF_THE_FOREST.get());
-                output.accept(FFItems.EYE_OF_THE_STORM.get());
-                output.accept(FFItems.BONES_OF_THE_CAVERN.get());
-                output.accept(FFItems.HAND_OF_THE_HELLS.get());
-                output.accept(FFItems.STRAND_OF_THE_LIGHT.get());
-                output.accept(FFItems.MAW_OF_THE_VOID.get());
-
-                // Spirit Fragments:
-                output.accept(FFItems.WET_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.LUSH_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.GUSTING_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.STONY_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.BURNING_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get());
-                output.accept(FFItems.VACUOUS_SPIRIT_FRAGMENT.get());
-
-                // Crafting items:
-                output.accept(FFItems.CEREMONIAL_FONT_BASIN.get());
-            })
-            .build());
-
-    public static final RegistryObject<CreativeModeTab> BLOCKS = CREATIVE_TAB_REG.register("blocks", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.flyingfamiliars.blocks"))
-            .icon(() -> new ItemStack(FFBlocks.BRAZIER.get()))
-            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .withTabsBefore(FAMILIARS.getKey())
-            .withTabsBefore(WANDS_AND_TOOLS.getKey())
-            .displayItems((enabledFeatures, output) -> {
                 // Normal blocks:
                 output.accept(FFBlocks.RUNIC_BRICKS.get());
                 output.accept(FFBlocks.RUNIC_BRICK_SLAB.get());
@@ -128,5 +111,6 @@ public class FFCreativeTabs
                 output.accept(FFItems.BLACK_VITALITY_BUCKET.get());
                 output.accept(FFItems.WHITE_VITALITY_BUCKET.get());
             })
-            .build());
+            .build()
+    );
 }

@@ -1,7 +1,5 @@
 {
-  "itemGroup.flyingfamiliars.familiars": "Familiars",
-  "itemGroup.flyingfamiliars.wands_and_tools": "Wands and Tools",
-  "itemGroup.flyingfamiliars.blocks": "Blocks",
+  "itemGroup.flyingfamiliars.flying_familiars": "Flying Familiars",
 
   "curios.identifier.phylactery": "Phylactery",
 
@@ -14,7 +12,7 @@
   "item.flyingfamiliars.void_shard": "Void Shard",
 
   "item.flyingfamiliars.phylactery": "Phylactery",
-  "item.flyingfamiliars.chronicle": "Chronicle",
+  "item.flyingfamiliars.codex": "Codex",
 
   "item.flyingfamiliars.soul_wand_rod": "Soul Wand Rod",
   "item.flyingfamiliars.pelt_of_the_forest": "Pelt of the Forest",
@@ -100,11 +98,6 @@
   "tooltip.flyingfamiliars.entity_tag.empty": "Empty",
   "tooltip.flyingfamiliars.entity_tag.stored_1": "1 stored mob",
   "tooltip.flyingfamiliars.entity_tag.stored_multiple": " stored mobs",
-
-  "tooltip.flyingfamiliars.spirit_tag.left_shift": "Press \u00A7eSHIFT\u00A7r for stored soul types",
-  "tooltip.flyingfamiliars.spirit_tag.empty": "Empty",
-  "tooltip.flyingfamiliars.spirit_tag.stored_1": "1 stored soul type",
-  "tooltip.flyingfamiliars.spirit_tag.stored_multiple": " stored soul types",
 
   "tooltip.flyingfamiliars.spirit_tag.type_water": "Water",
   "tooltip.flyingfamiliars.spirit_tag.type_life": "Life",
