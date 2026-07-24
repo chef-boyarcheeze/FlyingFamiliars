@@ -88,16 +88,16 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
                     float tempY = y + verticalPasses + yOff;
                     float height = ENTRY_BAR_SPIRIT_HEIGHT - (ENTRY_BAR_SPIRIT_HEIGHT / 4) * verticalPasses;
 
-                    vertexConsumer.vertex(matrix4f, x1 + xOff,          tempY + height, 0).color(color.red, color.green, color.blue, Mth.clamp(color.alpha * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
-                    vertexConsumer.vertex(matrix4f, x1 + xOff + width,  tempY + height, 0).color(color.red, color.green, color.blue, Mth.clamp(color.alpha * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
-                    vertexConsumer.vertex(matrix4f, x1 + xOff + width,  tempY,          0).color(color.red, color.green, color.blue, Mth.clamp(color.alpha * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
-                    vertexConsumer.vertex(matrix4f, x1 + xOff,          tempY,          0).color(color.red, color.green, color.blue, Mth.clamp(color.alpha * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
+                    vertexConsumer.vertex(matrix4f, x1 + xOff,          tempY + height, 0).color(color.red(), color.green(), color.blue(), Mth.clamp(color.alpha() * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
+                    vertexConsumer.vertex(matrix4f, x1 + xOff + width,  tempY + height, 0).color(color.red(), color.green(), color.blue(), Mth.clamp(color.alpha() * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
+                    vertexConsumer.vertex(matrix4f, x1 + xOff + width,  tempY,          0).color(color.red(), color.green(), color.blue(), Mth.clamp(color.alpha() * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
+                    vertexConsumer.vertex(matrix4f, x1 + xOff,          tempY,          0).color(color.red(), color.green(), color.blue(), Mth.clamp(color.alpha() * (0.05f + 0.015f * (float) Math.sin(0.25f * ticks + Mth.PI / 2)), 0f, 1.0f)).endVertex();
                 }
             }
 
             // draw spirit bar background tiles
             FFTypes.ColorType backgroundColor = FFTypes.getTypeColorRGBA(ChatFormatting.DARK_GRAY.getColor());
-            RenderSystem.setShaderColor(backgroundColor.red, backgroundColor.green, backgroundColor.blue, backgroundColor.alpha);
+            RenderSystem.setShaderColor(backgroundColor.red(), backgroundColor.green(), backgroundColor.blue(), backgroundColor.alpha());
             for (int i = 0; i < ENTRY_BAR_SPIRIT_WIDTH / 10; i++)
             {
                 graphics.blit(ENTRY_BAR, x + xOff + ENTRY_BAR_END_WIDTH - 1 + (6 * i), y, 18, 0, 7, 12, 32, 32);
@@ -109,14 +109,14 @@ public record SpiritStorageTooltipComponent(String spiritType, float currentSpir
 
             // draw spirit bar ends and indicator
             FFTypes.ColorType foregroundColor = FFTypes.getTypeColorRGBA(ChatFormatting.GRAY.getColor());
-            RenderSystem.setShaderColor(foregroundColor.red, foregroundColor.green, foregroundColor.blue, foregroundColor.alpha);
+            RenderSystem.setShaderColor(foregroundColor.red(), foregroundColor.green(), foregroundColor.blue(), foregroundColor.alpha());
             graphics.blit(ENTRY_BAR, x + xOff, y - yOff, 0, 0, 10, 16, 32, 32);
             graphics.blit(ENTRY_BAR, x + xOff + ENTRY_BAR_END_WIDTH + (int) width, y - (yOff / 2), 12, 0, 4, 14, 32, 32);
             graphics.blit(ENTRY_BAR, x + xOff + ENTRY_BAR_END_WIDTH + ENTRY_BAR_INDICATOR_WIDTH + (ENTRY_BAR_SPIRIT_WIDTH / 2), y - yOff, 0, 0, 10, 16, 32, 32);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
             // draw spirit bar end cores in type color
-            RenderSystem.setShaderColor(color.red, color.green, color.blue, color.alpha);
+            RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), color.alpha());
             graphics.blit(ENTRY_BAR, x + xOff + 3, y - yOff + 5, 28, 0, 4, 6, 32, 32);
             graphics.blit(ENTRY_BAR, x + xOff + ENTRY_BAR_END_WIDTH + ENTRY_BAR_INDICATOR_WIDTH + (ENTRY_BAR_SPIRIT_WIDTH / 2) + 3, y - yOff + 5, 28, 0, 4, 6, 32, 32);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);

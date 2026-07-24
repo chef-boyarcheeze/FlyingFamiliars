@@ -50,10 +50,10 @@ public class FFTypes
 
     public static class ColorType
     {
-        public final float red;
-        public final float green;
-        public final float blue;
-        public final float alpha;
+        private float red;
+        private float green;
+        private float blue;
+        private float alpha;
 
         public ColorType(float red, float green, float blue, float alpha)
         {
@@ -61,6 +61,46 @@ public class FFTypes
             this.green = green;
             this.blue = blue;
             this.alpha = alpha;
+        }
+
+        public float red()
+        {
+            return red;
+        }
+
+        public ColorType modRed(float mod)
+        {
+            return new ColorType(red * mod, green, blue, alpha);
+        }
+
+        public float green()
+        {
+            return green;
+        }
+
+        public ColorType modGreen(float mod)
+        {
+            return new ColorType(red, green * mod, blue, alpha);
+        }
+
+        public float blue()
+        {
+            return blue;
+        }
+
+        public ColorType modBlue(float mod)
+        {
+            return new ColorType(red, green, blue * mod, alpha);
+        }
+
+        public float alpha()
+        {
+            return alpha;
+        }
+
+        public ColorType modAlpha(float mod)
+        {
+            return new ColorType(red, green, blue, alpha * mod);
         }
     }
 

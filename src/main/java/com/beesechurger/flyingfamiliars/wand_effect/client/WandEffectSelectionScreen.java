@@ -42,11 +42,18 @@ public class WandEffectSelectionScreen implements IGuiOverlay
     private static final float BOUNDARY_4 = 90.0f;
     private static final float BOUNDARY_5 = BOUNDARY_4 + 2;
 
+    private static final float TOP_ANGLE = -90.0f;
+    private static final float BOTTOM_ANGLE = 90.0f;
+    private static final float SEPARATION_ARC_LENGTH = 3.0f;
+
     private Boolean active = false;
     private ItemStack stack = null;
     private ListTag wandEffectList = null;
     private int newSelectionIndex = -1;
     private int currentSelectionIndex = -1;
+
+    private int centerX = 0;
+    private int centerY = 0;
 
     public void open(ItemStack incomingStack)
     {
@@ -131,22 +138,14 @@ public class WandEffectSelectionScreen implements IGuiOverlay
                     newSelectionIndex = currentSelectionIndex;
                 }
 
+                centerX = screenWidth / 2;
+                centerY = screenHeight / 2;
+
                 RenderSystem.enableBlend();
                 RenderSystem.defaultBlendFunc();
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-                final BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-                final int centerX = screenWidth / 2;
-                final int centerY = screenHeight / 2;
-
-                buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-                drawSpiritRing(buffer, centerX, centerY);
-                BufferUploader.drawWithShader(buffer.end());
-
-                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                drawRadialBackgrounds(buffer, centerX, centerY);
-                drawDividingLines(buffer, centerX, centerY);
-                BufferUploader.drawWithShader(buffer.end());
+                drawSpiritRing(Tesselator.getInstance().getBuilder());
 
                 RenderSystem.disableBlend();
 
@@ -226,243 +225,190 @@ public class WandEffectSelectionScreen implements IGuiOverlay
         }
     }
 
-    private void drawSpiritRing(BufferBuilder buffer, float centerX, float centerY)
+    private void drawSpiritRing(BufferBuilder buffer)
     {
         Player player = Minecraft.getInstance().player;
         ItemStack phylacteryStack = FFItemHandler.getPhylacteryCharm(player);
 
+        float currentAngle = BOTTOM_ANGLE + (SEPARATION_ARC_LENGTH * 0.5f);
+
         if (!phylacteryStack.isEmpty() && (player.getMainHandItem().getItem() instanceof BaseSoulWand || player.getOffhandItem().getItem() instanceof BaseSoulWand))
         {
-            ListTag entryList = SpiritTagUtil.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
+            ListTag spiritList = SpiritTagUtil.INSTANCE.getEntryList(phylacteryStack.getOrCreateTag());
 
-            if (!entryList.isEmpty())
+            if (!spiritList.isEmpty())
             {
+                // draw inner ring
+                drawArc(
+                        buffer,
+                        BOUNDARY_0,
+                        BOUNDARY_1,
+                        0,
+                        360.0f,
+                        LINE_COLOR,
+                        LINE_COLOR
+                );
+
                 float maxSpirit = SpiritTagUtil.INSTANCE.getMaxStorage(phylacteryStack.getOrCreateTag());
-                float totalSpirit = maxSpirit * entryList.size();
+                float totalSpirit = maxSpirit * spiritList.size();
 
-                // start drawing from the bottom, 90 degrees apparently
-                float currentAngle = 90.0f;
-                float separationArcLength = 0.0f;
-
-                for (Tag tag : entryList)
+                // draw spirit ring
+                for (Tag tag : spiritList)
                 {
-                    CompoundTag entryTag = (CompoundTag) tag;
-                    FFTypes.ColorType color = FFTypes.getTypeColorRGBA(FFTypes.getTypeColorInt(entryTag.getString(STORAGE_SPIRIT_TYPE)));
+                    CompoundTag spiritTag = (CompoundTag) tag;
 
-                    float arcLength = ((maxSpirit / totalSpirit) * 360.0f) - separationArcLength;
-                    float fillPercent = Math.max(0.0f, Math.min(1.0f, entryTag.getInt(STORAGE_SPIRIT_STORAGE) / maxSpirit));
+                    float arcLength = ((maxSpirit / totalSpirit) * 360.0f) - SEPARATION_ARC_LENGTH;
+                    float fillPercent = Math.max(0.0f, Math.min(1.0f, spiritTag.getInt(STORAGE_SPIRIT_STORAGE) / maxSpirit));
                     float filledArcLength = ((maxSpirit / totalSpirit) * 360.0f) * fillPercent;
-
-                    // draw filled portion
-                    if (filledArcLength > 0)
-                    {
-                        drawArc(
-                            buffer,
-                            centerX,
-                            centerY,
-                            BOUNDARY_1,
-                            BOUNDARY_2,
-                            currentAngle + (separationArcLength * 0.5f),
-                            currentAngle + filledArcLength,
-                            color.red,
-                            color.green,
-                            color.blue,
-                            color.alpha
-                        );
-                    }
 
                     // draw empty portion
                     float emptyArcSize = arcLength - filledArcLength;
                     if (emptyArcSize > 0)
                     {
+                        FFTypes.ColorType emptyColor = FFTypes.getTypeColorRGBA(0x88040404);
+
                         drawArc(
-                            buffer,
-                            centerX,
-                            centerY,
-                            BOUNDARY_1,
-                            BOUNDARY_2,
-                            currentAngle + filledArcLength,
-                            currentAngle + arcLength,
-                            0.15f,
-                            0.15f,
-                            0.15f,
-                            0.6f
+                                buffer,
+                                BOUNDARY_1,
+                                BOUNDARY_2,
+                                currentAngle + filledArcLength,
+                                currentAngle + arcLength,
+                                emptyColor,
+                                emptyColor
                         );
                     }
 
-                    // advance to next entry
-                    currentAngle += arcLength + separationArcLength;
+                    // draw filled portion after to prevent gaps
+                    if (filledArcLength > 0)
+                    {
+                        FFTypes.ColorType spiritColor = FFTypes.getTypeColorRGBA(FFTypes.getTypeColorInt(spiritTag.getString(STORAGE_SPIRIT_TYPE)));
+
+                        drawArc(
+                                buffer,
+                                BOUNDARY_1,
+                                BOUNDARY_2,
+                                currentAngle,
+                                currentAngle + filledArcLength + (SEPARATION_ARC_LENGTH / 5),
+                                spiritColor,
+                                spiritColor
+                        );
+                    }
+
+                    // draw spirit separation lines
+                    drawArc(
+                            buffer,
+                            BOUNDARY_1,
+                            BOUNDARY_2,
+                            currentAngle + arcLength - (SEPARATION_ARC_LENGTH / 5),
+                            currentAngle + arcLength + SEPARATION_ARC_LENGTH + (SEPARATION_ARC_LENGTH / 5),
+                            LINE_COLOR,
+                            LINE_COLOR
+                    );
+
+                    currentAngle += arcLength + SEPARATION_ARC_LENGTH;
                 }
             }
         }
 
+        // draw middle ring
+        drawArc(
+                buffer,
+                BOUNDARY_2,
+                BOUNDARY_3,
+                0,
+                360,
+                LINE_COLOR,
+                LINE_COLOR
+        );
 
-    }
+        // top of circle with offset
+        currentAngle = TOP_ANGLE - ((360.0f / wandEffectList.size()) * 0.5f) + (SEPARATION_ARC_LENGTH * 0.5f);
 
-    private void drawArc(BufferBuilder buffer, float cx, float cy,
-                                float innerR, float outerR, float startAngle, float endAngle,
-                                float r, float g, float b, float a)
-    {
-        // Step size in degrees. Lower = smoother/more circular, but uses more GPU vertices.
-        float step = 4.0f;
-        float angle = startAngle;
-
-        while (angle < endAngle)
+        if (!wandEffectList.isEmpty())
         {
-            addArcVertices(buffer, cx, cy, innerR, outerR, angle, r, g, b, a);
-            angle += step;
+            for (Tag tag : wandEffectList)
+            {
+                CompoundTag wandEffectTag = (CompoundTag) tag;
+                final BaseWandEffect wandEffect = WandEffectItemHelper.getSelectedWandEffect(wandEffectTag.getString(STORAGE_WAND_EFFECT_TYPE));
+
+                assert wandEffect != null;
+
+                FFTypes.ColorType wandEffectColor = FFTypes.getTypeColorRGBA(wandEffect.getColor());
+                float arcLength = (360.0f / wandEffectList.size()) - SEPARATION_ARC_LENGTH;
+
+                // draw wand effect
+                if (tag == wandEffectList.get(newSelectionIndex)) // section highlighted
+                {
+                    drawArc(
+                            buffer,
+                            BOUNDARY_3,
+                            BOUNDARY_4,
+                            currentAngle + (SEPARATION_ARC_LENGTH / 5),
+                            currentAngle + arcLength,
+                            wandEffectColor,
+                            wandEffectColor.modAlpha(0.0f)
+                    );
+                }
+                else // section not highlighted
+                {
+                    drawArc(
+                            buffer,
+                            BOUNDARY_3,
+                            BOUNDARY_4,
+                            currentAngle + (SEPARATION_ARC_LENGTH / 5),
+                            currentAngle + arcLength,
+                            wandEffectColor.modRed(0.7f).modGreen(0.7f).modBlue(0.7f).modAlpha(0.6f),
+                            wandEffectColor.modAlpha(0.0f)
+                    );
+                }
+
+                // draw wand effect separation lines
+                drawArc(
+                        buffer,
+                        BOUNDARY_3,
+                        BOUNDARY_4 + 5,
+                        currentAngle + arcLength - (SEPARATION_ARC_LENGTH / 5),
+                        currentAngle + arcLength + SEPARATION_ARC_LENGTH + (SEPARATION_ARC_LENGTH / 5),
+                        LINE_COLOR,
+                        LINE_COLOR
+                );
+
+                currentAngle += arcLength + SEPARATION_ARC_LENGTH;
+            }
         }
 
-        addArcVertices(buffer, cx, cy, innerR, outerR, endAngle, r, g, b, a);
+        // draw outer ring
+        drawArc(
+                buffer,
+                BOUNDARY_4,
+                BOUNDARY_5,
+                0,
+                360,
+                LINE_COLOR,
+                LINE_COLOR
+        );
     }
 
-    private void addArcVertices(BufferBuilder buffer, float cx, float cy,
-                                       float innerR, float outerR, float angleDegrees,
-                                       float r, float g, float b, float a)
+    private void drawArc(BufferBuilder buffer, float innerRadius, float outerRadius, float startAngle, float endAngle, FFTypes.ColorType innerColor, FFTypes.ColorType outerColor)
     {
-        float radians = (float) Math.toRadians(angleDegrees);
-        float cos = (float) Math.cos(radians);
-        float sin = (float) Math.sin(radians);
+        buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
-        // Outer vertex
-        float ox = cx + outerR * cos;
-        float oy = cy + outerR * sin;
-        buffer.vertex(ox, oy, 0).color(r, g, b, a).endVertex();
-
-        // Inner vertex
-        float ix = cx + innerR * cos;
-        float iy = cy + innerR * sin;
-        buffer.vertex(ix, iy, 0).color(r, g, b, a).endVertex();
-    }
-
-    private void drawDividingLines(BufferBuilder buffer, float centerX, float centerY)
-    {
-        if (wandEffectList.size() > 1)
+        for (float angle = startAngle; angle <= endAngle; angle += (endAngle - startAngle) / 360.0f)
         {
-            double radiansPerSpell = 2 * Math.PI / wandEffectList.size();
+            float radians = (float) Math.toRadians(angle);
+            float cos = (float) Math.cos(radians);
+            float sin = (float) Math.sin(radians);
 
-            for (int i = 0; i < wandEffectList.size(); i++)
-            {
-                final double closeWidth = 8 * Mth.DEG_TO_RAD;
-                final double farWidth = closeWidth / 4;
-                final double beginCloseRadians = i * radiansPerSpell - (Math.PI / 2 + (radiansPerSpell / 2)) - (closeWidth / 4);
-                final double endCloseRadians = beginCloseRadians + closeWidth;
-                final double beginFarRadians = i * radiansPerSpell - (Math.PI / 2 + (radiansPerSpell / 2)) - (farWidth / 4);
-                final double endFarRadians = beginCloseRadians + farWidth;
+            float outerX = centerX + outerRadius * cos;
+            float outerY = centerY + outerRadius * sin;
+            buffer.vertex(outerX, outerY, 0).color(outerColor.red(), outerColor.green(), outerColor.blue(), outerColor.alpha()).endVertex();
 
-                final double x1m1 = Math.cos(beginCloseRadians) * BOUNDARY_2;
-                final double x2m1 = Math.cos(endCloseRadians) * BOUNDARY_2;
-                final double y1m1 = Math.sin(beginCloseRadians) * BOUNDARY_2;
-                final double y2m1 = Math.sin(endCloseRadians) * BOUNDARY_2;
-
-                final double x1m2 = Math.cos(beginFarRadians) * BOUNDARY_4 * 1.1;
-                final double x2m2 = Math.cos(endFarRadians) * BOUNDARY_4 * 1.1;
-                final double y1m2 = Math.sin(beginFarRadians) * BOUNDARY_4 * 1.1;
-                final double y2m2 = Math.sin(endFarRadians) * BOUNDARY_4 * 1.1;
-
-                FFTypes.ColorType color = LINE_COLOR;
-                buffer.vertex(centerX + x1m1, centerY + y1m1, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-                buffer.vertex(centerX + x2m1, centerY + y2m1, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-                buffer.vertex(centerX + x2m2, centerY + y2m2, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-                buffer.vertex(centerX + x1m2, centerY + y1m2, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-            }
+            // Inner vertex
+            float innerX = centerX + innerRadius * cos;
+            float innerY = centerY + innerRadius * sin;
+            buffer.vertex(innerX, innerY, 0).color(innerColor.red(), innerColor.green(), innerColor.blue(), innerColor.alpha()).endVertex();
         }
-    }
 
-    private void drawRadialBackgrounds(BufferBuilder buffer, float centerX, float centerY)
-    {
-        Player player = Minecraft.getInstance().player;
-        ItemStack phylacteryStack = FFItemHandler.getPhylacteryCharm(player);
-
-        final int rayCount = 360;
-        final double radiansPerRay = 2 * Math.PI / rayCount;
-        final double radiansPerSpell = 2 * Math.PI / wandEffectList.size();
-
-        for (int i = 0; i < rayCount; i++)
-        {
-            final double beginRadians = i * radiansPerRay - (Math.PI / 2 + (radiansPerSpell / 2));
-            final double endRadians = (i + 1) * radiansPerRay - (Math.PI / 2 + (radiansPerSpell / 2));
-
-            final BaseWandEffect wandEffect = WandEffectItemHelper.getSelectedWandEffect(((CompoundTag) wandEffectList.get((i * wandEffectList.size()) / rayCount)).getString(STORAGE_WAND_EFFECT_TYPE));
-
-            FFTypes.ColorType color = LINE_COLOR;
-
-            if (!phylacteryStack.isEmpty() && (player.getMainHandItem().getItem() instanceof BaseSoulWand || player.getOffhandItem().getItem() instanceof BaseSoulWand))
-            {
-                // inner ring
-                final double x1m0 = Math.cos(beginRadians) * BOUNDARY_0;
-                final double x2m0 = Math.cos(endRadians) * BOUNDARY_0;
-                final double y1m0 = Math.sin(beginRadians) * BOUNDARY_0;
-                final double y2m0 = Math.sin(endRadians) * BOUNDARY_0;
-
-                final double x1m1 = Math.cos(beginRadians) * BOUNDARY_1;
-                final double x2m1 = Math.cos(endRadians) * BOUNDARY_1;
-                final double y1m1 = Math.sin(beginRadians) * BOUNDARY_1;
-                final double y2m1 = Math.sin(endRadians) * BOUNDARY_1;
-
-                buffer.vertex(centerX + x1m0, centerY + y1m0, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-                buffer.vertex(centerX + x2m0, centerY + y2m0, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-                buffer.vertex(centerX + x2m1, centerY + y2m1, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-                buffer.vertex(centerX + x1m1, centerY + y1m1, 0).color(color.red, color.green, color.blue, color.alpha).endVertex();
-            }
-
-            // middle ring
-            color = LINE_COLOR;
-            double categoryLineWidth = 2;
-            final double categoryLineOuterEdge = BOUNDARY_2 + categoryLineWidth;
-
-            final double x1m2 = Math.cos(beginRadians) * BOUNDARY_2;
-            final double x2m2 = Math.cos(endRadians) * BOUNDARY_2;
-            final double y1m2 = Math.sin(beginRadians) * BOUNDARY_2;
-            final double y2m2 = Math.sin(endRadians) * BOUNDARY_2;
-
-            final double x1m3 = Math.cos(beginRadians) * BOUNDARY_3;
-            final double x2m3 = Math.cos(endRadians) * BOUNDARY_3;
-            final double y1m3 = Math.sin(beginRadians) * BOUNDARY_3;
-            final double y2m3 = Math.sin(endRadians) * BOUNDARY_3;
-
-            buffer.vertex(centerX + x1m2, centerY + y1m2, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-            buffer.vertex(centerX + x2m2, centerY + y2m2, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-            buffer.vertex(centerX + x2m3, centerY + y2m3, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-            buffer.vertex(centerX + x1m3, centerY + y1m3, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-
-            // wand effect sections
-            if (wandEffect != null)
-            {
-                color = FFTypes.getTypeColorRGBA(wandEffect.getColor());
-            }
-
-            final double x1m4 = Math.cos(beginRadians) * BOUNDARY_4;
-            final double x2m4 = Math.cos(endRadians) * BOUNDARY_4;
-            final double y1m4 = Math.sin(beginRadians) * BOUNDARY_4;
-            final double y2m4 = Math.sin(endRadians) * BOUNDARY_4;
-
-            float alphaModifier = 1; //(float) Math.cos(Math.PI / 180.0f * ((i + (rayCount / wandEffectList.size())) % (rayCount / wandEffectList.size())));
-
-            if ((i * wandEffectList.size() / rayCount) == newSelectionIndex) // section highlighted
-            {
-                buffer.vertex(centerX + x1m3, centerY + y1m3, 0).color(color.red, color.green, color.blue, color.alpha * alphaModifier).endVertex();
-                buffer.vertex(centerX + x2m3, centerY + y2m3, 0).color(color.red, color.green, color.blue, color.alpha * alphaModifier).endVertex();
-                buffer.vertex(centerX + x2m4, centerY + y2m4, 0).color(color.red, color.green, color.blue, 0).endVertex();
-                buffer.vertex(centerX + x1m4, centerY + y1m4, 0).color(color.red, color.green, color.blue, 0).endVertex();
-            }
-            else // section not highlighted
-            {
-                buffer.vertex(centerX + x1m3, centerY + y1m3, 0).color(color.red * 0.7f, color.green * 0.7f, color.blue * 0.7f, color.alpha * 0.6f).endVertex();
-                buffer.vertex(centerX + x2m3, centerY + y2m3, 0).color(color.red * 0.7f, color.green * 0.7f, color.blue * 0.7f, color.alpha * 0.6f).endVertex();
-                buffer.vertex(centerX + x2m4, centerY + y2m4, 0).color(color.red * 0.7f, color.green * 0.7f, color.blue * 0.7f, 0).endVertex();
-                buffer.vertex(centerX + x1m4, centerY + y1m4, 0).color(color.red * 0.7f, color.green * 0.7f, color.blue * 0.7f, 0).endVertex();
-            }
-
-            final double x1m5 = Math.cos(beginRadians) * BOUNDARY_5;
-            final double x2m5 = Math.cos(endRadians) * BOUNDARY_5;
-            final double y1m5 = Math.sin(beginRadians) * BOUNDARY_5;
-            final double y2m5 = Math.sin(endRadians) * BOUNDARY_5;
-
-            buffer.vertex(centerX + x1m4, centerY + y1m4, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-            buffer.vertex(centerX + x2m4, centerY + y2m4, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-            buffer.vertex(centerX + x2m5, centerY + y2m5, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-            buffer.vertex(centerX + x1m5, centerY + y1m5, 0).color(LINE_COLOR.red, LINE_COLOR.green, LINE_COLOR.blue, LINE_COLOR.alpha).endVertex();
-        }
+        BufferUploader.drawWithShader(buffer.end());
     }
 }

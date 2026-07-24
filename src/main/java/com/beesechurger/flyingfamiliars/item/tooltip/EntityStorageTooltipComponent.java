@@ -128,7 +128,7 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
                             var entityScale = size / Math.max(entity.getBbWidth(), 0.8f * entity.getBbHeight());
 
                             // draw entity boxes with color of item type
-                            RenderSystem.setShaderColor(color.red, color.green, color.blue, color.alpha);
+                            RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), color.alpha());
                             graphics.blit(ENTRY_BACKGROUND, x + xOff, y, 0, 0, ENTRY_BACKGROUND_BOX_SIZE, ENTRY_BACKGROUND_BOX_SIZE, 64, 64);
                             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -189,7 +189,7 @@ public record EntityStorageTooltipComponent(ListTag entryList, boolean hasMoreEn
                                 graphics.pose().popPose();
 
                                 // draw text box with color of item type
-                                RenderSystem.setShaderColor(color.red, color.green, color.blue, color.alpha);
+                                RenderSystem.setShaderColor(color.red(), color.green(), color.blue(), color.alpha());
                                 graphics.blit(ENTRY_BACKGROUND, x + xOff + ENTRY_BACKGROUND_BOX_SIZE, y, 0, 26, 8, 24, 64, 64);
                                 for (int i = 0; i < ENTITY_NAME_WIDTH; i++)
                                 {
