@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.common.wand_effect.charm;
 
+import com.beesechurger.flyingfamiliars.client.FFSounds;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

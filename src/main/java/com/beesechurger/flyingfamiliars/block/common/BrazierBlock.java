@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
+import com.beesechurger.flyingfamiliars.block.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.client.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;

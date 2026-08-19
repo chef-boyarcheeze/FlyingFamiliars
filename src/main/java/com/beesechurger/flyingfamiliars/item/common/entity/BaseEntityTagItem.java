@@ -2,7 +2,7 @@ package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.common.BaseStorageTagItem;
 import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
-import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.EntityTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;

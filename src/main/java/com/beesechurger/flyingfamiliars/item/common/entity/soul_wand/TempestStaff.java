@@ -18,6 +18,6 @@ public class TempestStaff extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_AIR;
+        return FFTypes.FAMILIAR_TYPE_AIR.color;
     }
 }

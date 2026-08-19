@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common;
 
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.WandEffectTagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

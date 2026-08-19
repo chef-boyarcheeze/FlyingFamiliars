@@ -2,11 +2,11 @@ package com.beesechurger.flyingfamiliars.wand_effect.client;
 
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
 import com.beesechurger.flyingfamiliars.item.common.entity.soul_wand.BaseSoulWand;
-import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
-import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
+import com.beesechurger.flyingfamiliars.packet.FFPackets;
+import com.beesechurger.flyingfamiliars.packet.client.WandEffectSelectionC2SPacket;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
+import com.beesechurger.flyingfamiliars.util.tags.SpiritTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.WandEffectTagUtil;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import com.beesechurger.flyingfamiliars.wand_effect.common.WandEffectItemHelper;
 import com.mojang.blaze3d.systems.RenderSystem;

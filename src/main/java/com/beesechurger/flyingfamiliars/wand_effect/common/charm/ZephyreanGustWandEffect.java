@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
-import com.beesechurger.flyingfamiliars.registries.FFItems;
+import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.world.entity.player.Player;
@@ -65,7 +65,7 @@ public class ZephyreanGustWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_AIR;
+        return FFTypes.FAMILIAR_TYPE_AIR.color;
     }
 
 /// Misc:

@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.block.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
-import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

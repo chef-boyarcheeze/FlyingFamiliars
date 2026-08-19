@@ -18,6 +18,6 @@ public class VoidShard extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_VOID;
+        return FFTypes.FAMILIAR_TYPE_VOID.color;
     }
 }

@@ -39,7 +39,7 @@ public class FireballWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_FIRE;
+        return FFTypes.FAMILIAR_TYPE_FIRE.color;
     }
 
 ///////////////////////////

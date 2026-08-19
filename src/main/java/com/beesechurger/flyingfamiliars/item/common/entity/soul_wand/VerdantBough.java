@@ -18,6 +18,6 @@ public class VerdantBough extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_LIFE;
+        return FFTypes.FAMILIAR_TYPE_LIFE.color;
     }
 }

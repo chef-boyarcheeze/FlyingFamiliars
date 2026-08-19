@@ -1,9 +1,11 @@
 package com.beesechurger.flyingfamiliars.item.common.entity;
 
 import com.beesechurger.flyingfamiliars.item.FFItemHandler;
+import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.item.common.ITieredItem;
 import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
-import com.beesechurger.flyingfamiliars.tags.SpiritTagUtil;
+import com.beesechurger.flyingfamiliars.util.FFTypes;
+import com.beesechurger.flyingfamiliars.util.tags.SpiritTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.beesechurger.flyingfamiliars.util.FFConstants.*;
 
@@ -26,6 +29,17 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
     {
         super(properties);
     }
+
+    // TODO: remove entirely
+    private static final Map<String, String> bandaid_map = Map.ofEntries(
+        Map.entry(FFItems.WET_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_WATER.type),
+        Map.entry(FFItems.LUSH_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_LIFE.type),
+        Map.entry(FFItems.GUSTING_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_AIR.type),
+        Map.entry(FFItems.STONY_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_EARTH.type),
+        Map.entry(FFItems.BURNING_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_FIRE.type),
+        Map.entry(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_LIGHT.type),
+        Map.entry(FFItems.VACUOUS_SPIRIT_FRAGMENT.get().toString(), FFTypes.FAMILIAR_TYPE_VOID.type)
+    );
 
 //////////////////
 /// Accessors: ///
@@ -84,7 +98,8 @@ public class Phylactery extends BaseEntityTagItem implements ICurioItem, ITiered
                     {
                         CompoundTag newEntry = new CompoundTag();
 
-                        newEntry.putString(STORAGE_SPIRIT_TYPE, entityStack.getItem().toString());
+                        // TODO: replace band-aid for spirit item, possibly completely rework spirit gathering (no picking up items anymore)
+                        newEntry.putString(STORAGE_SPIRIT_TYPE, bandaid_map.get(entityStack.getItem().toString()));
                         newEntry.putInt(STORAGE_SPIRIT_STORAGE, 0);
 
                         entryTag = newEntry;

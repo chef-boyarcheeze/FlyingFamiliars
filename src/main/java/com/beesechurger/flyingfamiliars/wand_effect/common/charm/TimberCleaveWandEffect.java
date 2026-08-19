@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
+import com.beesechurger.flyingfamiliars.client.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.core.BlockPos;
@@ -77,7 +77,7 @@ public class TimberCleaveWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_LIFE;
+        return FFTypes.FAMILIAR_TYPE_LIFE.color;
     }
 
 /// Misc:

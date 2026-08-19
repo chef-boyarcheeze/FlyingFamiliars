@@ -1,9 +1,9 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
+import com.beesechurger.flyingfamiliars.block.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.block.FFBlocks;
+import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.RunicCubeProjectile;
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.registries.FFBlocks;
-import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;

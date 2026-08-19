@@ -1,6 +1,6 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.block.FFBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 

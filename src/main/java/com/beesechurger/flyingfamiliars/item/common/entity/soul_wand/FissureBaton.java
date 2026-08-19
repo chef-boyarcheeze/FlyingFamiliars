@@ -18,6 +18,6 @@ public class FissureBaton extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_EARTH;
+        return FFTypes.FAMILIAR_TYPE_EARTH.color;
     }
 }

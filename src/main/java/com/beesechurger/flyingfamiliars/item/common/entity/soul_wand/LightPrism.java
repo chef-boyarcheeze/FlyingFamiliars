@@ -18,6 +18,6 @@ public class LightPrism extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_LIGHT;
+        return FFTypes.FAMILIAR_TYPE_LIGHT.color;
     }
 }

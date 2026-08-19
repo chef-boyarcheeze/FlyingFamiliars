@@ -1,10 +1,10 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.projectile;
 
+import com.beesechurger.flyingfamiliars.client.FFKeys;
+import com.beesechurger.flyingfamiliars.client.FFSounds;
 import com.beesechurger.flyingfamiliars.entity.common.wand_effect.projectile.CaptureProjectile;
+import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.registries.FFItems;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
@@ -53,7 +53,7 @@ public class CaptureWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_VOID;
+        return FFTypes.FAMILIAR_TYPE_VOID.color;
     }
 
 ///////////////////////////

@@ -1,10 +1,10 @@
 package com.beesechurger.flyingfamiliars.entity.client.familiar.shadewyrm;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.BaseFamiliarRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.layer.rider.ShadewyrmRiderLayer;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.ShadewyrmEntity;
-import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

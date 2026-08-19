@@ -18,6 +18,6 @@ public class FieryCrook extends BaseSoulWand
     @Override
     protected int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_FIRE;
+        return FFTypes.FAMILIAR_TYPE_FIRE.color;
     }
 }

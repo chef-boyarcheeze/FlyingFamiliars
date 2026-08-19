@@ -1,8 +1,5 @@
 package com.beesechurger.flyingfamiliars.util;
 
-import com.beesechurger.flyingfamiliars.registries.FFItems;
-import com.google.common.collect.Maps;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 
@@ -10,26 +7,40 @@ import java.util.Map;
 
 public class FFTypes
 {
-    public static final int FAMILIAR_TYPE_WATER = 0xFF2040D0;
-    public static final int FAMILIAR_TYPE_LIFE = 0xFF008020;
-    public static final int FAMILIAR_TYPE_AIR = 0xFFE0E000;
-    public static final int FAMILIAR_TYPE_EARTH = 0xFFE09020;
-    public static final int FAMILIAR_TYPE_FIRE = 0xFFB03020;
-    public static final int FAMILIAR_TYPE_LIGHT = 0xFFF0D0F0;
-    public static final int FAMILIAR_TYPE_VOID = 0xFF402080;
+    public static final FamiliarType FAMILIAR_TYPE_WATER = new FamiliarType("water", 0xFF2040D0);
+    public static final FamiliarType FAMILIAR_TYPE_LIFE = new FamiliarType("life", 0xFF008020);
+    public static final FamiliarType FAMILIAR_TYPE_AIR = new FamiliarType("air", 0xFFE0E000);
+    public static final FamiliarType FAMILIAR_TYPE_EARTH = new FamiliarType("earth", 0xFFE09020);
+    public static final FamiliarType FAMILIAR_TYPE_FIRE = new FamiliarType("fire", 0xFFB03020);
+    public static final FamiliarType FAMILIAR_TYPE_LIGHT = new FamiliarType("light", 0xFFF0D0F0);
+    public static final FamiliarType FAMILIAR_TYPE_VOID = new FamiliarType("void", 0xFF402080);
 
-    private static final Map<String, Integer> TYPE_COLOR_MAP = (Map) Util.make(Maps.newHashMap(), (map) -> {
-        map.put(FFItems.WET_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_WATER);
-        map.put(FFItems.LUSH_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_LIFE);
-        map.put(FFItems.GUSTING_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_AIR);
-        map.put(FFItems.STONY_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_EARTH);
-        map.put(FFItems.BURNING_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_FIRE);
-        map.put(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_LIGHT);
-        map.put(FFItems.VACUOUS_SPIRIT_FRAGMENT.get().toString(), FAMILIAR_TYPE_VOID);
-    });
+    public static class FamiliarType
+    {
+        public final String type;
+        public final int color;
+
+        public FamiliarType(String type, int color)
+        {
+            this.type = type;
+            this.color = color;
+        }
+    }
+
+    private static final Map<String, Integer> TYPE_COLOR_MAP = Map.ofEntries(
+        Map.entry(FAMILIAR_TYPE_WATER.type, FAMILIAR_TYPE_WATER.color),
+        Map.entry(FAMILIAR_TYPE_LIFE.type, FAMILIAR_TYPE_LIFE.color),
+        Map.entry(FAMILIAR_TYPE_AIR.type, FAMILIAR_TYPE_AIR.color),
+        Map.entry(FAMILIAR_TYPE_EARTH.type, FAMILIAR_TYPE_EARTH.color),
+        Map.entry(FAMILIAR_TYPE_FIRE.type, FAMILIAR_TYPE_FIRE.color),
+        Map.entry(FAMILIAR_TYPE_LIGHT.type, FAMILIAR_TYPE_LIGHT.color),
+        Map.entry(FAMILIAR_TYPE_VOID.type, FAMILIAR_TYPE_VOID.color)
+    );
 
     public static int getTypeColorInt(String type)
     {
+        System.out.println(type);
+
         if (TYPE_COLOR_MAP.containsKey(type))
         {
             return TYPE_COLOR_MAP.get(type);
@@ -105,18 +116,18 @@ public class FFTypes
     }
 
     private static final Map<String, Component> TYPE_NAME_MAP = Map.ofEntries(
-            Map.entry(FFItems.WET_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_water")),
-            Map.entry(FFItems.LUSH_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_life")),
-            Map.entry(FFItems.GUSTING_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_air")),
-            Map.entry(FFItems.STONY_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_earth")),
-            Map.entry(FFItems.BURNING_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_fire")),
-            Map.entry(FFItems.LUMINOUS_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_light")),
-            Map.entry(FFItems.VACUOUS_SPIRIT_FRAGMENT.get().toString(), Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_void"))
+            Map.entry(FAMILIAR_TYPE_WATER.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_water")),
+            Map.entry(FAMILIAR_TYPE_LIFE.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_life")),
+            Map.entry(FAMILIAR_TYPE_AIR.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_air")),
+            Map.entry(FAMILIAR_TYPE_EARTH.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_earth")),
+            Map.entry(FAMILIAR_TYPE_FIRE.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_fire")),
+            Map.entry(FAMILIAR_TYPE_LIGHT.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_light")),
+            Map.entry(FAMILIAR_TYPE_VOID.type, Component.translatable("tooltip.flyingfamiliars.spirit_tag.type_void"))
     );
 
     public static Component getTypeName(String type)
     {
-        if (TYPE_COLOR_MAP.containsKey(type))
+        if (TYPE_NAME_MAP.containsKey(type))
         {
             return TYPE_NAME_MAP.get(type);
         }

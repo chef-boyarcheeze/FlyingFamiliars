@@ -1,10 +1,10 @@
 package com.beesechurger.flyingfamiliars.entity.common.familiar;
 
+import com.beesechurger.flyingfamiliars.client.FFKeys;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarBodyRotationControl;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarFlyingPathNavigation;
 import com.beesechurger.flyingfamiliars.entity.ai.FamiliarMoveControl;
 import com.beesechurger.flyingfamiliars.entity.client.FFAnimationController;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

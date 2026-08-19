@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
+import com.beesechurger.flyingfamiliars.block.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.block.entity.RunicPedestalBE;
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;

@@ -40,7 +40,7 @@ public class CrystalSpikeWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_EARTH;
+        return FFTypes.FAMILIAR_TYPE_EARTH.color;
     }
 
 ///////////////////////////

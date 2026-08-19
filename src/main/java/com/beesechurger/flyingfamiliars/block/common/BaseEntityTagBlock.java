@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.block.common;
 
 import com.beesechurger.flyingfamiliars.block.entity.BaseEntityTagBE;
+import com.beesechurger.flyingfamiliars.client.FFSounds;
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;

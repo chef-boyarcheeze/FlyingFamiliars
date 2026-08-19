@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.entity.ai;
 
+import com.beesechurger.flyingfamiliars.client.FFKeys;
 import com.beesechurger.flyingfamiliars.entity.common.familiar.BaseFamiliarEntity;
-import com.beesechurger.flyingfamiliars.registries.FFKeys;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;

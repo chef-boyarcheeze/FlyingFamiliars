@@ -18,6 +18,6 @@ public class WaterSceptre extends BaseSoulWand
 	@Override
 	protected int getColor()
 	{
-		return FFTypes.FAMILIAR_TYPE_WATER;
+		return FFTypes.FAMILIAR_TYPE_WATER.color;
 	}
 }

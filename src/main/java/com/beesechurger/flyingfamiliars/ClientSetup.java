@@ -1,5 +1,7 @@
 package com.beesechurger.flyingfamiliars;
 
+import com.beesechurger.flyingfamiliars.block.FFBlocks;
+import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.cloud_ray.CloudRayRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.crystal_tressym.CrystalTressymRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.familiar.deep_jellyfish.DeepJellyfishRenderer;
@@ -16,13 +18,10 @@ import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.cap
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.capture_projectile.RunicCubeProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fireball_projectile.FireballProjectileRenderer;
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.flamethrower_projectile.FlamethrowerProjectileRenderer;
+import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
 import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
-import com.beesechurger.flyingfamiliars.registries.FFBlocks;
-import com.beesechurger.flyingfamiliars.registries.FFEntityTypes;
-import com.beesechurger.flyingfamiliars.registries.FFFluids;
-import com.beesechurger.flyingfamiliars.registries.FFItems;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -40,7 +39,7 @@ public class ClientSetup
 {
     public static final ClientSetup INSTANCE = new ClientSetup();
 
-    public void register(final IEventBus modEventBus)
+    public void register(final IEventBus modEventBus, final IEventBus forgeEventBus)
     {
         modEventBus.addListener(this::registerRenderers);
         modEventBus.addListener(this::registerOverlays);
@@ -80,22 +79,6 @@ public class ClientSetup
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.BRAZIER.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.RUNIC_PEDESTAL.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(FFBlocks.VITA_ALEMBIC.get(), RenderType.translucent());
-
-        // Fluids:
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_BLUE_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_BLUE_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_GREEN_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_GREEN_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_YELLOW_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_YELLOW_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_GOLD_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_GOLD_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_RED_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_RED_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_BLACK_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_BLACK_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.SOURCE_WHITE_VITALITY.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(FFFluids.FLOWING_WHITE_VITALITY.get(), RenderType.translucent());
 
         // Curio items:
         CuriosRendererRegistry.register(FFItems.PHYLACTERY.get(), PhylacteryRenderer::new);

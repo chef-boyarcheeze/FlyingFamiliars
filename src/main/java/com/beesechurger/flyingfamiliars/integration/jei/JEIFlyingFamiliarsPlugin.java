@@ -1,9 +1,9 @@
 package com.beesechurger.flyingfamiliars.integration.jei;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
+import com.beesechurger.flyingfamiliars.block.FFBlocks;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
 import com.beesechurger.flyingfamiliars.recipe.TectonicSunderRecipe;
-import com.beesechurger.flyingfamiliars.registries.FFBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IModIngredientRegistration;

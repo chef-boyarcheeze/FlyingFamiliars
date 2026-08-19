@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.wand_effect.common.charm;
 
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
+import com.beesechurger.flyingfamiliars.client.FFSounds;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
+import com.beesechurger.flyingfamiliars.util.tags.WandEffectTagUtil;
 import com.beesechurger.flyingfamiliars.wand_effect.common.BaseWandEffect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -80,7 +80,7 @@ public class CloudCallWandEffect extends BaseWandEffect
     @Override
     public int getColor()
     {
-        return FFTypes.FAMILIAR_TYPE_WATER;
+        return FFTypes.FAMILIAR_TYPE_WATER.color;
     }
 
     @Override

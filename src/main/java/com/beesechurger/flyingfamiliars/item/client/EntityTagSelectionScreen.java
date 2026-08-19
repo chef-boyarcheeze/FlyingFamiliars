@@ -1,10 +1,10 @@
 package com.beesechurger.flyingfamiliars.item.client;
 
 import com.beesechurger.flyingfamiliars.item.common.entity.BaseEntityTagItem;
-import com.beesechurger.flyingfamiliars.packet.WandEffectSelectionC2SPacket;
-import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
-import com.beesechurger.flyingfamiliars.tags.WandEffectTagUtil;
+import com.beesechurger.flyingfamiliars.packet.FFPackets;
+import com.beesechurger.flyingfamiliars.packet.client.WandEffectSelectionC2SPacket;
+import com.beesechurger.flyingfamiliars.util.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.WandEffectTagUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;

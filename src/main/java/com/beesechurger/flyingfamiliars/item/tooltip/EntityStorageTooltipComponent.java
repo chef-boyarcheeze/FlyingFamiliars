@@ -1,8 +1,8 @@
 package com.beesechurger.flyingfamiliars.item.tooltip;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
 import com.beesechurger.flyingfamiliars.util.FFTypes;
+import com.beesechurger.flyingfamiliars.util.tags.EntityTagUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;

@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.client.brazier;
 
 import com.beesechurger.flyingfamiliars.block.entity.BrazierBE;
-import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.EntityTagUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;

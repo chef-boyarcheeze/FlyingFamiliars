@@ -1,7 +1,7 @@
 package com.beesechurger.flyingfamiliars.block.client.ceremonial_font;
 
 import com.beesechurger.flyingfamiliars.block.entity.CeremonialFontBE;
-import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.EntityTagUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

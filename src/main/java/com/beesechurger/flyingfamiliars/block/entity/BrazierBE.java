@@ -1,11 +1,11 @@
 package com.beesechurger.flyingfamiliars.block.entity;
 
-import com.beesechurger.flyingfamiliars.packet.BEProgressS2CPacket;
+import com.beesechurger.flyingfamiliars.block.FFBlockEntities;
+import com.beesechurger.flyingfamiliars.client.FFSounds;
+import com.beesechurger.flyingfamiliars.packet.FFPackets;
+import com.beesechurger.flyingfamiliars.packet.server.BEProgressS2CPacket;
 import com.beesechurger.flyingfamiliars.recipe.BrazierRecipe;
-import com.beesechurger.flyingfamiliars.registries.FFBlockEntities;
-import com.beesechurger.flyingfamiliars.registries.FFPackets;
-import com.beesechurger.flyingfamiliars.registries.FFSounds;
-import com.beesechurger.flyingfamiliars.tags.EntityTagUtil;
+import com.beesechurger.flyingfamiliars.util.tags.EntityTagUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
