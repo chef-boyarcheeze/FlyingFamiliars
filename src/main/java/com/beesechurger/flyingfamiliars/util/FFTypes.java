@@ -39,8 +39,6 @@ public class FFTypes
 
     public static int getTypeColorInt(String type)
     {
-        System.out.println(type);
-
         if (TYPE_COLOR_MAP.containsKey(type))
         {
             return TYPE_COLOR_MAP.get(type);

@@ -262,8 +262,6 @@ public class FFEvents
 							}
 							else if (carriedStack.getItem() instanceof Phylactery && hoveredStack.getItem() instanceof Phylactery && Screen.hasShiftDown())
 							{
-								System.out.println("hello");
-
 								if (leftMouseFlag)
 								{
 									int carriedMaxStorage = SpiritTagUtil.INSTANCE.getMaxStorage(carriedStack.getOrCreateTag());
