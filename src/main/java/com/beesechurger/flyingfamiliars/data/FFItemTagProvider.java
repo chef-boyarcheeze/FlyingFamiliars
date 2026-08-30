@@ -14,11 +14,11 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class FFItemTags extends ItemTagsProvider
+public class FFItemTagProvider extends ItemTagsProvider
 {
     public static final TagKey<Item> PHYLACTERY_CURIO = ItemTags.create(new ResourceLocation("curios", "phylactery"));
 
-    public FFItemTags(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, ExistingFileHelper existingFileHelper)
+    public FFItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagProvider, ExistingFileHelper existingFileHelper)
     {
         super(output, lookupProvider, blockTagProvider, FlyingFamiliars.MOD_ID, existingFileHelper);
     }

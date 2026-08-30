@@ -2,24 +2,29 @@ package com.beesechurger.flyingfamiliars;
 
 import com.beesechurger.flyingfamiliars.client.FFCommands;
 import com.beesechurger.flyingfamiliars.client.FFKeys;
-import com.beesechurger.flyingfamiliars.data.FFBlockTags;
-import com.beesechurger.flyingfamiliars.data.FFItemTags;
+import com.beesechurger.flyingfamiliars.data.FFBlockTagProvider;
+import com.beesechurger.flyingfamiliars.data.FFItemTagProvider;
+import com.beesechurger.flyingfamiliars.data.FFLootTables;
 import com.beesechurger.flyingfamiliars.packet.FFPackets;
 import com.beesechurger.flyingfamiliars.pantheon.PantheonAffinityProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class CommonSetup
@@ -50,11 +55,19 @@ public class CommonSetup
             CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
             ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-            BlockTagsProvider blockTags = new FFBlockTags(output, lookupProvider, existingFileHelper);
-            ItemTagsProvider itemTags = new FFItemTags(output, lookupProvider, blockTags.contentsGetter(), existingFileHelper);
+            // tags
+            BlockTagsProvider blockTags = new FFBlockTagProvider(output, lookupProvider, existingFileHelper);
+            ItemTagsProvider itemTags = new FFItemTagProvider(output, lookupProvider, blockTags.contentsGetter(), existingFileHelper);
 
             gen.addProvider(true, blockTags);
             gen.addProvider(true, itemTags);
+
+            // loot tables
+            //LootTableProvider archaeologyTables = new FFLootTables.FFLootTableProvider(output, Set.of(), List.of(FFLootTables.FFLootTableProvider.FFArchaeology.ARCHAEOLOGY));
+            GlobalLootModifierProvider glmTables = new FFLootTables.FFGlobalLootModifierProvider(output);
+
+            //gen.addProvider(true, archaeologyTables);
+            gen.addProvider(true, glmTables);
         }
     }
 

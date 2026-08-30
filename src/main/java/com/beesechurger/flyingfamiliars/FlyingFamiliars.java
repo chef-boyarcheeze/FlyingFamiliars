@@ -3,6 +3,7 @@ package com.beesechurger.flyingfamiliars;
 import com.beesechurger.flyingfamiliars.block.FFBlockEntities;
 import com.beesechurger.flyingfamiliars.block.FFBlocks;
 import com.beesechurger.flyingfamiliars.client.FFSounds;
+import com.beesechurger.flyingfamiliars.data.FFLootTables;
 import com.beesechurger.flyingfamiliars.effect.FFEffects;
 import com.beesechurger.flyingfamiliars.entity.FFEntityTypes;
 import com.beesechurger.flyingfamiliars.item.FFCreativeTabs;
@@ -31,6 +32,7 @@ public class FlyingFamiliars
 		FFItems.ITEMS.register(modEventBus);
 		FFRecipes.RECIPES.register(modEventBus);
 		FFSounds.SOUNDS.register(modEventBus);
+		FFLootTables.LOOT_TABLE_MODIFIERS.register(modEventBus);
 
 		ClientSetup.INSTANCE.register(modEventBus, MinecraftForge.EVENT_BUS);
 		CommonSetup.INSTANCE.register(modEventBus, MinecraftForge.EVENT_BUS);
