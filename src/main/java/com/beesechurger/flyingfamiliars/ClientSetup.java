@@ -20,12 +20,16 @@ import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.fir
 import com.beesechurger.flyingfamiliars.entity.client.wand_effect.projectile.flamethrower_projectile.FlamethrowerProjectileRenderer;
 import com.beesechurger.flyingfamiliars.item.FFItems;
 import com.beesechurger.flyingfamiliars.item.client.PhylacteryRenderer;
+import com.beesechurger.flyingfamiliars.item.client.codex.CodexModel;
 import com.beesechurger.flyingfamiliars.item.tooltip.EntityStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.item.tooltip.SpiritStorageTooltipComponent;
 import com.beesechurger.flyingfamiliars.wand_effect.client.WandEffectSelectionScreen;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -42,6 +46,7 @@ public class ClientSetup
     public void register(final IEventBus modEventBus, final IEventBus forgeEventBus)
     {
         modEventBus.addListener(this::registerRenderers);
+        modEventBus.addListener(this::registerRendererLayers);
         modEventBus.addListener(this::registerOverlays);
         modEventBus.addListener(this::registerClientTooltipComponents);
     }
@@ -82,6 +87,11 @@ public class ClientSetup
 
         // Curio items:
         CuriosRendererRegistry.register(FFItems.PHYLACTERY.get(), PhylacteryRenderer::new);
+    }
+
+    private void registerRendererLayers(EntityRenderersEvent.RegisterLayerDefinitions event)
+    {
+        event.registerLayerDefinition(CodexModel.LAYER_LOCATION, CodexModel::createBodyLayer);
     }
 
     private void registerOverlays(RegisterGuiOverlaysEvent event)
