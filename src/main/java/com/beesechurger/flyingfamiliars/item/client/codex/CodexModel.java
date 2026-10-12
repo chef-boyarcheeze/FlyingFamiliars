@@ -15,12 +15,18 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class CodexModel extends EntityModel
 {
     // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "codex"), "main");
+    private static Random RANDOM = new Random();
+
     private final ModelPart body;
     private final ModelPart cover_back;
     private final ModelPart cover_spine_back;
@@ -33,79 +39,61 @@ public class CodexModel extends EntityModel
     private final ModelPart flap_clasp_metal;
     private final ModelPart pages_stack;
     private final ModelPart pages_loose;
+    private final ModelPart pages_loose_1;
+    private final ModelPart pages_loose_2;
+    private final ModelPart pages_loose_3;
+    private final ModelPart pages_loose_4;
+    private final ModelPart pages_loose_5;
+
+    private List<ModelPart> pageList;
+    private PageOperation currentPageOperation = PageOperation.EMPTY;
 
     public float codexOpenTime = 0;
+    public float pageFlipTime = 0;
 
     public CodexModel(ModelPart root)
     {
         this.body = root.getChild("body");
+
         this.cover_back = this.body.getChild("cover_back");
         this.cover_spine_back = this.cover_back.getChild("cover_spine_back");
         this.cover_spine_front = this.cover_spine_back.getChild("cover_spine_front");
         this.cover_front = this.cover_spine_front.getChild("cover_front");
         this.cover_jewels = this.cover_front.getChild("cover_jewels");
+
         this.flap_back = this.cover_back.getChild("flap_back");
         this.flap_front = this.flap_back.getChild("flap_front");
         this.flap_clasp_leather = this.flap_front.getChild("flap_clasp_leather");
         this.flap_clasp_metal = this.flap_clasp_leather.getChild("flap_clasp_metal");
+
         this.pages_stack = this.cover_back.getChild("pages_stack");
         this.pages_loose = this.pages_stack.getChild("pages_loose");
+        this.pages_loose_1 = this.pages_loose.getChild("pages_loose_1");
+        this.pages_loose_2 = this.pages_loose.getChild("pages_loose_2");
+        this.pages_loose_3 = this.pages_loose.getChild("pages_loose_3");
+        this.pages_loose_4 = this.pages_loose.getChild("pages_loose_4");
+        this.pages_loose_5 = this.pages_loose.getChild("pages_loose_5");
+
+        this.pageList = new ArrayList<ModelPart>(List.of(
+            offsetInitialPose(this.pages_loose_1, null, null, null, null, this.pages_loose_1.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
+            offsetInitialPose(this.pages_loose_2, null, null, null, null, this.pages_loose_2.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
+            offsetInitialPose(this.pages_loose_3, null, null, null, null, this.pages_loose_3.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
+            offsetInitialPose(this.pages_loose_4, null, null, null, null, this.pages_loose_4.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
+            offsetInitialPose(this.pages_loose_5, null, null, null, null, this.pages_loose_5.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null)
+        ));
     }
 
     public static LayerDefinition createBodyLayer()
     {
-        /*MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(-0.475F, 24.0F, 0.0F));
-
-        PartDefinition cover_back = body.addOrReplaceChild("cover_back", CubeListBuilder.create().texOffs(0, 19).addBox(-14.25F, -1.0F, -8.5F, 15.0F, 2.0F, 17.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.25F, -1.0F, 0.0F, 0.0F, 0.0F, 0.0436F));
-
-        PartDefinition cover_spine_back = cover_back.addOrReplaceChild("cover_spine_back", CubeListBuilder.create().texOffs(64, 0).addBox(-2.0F, -3.0F, -7.5F, 2.0F, 3.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.75F, 0.75F, 0.0F, 0.0F, 0.0F, 0.1309F));
-
-        PartDefinition cover_spine_front = cover_spine_back.addOrReplaceChild("cover_spine_front", CubeListBuilder.create().texOffs(46, 54).addBox(-2.0F, -3.0F, -8.0F, 2.0F, 3.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -3.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
-
-        PartDefinition cover_front = cover_spine_front.addOrReplaceChild("cover_front", CubeListBuilder.create().texOffs(0, 0).addBox(-14.25F, -1.0F, -8.5F, 15.0F, 2.0F, 17.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.75F, -2.25F, 0.0F, 0.0F, 0.0F, 0.2182F));
-
-        PartDefinition cover_jewels = cover_front.addOrReplaceChild("cover_jewels", CubeListBuilder.create().texOffs(0, 78).mirror().addBox(1.25F, -1.0F, -3.7143F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-            .texOffs(9, 78).mirror().addBox(2.25F, -1.0F, -1.4643F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-            .texOffs(18, 78).mirror().addBox(1.25F, -1.0F, 0.7857F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-            .texOffs(27, 78).mirror().addBox(-1.0F, -1.0F, 1.7857F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-            .texOffs(36, 78).mirror().addBox(-3.25F, -1.0F, 0.7857F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-            .texOffs(45, 78).mirror().addBox(-4.25F, -1.0F, -1.4643F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-            .texOffs(54, 78).mirror().addBox(-3.25F, -1.0F, -3.7143F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-7.251F, -0.5436F, -0.0357F, 0.0F, -1.5708F, 0.0F));
-
-        PartDefinition flap_back = cover_back.addOrReplaceChild("flap_back", CubeListBuilder.create().texOffs(64, 18).addBox(-0.5F, -2.5F, -7.5F, 1.0F, 3.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-14.0F, 0.25F, 0.0F, 0.0F, 0.0F, -0.4363F));
-
-        PartDefinition flap_front = flap_back.addOrReplaceChild("flap_front", CubeListBuilder.create().texOffs(56, 38).addBox(-0.5F, -3.0F, -6.0F, 1.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -2.25F, 0.0F, 0.0F, 0.0F, 0.5236F));
-
-        PartDefinition flap_clasp_leather = flap_front.addOrReplaceChild("flap_clasp_leather", CubeListBuilder.create().texOffs(0, 66).addBox(-0.25F, -1.75F, -4.0F, 1.0F, 2.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.15F, -2.75F, 0.0F, 0.0F, 0.0F, 1.3963F));
-
-        PartDefinition flap_clasp_metal = flap_clasp_leather.addOrReplaceChild("flap_clasp_metal", CubeListBuilder.create().texOffs(18, 66).addBox(-0.5F, -1.75F, -1.0F, 1.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.375F, -1.25F, -0.5F));
-
-        PartDefinition pages_stack = cover_back.addOrReplaceChild("pages_stack", CubeListBuilder.create().texOffs(0, 84).addBox(-13.5F, -1.5F, -7.0F, 14.0F, 3.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.25F, -2.075F, 0.0F, 0.0F, 0.0F, -0.0436F));
-
-        PartDefinition pages_loose = pages_stack.addOrReplaceChild("pages_loose", CubeListBuilder.create().texOffs(-13, 41).addBox(-7.5F, -0.5F, -6.5F, 15.0F, 0.0F, 13.0F, new CubeDeformation(0.0F))
-            .texOffs(-13, 41).addBox(-7.5F, -0.25F, -6.5F, 15.0F, 0.0F, 13.0F, new CubeDeformation(0.0F))
-            .texOffs(-13, 41).addBox(-7.5F, 0.0F, -6.5F, 15.0F, 0.0F, 13.0F, new CubeDeformation(0.0F))
-            .texOffs(-13, 41).addBox(-7.5F, 0.25F, -6.5F, 15.0F, 0.0F, 13.0F, new CubeDeformation(0.0F))
-            .texOffs(-13, 41).addBox(-7.5F, 0.5F, -6.5F, 15.0F, 0.0F, 13.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.5F, 0.0F, 0.0F));
-
-        return LayerDefinition.create(meshdefinition, 128, 128);*/
-
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
         PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.offset(-0.475F, 24.0F, 0.0F));
 
         PartDefinition cover_back = body.addOrReplaceChild("cover_back", CubeListBuilder.create().texOffs(0, 20).addBox(-14.25F, -1.0F, -8.5F, 15.0F, 2.0F, 17.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(7.25F, -1.0F, 0.0F, 0.0F, 0.0F, 0.0436F));
-
         PartDefinition cover_spine_back = cover_back.addOrReplaceChild("cover_spine_back", CubeListBuilder.create().texOffs(0, 69).addBox(-2.0F, -3.0F, -7.5F, 2.0F, 3.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.75F, 0.75F, 0.0F, 0.0F, 0.0F, 0.1309F));
-
         PartDefinition cover_spine_front = cover_spine_back.addOrReplaceChild("cover_spine_front", CubeListBuilder.create().texOffs(33, 103).addBox(-2.0F, -3.0F, -8.0F, 2.0F, 3.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -3.0F, 0.0F, 0.0F, 0.0F, -0.4363F));
-
         PartDefinition cover_front = cover_spine_front.addOrReplaceChild("cover_front", CubeListBuilder.create().texOffs(0, 0).addBox(-14.25F, -1.0F, -8.5F, 15.0F, 2.0F, 17.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.75F, -2.25F, 0.0F, 0.0F, 0.0F, 0.2182F));
-
         PartDefinition cover_jewels = cover_front.addOrReplaceChild("cover_jewels", CubeListBuilder.create().texOffs(27, 60).addBox(1.25F, -1.0F, -3.7143F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
             .texOffs(35, 60).addBox(2.25F, -1.0F, -1.4643F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
             .texOffs(43, 60).addBox(1.25F, -1.0F, 0.7857F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
@@ -115,22 +103,285 @@ public class CodexModel extends EntityModel
             .texOffs(43, 64).addBox(-3.25F, -1.0F, -3.7143F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-7.251F, -0.5436F, -0.0357F, 0.0F, -1.5708F, 0.0F));
 
         PartDefinition flap_back = cover_back.addOrReplaceChild("flap_back", CubeListBuilder.create().texOffs(0, 88).addBox(-0.5F, -2.5F, -7.5F, 1.0F, 3.0F, 15.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-14.0F, 0.25F, 0.0F, 0.0F, 0.0F, -0.4363F));
-
         PartDefinition flap_front = flap_back.addOrReplaceChild("flap_front", CubeListBuilder.create().texOffs(0, 107).addBox(-0.5F, -3.0F, -6.0F, 1.0F, 3.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -2.25F, 0.0F, 0.0F, 0.0F, 0.5236F));
-
         PartDefinition flap_clasp_leather = flap_front.addOrReplaceChild("flap_clasp_leather", CubeListBuilder.create().texOffs(0, 58).addBox(-0.25F, -1.75F, -4.0F, 1.0F, 2.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.15F, -2.75F, 0.0F, 0.0F, 0.0F, 1.3963F));
-
         PartDefinition flap_clasp_metal = flap_clasp_leather.addOrReplaceChild("flap_clasp_metal", CubeListBuilder.create().texOffs(15, 58).addBox(-0.5F, -1.75F, -1.0F, 1.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(0.375F, -1.25F, -0.5F));
 
         PartDefinition pages_stack = cover_back.addOrReplaceChild("pages_stack", CubeListBuilder.create().texOffs(0, 40).addBox(-13.5F, -1.5F, -7.0F, 14.0F, 3.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.25F, -2.075F, 0.0F, 0.0F, 0.0F, -0.0436F));
-
-        PartDefinition pages_loose = pages_stack.addOrReplaceChild("pages_loose", CubeListBuilder.create().texOffs(48, 0).addBox(-21.025F, -0.5F, -18.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F))
-            .texOffs(48, 26).addBox(-21.025F, -0.25F, -18.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F))
-            .texOffs(48, 52).addBox(-21.025F, 0.0F, -18.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F))
-            .texOffs(48, 78).addBox(-21.025F, 0.25F, -18.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F))
-            .texOffs(48, 104).addBox(-21.025F, 0.5F, -18.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.75F, 0.0F, 6.0F));
+        PartDefinition pages_loose = pages_stack.addOrReplaceChild("pages_loose", CubeListBuilder.create(), PartPose.offset(-6.25F, 0.0F, 0.0F));
+        PartDefinition pages_loose_1 = pages_loose.addOrReplaceChild("pages_loose_1", CubeListBuilder.create().texOffs(48, 0).addBox(-14.025F, 0.0F, -12.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -0.5F, 0.0F));
+        PartDefinition pages_loose_2 = pages_loose.addOrReplaceChild("pages_loose_2", CubeListBuilder.create().texOffs(48, 26).addBox(-14.025F, 0.0F, -12.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -0.25F, 0.0F));
+        PartDefinition pages_loose_3 = pages_loose.addOrReplaceChild("pages_loose_3", CubeListBuilder.create().texOffs(48, 52).addBox(-14.025F, 0.0F, -12.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition pages_loose_4 = pages_loose.addOrReplaceChild("pages_loose_4", CubeListBuilder.create().texOffs(48, 78).addBox(-14.025F, 0.0F, -12.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.25F, 0.0F));
+        PartDefinition pages_loose_5 = pages_loose.addOrReplaceChild("pages_loose_5", CubeListBuilder.create().texOffs(48, 104).addBox(-14.025F, 0.0F, -12.0F, 28.0F, 0.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.5F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
+    }
+
+    private static enum PageOperation
+    {
+        EMPTY,
+        BACK_TO_FRONT,
+        FRONT_TO_BACK,
+        SHUFFLE
+    }
+
+    public void clickSelection(float currentTime, int button)
+    {
+        if (pageFlipTime == 0)
+        {
+            // should be some way to drag the pages as matter-of-course, at any time, as long as its not clicking a link
+
+            currentPageOperation = switch (button)
+            {
+                case GLFW.GLFW_MOUSE_BUTTON_LEFT -> PageOperation.BACK_TO_FRONT;
+                case GLFW.GLFW_MOUSE_BUTTON_RIGHT -> PageOperation.FRONT_TO_BACK;
+                case GLFW.GLFW_MOUSE_BUTTON_MIDDLE -> PageOperation.EMPTY;
+                case GLFW.GLFW_MOUSE_BUTTON_4 -> PageOperation.EMPTY; // Back side button
+                case GLFW.GLFW_MOUSE_BUTTON_5 -> PageOperation.EMPTY; // Front side button
+                default -> PageOperation.EMPTY;
+            };
+
+            switch (currentPageOperation)
+            {
+                case BACK_TO_FRONT ->
+                {
+                    // extract the last page, update its rotation, insert it in front of the stack
+                    var activePage = pageList.remove(pageList.size() - 1);
+                    pageList.add(0, offsetInitialPose(activePage, null, null, null, null, activePage.getInitialPose().yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null));
+                }
+                case FRONT_TO_BACK ->
+                {
+                    // extract the first page, update its rotation, insert it in back of the stack
+                    var activePage = pageList.remove(0);
+                    pageList.add(offsetInitialPose(activePage, null, null, null, null, activePage.getInitialPose().yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null));
+                }
+                default -> {}
+            }
+
+            // start animation
+            if (currentPageOperation != PageOperation.EMPTY)
+            {
+                pageFlipTime = currentTime;
+            }
+        }
+    }
+
+    @Override
+    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float currentTime, float netHeadYaw, float headPitch)
+    {
+        playOpenCodex(currentTime);
+
+        switch (currentPageOperation)
+        {
+            case BACK_TO_FRONT -> playBackPageToFront(currentTime);
+            case FRONT_TO_BACK -> playFrontPageToBack(currentTime);
+            default -> {}
+        }
+    }
+
+    private void playOpenCodex(float currentTime)
+    {
+        flap_back.zRot = flap_back.getInitialPose().zRot;
+
+        cover_back.x = cover_back.getInitialPose().x;
+        cover_back.z = cover_back.getInitialPose().z;
+        cover_back.xRot = cover_back.getInitialPose().xRot;
+        cover_back.zRot = cover_back.getInitialPose().zRot;
+
+        cover_spine_back.zRot = cover_spine_back.getInitialPose().zRot;
+
+        pages_stack.zRot = pages_stack.getInitialPose().zRot;
+
+        pages_loose.x = pages_loose.getInitialPose().x - 0.5f;
+        pages_loose.y = pages_loose.getInitialPose().y;
+        pages_loose.z = pages_loose.getInitialPose().z;
+        pages_loose.xRot = pages_loose.getInitialPose().xRot;
+        pages_loose.xScale = 0.5f;
+        pages_loose.yScale = 0.5f;
+        pages_loose.zScale = 0.5f;
+
+        if (codexOpenTime != 0)
+        {
+            float timeStep = codexOpenTime;
+
+            // open flap
+            flap_back.zRot = getInOutEasing(currentTime, timeStep, timeStep + 10, flap_back.zRot, 0, (float) Math.toRadians(-130));
+            cover_back.zRot = getInOutEasing(currentTime, timeStep, timeStep + 10, cover_back.zRot, 0, (float) Math.toRadians(-2.5f));
+            cover_spine_back.zRot = getInOutEasing(currentTime, timeStep, timeStep + 10, cover_spine_back.zRot, 0, (float) Math.toRadians(5));
+            pages_stack.zRot = getInOutEasing(currentTime, timeStep, timeStep + 10, pages_stack.zRot, 0, (float) Math.toRadians(2.5f));
+
+            // move pages_loose 1
+            timeStep += 5;
+            pages_loose.x = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.x, 0, -12.5f);
+
+            // move pages_loose 2
+            timeStep += 5;
+            pages_loose.x = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.x, 0, -2.5f);
+            pages_loose.y = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.y, 0, -2.5f);
+
+            // move pages_loose 3
+            timeStep += 5;
+            pages_loose.x = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.x, 0, 2.5f);
+            pages_loose.y = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.y, 0, -2.5f);
+
+            // move pages_loose 4
+            timeStep += 5;
+            pages_loose.x = getOutEasing(currentTime, timeStep, timeStep + 10, pages_loose.x, 0, 12.5f);
+
+            timeStep += 10;
+            float coverZMoveAmount = 12f;
+            cover_back.z = getInOutEasing(currentTime, timeStep, timeStep + 10, cover_back.z, 0, coverZMoveAmount);
+            pages_loose.z = getInOutEasing(currentTime, timeStep, timeStep + 10, pages_loose.z, 0, -2f * coverZMoveAmount + 0.8f);
+
+            timeStep += 5;
+            float coverXMoveAmount = 1.0f;
+            float coverXRotAmount = 30f + 2f * (float) Math.sin((currentTime - codexOpenTime) / 10);
+            cover_back.x = getInOutEasing(currentTime, timeStep, timeStep + 5, cover_back.x, 0, coverXMoveAmount);
+            cover_back.xRot = getInOutEasing(currentTime, timeStep, timeStep + 5, cover_back.xRot, 0, (float) Math.toRadians(coverXRotAmount));
+            pages_loose.x = getInOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.x, 0, -coverXMoveAmount / 2f);
+            pages_loose.xRot = getInOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.xRot, 0, (float) Math.toRadians(-coverXRotAmount));
+            pages_loose.xScale = getInOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, 0.3f);
+            pages_loose.yScale = getInOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, 0.3f);
+            pages_loose.zScale = getInOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, 0.3f);
+
+            timeStep += 5;
+        }
+    }
+
+    private void playBackPageToFront(float currentTime)
+    {
+        pageList.get(0).x = pageList.get(0).getInitialPose().x;
+
+        for (int i = 0; i < pageList.size(); i++)
+        {
+            pageList.get(i).y = pageList.get(i).getInitialPose().y;
+        }
+
+        if (pageFlipTime != 0)
+        {
+            float timeStep = pageFlipTime;
+
+            // move first (previous last) pages_loose_# 1
+            pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
+            pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
+            pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
+            pageList.get(0).x = getInEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(0).x, 0, -30f);
+            timeStep += 5;
+
+            pageList.get(0).x = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).x, 0, -5f);
+            pageList.get(0).y = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).y, 0, -0.5f);
+            timeStep += 5;
+
+            for (int i = 1; i < pageList.size(); i++)
+            {
+                pageList.get(i).y = getInOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(i).y, 0, 0.25f);
+            }
+
+            pageList.get(0).x = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).x, 0, 5f);
+            pageList.get(0).y = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).y, 0, -0.5f);
+            timeStep += 5;
+
+            pageList.get(0).x = getOutEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(0).x, 0, 30f);
+            timeStep += 5;
+
+            pages_loose.xScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, 0.2f);
+            pages_loose.yScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, 0.2f);
+            pages_loose.zScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, 0.2f);
+            timeStep += 5;
+
+            // complete animation
+            if (getProgress(currentTime, pageFlipTime, timeStep) >= 1)
+            {
+                // update Y positions of pages
+                for (int i = 0; i < pageList.size(); i++)
+                {
+                    offsetInitialPose(pageList.get(i), null, pageList.get(i).y, null, null, null, null);
+                }
+
+                currentPageOperation = PageOperation.EMPTY;
+                pageFlipTime = 0;
+            }
+        }
+    }
+
+    private void playFrontPageToBack(float currentTime)
+    {
+        pageList.get(pageList.size() - 1).x = pageList.get(pageList.size() - 1).getInitialPose().x;
+
+        for (int i = 0; i < pageList.size(); i++)
+        {
+            pageList.get(i).y = pageList.get(i).getInitialPose().y;
+        }
+
+        if (pageFlipTime != 0)
+        {
+            float timeStep = pageFlipTime;
+
+            // move first (previous last) pages_loose_# 1
+            pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
+            pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
+            pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
+            pageList.get(pageList.size() - 1).x = getInEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(pageList.size() - 1).x, 0, -30f);
+            timeStep += 5;
+
+            pageList.get(pageList.size() - 1).x = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).x, 0, -5f);
+            pageList.get(pageList.size() - 1).y = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).y, 0, 0.5f);
+            timeStep += 5;
+
+            for (int i = 0; i < pageList.size() - 1; i++)
+            {
+                pageList.get(i).y = getInOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(i).y, 0, -0.25f);
+            }
+
+            pageList.get(pageList.size() - 1).x = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).x, 0, 5f);
+            pageList.get(pageList.size() - 1).y = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).y, 0, 0.5f);
+            timeStep += 5;
+
+            pageList.get(pageList.size() - 1).x = getOutEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(pageList.size() - 1).x, 0, 30f);
+            timeStep += 5;
+
+            pages_loose.xScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, 0.2f);
+            pages_loose.yScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, 0.2f);
+            pages_loose.zScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, 0.2f);
+            timeStep += 5;
+
+            // complete animation
+            if (getProgress(currentTime, pageFlipTime, timeStep) >= 1)
+            {
+                // update Y positions of pages
+                for (int i = 0; i < pageList.size(); i++)
+                {
+                    offsetInitialPose(pageList.get(i), null, pageList.get(i).y, null, null, null, null);
+                }
+
+                currentPageOperation = PageOperation.EMPTY;
+                pageFlipTime = 0;
+            }
+        }
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    {
+        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+///////////////////////////////////////
+
+    public ModelPart offsetInitialPose(ModelPart part, Float x, Float y, Float z, Float xRot, Float yRot, Float zRot)
+    {
+        part.setInitialPose(PartPose.offsetAndRotation(
+            x == null ? part.getInitialPose().x : x,
+            y == null ? part.getInitialPose().y : y,
+            z == null ? part.getInitialPose().z : z,
+            xRot == null ? part.getInitialPose().xRot : xRot,
+            yRot == null ? part.getInitialPose().yRot : yRot,
+            zRot == null ? part.getInitialPose().zRot : zRot
+        ));
+
+        part.resetPose();
+        return part;
     }
 
     public float getProgress(float currentTime, float startTime, float endTime)
@@ -153,92 +404,8 @@ public class CodexModel extends EntityModel
         return currentValue + Mth.lerp((float) -(Math.cos(Math.PI * getProgress(currentTime, startTime, endTime)) - 1) / 2, startValueOffset, endValueOffset);
     }
 
-    @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float currentTime, float netHeadYaw, float headPitch)
+    public float getRandomEasing(float min, float max)
     {
-        float timeStep = codexOpenTime;
-
-        var flapBackZRot = flap_back.getInitialPose().zRot;
-
-        var coverBackX = cover_back.getInitialPose().x;
-        var coverBackZ = cover_back.getInitialPose().z;
-        var coverBackXRot = cover_back.getInitialPose().xRot;
-        var coverBackZRot = cover_back.getInitialPose().zRot;
-
-        var coverSpineBackZRot = cover_spine_back.getInitialPose().zRot;
-
-        var pagesStackZRot = pages_stack.getInitialPose().zRot;
-
-        var pagesLooseX = pages_loose.getInitialPose().x - 3.5f;
-        var pagesLooseY = pages_loose.getInitialPose().y;
-        var pagesLooseZ = pages_loose.getInitialPose().z - 3f;
-        var pagesLooseXRot = pages_loose.getInitialPose().xRot;
-        var pagesLooseScale = 0.5f;
-
-        if (codexOpenTime > 0)
-        {
-            // open flap
-            flapBackZRot = getInOutEasing(currentTime, timeStep, timeStep + 10, flapBackZRot, 0, (float) Math.toRadians(-130));
-            coverBackZRot = getInOutEasing(currentTime, timeStep, timeStep + 10, coverBackZRot, 0, (float) Math.toRadians(-2.5f));
-            coverSpineBackZRot = getInOutEasing(currentTime, timeStep, timeStep + 10, coverSpineBackZRot, 0, (float) Math.toRadians(5));
-            pagesStackZRot = getInOutEasing(currentTime, timeStep, timeStep + 10, pagesStackZRot, 0, (float) Math.toRadians(2.5f));
-
-            // move pages_loose 1
-            timeStep += 5;
-            pagesLooseX = getInEasing(currentTime, timeStep, timeStep + 5, pagesLooseX, 0, -12.5f);
-
-            // move pages_loose 2
-            timeStep += 5;
-            pagesLooseX = getOutEasing(currentTime, timeStep, timeStep + 5, pagesLooseX, 0, -2.5f);
-            pagesLooseY = getOutEasing(currentTime, timeStep, timeStep + 5, pagesLooseY, 0, -2.5f);
-
-            // move pages_loose 3
-            timeStep += 5;
-            pagesLooseX = getInEasing(currentTime, timeStep, timeStep + 5, pagesLooseX, 0, 2.5f);
-            pagesLooseY = getInEasing(currentTime, timeStep, timeStep + 5, pagesLooseY, 0, -2.5f);
-
-            // move pages_loose 4
-            timeStep += 5;
-            pagesLooseX = getOutEasing(currentTime, timeStep, timeStep + 5, pagesLooseX, 0, 12.5f);
-
-            timeStep += 5;
-            float coverZMoveAmount = 12f;
-            coverBackZ = getInOutEasing(currentTime, timeStep, timeStep + 10, coverBackZ, 0, coverZMoveAmount);
-            pagesLooseZ = getInOutEasing(currentTime, timeStep, timeStep + 10, pagesLooseZ, 0, -2f * coverZMoveAmount + 3.5f);
-
-            timeStep += 5;
-            float coverXRotAmount = 30f + 2f * (float) Math.sin((currentTime - codexOpenTime) / 10);
-            coverBackX = getInOutEasing(currentTime, timeStep, timeStep + 5, coverBackX, 0, 0.5f);
-            coverBackXRot = getInOutEasing(currentTime, timeStep, timeStep + 5, coverBackXRot, 0, (float) Math.toRadians(coverXRotAmount));
-            pagesLooseX = getInOutEasing(currentTime, timeStep, timeStep + 5, pagesLooseX, 0, 1.5f);
-            pagesLooseXRot = getInOutEasing(currentTime, timeStep, timeStep + 5, pagesLooseXRot, 0, (float) Math.toRadians(-coverXRotAmount));
-            pagesLooseScale = getInOutEasing(currentTime, timeStep, timeStep + 5, pagesLooseScale, 0, 0.3f);
-        }
-
-        this.flap_back.zRot = flapBackZRot;
-
-        this.cover_back.x = coverBackX;
-        this.cover_back.z = coverBackZ;
-        this.cover_back.xRot = coverBackXRot;
-        this.cover_back.zRot = coverBackZRot;
-
-        this.cover_spine_back.zRot = coverSpineBackZRot;
-
-        this.pages_stack.zRot = pagesStackZRot;
-
-        this.pages_loose.x = pagesLooseX;
-        this.pages_loose.y = pagesLooseY;
-        this.pages_loose.z = pagesLooseZ;
-        this.pages_loose.xRot = pagesLooseXRot;
-        this.pages_stack.zRot = pagesStackZRot;
-        this.pages_loose.xScale = pagesLooseScale;
-        this.pages_loose.yScale = pagesLooseScale;
-        this.pages_loose.zScale = pagesLooseScale;
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
-    {
-        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        return ((max - min) * RANDOM.nextFloat()) + min;
     }
 }
