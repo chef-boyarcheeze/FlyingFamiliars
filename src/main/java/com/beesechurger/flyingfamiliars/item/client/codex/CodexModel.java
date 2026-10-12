@@ -251,7 +251,10 @@ public class CodexModel extends EntityModel
 
     private void playBackPageToFront(float currentTime)
     {
-        pageList.get(0).x = pageList.get(0).getInitialPose().x;
+        var activePage = pageList.get(0);
+
+        activePage.x = activePage.getInitialPose().x;
+        activePage.z = activePage.getInitialPose().z;
 
         for (int i = 0; i < pageList.size(); i++)
         {
@@ -266,11 +269,13 @@ public class CodexModel extends EntityModel
             pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
             pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
             pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
-            pageList.get(0).x = getInEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(0).x, 0, -30f);
+            activePage.x = getInEasing(currentTime, timeStep, timeStep + 7.5f, activePage.x, 0, (float) Math.cos(activePage.yRot) * -30f);
+            activePage.z = getInEasing(currentTime, timeStep, timeStep + 7.5f, activePage.z, 0, (float) Math.sin(activePage.yRot) * 30f);
             timeStep += 5;
 
-            pageList.get(0).x = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).x, 0, -5f);
-            pageList.get(0).y = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).y, 0, -0.5f);
+            activePage.x = getOutEasing(currentTime, timeStep, timeStep + 5, activePage.x, 0, (float) Math.cos(activePage.yRot) * -5f);
+            activePage.y = getOutEasing(currentTime, timeStep, timeStep + 5, activePage.y, 0, -0.5f);
+            activePage.z = getOutEasing(currentTime, timeStep, timeStep + 5, activePage.z, 0, (float) Math.sin(activePage.yRot) * 5f);
             timeStep += 5;
 
             for (int i = 1; i < pageList.size(); i++)
@@ -278,11 +283,13 @@ public class CodexModel extends EntityModel
                 pageList.get(i).y = getInOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(i).y, 0, 0.25f);
             }
 
-            pageList.get(0).x = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).x, 0, 5f);
-            pageList.get(0).y = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(0).y, 0, -0.5f);
+            activePage.x = getInEasing(currentTime, timeStep, timeStep + 5, activePage.x, 0, (float) Math.cos(activePage.yRot) * 5f);
+            activePage.y = getInEasing(currentTime, timeStep, timeStep + 5, activePage.y, 0, -0.5f);
+            activePage.z = getInEasing(currentTime, timeStep, timeStep + 5, activePage.z, 0, (float) Math.sin(activePage.yRot) * -5f);
             timeStep += 5;
 
-            pageList.get(0).x = getOutEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(0).x, 0, 30f);
+            activePage.x = getOutEasing(currentTime, timeStep, timeStep + 7.5f, activePage.x, 0, (float) Math.cos(activePage.yRot) * 30f);
+            activePage.z = getOutEasing(currentTime, timeStep, timeStep + 7.5f, activePage.z, 0, (float) Math.sin(activePage.yRot) * -30f);
             timeStep += 5;
 
             pages_loose.xScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, 0.2f);
@@ -307,7 +314,10 @@ public class CodexModel extends EntityModel
 
     private void playFrontPageToBack(float currentTime)
     {
-        pageList.get(pageList.size() - 1).x = pageList.get(pageList.size() - 1).getInitialPose().x;
+        var activePage = pageList.get(pageList.size() - 1);
+
+        activePage.x = activePage.getInitialPose().x;
+        activePage.z = activePage.getInitialPose().z;
 
         for (int i = 0; i < pageList.size(); i++)
         {
@@ -322,11 +332,13 @@ public class CodexModel extends EntityModel
             pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
             pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
             pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
-            pageList.get(pageList.size() - 1).x = getInEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(pageList.size() - 1).x, 0, -30f);
+            activePage.x = getInEasing(currentTime, timeStep, timeStep + 7.5f, activePage.x, 0, (float) Math.cos(activePage.yRot) * -30f);
+            activePage.z = getInEasing(currentTime, timeStep, timeStep + 7.5f, activePage.z, 0, (float) Math.sin(activePage.yRot) * 30f);
             timeStep += 5;
 
-            pageList.get(pageList.size() - 1).x = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).x, 0, -5f);
-            pageList.get(pageList.size() - 1).y = getOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).y, 0, 0.5f);
+            activePage.x = getOutEasing(currentTime, timeStep, timeStep + 5, activePage.x, 0, (float) Math.cos(activePage.yRot) * -5f);
+            activePage.y = getOutEasing(currentTime, timeStep, timeStep + 5, activePage.y, 0, 0.5f);
+            activePage.z = getOutEasing(currentTime, timeStep, timeStep + 5, activePage.z, 0, (float) Math.sin(activePage.yRot) * 5f);
             timeStep += 5;
 
             for (int i = 0; i < pageList.size() - 1; i++)
@@ -334,11 +346,13 @@ public class CodexModel extends EntityModel
                 pageList.get(i).y = getInOutEasing(currentTime, timeStep, timeStep + 5, pageList.get(i).y, 0, -0.25f);
             }
 
-            pageList.get(pageList.size() - 1).x = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).x, 0, 5f);
-            pageList.get(pageList.size() - 1).y = getInEasing(currentTime, timeStep, timeStep + 5, pageList.get(pageList.size() - 1).y, 0, 0.5f);
+            activePage.x = getInEasing(currentTime, timeStep, timeStep + 5, activePage.x, 0, (float) Math.cos(activePage.yRot) * 5f);
+            activePage.y = getInEasing(currentTime, timeStep, timeStep + 5, activePage.y, 0, 0.5f);
+            activePage.z = getInEasing(currentTime, timeStep, timeStep + 5, activePage.z, 0, (float) Math.sin(activePage.yRot) * -5f);
             timeStep += 5;
 
-            pageList.get(pageList.size() - 1).x = getOutEasing(currentTime, timeStep, timeStep + 7.5f, pageList.get(pageList.size() - 1).x, 0, 30f);
+            activePage.x = getOutEasing(currentTime, timeStep, timeStep + 7.5f, activePage.x, 0, (float) Math.cos(activePage.yRot) * 30f);
+            activePage.z = getOutEasing(currentTime, timeStep, timeStep + 7.5f, activePage.z, 0, (float) Math.sin(activePage.yRot) * -30f);
             timeStep += 5;
 
             pages_loose.xScale = getOutEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, 0.2f);
