@@ -269,8 +269,10 @@ public class CodexModel extends EntityModel
         {
             float timeStep = pageFlipTime;
 
-            // move first (previous last) pages_loose_# 1
+            // incrementally step random Y rotation of loose pages
             activePage.yRot = getInOutEasing(currentTime, timeStep, timeStep + 10, activePage.yRot, 0, activePage.getInitialPose().yRot - activePage.yRot);
+
+            // move first (previous last) pages_loose_# 1
             pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
             pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
             pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
@@ -333,8 +335,10 @@ public class CodexModel extends EntityModel
         {
             float timeStep = pageFlipTime;
 
-            // move first (previous last) pages_loose_# 1
+            // incrementally step random Y rotation of loose pages
             activePage.yRot = getInOutEasing(currentTime, timeStep, timeStep + 10, activePage.yRot, 0, activePage.getInitialPose().yRot - activePage.yRot);
+
+            // move first (previous last) pages_loose_# 1
             pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
             pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
             pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
