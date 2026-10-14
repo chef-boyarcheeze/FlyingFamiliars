@@ -1,7 +1,6 @@
 package com.beesechurger.flyingfamiliars.item.client.codex;
 
 import com.beesechurger.flyingfamiliars.FlyingFamiliars;
-import com.beesechurger.flyingfamiliars.item.common.Codex;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -10,7 +9,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.ForgeRenderTypes;
@@ -127,54 +125,17 @@ public class CodexScreen extends Screen
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        int i = this.width / 2;
+        /*int i = this.width / 2;
         float distFromMiddleX = (float) ((mouseX - i) / (float) 220);
 
-        boolean prev = super.mouseClicked(mouseX, mouseY, button);
+        boolean prev = super.mouseClicked(mouseX, mouseY, button);*/
 
-        CODEX_MODEL.clickSelection(tickCount + Minecraft.getInstance().getPartialTick(), button);
+        return CODEX_MODEL.pageSelection(tickCount + Minecraft.getInstance().getPartialTick(), button, false);
+    }
 
-        /*if (!prev)
-        {
-            if (currentEntry != null && currentEntry.consumeMouseClick(this))
-            {
-                return true;
-            }
-            else
-            {
-                if (tickCount - lastTurnClickTimestamp < 8)
-                {
-                    flipSpeed = 0.3F;
-                }
-                else
-                {
-                    flipSpeed = 0.1F;
-                }
-
-                lastTurnClickTimestamp = tickCount;
-                if (!decrementingPage && !incrementingPage)
-                {
-                    if (distFromMiddleX < -MOUSE_LEAN_THRESHOLD && canGoLeft())
-                    {
-                        decrementingPage = true;
-                        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ACSoundRegistry.CAVE_BOOK_TURN.get(), 1.0F));
-                        return true;
-                    }
-                    else if (distFromMiddleX > MOUSE_LEAN_THRESHOLD && canGoRight())
-                    {
-                        incrementingPage = true;
-                        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ACSoundRegistry.CAVE_BOOK_TURN.get(), 1.0F));
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        else
-        {
-            return true;
-        }*/
-
-        return false;
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
+    {
+        return CODEX_MODEL.pageSelection(tickCount + Minecraft.getInstance().getPartialTick(), button, true);
     }
 }

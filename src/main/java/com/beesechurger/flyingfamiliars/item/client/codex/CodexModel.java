@@ -75,11 +75,11 @@ public class CodexModel extends EntityModel
         this.pages_loose_5 = this.pages_loose.getChild("pages_loose_5");
 
         this.pageList = new ArrayList<ModelPart>(List.of(
-            offsetInitialPose(this.pages_loose_1, null, null, null, null, this.pages_loose_1.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
-            offsetInitialPose(this.pages_loose_2, null, null, null, null, this.pages_loose_2.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
-            offsetInitialPose(this.pages_loose_3, null, null, null, null, this.pages_loose_3.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
-            offsetInitialPose(this.pages_loose_4, null, null, null, null, this.pages_loose_4.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null),
-            offsetInitialPose(this.pages_loose_5, null, null, null, null, this.pages_loose_5.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null)
+            offsetInitialPose(this.pages_loose_1, null, null, null, null, this.pages_loose_1.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, true),
+            offsetInitialPose(this.pages_loose_2, null, null, null, null, this.pages_loose_2.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, true),
+            offsetInitialPose(this.pages_loose_3, null, null, null, null, this.pages_loose_3.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, true),
+            offsetInitialPose(this.pages_loose_4, null, null, null, null, this.pages_loose_4.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, true),
+            offsetInitialPose(this.pages_loose_5, null, null, null, null, this.pages_loose_5.yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, true)
         ));
     }
 
@@ -126,12 +126,14 @@ public class CodexModel extends EntityModel
         SHUFFLE
     }
 
-    public void clickSelection(float currentTime, int button)
+    public boolean pageSelection(float currentTime, int button, boolean isDragging)
     {
-        if (pageFlipTime == 0)
+        if (isDragging)
         {
             // should be some way to drag the pages as matter-of-course, at any time, as long as its not clicking a link
-
+        }
+        else if (pageFlipTime == 0)
+        {
             currentPageOperation = switch (button)
             {
                 case GLFW.GLFW_MOUSE_BUTTON_LEFT -> PageOperation.BACK_TO_FRONT;
@@ -148,13 +150,13 @@ public class CodexModel extends EntityModel
                 {
                     // extract the last page, update its rotation, insert it in front of the stack
                     var activePage = pageList.remove(pageList.size() - 1);
-                    pageList.add(0, offsetInitialPose(activePage, null, null, null, null, activePage.getInitialPose().yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null));
+                    pageList.add(0, offsetInitialPose(activePage, null, null, null, null, activePage.getInitialPose().yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, false));
                 }
                 case FRONT_TO_BACK ->
                 {
                     // extract the first page, update its rotation, insert it in back of the stack
                     var activePage = pageList.remove(0);
-                    pageList.add(offsetInitialPose(activePage, null, null, null, null, activePage.getInitialPose().yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null));
+                    pageList.add(offsetInitialPose(activePage, null, null, null, null, activePage.getInitialPose().yRot + (float) Math.toRadians(5 * getRandomEasing(-1, 1)), null, false));
                 }
                 default -> {}
             }
@@ -165,6 +167,8 @@ public class CodexModel extends EntityModel
                 pageFlipTime = currentTime;
             }
         }
+
+        return false;
     }
 
     @Override
@@ -266,6 +270,7 @@ public class CodexModel extends EntityModel
             float timeStep = pageFlipTime;
 
             // move first (previous last) pages_loose_# 1
+            activePage.yRot = getInOutEasing(currentTime, timeStep, timeStep + 10, activePage.yRot, 0, activePage.getInitialPose().yRot - activePage.yRot);
             pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
             pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
             pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
@@ -303,7 +308,7 @@ public class CodexModel extends EntityModel
                 // update Y positions of pages
                 for (int i = 0; i < pageList.size(); i++)
                 {
-                    offsetInitialPose(pageList.get(i), null, pageList.get(i).y, null, null, null, null);
+                    offsetInitialPose(pageList.get(i), null, pageList.get(i).y, null, null, null, null, true);
                 }
 
                 currentPageOperation = PageOperation.EMPTY;
@@ -329,6 +334,7 @@ public class CodexModel extends EntityModel
             float timeStep = pageFlipTime;
 
             // move first (previous last) pages_loose_# 1
+            activePage.yRot = getInOutEasing(currentTime, timeStep, timeStep + 10, activePage.yRot, 0, activePage.getInitialPose().yRot - activePage.yRot);
             pages_loose.xScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.xScale, 0, -0.2f);
             pages_loose.yScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.yScale, 0, -0.2f);
             pages_loose.zScale = getInEasing(currentTime, timeStep, timeStep + 5, pages_loose.zScale, 0, -0.2f);
@@ -366,7 +372,7 @@ public class CodexModel extends EntityModel
                 // update Y positions of pages
                 for (int i = 0; i < pageList.size(); i++)
                 {
-                    offsetInitialPose(pageList.get(i), null, pageList.get(i).y, null, null, null, null);
+                    offsetInitialPose(pageList.get(i), null, pageList.get(i).y, null, null, null, null, true);
                 }
 
                 currentPageOperation = PageOperation.EMPTY;
@@ -383,7 +389,7 @@ public class CodexModel extends EntityModel
 
 ///////////////////////////////////////
 
-    public ModelPart offsetInitialPose(ModelPart part, Float x, Float y, Float z, Float xRot, Float yRot, Float zRot)
+    public ModelPart offsetInitialPose(ModelPart part, Float x, Float y, Float z, Float xRot, Float yRot, Float zRot, boolean shouldReset)
     {
         part.setInitialPose(PartPose.offsetAndRotation(
             x == null ? part.getInitialPose().x : x,
@@ -394,7 +400,11 @@ public class CodexModel extends EntityModel
             zRot == null ? part.getInitialPose().zRot : zRot
         ));
 
-        part.resetPose();
+        if (shouldReset)
+        {
+            part.resetPose();
+        }
+
         return part;
     }
 
